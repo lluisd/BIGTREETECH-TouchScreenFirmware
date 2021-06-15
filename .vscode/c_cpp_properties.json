@@ -1,0 +1,95 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/include",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Fatfs",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Menu",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Variants",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API/UI",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API/Gcode",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API/Language",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API/Vfs",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/STM32_USB_HOST_Library/Core/inc",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/STM32_USB_HOST_Library/Class/MSC/inc",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/STM32_USB_HOST_Library/Usr/inc",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/STM32_USB_OTG_Driver/inc",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/Libraries/cmsis/Core-CM3",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/Libraries/cmsis/stm32f10x",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/Libraries/fwlib/stm32f10x",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/Libraries/fwlib/stm32f10x/inc",
+                "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/stm32f10x",
+                "C:/Users/digant/.platformio/packages/framework-cmsis/CMSIS/Include",
+                "C:/Users/digant/.platformio/packages/framework-cmsis-stm32f1/Include",
+                "C:/Users/digant/.platformio/packages/tool-unity",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/include",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Fatfs",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Menu",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Variants",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API/UI",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API/Gcode",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API/Language",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/API/Vfs",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/STM32_USB_HOST_Library/Core/inc",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/STM32_USB_HOST_Library/Class/MSC/inc",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/STM32_USB_HOST_Library/Usr/inc",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/STM32_USB_OTG_Driver/inc",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/Libraries/cmsis/Core-CM3",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/Libraries/cmsis/stm32f10x",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/Libraries/fwlib/stm32f10x",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/Libraries/fwlib/stm32f10x/inc",
+                    "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/TFT/src/User/Hal/stm32f10x",
+                    "C:/Users/digant/.platformio/packages/framework-cmsis/CMSIS/Include",
+                    "C:/Users/digant/.platformio/packages/framework-cmsis-stm32f1/Include",
+                    "C:/Users/digant/.platformio/packages/tool-unity",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=50101",
+                "STM32F107xC",
+                "USE_STDPERIPH_DRIVER=",
+                "SOFTWARE_VERSION=27.x",
+                "SOFTWARE_VERSION_SHORT=27",
+                "STM32F10X_CL=",
+                "HSE_VALUE=25000000ul",
+                "VECT_TAB_FLASH=0x08007000",
+                "RAM_SIZE=64",
+                "HARDWARE=MKS_TFT28_V4.0",
+                "HARDWARE_SHORT=M28V40",
+                "MKS_TFT28_V4_0=",
+                "HARDWARE_TEXT=MKS TFT28 v1.0 Artillery",
+                "FIRMWARE_TEXT=DIGA-Tech v1.0",
+                "FILENAME=MKSTFT28",
+                "F_CPU=72000000L",
+                ""
+            ],
+            "compilerPath": "C:/Users/digant/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin/arm-none-eabi-gcc.exe",
+            "compilerArgs": [
+                "-mthumb",
+                "-mcpu=cortex-m3",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
