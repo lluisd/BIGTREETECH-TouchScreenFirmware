@@ -12,11 +12,11 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/.pio/build/MKS_TFT28_V1_0_ARTILLERY/MKSTFT28.elf",
+            "executable": "D:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASX1/.pio/build/MKS_TFT28_V1_0_ARTILLERY/MKSTFT28.elf",
             "projectEnvName": "MKS_TFT28_V1_0_ARTILLERY",
-            "toolchainBinDir": "C:/Users/digant/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin",
+            "toolchainBinDir": "C:/Users/adiguardo/.platformio/packages/toolchain-gccarmnoneeabi/bin",
             "internalConsoleOptions": "openOnSessionStart",
-            "svdPath": "C:/Users/digant/.platformio/platforms/ststm32/misc/svd/STM32F107xx.svd",
+            "svdPath": "C:/Users/adiguardo/.platformio/platforms/ststm32/misc/svd/STM32F107xx.svd",
             "preLaunchTask": {
                 "type": "PlatformIO",
                 "task": "Pre-Debug (MKS_TFT28_V1_0_ARTILLERY)"
@@ -26,11 +26,11 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "e:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASWX1/.pio/build/MKS_TFT28_V1_0_ARTILLERY/MKSTFT28.elf",
+            "executable": "D:/diga_pc/aswx1/dev/tft/BIGTREETECH-TouchScreenFirmware_ASX1/.pio/build/MKS_TFT28_V1_0_ARTILLERY/MKSTFT28.elf",
             "projectEnvName": "MKS_TFT28_V1_0_ARTILLERY",
-            "toolchainBinDir": "C:/Users/digant/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin",
+            "toolchainBinDir": "C:/Users/adiguardo/.platformio/packages/toolchain-gccarmnoneeabi/bin",
             "internalConsoleOptions": "openOnSessionStart",
-            "svdPath": "C:/Users/digant/.platformio/platforms/ststm32/misc/svd/STM32F107xx.svd"
+            "svdPath": "C:/Users/adiguardo/.platformio/platforms/ststm32/misc/svd/STM32F107xx.svd"
         }
     ]
 }
