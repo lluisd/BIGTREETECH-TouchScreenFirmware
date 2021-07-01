@@ -252,7 +252,7 @@ void sendQueueCmd(void)
         case 1:
           if (isPrinting() && infoMachineSettings.firmwareType != FW_REPRAPFW)  // Abort printing by "M0" in RepRapFirmware
           {
-            // pause if printing form TFT and purge M0/M1 command.
+            // pause if printing from TFT and purge M0/M1 command.
             if (infoFile.source < BOARD_SD )
             {
               purgeLastCmd(true, avoid_terminal);
@@ -999,8 +999,8 @@ void sendQueueCmd(void)
         {
           uint8_t i = (cmd_seen('I')) ? cmd_value() : 0;
           if (cmd_seen('X')) setParameter(P_BUMPSENSITIVITY, STEPPER_INDEX_X + i, cmd_value());
-          if (cmd_seen('Y')) setParameter(P_BUMPSENSITIVITY, STEPPER_INDEX_X + i, cmd_value());
-          if (cmd_seen('Z')) setParameter(P_BUMPSENSITIVITY, STEPPER_INDEX_X + i, cmd_value());
+          if (cmd_seen('Y')) setParameter(P_BUMPSENSITIVITY, STEPPER_INDEX_Y + i, cmd_value());
+          if (cmd_seen('Z')) setParameter(P_BUMPSENSITIVITY, STEPPER_INDEX_Z + i, cmd_value());
           break;
         }
       }
