@@ -207,26 +207,21 @@ bool FIL_IsRunout(void)
 
 void loopBackEndFILRunoutDetect(void)
 {
-  if (!(infoSettings.runout & 1))   // Filament runout turn off
-    return;
-  if (!isPrinting() || isPaused())  // Check for No printing or printing paused before reading sensor
-    return;
-  if (!FIL_IsRunout())              // Filament not runout yet, need constant scanning to filter interference
+  if (!(infoSettings.runout & 1))  // Filament runout turn off
     return;
 
-  setPrintRunout(true);
+  setPrintRunout(FIL_IsRunout());  // Need constant scanning to filter interference
 }
 
 void loopFrontEndFILRunoutDetect(void)
 {
-  static uint32_t nextTime = 0;
   #define ALARM_REMINDER_TIME 10000
+  static uint32_t nextTime = 0;
 
   if (!getPrintRunout() && !getRunoutAlarm()) return;
 
-  if (printPause(true, PAUSE_NORMAL) && !getRunoutAlarm())
-  {
-    setPrintRunout(false);
+  if (printPause(true, PAUSE_NORMAL) && !getRunoutAlarm())  // if not printing, printPause() function will always fail
+  {                                                         // so no useless error message is displayed
     setRunoutAlarmTrue();
     setDialogText(LABEL_WARNING, LABEL_FILAMENT_RUNOUT, LABEL_CONFIRM, LABEL_BACKGROUND);
     showDialog(DIALOG_TYPE_ALERT, setRunoutAlarmFalse, NULL, NULL);
