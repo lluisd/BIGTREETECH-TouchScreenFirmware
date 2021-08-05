@@ -15,11 +15,14 @@ extern "C" {
 #define LANG_FILE_PATH                "0:language.ini"
 
 //-----------------------------General Settings
-#define CONFIG_STATUS_SCREEN          "status_screen:"
-#define CONFIG_UART_BAUDRATE          "baudrate:"
 #define CONFIG_MULTI_SERIAL           "multi_serial:"
-#define CONFIG_LANGUAGE               "language:"
+#define CONFIG_UART_BAUDRATE          "baudrate:"
+#define CONFIG_INVERT_AXIS            "invert_axis:"
+#define CONFIG_EMULATE_M600           "emulate_m600:"
 
+//-----------------------------UI Settings
+#define CONFIG_LANGUAGE               "language:"
+#define CONFIG_STATUS_SCREEN          "status_screen:"
 #define CONFIG_TITLE_BG               "title_back_color:"
 #define CONFIG_MENU_BG_COLOR          "background_color:"
 #define CONFIG_MENU_FONT_COLOR        "font_color:"
@@ -33,15 +36,13 @@ extern "C" {
 #define CONFIG_TERMINAL_COLOR_SCHEME  "terminal_color_scheme:"
 
 #define CONFIG_ROTATE_UI              "rotate_ui:"
-#define CONFIG_TERMINAL_ACK           "terminal_ack:"
-#define CONFIG_INVERT_AXIS            "invert_axis:"
-#define CONFIG_PERSISTENT_TEMP        "persistent_info:"
-#define CONFIG_FAN_PERCENT            "fan_speed_percent:"
-#define CONFIG_LIST_MODE              "files_list_mode:"
-#define CONFIG_FILES_SORT_BY          "files_sort_by:"
 #define CONFIG_ACK_NOTIFICATION       "ack_notification:"
+#define CONFIG_FILES_SORT_BY          "files_sort_by:"
+#define CONFIG_LIST_MODE              "files_list_mode:"
+#define CONFIG_FAN_PERCENT            "fan_speed_percent:"
+#define CONFIG_PERSISTENT_TEMP        "persistent_info:"
+#define CONFIG_TERMINAL_ACK           "terminal_ack:"
 #define CONFIG_NOTIFICATION_M117      "notification_m117:"
-#define CONFIG_EMULATE_M600           "emulate_m600:"
 #define CONFIG_PROG_DISP_TYPE         "prog_disp_type:"
 //-----------------------------Marlin Mode Settings (only for TFT24 V1.1 & TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
 #define CONFIG_MODE                   "default_mode:"

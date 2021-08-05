@@ -531,20 +531,33 @@ void parseConfigKey(uint16_t index)
   {
     //----------------------------General Settings
 
-    case C_INDEX_STATUS_SCREEN:
-      infoSettings.status_screen = getOnOff();
+    case C_INDEX_MULTI_SERIAL:
+      SET_VALID_INT_VALUE(infoSettings.multi_serial, 0, MAX_MULTI_SERIAL - 1);
       break;
 
     case C_INDEX_UART_BAUDRATE:
       SET_VALID_INT_VALUE(infoSettings.baudrate, 0, BAUDRATE_COUNT - 1);
       break;
 
-    case C_INDEX_MULTI_SERIAL:
-      SET_VALID_INT_VALUE(infoSettings.multi_serial, 0, MAX_MULTI_SERIAL - 1);
+    case C_INDEX_INVERT_AXIS:
+      if (key_seen("X")) infoSettings.invert_axis[X_AXIS] = getOnOff();
+      if (key_seen("Y")) infoSettings.invert_axis[Y_AXIS] = getOnOff();
+      if (key_seen("Z")) infoSettings.invert_axis[Z_AXIS] = getOnOff();
+      if (key_seen("LY")) infoSettings.leveling_invert_y_axis = getOnOff();
       break;
+
+    case C_INDEX_EMULATE_M600:
+      infoSettings.emulate_m600 = getOnOff();
+      break;
+
+    //----------------------------UI Settings
 
     case C_INDEX_LANGUAGE:
       SET_VALID_INT_VALUE(infoSettings.language, 0, LANGUAGE_NUM - 1);
+      break;
+
+    case C_INDEX_STATUS_SCREEN:
+      infoSettings.status_screen = getOnOff();
       break;
 
     case C_INDEX_TITLE_BG:
@@ -599,43 +612,32 @@ void parseConfigKey(uint16_t index)
       }
       break;
 
-    case C_INDEX_TERMINAL_ACK:
-      infoSettings.terminalACK = getOnOff();
-      break;
-
-    case C_INDEX_INVERT_AXIS:
-      if (key_seen("X")) infoSettings.invert_axis[X_AXIS] = getOnOff();
-      if (key_seen("Y")) infoSettings.invert_axis[Y_AXIS] = getOnOff();
-      if (key_seen("Z")) infoSettings.invert_axis[Z_AXIS] = getOnOff();
-      if (key_seen("LY")) infoSettings.leveling_invert_y_axis = getOnOff();
-      break;
-
-    case C_INDEX_PERSISTENT_TEMP:
-      infoSettings.persistent_info = getOnOff();
-      break;
-
-    case C_INDEX_FAN_PERCENT:
-      infoSettings.fan_percentage = getOnOff();
-      break;
-
-    case C_INDEX_LIST_MODE:
-      infoSettings.file_listmode = getOnOff();
+    case C_INDEX_ACK_NOTIFICATION:
+      SET_VALID_INT_VALUE(infoSettings.ack_notification, 0, 2);
       break;
 
     case C_INDEX_FILES_SORT_BY:
       SET_VALID_INT_VALUE(infoSettings.files_sort_by, 0, SORT_BY_COUNT);
       break;
 
-    case C_INDEX_ACK_NOTIFICATION:
-      SET_VALID_INT_VALUE(infoSettings.ack_notification, 0, 2);
+    case C_INDEX_LIST_MODE:
+      infoSettings.file_listmode = getOnOff();
+      break;
+
+    case C_INDEX_FAN_PERCENT:
+      infoSettings.fan_percentage = getOnOff();
+      break;
+
+    case C_INDEX_PERSISTENT_TEMP:
+      infoSettings.persistent_info = getOnOff();
+      break;
+
+    case C_INDEX_TERMINAL_ACK:
+      infoSettings.terminalACK = getOnOff();
       break;
 
     case C_INDEX_NOTIFICATION_M117:
       infoSettings.notification_m117 = getOnOff();
-      break;
-
-    case C_INDEX_EMULATE_M600:
-      infoSettings.emulate_m600 = getOnOff();
       break;
 
     case C_INDEX_PROG_DISP_TYPE:
@@ -687,6 +689,7 @@ void parseConfigKey(uint16_t index)
     #endif  // ST7920_EMULATOR || LCD2004_EMULATOR
 
     //----------------------------RRF Mode Settings
+
     case C_INDEX_RRF_MACROS_ON:
       infoSettings.rrf_macros_enable = getOnOff();
       break;

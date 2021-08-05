@@ -1,6 +1,6 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
-#define CONFIG_VERSION 20210730
+#define CONFIG_VERSION 20210803
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -11,16 +11,21 @@
 //================================================================================
 
 /**
- * Enable Status Screen
- * If enabled, the Status Screen menu will become the default home screen.
- * If disabled, the Main menu will become the default home screen.
+ * Enable Multi-Serials
+ * Multi-Serials connected to ESP3D, OctoPrint, Other TFT, etc.
+ * Disable the serial port when it is not in use and floating.
+ * Avoid the serial port to receive the wrong data because of electromagnetic interference.
  *
- * NOTE: Both the Status Screen and Main menus display the current temperature, fan and speeds.
- *       Furthermore, the Status Screen menu provides the status area reporting the printer notifications.
- *
- *   Options: [disable: 0, enable: 1]
+ *   Options: [0: Disable all multi-serials,
+ *             1: Enable SERIAL_PORT_2 alone,
+ *             2: Enable SERIAL_PORT_3 alone,
+ *             4: Enable SERIAL_PORT_4 alone,
+ *             3: = 1 + 2: Enable SERIAL_PORT_2 + SERIAL_PORT_3,
+ *             5: = 1 + 4: Enable SERIAL_PORT_2 + SERIAL_PORT_4,
+ *             6: = 2 + 4: Enable SERIAL_PORT_3 + SERIAL_PORT_4,
+ *             7: = 1 + 2 + 4: Enable SERIAL_PORT_2 + SERIAL_PORT_3 + SERIAL_PORT_4]
  */
-#define ENABLE_STATUS_SCREEN 1  // Default: 1
+#define MULTI_SERIAL 0
 
 /**
  * Baudrate / Connection Speed
@@ -36,8 +41,36 @@
 #define BAUDRATE 5  // Default: 5
 
 /**
+ * Emulate M600
+ * The TFT intercepts the M600 gcode (filament change) and emulates the handling logic
+ * otherwise provided by Marlin firmware.
+ *
+ * NOTE: Enable it, in case Marlin firmware does not properly support M600 on the mainboard.
+ *
+ *   Options: [disable: 0, enable: 1]
+ */
+#define EMULATE_M600 1  // Default: 1
+
+//================================================================================
+//================================= UI Settings ==================================
+//================================================================================
+
+/**
+ * Enable Status Screen
+ * Select the default home screen while in Touch Mode.
+ * If enabled, the Status Screen menu will become the default home screen.
+ * If disabled, the Main menu will become the default home screen.
+ *
+ * NOTE: Both the Status Screen and Main menus display the current temperature, fan and speeds.
+ *       Furthermore, the Status Screen menu provides the status area reporting the printer notifications.
+ *
+ *   Options: [disable: 0, enable: 1]
+ */
+#define ENABLE_STATUS_SCREEN 1  // Default: 1
+
+/**
  * Default Touch Mode Colors
- * Set colors used in touchscreen mode.
+ * Set colors used in Touch Mode.
  *
  *   Options: [ WHITE: 0,  BLACK: 1,  RED: 2,  GREEN: 3,      BLUE: 4,       CYAN: 5,  MAGENTA: 6,    YELLOW: 7,
  *             ORANGE: 8, PURPLE: 9, LIME: 10, BROWN: 11, DARKBLUE: 12, DARKGREEN: 13,    GRAY: 14, DARKGRAY: 15]
@@ -57,14 +90,6 @@
 #define MESH_MAX_COLOR 2  // Default: 2
 
 /**
- * Fan Speed As Percentage
- * Show fan speed as percentage. If disabled fan speeed will be displayed as PWM values.
- *
- *   Options: [disable: 0, enable: 1]
- */
-#define SHOW_FAN_PERCENTAGE 1  // Default: 1
-
-/**
  * Notification Style For ACK Messages
  * Set the notification style to use for displaying the ACK messages which start with "echo:".
  *
@@ -79,15 +104,26 @@
 #define ACK_NOTIFICATION_STYLE 1  // Default: 1
 
 /**
- * Emulate M600
- * The TFT intercepts the M600 gcode (filament change) and emulates the handling logic
- * otherwise provided by Marlin firmware.
- *
- * NOTE: Enable it, in case Marlin firmware does not properly support M600 on the mainboard.
+ * Fan Speed As Percentage
+ * Show fan speed as percentage. If disabled fan speeed will be displayed as PWM values.
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define EMULATE_M600 1  // Default: 1
+#define SHOW_FAN_PERCENTAGE 1  // Default: 1
+
+/**
+ * Notification M117
+ * If enabled, any notification received from Marlin through "//action:notification" is also
+ * stored on the notification screen. The notification screen reporting the history of the
+ * received notifications is displayed pressing on the notification bar.
+ *
+ * NOTE: Marlin notifications are also always displayed on the Status Screen menu.
+ *       Furthermore, they are also displayed on the notification bar as toast messages
+ *       in case the current menu is not the Status Screen menu.
+ *
+ *   Options: [disable: 0, enable: 1]
+ */
+#define NOTIFICATION_M117 0
 
 //================================================================================
 //============================= Marlin Mode Settings =============================
@@ -96,7 +132,7 @@
 
 /**
  * Default Mode
- * Set Marlin/Touch mode as the default mode at startup.
+ * Set Marlin/Touch Mode as the default mode at startup.
  *
  * NOTE: Mode switching is possible only for Marlin Mode and Touch Mode by a long press of
  *       1.5 seconds on the display or holding down the encorder button for 1.5 seconds.
@@ -117,7 +153,7 @@
 
 /**
  * Default Marlin Mode Background & Font Colors
- * Set colors used in Marlin mode.
+ * Set colors used in Marlin Mode.
  *
  *   Options: [ WHITE: 0,  BLACK: 1,  RED: 2,  GREEN: 3,      BLUE: 4,       CYAN: 5,  MAGENTA: 6,    YELLOW: 7,
  *             ORANGE: 8, PURPLE: 9, LIME: 10, BROWN: 11, DARKBLUE: 12, DARKGREEN: 13,    GRAY: 14, DARKGRAY: 15]

@@ -3,7 +3,7 @@
 
 enum
 {
-  KEY_INDEX_OFFSET = 2,
+  KEY_INDEX_OFFSET = 3,
   #ifdef LCD_LED_PWM_CHANNEL
     KEY_INDEX_BRIGHTNESS,
   #endif
@@ -21,6 +21,24 @@ const char *const labelMarlinType[ITEM_MARLIN_TYPE_NUM] =
   // item value text(only for custom value)
   "128x64",
   "20x4"
+};
+
+#define ITEM_NOTIFICATION_TYPE_NUM 3
+const char *const itemNotificationType[ITEM_NOTIFICATION_TYPE_NUM] =
+{
+  // item value text(only for custom value)
+  "OFF",
+  "POPUP",
+  "TOAST"
+};
+
+const char *const itemSortBy[SORT_BY_COUNT] =
+{
+  // item value text(only for custom value)
+  "Date ▼",
+  "Date ▲",
+  "Name ▲",
+  "Name ▼",
 };
 
 void menuLanguage(void)
@@ -298,30 +316,33 @@ void menuSoundSettings(void)
       case 0:
         infoSettings.touchSound = (infoSettings.touchSound + 1) % 2;
         sounditems[curIndex].icon = (infoSettings.touchSound == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
-        listViewRefreshItem(curIndex);
+//        listViewRefreshItem(curIndex);
         break;
 
       case 1:
         infoSettings.toastSound = (infoSettings.toastSound + 1) % 2;
         sounditems[curIndex].icon = (infoSettings.toastSound == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
-        listViewRefreshItem(curIndex);
+//        listViewRefreshItem(curIndex);
         break;
 
       case 2:
         infoSettings.alertSound = (infoSettings.alertSound + 1) % 2;
         sounditems[curIndex].icon = (infoSettings.alertSound == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
-        listViewRefreshItem(curIndex);
+//        listViewRefreshItem(curIndex);
         break;
 
       case 3:
         infoSettings.heaterSound = (infoSettings.heaterSound + 1) % 2;
         sounditems[curIndex].icon = (infoSettings.heaterSound == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
-        listViewRefreshItem(curIndex);
+//        listViewRefreshItem(curIndex);
         break;
 
       default:
         break;
     }
+
+    if (curIndex < sizeof(sounditems))
+      listViewRefreshItem(curIndex);
 
     loopProcess();
   }
@@ -334,12 +355,129 @@ void menuSoundSettings(void)
 
 #endif  // BUZZER_PIN
 
+void menuUISettings(void)
+{
+  LABEL title = {LABEL_LCD_BRIGHTNESS};
+  LISTITEM uiItems[] = {
+  // icon                ItemType          Item Title               item value text(only for custom value)
+    {CHARICON_BLANK,     LIST_CUSTOMVALUE, LABEL_ACK_NOTIFICATION,  LABEL_DYNAMIC},
+    {CHARICON_BLANK,     LIST_CUSTOMVALUE, LABEL_FILE_SORT_BY,      LABEL_DYNAMIC},
+    {CHARICON_TOGGLE_ON, LIST_TOGGLE,      LABEL_FILE_LIST_MODE,    LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON, LIST_TOGGLE,      LABEL_FAN_SPEED_PERCENT, LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON, LIST_TOGGLE,      LABEL_PERSISTENT_INFO,   LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON, LIST_TOGGLE,      LABEL_TERMINAL_ACK,      LABEL_BACKGROUND},
+
+    #ifdef LED_COLOR_PIN
+      {CHARICON_BLANK,     LIST_CUSTOMVALUE, LABEL_KNOB_LED_COLOR,    LABEL_OFF},
+
+      #ifdef LCD_LED_PWM_CHANNEL
+        {CHARICON_TOGGLE_ON, LIST_TOGGLE,      LABEL_KNOB_LED_IDLE,     LABEL_BACKGROUND},
+      #endif
+    #endif
+  };
+
+  uint16_t curIndex = KEY_IDLE;
+  SETTINGS now = infoSettings;
+
+  setDynamicTextValue(0, (char *)itemNotificationType[infoSettings.ack_notification]);
+  setDynamicTextValue(1, (char *)itemSortBy[infoSettings.files_sort_by]);
+  uiItems[2].icon = (infoSettings.file_listmode == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+//  uiItems[3].icon = iconToggle[infoSettings.fan_percentage];
+  uiItems[3].icon = (infoSettings.fan_percentage == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+  uiItems[4].icon = iconToggle[infoSettings.persistent_info];
+  uiItems[5].icon = iconToggle[infoSettings.terminalACK];
+
+  #ifdef LED_COLOR_PIN
+    uiItems[6].valueLabel = led_color_names[infoSettings.knob_led_color];
+
+    #ifdef LCD_LED_PWM_CHANNEL
+//      uiItems[5].icon = iconToggle[infoSettings.knob_led_idle];
+      uiItems[7].icon = (infoSettings.knob_led_idle == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+    #endif
+  #endif
+
+  listViewCreate(title, uiItems, COUNT(uiItems), NULL, true, NULL, NULL);
+
+  while (infoMenu.menu[infoMenu.cur] == menuUISettings)
+  {
+    curIndex = listViewGetSelectedIndex();
+    switch (curIndex)
+    {
+      case 0:
+        infoSettings.ack_notification = (infoSettings.ack_notification + 1) % ITEM_NOTIFICATION_TYPE_NUM;
+        setDynamicTextValue(0, (char *)itemNotificationType[infoSettings.ack_notification]);
+//        listViewRefreshItem(curIndex);
+        break;
+
+      case 1:
+        infoSettings.files_sort_by = (infoSettings.files_sort_by + 1) % SORT_BY_COUNT;
+        setDynamicTextValue(1, (char *)itemSortBy[infoSettings.files_sort_by]);
+//        listViewRefreshItem(curIndex);
+        break;
+
+      case 2:
+        infoSettings.file_listmode = (infoSettings.file_listmode + 1) % ITEM_TOGGLE_NUM;
+        uiItems[2].icon = (infoSettings.file_listmode == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+//        listViewRefreshItem(curIndex);
+        break;
+
+      case 3:
+        infoSettings.fan_percentage = (infoSettings.fan_percentage + 1) % ITEM_TOGGLE_NUM;
+        uiItems[3].icon = (infoSettings.fan_percentage == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+//        listViewRefreshItem(curIndex);
+        break;
+
+      case 4:
+        infoSettings.persistent_info = (infoSettings.persistent_info + 1) % ITEM_TOGGLE_NUM;
+        uiItems[4].icon = (infoSettings.persistent_info == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+//        listViewRefreshItem(curIndex);
+        break;
+
+      case 5:
+        infoSettings.terminalACK = (infoSettings.terminalACK + 1) % ITEM_TOGGLE_NUM;
+        uiItems[5].icon = (infoSettings.terminalACK == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+//        listViewRefreshItem(curIndex);
+        break;
+
+      #ifdef LED_COLOR_PIN
+        case 6:
+          infoSettings.knob_led_color = (infoSettings.knob_led_color + 1 ) % LED_COLOR_COUNT;
+          uiItems[6].valueLabel = led_color_names[infoSettings.knob_led_color];
+          Knob_LED_SetColor(led_colors[infoSettings.knob_led_color], infoSettings.neopixel_pixels);
+//        listViewRefreshItem(curIndex);
+          break;
+
+        #ifdef LCD_LED_PWM_CHANNEL
+          case 7:
+            infoSettings.knob_led_idle = (infoSettings.knob_led_idle + 1) % ITEM_TOGGLE_NUM;
+            uiItems[7].icon = (infoSettings.knob_led_idle == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+//        listViewRefreshItem(curIndex);
+            break;
+        #endif  // LCD_LED_PWM_CHANNEL
+      #endif
+
+      default:
+        break;
+    }
+
+    if (curIndex < sizeof(uiItems))
+      listViewRefreshItem(curIndex);
+
+    loopProcess();
+  }
+
+  if (memcmp(&now, &infoSettings, sizeof(SETTINGS)))
+  {
+    storePara();
+  }
+}
+
 #ifdef LCD_LED_PWM_CHANNEL
 
 void menuBrightnessSettings(void)
 {
   LABEL title = {LABEL_LCD_BRIGHTNESS};
-  LISTITEM brightnessitems[] = {
+  LISTITEM brightnessItems[] = {
   // icon                ItemType          Item Title                 item value text(only for custom value)
     {CHARICON_BLANK,     LIST_CUSTOMVALUE, LABEL_LCD_BRIGHTNESS,      LABEL_DYNAMIC},
     {CHARICON_BLANK,     LIST_CUSTOMVALUE, LABEL_LCD_IDLE_BRIGHTNESS, LABEL_DYNAMIC},
@@ -352,15 +490,15 @@ void menuBrightnessSettings(void)
   char tempstr[8];
 
   sprintf(tempstr, (char *)textSelect(LABEL_PERCENT_VALUE), lcd_brightness[infoSettings.lcd_brightness]);
-  setDynamicTextValue(KEY_ICON_0, tempstr);
+  setDynamicTextValue(0, tempstr);
 
   sprintf(tempstr, (char *)textSelect(LABEL_PERCENT_VALUE), lcd_brightness[infoSettings.lcd_idle_brightness]);
-  setDynamicTextValue(KEY_ICON_1, tempstr);
+  setDynamicTextValue(1, tempstr);
 
-  brightnessitems[2].valueLabel = lcd_idle_time_names[infoSettings.lcd_idle_time];
-  brightnessitems[3].icon = (infoSettings.block_touch_on_idle == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+  brightnessItems[2].valueLabel = lcd_idle_time_names[infoSettings.lcd_idle_time];
+  brightnessItems[3].icon = (infoSettings.block_touch_on_idle == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
 
-  listViewCreate(title, brightnessitems, COUNT(brightnessitems), NULL, true, NULL, NULL);
+  listViewCreate(title, brightnessItems, COUNT(brightnessItems), NULL, true, NULL, NULL);
 
   while (infoMenu.menu[infoMenu.cur] == menuBrightnessSettings)
   {
@@ -376,31 +514,34 @@ void menuBrightnessSettings(void)
         sprintf(tempstr, (char *)textSelect(LABEL_PERCENT_VALUE), lcd_brightness[infoSettings.lcd_brightness]);
         setDynamicTextValue(curIndex, tempstr);
         LCD_SET_BRIGHTNESS(lcd_brightness[infoSettings.lcd_brightness]);
-        listViewRefreshItem(curIndex);
+//        listViewRefreshItem(curIndex);
         break;
 
       case 1:
         infoSettings.lcd_idle_brightness = (infoSettings.lcd_idle_brightness + 1) % LCD_BRIGHTNESS_COUNT;
         sprintf(tempstr, (char *)textSelect(LABEL_PERCENT_VALUE), lcd_brightness[infoSettings.lcd_idle_brightness]);
         setDynamicTextValue(curIndex, tempstr);
-        listViewRefreshItem(curIndex);
+//        listViewRefreshItem(curIndex);
         break;
 
       case 2:
         infoSettings.lcd_idle_time = (infoSettings.lcd_idle_time + 1) % LCD_IDLE_TIME_COUNT;
-        brightnessitems[curIndex].valueLabel = lcd_idle_time_names[infoSettings.lcd_idle_time];
-        listViewRefreshItem(curIndex);
+        brightnessItems[curIndex].valueLabel = lcd_idle_time_names[infoSettings.lcd_idle_time];
+//        listViewRefreshItem(curIndex);
         break;
 
       case 3:
         infoSettings.block_touch_on_idle = (infoSettings.block_touch_on_idle + 1) % 2;
-        brightnessitems[curIndex].icon = (infoSettings.block_touch_on_idle == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
-        listViewRefreshItem(curIndex);
+        brightnessItems[curIndex].icon = (infoSettings.block_touch_on_idle == 1) ? CHARICON_TOGGLE_ON : CHARICON_TOGGLE_OFF;
+//        listViewRefreshItem(curIndex);
         break;
 
       default:
         break;
     }
+
+    if (curIndex < sizeof(brightnessItems))
+      listViewRefreshItem(curIndex);
 
     loopProcess();
   }
@@ -476,6 +617,10 @@ void menuScreenSettings(void)
         else
           popupReminder(DIALOG_TYPE_ALERT, (uint8_t *)"Language not available",
                         (uint8_t *)"To change Language first flash a Language pack ini file.");
+        break;
+
+      case KEY_ICON_3:
+        infoMenu.menu[++infoMenu.cur] = menuUISettings;
         break;
 
       #ifdef LCD_LED_PWM_CHANNEL

@@ -10,31 +10,14 @@ extern "C" {
 #include "variants.h"
 #include "coordinate.h"
 
-enum
-{
-  font_sign,
-  config_sign,
-  lang_sign,
-  icon_sign,
-  sign_count
-};
-
-typedef enum
-{
-  FEEDRATE_XY = 0,
-  FEEDRATE_Z,
-  FEEDRATE_E,
-  FEEDRATE_COUNT,
-} FEEDRATE_INDEX;
-
 // Config version support
 // change if new elements/keywords are added/removed/changed in the configuration.h Format YYYYMMDD
 // this number should match CONFIG_VERSION in configuration.h
-#define CONFIG_SUPPPORT 20210730
+#define CONFIG_SUPPPORT 20210803
 
 #define FONT_FLASH_SIGN       20210522  // (YYYYMMDD) change if fonts require updating
-#define CONFIG_FLASH_SIGN     20210730  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
-#define LANGUAGE_FLASH_SIGN   20210730  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
+#define CONFIG_FLASH_SIGN     20210803  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
+#define LANGUAGE_FLASH_SIGN   20210803  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
 #define ICON_FLASH_SIGN       20210711  // (YYYYMMDD) change if any icon(s) is added or removed
 
 #define FONT_CHECK_SIGN       (FONT_FLASH_SIGN + WORD_UNICODE + FLASH_SIGN_ADDR)
@@ -44,7 +27,6 @@ typedef enum
 #define LANGUAGE_CHECK_SIGN   (LANGUAGE_FLASH_SIGN + LANGUAGE_ADDR + LABEL_NUM)
 #define ICON_CHECK_SIGN       (ICON_FLASH_SIGN + ICON_ADDR(0) + ICON_PREVIEW)
 
-#define MAX_MODE_COUNT        4
 #define MAX_EXT_COUNT         6
 #define MAX_HOTEND_COUNT      6
 #define MAX_HEATER_COUNT      (2 + MAX_HOTEND_COUNT)  // chamber + bed + hotend
@@ -71,11 +53,23 @@ typedef enum
 #define HIGH      1
 #define LOW       0
 
+enum
+{
+  font_sign,
+  config_sign,
+  lang_sign,
+  icon_sign,
+  sign_count
+};
+
 typedef enum
 {
   MODE_MARLIN = 0,
   MODE_SERIAL_TSC,
-  MODE_COUNT
+  MODE_COUNT,
+  MODE_MARLIN_BLOCKED = MODE_COUNT,
+  MODE_SERIAL_TSC_BOCKED,
+  MAX_MODE_COUNT
 } LCD_MODE;
 
 typedef enum
@@ -85,14 +79,42 @@ typedef enum
   MODE_TYPE_COUNT
 } MARLIN_MODE_TYPE;
 
+enum
+{
+  SORT_DATE_NEW_FIRST = 0,
+  SORT_DATE_OLD_FIRST,
+  SORT_NAME_ASCENDING,
+  SORT_NAME_DESCENDING,
+  SORT_BY_COUNT
+};
+
+typedef enum
+{
+  PERCENTAGE_ELAPSED = 0,
+  PERCENTAGE_REMAINING,
+  ELAPSED_REMAINING,
+} PROGRESS_DISPLAY;
+
+typedef enum
+{
+  FEEDRATE_XY = 0,
+  FEEDRATE_Z,
+  FEEDRATE_E,
+  FEEDRATE_COUNT,
+} FEEDRATE_INDEX;
+
 typedef struct
 {
   // General Settings
-  uint8_t  status_screen;
-  uint8_t  baudrate;
   uint8_t  multi_serial;
-  uint8_t  language;
+  uint8_t  baudrate;
+  uint8_t  invert_axis[AXIS_NUM];
+  uint8_t  leveling_invert_y_axis;
+  uint8_t  emulate_m600;
 
+  // UI Settings
+  uint8_t  language;
+  uint8_t  status_screen;
   uint16_t title_bg_color;
   uint16_t bg_color;
   uint16_t font_color;
@@ -106,16 +128,13 @@ typedef struct
   uint8_t  terminal_color_scheme;
 
   uint8_t  rotate_ui;
-  uint8_t  terminalACK;
-  uint8_t  invert_axis[AXIS_NUM];
-  uint8_t  leveling_invert_y_axis;
-  uint8_t  persistent_info;
-  uint8_t  fan_percentage;
-  uint8_t  file_listmode;
-  uint8_t  files_sort_by;
   uint8_t  ack_notification;
+  uint8_t  files_sort_by;
+  uint8_t  file_listmode;
+  uint8_t  fan_percentage;
+  uint8_t  persistent_info;
+  uint8_t  terminalACK;
   uint8_t  notification_m117;
-  uint8_t  emulate_m600;
   uint8_t  prog_disp_type;
 
   // Marlin Mode Settings (only for TFT24 V1.1 & TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
@@ -276,13 +295,6 @@ typedef struct
   uint8_t buildPercent;
   uint8_t softwareEndstops;
 } MACHINESETTINGS;
-
-typedef enum
-{
-  PERCENTAGE_ELAPSED = 0,
-  PERCENTAGE_REMAINING,
-  ELAPSED_REMAINING,
-} PROGRESS_DISPLAY;
 
 extern SETTINGS infoSettings;
 extern MACHINESETTINGS infoMachineSettings;

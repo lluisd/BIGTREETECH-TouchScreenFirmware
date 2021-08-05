@@ -21,11 +21,13 @@ const uint8_t default_custom_enabled[] = CUSTOM_GCODE_ENABLED;
 void infoSettingsReset(void)
 {
 // General Settings
-  infoSettings.status_screen          = ENABLE_STATUS_SCREEN;
+  infoSettings.multi_serial           = MULTI_SERIAL;
   infoSettings.baudrate               = BAUDRATE;
-  infoSettings.multi_serial           = 0;
-  infoSettings.language               = LANG_DEFAULT;
+  infoSettings.emulate_m600           = EMULATE_M600;
 
+// UI Settings
+  infoSettings.language               = LANG_DEFAULT;
+  infoSettings.status_screen          = ENABLE_STATUS_SCREEN;
   infoSettings.title_bg_color         = lcd_colors[TITLE_BACKGROUND_COLOR];
   infoSettings.bg_color               = lcd_colors[BACKGROUND_COLOR];
   infoSettings.font_color             = lcd_colors[FONT_COLOR];
@@ -39,14 +41,13 @@ void infoSettingsReset(void)
   infoSettings.terminal_color_scheme  = TERMINAL_COLOR_SCHEME;
 
   infoSettings.rotate_ui              = DISABLED;
-  infoSettings.terminalACK            = DISABLED;
-  infoSettings.persistent_info        = ENABLED;
-  infoSettings.fan_percentage         = SHOW_FAN_PERCENTAGE;
-  infoSettings.file_listmode          = ENABLED;
-  infoSettings.files_sort_by          = SORT_DATE_NEW_FIRST;
   infoSettings.ack_notification       = ACK_NOTIFICATION_STYLE;
-  infoSettings.notification_m117      = DISABLED;
-  infoSettings.emulate_m600           = EMULATE_M600;
+  infoSettings.files_sort_by          = SORT_DATE_NEW_FIRST;
+  infoSettings.file_listmode          = ENABLED;
+  infoSettings.fan_percentage         = SHOW_FAN_PERCENTAGE;
+  infoSettings.persistent_info        = ENABLED;
+  infoSettings.terminalACK            = DISABLED;
+  infoSettings.notification_m117      = NOTIFICATION_M117;
   infoSettings.prog_disp_type         = ELAPSED_REMAINING;
 
 // Marlin Mode Settings (only for TFT24 V1.1 & TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
