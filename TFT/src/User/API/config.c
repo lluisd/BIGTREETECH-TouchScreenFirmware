@@ -552,6 +552,14 @@ void parseConfigKey(uint16_t index)
 
     //----------------------------UI Settings
 
+    case C_INDEX_ROTATE_UI:
+      if (infoSettings.rotate_ui != getOnOff())
+      {
+        scheduleRotate = true;
+        infoSettings.rotate_ui = getOnOff();
+      }
+      break;
+
     case C_INDEX_LANGUAGE:
       SET_VALID_INT_VALUE(infoSettings.language, 0, LANGUAGE_NUM - 1);
       break;
@@ -602,14 +610,6 @@ void parseConfigKey(uint16_t index)
 
     case C_INDEX_TERMINAL_COLOR_SCHEME:
       SET_VALID_INT_VALUE(infoSettings.terminal_color_scheme, 0, 2);
-      break;
-
-    case C_INDEX_ROTATE_UI:
-      if (infoSettings.rotate_ui != getOnOff())
-      {
-        scheduleRotate = true;
-        infoSettings.rotate_ui = getOnOff();
-      }
       break;
 
     case C_INDEX_ACK_NOTIFICATION:

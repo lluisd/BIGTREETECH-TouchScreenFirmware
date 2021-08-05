@@ -21,6 +21,7 @@ extern "C" {
 #define CONFIG_EMULATE_M600           "emulate_m600:"
 
 //-----------------------------UI Settings
+#define CONFIG_ROTATE_UI              "rotate_ui:"
 #define CONFIG_LANGUAGE               "language:"
 #define CONFIG_STATUS_SCREEN          "status_screen:"
 #define CONFIG_TITLE_BG               "title_back_color:"
@@ -35,7 +36,6 @@ extern "C" {
 #define CONFIG_MESH_MAX_COLOR         "mesh_max_color:"
 #define CONFIG_TERMINAL_COLOR_SCHEME  "terminal_color_scheme:"
 
-#define CONFIG_ROTATE_UI              "rotate_ui:"
 #define CONFIG_ACK_NOTIFICATION       "ack_notification:"
 #define CONFIG_FILES_SORT_BY          "files_sort_by:"
 #define CONFIG_LIST_MODE              "files_list_mode:"

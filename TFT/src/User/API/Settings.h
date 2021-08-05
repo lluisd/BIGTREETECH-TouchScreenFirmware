@@ -66,10 +66,10 @@ typedef enum
 {
   MODE_MARLIN = 0,
   MODE_SERIAL_TSC,
-  MODE_COUNT,
-  MODE_MARLIN_BLOCKED = MODE_COUNT,
-  MODE_SERIAL_TSC_BOCKED,
-  MAX_MODE_COUNT
+  MODE_COUNT,               // number of different modes
+  MODE_MARLIN_BLOCKED,
+  MODE_SERIAL_TSC_BLOCKED,
+  MAX_MODE_COUNT            // total number of modes
 } LCD_MODE;
 
 typedef enum
@@ -113,6 +113,7 @@ typedef struct
   uint8_t  emulate_m600;
 
   // UI Settings
+  uint8_t  rotate_ui;
   uint8_t  language;
   uint8_t  status_screen;
   uint16_t title_bg_color;
@@ -127,7 +128,6 @@ typedef struct
   uint16_t mesh_max_color;
   uint8_t  terminal_color_scheme;
 
-  uint8_t  rotate_ui;
   uint8_t  ack_notification;
   uint8_t  files_sort_by;
   uint8_t  file_listmode;

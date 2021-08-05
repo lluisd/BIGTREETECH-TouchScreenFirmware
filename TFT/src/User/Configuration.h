@@ -1,5 +1,6 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
+
 #define CONFIG_VERSION 20210803
 
 //====================================================================================================
@@ -123,7 +124,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define NOTIFICATION_M117 0
+#define NOTIFICATION_M117 0  // Default: 0
 
 //================================================================================
 //============================= Marlin Mode Settings =============================
@@ -139,7 +140,7 @@
  *
  *   Options: [Marlin Mode: 0, Touch Mode: 1, Blocked Marlin Mode: 2, Blocked Touch Mode: 3]
  */
-#define DEFAULT_LCD_MODE MODE_SERIAL_TSC  // Default: MODE_SERIAL_TSC
+#define DEFAULT_LCD_MODE 1  // Default: 1
 
 /**
  * Serial Always ON
@@ -627,21 +628,21 @@
  * If not enabled, you can set the desired starting Z height
  * in Marlin fw (MANUAL_PROBE_START_Z in Configuration.h).
  */
-#define ENABLE_MBL_START_Z
+#define ENABLE_MBL_START_Z  // Default: uncommented (enabled)
 
 /**
  * M601: Pause Print
  * PrusaSlicer can add M601 on certain height.
  * Acts here like manual pause.
  */
-#define NOZZLE_PAUSE_M601
+#define NOZZLE_PAUSE_M601  // Default: uncommented (enabled)
 
 /**
  * M701, M702: Marlin Filament Load / Unload Gcodes Support
  * FILAMENT_LOAD_UNLOAD_GCODES option on Marlin configuration_adv.h need to be uncommented.
  * Adds a submenu to the movement menu for selecting load and unload actions.
  */
-#define LOAD_UNLOAD_M701_M702
+#define LOAD_UNLOAD_M701_M702  // Default: uncommented (enabled)
 
 /**
  * Delta Probe Type
@@ -678,7 +679,7 @@
  *
  * NOTE: This may slow down graphics while switching menus while printing.
 */
-#define RAPID_SERIAL_COMM
+#define RAPID_SERIAL_COMM  // Default: uncommented (enabled)
 
 /**
  * LCD/Touch Encoder
@@ -708,10 +709,10 @@
 #define BUZZER_STOP_LEVEL LOW  // Default: LOW
 
 // Show bootscreen when starting up
-#define SHOW_BTT_BOOTSCREEN
+#define SHOW_BTT_BOOTSCREEN  // Default: uncommented (enabled)
 
 // Bootscreen logo time in ms
-#define BTT_BOOTSCREEN_TIME 3000
+#define BTT_BOOTSCREEN_TIME 3000  // Default: 3000
 
 /**
  * Smart Home
@@ -719,20 +720,20 @@
  * It doesn't interfere with the "Screenshot" and "Marlin/Touch Mode" other than if
  * enabled, long press "Back" will not trigger "Screenshot" or "Marlin/Touch Mode"
  */
-#define SMART_HOME
+#define SMART_HOME  // Default: uncommented (enabled)
 
 /**
  * Alternative Move Menu Layout
  * Enable alternative Move Menu Buttons Layout matching the direction
  * of actual printer axis Update the icons from alternate icon folder.
  */
-//#define ALTERNATIVE_MOVE_MENU
+//#define ALTERNATIVE_MOVE_MENU  // Default: uncommented (enabled)
 
 /**
  * Friendly Z Offset Language
  * Replace decrease/increase and "-" & "+" icons with down/up and friendly icons.
  */
-#define FRIENDLY_Z_OFFSET_LANGUAGE
+#define FRIENDLY_Z_OFFSET_LANGUAGE  // Default: uncommented (enabled)
 
 /**
  * Quick EEPROM Menu
@@ -740,7 +741,7 @@
  *
  * NOTE: If disabled, EEPROM operations can also be accessed in the (settings > machine > parameters) menu.
  */
-#define QUICK_EEPROM_BUTTON
+#define QUICK_EEPROM_BUTTON  // Default: uncommented (enabled)
 
 /**
  * Toast Notification Duration (in MilliSeconds)
@@ -753,7 +754,7 @@
  * By default the keyboard is drawn on right side of the screen.
  * Enable KEYBOARD_ON_LEFT to draw the keyboard on left side of the screen.
  */
-//#define KEYBOARD_ON_LEFT
+//#define KEYBOARD_ON_LEFT  // Default: commented (disabled)
 
 //
 // Terminal Keyboard / Numpad Settings
@@ -763,7 +764,7 @@
  * Terminal Keyboard / Numpad Theme
  * Uncomment to enable Material theme for keyboard and Numpad.
  */
-//#define KEYBOARD_MATERIAL_THEME  // Default: commented (disabled)
+//#define KEYBOARD_MATERIAL_THEME  // Default: uncommented (enabled)
 
 /**
  * Terminal Keyboard / Numpad Color Layout
