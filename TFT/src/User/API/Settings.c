@@ -26,6 +26,7 @@ void infoSettingsReset(void)
   infoSettings.emulate_m600           = EMULATE_M600;
 
 // UI Settings
+  infoSettings.rotate_ui              = DISABLED;
   infoSettings.language               = LANG_DEFAULT;
   infoSettings.status_screen          = ENABLE_STATUS_SCREEN;
   infoSettings.title_bg_color         = lcd_colors[TITLE_BACKGROUND_COLOR];
@@ -40,7 +41,6 @@ void infoSettingsReset(void)
   infoSettings.mesh_max_color         = lcd_colors[MESH_MAX_COLOR];
   infoSettings.terminal_color_scheme  = TERMINAL_COLOR_SCHEME;
 
-  infoSettings.rotate_ui              = DISABLED;
   infoSettings.ack_notification       = ACK_NOTIFICATION_STYLE;
   infoSettings.files_sort_by          = SORT_DATE_NEW_FIRST;
   infoSettings.file_listmode          = ENABLED;
