@@ -1,7 +1,7 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
 
-#define CONFIG_VERSION 20210803
+#define CONFIG_VERSION 20210807
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -214,6 +214,7 @@
 #define HEAT_MAX_TEMP   {275,       275,       275,       275,       275,       275,       150,    60}
 #define HEAT_SIGN_ID    {"T0:",     "T1:",     "T2:",     "T3:",     "T4:",     "T5:",     "B:",   "C:"}
 #define HEAT_DISPLAY_ID {"T0",      "T1",      "T2",      "T3",      "T4",      "T5",      "Bed",  "Chamber"}
+#define HEAT_SHORT_ID   {"T0",      "T1",      "T2",      "T3",      "T4",      "T5",      "Bed",  "Ch."}
 #define HEAT_CMD        {"M104 T0", "M104 T1", "M104 T2", "M104 T3", "M104 T4", "M104 T5", "M140", "M141"}
 #define HEAT_WAIT_CMD   {"M109 T0", "M109 T1", "M109 T2", "M109 T3", "M109 T4", "M109 T5", "M190", "M191"}
 
@@ -320,14 +321,6 @@
 #define AUTO_SAVE_LOAD_BL_VALUE 1  // Default: 1
 
 /**
- * TouchMI settings (ABL)
- * Enable this option for displaying TouchMI sensor settings in ABL menu (Init, Z Offset, Save, Test).
- *
- *   Options: [disable: 0, enable: 1]
- */
-#define TOUCHMI_SENSOR_VALUE 0  // Default: 0
-
-/**
  * Onboard / Printer SD
  * Starting from Marlin Bugfix 2.0.x Distribution Date: 2020-04-27 & above, the TFT will auto detect
  * On-Board SD Card and auto-configure M27 AutoReport with M115 command.
@@ -345,7 +338,15 @@
  * NOTE: It MUST BE a value >= 0 (e.g. 20) for a Cartesian printer to avoid crashing into the bed.
  *       It MUST BE a value <= 0 (e.g. -50) for a Delta printer to avoid crashing into the top of the tower.
  */
-#define PROBING_Z_RAISE 20.0f
+#define Z_RAISE_PROBING 20.0f
+
+/**
+ * TouchMI settings (ABL)
+ * Enable this option for displaying TouchMI sensor settings in ABL menu (Init, Z Offset, Save, Test).
+ *
+ *   Options: [disable: 0, enable: 1]
+ */
+#define TOUCHMI_SENSOR_VALUE 0  // Default: 0
 
 //================================================================================
 //============================ Power Supply Settings =============================

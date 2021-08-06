@@ -13,11 +13,11 @@ extern "C" {
 // Config version support
 // change if new elements/keywords are added/removed/changed in the configuration.h Format YYYYMMDD
 // this number should match CONFIG_VERSION in configuration.h
-#define CONFIG_SUPPPORT 20210803
+#define CONFIG_SUPPPORT 20210807
 
 #define FONT_FLASH_SIGN       20210522  // (YYYYMMDD) change if fonts require updating
-#define CONFIG_FLASH_SIGN     20210803  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
-#define LANGUAGE_FLASH_SIGN   20210803  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
+#define CONFIG_FLASH_SIGN     20210807  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
+#define LANGUAGE_FLASH_SIGN   20210807  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
 #define ICON_FLASH_SIGN       20210711  // (YYYYMMDD) change if any icon(s) is added or removed
 
 #define FONT_CHECK_SIGN       (FONT_FLASH_SIGN + WORD_UNICODE + FLASH_SIGN_ADDR)
@@ -67,8 +67,8 @@ typedef enum
   MODE_MARLIN = 0,
   MODE_SERIAL_TSC,
   MODE_COUNT,               // number of different modes
-  MODE_MARLIN_BLOCKED,
-  MODE_SERIAL_TSC_BLOCKED,
+  MODE_BLOCKED_MARLIN = 2,
+  MODE_BLOCKED_SERIAL_TSC,
   MAX_MODE_COUNT            // total number of modes
 } LCD_MODE;
 
@@ -108,8 +108,6 @@ typedef struct
   // General Settings
   uint8_t  multi_serial;
   uint8_t  baudrate;
-  uint8_t  invert_axis[AXIS_NUM];
-  uint8_t  leveling_invert_y_axis;
   uint8_t  emulate_m600;
 
   // UI Settings
@@ -165,27 +163,28 @@ typedef struct
   uint16_t z_speed[SPEED_COUNT];
   uint16_t ext_speed[SPEED_COUNT];
   uint8_t  auto_load_leveling;
-  uint8_t  touchmi_sensor;
   uint8_t  onboardSD;
   uint8_t  m27_refresh_time;
   uint8_t  m27_active;
   uint8_t  longFileName;
   float    pause_retract_len;
   float    resume_purge_len;
-  float    pause_pos[AXIS_NUM-1];  // X, Y
+  float    pause_pos[AXIS_NUM - 1];  // X, Y
   float    pause_z_raise;
   uint16_t pause_feedrate[FEEDRATE_COUNT];  // XY, Z, E
   uint8_t  level_edge;
   float    level_z_pos;
   float    level_z_raise;
+  uint16_t level_feedrate[FEEDRATE_COUNT - 1];  // XY, Z
 
   uint8_t  move_speed;  // index on infoSettings.axis_speed, infoSettings.ext_speed
 
+  uint8_t  invert_axis[AXIS_NUM];
+  uint8_t  leveling_invert_y_axis;
   uint8_t  xy_offset_probing;
   float    z_raise_probing;
   uint8_t  z_steppers_alignment;
-
-  uint16_t level_feedrate[FEEDRATE_COUNT - 1];  // XY, Z
+  uint8_t  touchmi_sensor;
 
   // Power Supply Settings (only if connected to TFT controller)
   uint8_t  auto_off;
@@ -250,18 +249,6 @@ typedef struct
 } PRINT_GCODES;
 
 /**
- * Bed Leveling type
- */
-typedef enum
-{
-  BL_DISABLED = DISABLED,  // Bed Leveling Diabled
-  BL_ABL,                  // Auto Bed Leveling (ABL)
-  BL_BBL,                  // Bilinear Bed Leveling (BBL)
-  BL_UBL,                  // Unified Bed Leveling (UBL)
-  BL_MBL,                  // Mesh Bed Leveling (MBL)
-} BL_TYPE;
-
-/**
  * Firmware type
  */
 typedef enum
@@ -273,6 +260,18 @@ typedef enum
   FW_SMOOTHIEWARE,
   FW_UNKNOWN,
 } FW_TYPE;
+
+/**
+ * Bed Leveling type
+ */
+typedef enum
+{
+  BL_DISABLED = DISABLED,  // Bed Leveling Diabled
+  BL_ABL,                  // Auto Bed Leveling (ABL)
+  BL_BBL,                  // Bilinear Bed Leveling (BBL)
+  BL_UBL,                  // Unified Bed Leveling (UBL)
+  BL_MBL,                  // Mesh Bed Leveling (MBL)
+} BL_TYPE;
 
 typedef struct
 {

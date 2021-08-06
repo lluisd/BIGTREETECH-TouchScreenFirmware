@@ -522,7 +522,7 @@ void menuBrightnessSettings(void)
         break;
     }
 
-    if (curIndex < sizeof(brightnessItems))
+    if (curIndex < sizeof(brightnessitems))
       listViewRefreshItem(curIndex);
 
     loopProcess();

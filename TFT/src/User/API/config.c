@@ -539,13 +539,6 @@ void parseConfigKey(uint16_t index)
       SET_VALID_INT_VALUE(infoSettings.baudrate, 0, BAUDRATE_COUNT - 1);
       break;
 
-    case C_INDEX_INVERT_AXIS:
-      if (key_seen("X")) infoSettings.invert_axis[X_AXIS] = getOnOff();
-      if (key_seen("Y")) infoSettings.invert_axis[Y_AXIS] = getOnOff();
-      if (key_seen("Z")) infoSettings.invert_axis[Z_AXIS] = getOnOff();
-      if (key_seen("LY")) infoSettings.leveling_invert_y_axis = getOnOff();
-      break;
-
     case C_INDEX_EMULATE_M600:
       infoSettings.emulate_m600 = getOnOff();
       break;
@@ -780,10 +773,6 @@ void parseConfigKey(uint16_t index)
       infoSettings.auto_load_leveling = getOnOff();
       break;
 
-    case C_INDEX_TOUCHMI_SENSOR:
-      infoSettings.touchmi_sensor = getOnOff();
-      break;
-
     case C_INDEX_ONBOARD_SD:
       SET_VALID_INT_VALUE(infoSettings.onboardSD, 0, 2);
       break;
@@ -837,6 +826,13 @@ void parseConfigKey(uint16_t index)
       if (key_seen("Z")) SET_VALID_INT_VALUE(infoSettings.level_feedrate[FEEDRATE_Z], MIN_SPEED_LIMIT, MAX_SPEED_LIMIT);
       break;
 
+    case C_INDEX_INVERT_AXIS:
+      if (key_seen("X")) infoSettings.invert_axis[X_AXIS] = getOnOff();
+      if (key_seen("Y")) infoSettings.invert_axis[Y_AXIS] = getOnOff();
+      if (key_seen("Z")) infoSettings.invert_axis[Z_AXIS] = getOnOff();
+      if (key_seen("LY")) infoSettings.leveling_invert_y_axis = getOnOff();
+      break;
+
     case C_INDEX_XY_OFFSET_PROBING:
       infoSettings.xy_offset_probing = getOnOff();
       break;
@@ -847,6 +843,10 @@ void parseConfigKey(uint16_t index)
 
     case C_INDEX_Z_STEPPERS_ALIGNMENT:
       infoSettings.z_steppers_alignment = getOnOff();
+      break;
+
+    case C_INDEX_TOUCHMI_SENSOR:
+      infoSettings.touchmi_sensor = getOnOff();
       break;
 
     case C_INDEX_PREHEAT_NAME_1:

@@ -17,7 +17,6 @@ extern "C" {
 //-----------------------------General Settings
 #define CONFIG_MULTI_SERIAL           "multi_serial:"
 #define CONFIG_UART_BAUDRATE          "baudrate:"
-#define CONFIG_INVERT_AXIS            "invert_axis:"
 #define CONFIG_EMULATE_M600           "emulate_m600:"
 
 //-----------------------------UI Settings
@@ -71,7 +70,6 @@ extern "C" {
 #define CONFIG_Z_SPEED                "z_speed:"
 #define CONFIG_EXT_SPEED              "ext_speed:"
 #define CONFIG_AUTO_LEVEL             "auto_load_leveling:"
-#define CONFIG_TOUCHMI_SENSOR         "touchmi_sensor:"
 #define CONFIG_ONBOARD_SD             "onboard_sd_support:"
 #define CONFIG_M27_DELAY              "M27_refresh_time:"
 #define CONFIG_M27_KEEP_ON            "M27_always_active:"
@@ -84,9 +82,11 @@ extern "C" {
 #define CONFIG_LEVEL_Z_POS            "level_z_pos:"
 #define CONFIG_LEVEL_Z_RAISE          "level_z_raise:"
 #define CONFIG_LEVEL_FEEDRATE         "level_feedrate:"
+#define CONFIG_INVERT_AXIS            "invert_axis:"
 #define CONFIG_XY_OFFSET_PROBING      "xy_offset_probing:"
 #define CONFIG_Z_RAISE_PROBING        "z_raise_probing:"
 #define CONFIG_Z_STEPPERS_ALIGNMENT   "z_steppers_alignment:"
+#define CONFIG_TOUCHMI_SENSOR         "touchmi_sensor:"
 #define CONFIG_PREHEAT_NAME_1         "preheat_name1:"
 #define CONFIG_PREHEAT_NAME_2         "preheat_name2:"
 #define CONFIG_PREHEAT_NAME_3         "preheat_name3:"
