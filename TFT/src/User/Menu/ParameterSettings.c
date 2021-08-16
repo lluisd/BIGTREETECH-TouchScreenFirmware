@@ -232,14 +232,13 @@ void loadParameters(LISTITEM * parameterMainItem, uint16_t index, uint8_t itemPo
   }
 }
 
-
 // Main parameter menu
 void menuParameterSettings(void)
 {
   uint8_t enabledParameterCount = getEnabledParameterCount();
   uint8_t totalItems = (infoMachineSettings.EEPROM == 1) ? (enabledParameterCount + P_SETTINGS_COUNT) : enabledParameterCount;
   uint16_t curIndex = KEY_IDLE;
-  LABEL title = {LABEL_PARAMETER_SETTING};
+  LABEL title = {LABEL_PARAMETER_SETTINGS};
 
   listViewCreate(title, NULL, totalItems, &psCurPage, false, NULL, loadParameters);
 

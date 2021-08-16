@@ -20,8 +20,8 @@
 #endif
 
 char serialPortId[_UART_CNT][2] =                  {0};
-const uint32_t baudrateValues[BAUDRATE_COUNT] =    { 2400,   9600,   19200,   38400,   57600,   115200,   250000,   500000,   1000000};
-const char * const baudrateNames[BAUDRATE_COUNT] = {"2400", "9600", "19200", "38400", "57600", "115200", "250000", "500000", "1000000"};
+const uint32_t baudrateValues[BAUDRATE_COUNT] =    { 0,     2400,   9600,   19200,   38400,   57600,   115200,   250000,   500000,   1000000};
+const char * const baudrateNames[BAUDRATE_COUNT] = {"OFF", "2400", "9600", "19200", "38400", "57600", "115200", "250000", "500000", "1000000"};
 bool serialHasBeenInitialized = false;
 
 void Serial_ReSourceInit(void)
@@ -44,14 +44,12 @@ void Serial_ReSourceInit(void)
       // the extra serial ports should be enabled according to config.ini.
       // Disable the serial port when it is not in use and floating to avoid to receive
       // wrong data due to electromagnetic interference (EMI).
-      if (infoSettings.multi_serial & (1 << i))
-        Serial_Config(portInfo.port, portInfo.cacheSize, baudrateValues[infoSettings.baudrate]);
+      if (infoSettings.serial_port[i] >= 0)  // if serial port is enabled
+        Serial_Config(portInfo.port, portInfo.cacheSize, baudrateValues[infoSettings.serial_port[i]]);
 
       sprintf(serialPortId[portInfo.port], "%d", i + 2);  // "2" for SERIAL_PORT_2 etc...
     }
   #endif
-
-  sprintf(serialPortId[SERIAL_PORT], "%d", 1);  // "1" for SERIAL_PORT
 
   serialHasBeenInitialized = true;
 }
@@ -66,7 +64,7 @@ void Serial_ReSourceDeInit(void)
   #ifdef SERIAL_PORT_2
     for (uint8_t i = 0; i < PORT_COUNT; i++)
     {
-      if (infoSettings.multi_serial & (1 << i))
+//      if (infoSettings.serial_port[i] >= 0)  // if serial port is enabled
         Serial_DeConfig(extraSerialPort[i].port);
     }
   #endif

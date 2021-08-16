@@ -10,7 +10,7 @@ extern "C" {
 #include "FlashStore.h"
 #include "Settings.h"
 
-//check size of settings against max allocated size at compile time
+// check size of settings against max allocated size at compile time
 #define SIZE_CHECK(object) ((void)sizeof(char[1 - 2*!!(object)]))
 
 #if CONFIG_VERSION != CONFIG_SUPPPORT

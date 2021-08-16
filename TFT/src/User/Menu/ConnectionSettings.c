@@ -7,10 +7,10 @@ const MENUITEMS connectionSettingsItems = {
   // icon                          label
   {
     {ICON_BAUD_RATE,               LABEL_BAUDRATE},
-    {ICON_DISCONNECT,              LABEL_DISCONNECT},
+    {ICON_BAUD_RATE,               LABEL_SERIAL_PORTS},
     {ICON_STOP,                    LABEL_EMERGENCYSTOP},
     {ICON_SHUT_DOWN,               LABEL_SHUT_DOWN},
-    {ICON_BACKGROUND,              LABEL_BACKGROUND},
+    {ICON_DISCONNECT,              LABEL_DISCONNECT},
     {ICON_BACKGROUND,              LABEL_BACKGROUND},
     {ICON_BACKGROUND,              LABEL_BACKGROUND},
     {ICON_BACK,                    LABEL_BACK},
@@ -96,6 +96,49 @@ void menuBaudrate(void)
   }
 }
 
+void menuSerialPort(void)
+{
+  LABEL title = {LABEL_SERIAL_PORTS};
+  LISTITEM portItems[PORT_COUNT] = {0};
+  KEY_VALUES curIndex = KEY_IDLE;
+  SETTINGS now = infoSettings;
+
+  for (uint8_t i = 0; i < PORT_COUNT; i++)
+  {
+    portItems[i].icon = CHARICON_EDIT;
+    portItems[i].itemType = LIST_CUSTOMVALUE;
+    portItems[i].titlelabel.address = (uint8_t *) serialPortId[extraSerialPort[i].port];
+    portItems[i].valueLabel.index = LABEL_DYNAMIC;
+    setDynamicTextValue(i, (char *) baudrateNames[infoSettings.serial_port[i]]);
+  }
+
+  listViewCreate(title, portItems, PORT_COUNT, NULL, true, NULL, NULL);
+
+  while (infoMenu.menu[infoMenu.cur] == menuSerialPort)
+  {
+    curIndex = listViewGetSelectedIndex();
+
+    switch (curIndex)
+    {
+      case 0:
+      case 1:
+      case 2:
+        infoMenu.menu[++infoMenu.cur] = menuBaudrate;
+        break;
+
+      default:
+        break;
+    }
+
+    loopProcess();
+  }
+
+  if (memcmp(&now, &infoSettings, sizeof(SETTINGS)))
+  {
+    storePara();
+  }
+}
+
 void menuConnectionSettings(void)
 {
   KEY_VALUES curIndex = KEY_IDLE;
@@ -112,7 +155,7 @@ void menuConnectionSettings(void)
         break;
 
       case KEY_ICON_1:
-        infoMenu.menu[++infoMenu.cur] = menuDisconnect;
+        infoMenu.menu[++infoMenu.cur] = menuSerialPort;
         break;
 
       case KEY_ICON_2:
@@ -124,6 +167,10 @@ void menuConnectionSettings(void)
 
       case KEY_ICON_3:
         storeCmd("M81\n");
+        break;
+
+      case KEY_ICON_4:
+        infoMenu.menu[++infoMenu.cur] = menuDisconnect;
         break;
 
       case KEY_ICON_7:

@@ -10,7 +10,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#define BAUDRATE_COUNT 9
+#define BAUDRATE_COUNT 10
 
 #ifdef SERIAL_PORT_2
   typedef enum

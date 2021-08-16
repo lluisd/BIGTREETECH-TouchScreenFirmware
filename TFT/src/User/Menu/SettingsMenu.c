@@ -84,13 +84,8 @@ void menuInfo(void)
 {
   char buf[128];
 
-#if !defined(HARDWARE_TEXT) || !defined(FIRMWARE_TEXT)
-  const char *const hardware = "BIGTREETECH_" HARDWARE_VERSION;
-  const char *const firmware = HARDWARE_VERSION"." STRINGIFY(SOFTWARE_VERSION) " " __DATE__;
-#else
-  const char *const hardware = STRINGIFY(HARDWARE_TEXT);
-  const char *const firmware = STRINGIFY(FIRMWARE_TEXT)"." STRINGIFY(SOFTWARE_VERSION) " " __DATE__;
-#endif
+  const char *const hardware = HARDWARE_MANUFACTURER HARDWARE_VERSION;
+  const char *const firmware = SOFTWARE_MANUFACTURER STRINGIFY(SOFTWARE_VERSION) " " __DATE__;
 
   GUI_Clear(infoSettings.bg_color);
   GUI_SetColor(GRAY);
