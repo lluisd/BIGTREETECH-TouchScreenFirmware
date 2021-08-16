@@ -8,7 +8,7 @@
   #define SERIAL_PORT_3_QUEUE_SIZE 512
   #define SERIAL_PORT_4_QUEUE_SIZE 512
 
-  SERIAL_PORT_INFO extraSerialPort[PORT_COUNT] = {
+  SERIAL_PORT_INFO serialPort[PORT_COUNT] = {
     {SERIAL_PORT_2, SERIAL_PORT_2_QUEUE_SIZE, false},
     #ifdef SERIAL_PORT_3
       {SERIAL_PORT_3, SERIAL_PORT_3_QUEUE_SIZE, false},
@@ -39,11 +39,11 @@ void Serial_ReSourceInit(void)
 
     for (uint8_t i = 0; i < PORT_COUNT; i++)
     {
-      portInfo = extraSerialPort[i];
+      portInfo = serialPort[i];
 
-      // the extra serial ports should be enabled according to config.ini.
+      // the supplementary serial ports should be enabled according to config.ini.
       // Disable the serial port when it is not in use and floating to avoid to receive
-      // wrong data due to electromagnetic interference (EMI).
+      // and process wrong data due to possible electromagnetic interference (EMI).
       if (infoSettings.serial_port[i] >= 0)  // if serial port is enabled
         Serial_Config(portInfo.port, portInfo.cacheSize, baudrateValues[infoSettings.serial_port[i]]);
 
@@ -65,7 +65,7 @@ void Serial_ReSourceDeInit(void)
     for (uint8_t i = 0; i < PORT_COUNT; i++)
     {
 //      if (infoSettings.serial_port[i] >= 0)  // if serial port is enabled
-        Serial_DeConfig(extraSerialPort[i].port);
+        Serial_DeConfig(serialPort[i].port);
     }
   #endif
 

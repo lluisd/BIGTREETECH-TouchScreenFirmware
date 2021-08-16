@@ -137,10 +137,10 @@ void loadElements(LISTITEM * parameterMainItem, uint16_t index, uint8_t itemPos)
 // Show menu for selected parameter type
 void menuShowParameter(void)
 {
-  uint16_t curIndex = KEY_IDLE;
-  PARAMETERS now = infoParameters;
   uint8_t enabledElementCount = getEnabledElementCount(curParameter);
   float oldval[enabledElementCount];
+  uint16_t curIndex = KEY_IDLE;
+  PARAMETERS now = infoParameters;
 
   for (uint8_t i = 0; i < enabledElementCount; i++)
   {

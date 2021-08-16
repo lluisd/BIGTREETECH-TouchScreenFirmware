@@ -16,7 +16,6 @@ extern "C" {
 
 //-----------------------------General Settings
 #define CONFIG_UART_BAUDRATE          "baudrate:"
-#define CONFIG_MULTI_SERIAL           "multi_serial:"
 #define CONFIG_SERIAL_PORT            "serial_port:"
 #define CONFIG_EMULATE_M600           "emulate_m600:"
 

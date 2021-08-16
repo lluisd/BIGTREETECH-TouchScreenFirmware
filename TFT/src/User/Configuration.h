@@ -12,34 +12,16 @@
 //================================================================================
 
 /**
- * Enable Multi-Serial Ports
- * Serial ports connected to devices such as ESP3D, OctoPrint, other TFTs etc.
- * Disable the serial port when it is not in use and floating to avoid to receive
- * and process wrong data due to electromagnetic interference (EMI).
- *
- *   Options: [0: Disable all multi-serials,
- *             1: Enable SERIAL_PORT_2 alone,
- *             2: Enable SERIAL_PORT_3 alone,
- *             4: Enable SERIAL_PORT_4 alone,
- *             3: = 1 + 2: Enable SERIAL_PORT_2 + SERIAL_PORT_3,
- *             5: = 1 + 4: Enable SERIAL_PORT_2 + SERIAL_PORT_4,
- *             6: = 2 + 4: Enable SERIAL_PORT_3 + SERIAL_PORT_4,
- *             7: = 1 + 2 + 4: Enable SERIAL_PORT_2 + SERIAL_PORT_3 + SERIAL_PORT_4]
- */
-#define MULTI_SERIAL 0
-
-/**
- * Baudrate / Connection Speed
- * This baudrate setting is used for serial connection to the printer and other serial
- * hosts like ESP8266.
+ * Baudrate / Primary Serial Port
+ * Baudrate for the primary serial connection to the printer.
  *
  * NOTE: 250000 works in most cases, but you might try a lower speed if you commonly
  *       experience drop-outs during host printing.
  *       You may try up to 1000000 to speed up SD file transfer.
  *
- *   Options: [2400: 0, 9600: 1, 19200: 2, 38400: 3, 57600: 4, 115200: 5, 250000: 6, 500000: 7, 1000000: 8]
+ *   Options: [2400: 1, 9600: 2, 19200: 3, 38400: 4, 57600: 5, 115200: 6, 250000: 7, 500000: 8, 1000000: 9]
  */
-#define BAUDRATE 5  // Default: 5
+#define BAUDRATE 6  // Default: 6
 
 /**
  * Emulate M600

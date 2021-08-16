@@ -17,6 +17,9 @@ const MENUITEMS connectionSettingsItems = {
   }
 };
 
+uint8_t * baudratePtr = NULL;
+uint8_t baudrateMinIndex = 0;
+
 // Set uart pins to input, free uart
 void menuDisconnect(void)
 {
@@ -45,43 +48,46 @@ void menuDisconnect(void)
 void menuBaudrate(void)
 {
   LABEL title = {LABEL_BAUDRATE};
-  LISTITEM totalItems[BAUDRATE_COUNT];
+  uint8_t size = BAUDRATE_COUNT - baudrateMinIndex;
+  LISTITEM totalItems[size];
   KEY_VALUES curIndex = KEY_IDLE;
+  uint8_t curItem = 0;
+  uint16_t curPage;
   SETTINGS now = infoSettings;
-  uint8_t cur_item = 0;
 
   // fill baudrate items
-  for (uint8_t i = 0; i < COUNT(totalItems); i++)
+  for (uint8_t i = 0; i < size; i++)
   {
-    if (infoSettings.baudrate == i)
+    if (*baudratePtr == i + baudrateMinIndex)
     {
       totalItems[i].icon = CHARICON_CHECKED;
-      cur_item = i;
+      curItem = i;
     }
     else
     {
       totalItems[i].icon = CHARICON_UNCHECKED;
     }
     totalItems[i].itemType = LIST_LABEL;
-    totalItems[i].titlelabel.address = (uint8_t *) baudrateNames[i];
+    totalItems[i].titlelabel.address = (uint8_t *) baudrateNames[i + baudrateMinIndex];
   }
-  uint16_t curPage = cur_item / LISTITEM_PER_PAGE;
 
-  listViewCreate(title, totalItems, COUNT(totalItems), &curPage, true, NULL, NULL);
+  curPage = curItem / LISTITEM_PER_PAGE;
+
+  listViewCreate(title, totalItems, size, &curPage, true, NULL, NULL);
 
   while (infoMenu.menu[infoMenu.cur] == menuBaudrate)
   {
     curIndex = listViewGetSelectedIndex();
 
-    if (curIndex < COUNT(totalItems) && curIndex != cur_item)
+    if (curIndex < size && curIndex != curItem)
     {  // has changed
-      totalItems[cur_item].icon = CHARICON_UNCHECKED;
-      listViewRefreshItem(cur_item);  // refresh unchecked status
-      cur_item = curIndex;
-      totalItems[cur_item].icon = CHARICON_CHECKED;
-      listViewRefreshItem(cur_item);  // refresh checked status
+      totalItems[curItem].icon = CHARICON_UNCHECKED;
+      listViewRefreshItem(curItem);  // refresh unchecked status
+      curItem = curIndex;
+      totalItems[curItem].icon = CHARICON_CHECKED;
+      listViewRefreshItem(curItem);  // refresh checked status
 
-      infoSettings.baudrate = cur_item;
+      *baudratePtr = curItem + baudrateMinIndex;
       Serial_ReSourceDeInit();  // Serial_Init() will malloc a dynamic memory, so Serial_DeInit() first to free, then malloc again.
       Serial_ReSourceInit();
       reminderMessage(LABEL_UNCONNECTED, STATUS_UNCONNECT);
@@ -99,43 +105,54 @@ void menuBaudrate(void)
 void menuSerialPort(void)
 {
   LABEL title = {LABEL_SERIAL_PORTS};
-  LISTITEM portItems[PORT_COUNT] = {0};
+  LISTITEM totalItems[PORT_COUNT];
   KEY_VALUES curIndex = KEY_IDLE;
-  SETTINGS now = infoSettings;
 
   for (uint8_t i = 0; i < PORT_COUNT; i++)
   {
-    portItems[i].icon = CHARICON_EDIT;
-    portItems[i].itemType = LIST_CUSTOMVALUE;
-    portItems[i].titlelabel.address = (uint8_t *) serialPortId[extraSerialPort[i].port];
-    portItems[i].valueLabel.index = LABEL_DYNAMIC;
+    totalItems[i].icon = CHARICON_EDIT;
+    totalItems[i].itemType = LIST_CUSTOMVALUE;
+    totalItems[i].titlelabel.address = (uint8_t *) serialPortId[serialPort[i].port];
+    totalItems[i].valueLabel.index = LABEL_DYNAMIC;  // must be LABEL_DYNAMIC or LABEL_CUSTOM_VALUE in order to use dynamic text
     setDynamicTextValue(i, (char *) baudrateNames[infoSettings.serial_port[i]]);
   }
 
-  listViewCreate(title, portItems, PORT_COUNT, NULL, true, NULL, NULL);
+  listViewCreate(title, totalItems, PORT_COUNT, NULL, true, NULL, NULL);
 
   while (infoMenu.menu[infoMenu.cur] == menuSerialPort)
   {
     curIndex = listViewGetSelectedIndex();
-
     switch (curIndex)
     {
-      case 0:
-      case 1:
-      case 2:
-        infoMenu.menu[++infoMenu.cur] = menuBaudrate;
-        break;
+      #ifdef SERIAL_PORT_2
+        case 0:
+          baudratePtr = &infoSettings.serial_port[0];
+          baudrateMinIndex = 0;
+          infoMenu.menu[++infoMenu.cur] = menuBaudrate;
+          break;
+      #endif
+
+      #ifdef SERIAL_PORT_3
+        case 1:
+          baudratePtr = &infoSettings.serial_port[1];
+          baudrateMinIndex = 0;
+          infoMenu.menu[++infoMenu.cur] = menuBaudrate;
+          break;
+      #endif
+
+      #ifdef SERIAL_PORT_4
+        case 2:
+          baudratePtr = &infoSettings.serial_port[2];
+          baudrateMinIndex = 0;
+          infoMenu.menu[++infoMenu.cur] = menuBaudrate;
+          break;
+      #endif
 
       default:
         break;
     }
 
     loopProcess();
-  }
-
-  if (memcmp(&now, &infoSettings, sizeof(SETTINGS)))
-  {
-    storePara();
   }
 }
 
@@ -151,6 +168,8 @@ void menuConnectionSettings(void)
     switch (curIndex)
     {
       case KEY_ICON_0:
+        baudratePtr = &infoSettings.baudrate;
+        baudrateMinIndex = 1;
         infoMenu.menu[++infoMenu.cur] = menuBaudrate;
         break;
 

@@ -118,8 +118,7 @@ typedef struct
 {
   // General Settings
   uint8_t  baudrate;
-  uint8_t  multi_serial;
-  int8_t   serial_port[MAX_SERIAL_PORT_COUNT];
+  uint8_t  serial_port[MAX_SERIAL_PORT_COUNT];
   uint8_t  emulate_m600;
 
   // UI Settings

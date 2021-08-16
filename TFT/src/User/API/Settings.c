@@ -22,7 +22,6 @@ void infoSettingsReset(void)
 {
 // General Settings
   infoSettings.baudrate               = BAUDRATE;
-  infoSettings.multi_serial           = MULTI_SERIAL;
   infoSettings.emulate_m600           = EMULATE_M600;
 
 // UI Settings

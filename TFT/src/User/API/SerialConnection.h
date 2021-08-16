@@ -5,10 +5,10 @@
 extern "C" {
 #endif
 
-#include "variants.h"  // for SERIAL_PORT_2 etc...
-#include "uart.h"      // for _UART_CNT etc...
 #include <stdbool.h>
 #include <stdint.h>
+#include "variants.h"  // for SERIAL_PORT_2 etc...
+#include "uart.h"      // for _UART_CNT etc...
 
 #define BAUDRATE_COUNT 10
 
@@ -23,16 +23,16 @@ extern "C" {
       PORT_4,
     #endif
     PORT_COUNT
-  } EXTRA_SERIAL_PORT;  // extra serial ports
+  } SERIAL_PORTS;  // supplementary serial ports
 
   typedef struct
   {
-    uint8_t port;        // physical port (e.g. _USART1) related to logical port (e.g. 2 for SERIAL_PORT_2)
+    uint8_t port;        // physical port (e.g. _USART1) related to logical port ID (e.g. 2 for SERIAL_PORT_2)
     uint16_t cacheSize;  // queue size for sending/receiving data to/from the port
     bool activePort;     // set to "true" if the port is connected to an active device (a device that already sent data to the TFT)
   } SERIAL_PORT_INFO;    // serial port info
 
-  extern SERIAL_PORT_INFO extraSerialPort[PORT_COUNT];
+  extern SERIAL_PORT_INFO serialPort[PORT_COUNT];           // supplementaty serial port
 #endif
 
 extern char serialPortId[_UART_CNT][2];                     // logical port ID (e.g. 2 for SERIAL_PORT_2)

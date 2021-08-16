@@ -9,7 +9,6 @@
 
 //-----------------------------General Settings
 X_CONFIG(UART_BAUDRATE)
-X_CONFIG(MULTI_SERIAL)
 X_CONFIG(SERIAL_PORT)
 X_CONFIG(EMULATE_M600)
 //-----------------------------UI Settings
