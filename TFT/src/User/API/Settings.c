@@ -21,7 +21,6 @@ const uint8_t default_custom_enabled[] = CUSTOM_GCODE_ENABLED;
 void infoSettingsReset(void)
 {
 // General Settings
-  infoSettings.baudrate               = BAUDRATE;
   infoSettings.emulate_m600           = EMULATE_M600;
 
 // UI Settings

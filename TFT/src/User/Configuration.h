@@ -546,12 +546,16 @@
  * A press on touch screen or on encoder button will take and save a full screen screenshot to SD card.
  * Only for documentation purposes. DON'T enable it for normal printing.
  *
- * For TFTLCD with an encoder "LCD_ENCODER_SUPPORT":
+ * For TFT with an encoder "LCD_ENCODER_SUPPORT":
  * - A press on touch screen to trigger a screenshot in Marlin mode
  * - A press on encoder button to trigger a screenshot in Touch mode
  *
- * For TFTLCD with no encoder:
+ * For TFT with no encoder:
  * - A long press of 1.5 seconds on touch screen to trigger a screenshot
+ *
+ * WARNING for TFT35 V2, TFT35 V3, TFT35 B1 V3 and TFT35 E3 V3:
+ *   This feature requires that pin 39 on the 40 pins TFT connector is switched from GND to 3.3V.
+ *   Otherwise, the color read out is incorrect.
  */
 //#define SCREEN_SHOT_TO_SD  // Default: commented (disabled)
 
