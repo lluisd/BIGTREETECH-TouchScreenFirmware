@@ -85,6 +85,7 @@
 #include "ModeSwitching.h"
 #include "Notification.h"
 #include "parseACK.h"
+#include "parseACKJson.hpp"
 #include "PowerFailed.h"
 #include "Printing.h"
 #include "ProbeHeightControl.h"

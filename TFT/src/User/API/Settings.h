@@ -13,11 +13,11 @@ extern "C" {
 // Config version support
 // change if new elements/keywords are added/removed/changed in the configuration.h Format YYYYMMDD
 // this number should match CONFIG_VERSION in configuration.h
-#define CONFIG_SUPPPORT 20210816
+#define CONFIG_SUPPPORT 20210817
 
 #define FONT_FLASH_SIGN       20210522  // (YYYYMMDD) change if fonts require updating
-#define CONFIG_FLASH_SIGN     20210816  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
-#define LANGUAGE_FLASH_SIGN   20210816  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
+#define CONFIG_FLASH_SIGN     20210817  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
+#define LANGUAGE_FLASH_SIGN   20210817  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
 #define ICON_FLASH_SIGN       20210711  // (YYYYMMDD) change if any icon(s) is added or removed
 
 #define FONT_CHECK_SIGN       (FONT_FLASH_SIGN + WORD_UNICODE + FLASH_SIGN_ADDR)
@@ -205,6 +205,7 @@ typedef struct
   // Filament Runout Settings (only if connected to TFT controller)
   uint8_t  runout;
   uint8_t  runout_invert;
+  uint8_t  runout_nc;
   uint16_t runout_noise_ms;
   uint8_t  runout_distance;
 
