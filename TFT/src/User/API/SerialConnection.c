@@ -25,7 +25,7 @@ const char * const baudrateNames[BAUDRATE_COUNT] = {"OFF", "2400", "9600", "1920
 
 static inline void Serial_InitPrimary(void)
 {
-  memset(&infoHost, 0, sizeof(infoHost));
+  infoHost.connected = infoHost.wait = infoHost.printing = false;
   reminderSetUnConnected();  // reset connect status
   reminderMessage(LABEL_UNCONNECTED, STATUS_UNCONNECT);
 
@@ -44,7 +44,7 @@ void Serial_Init(int8_t port)
     Serial_InitPrimary();
 
     #ifdef SERIAL_PORT_2
-      if (port < 0)  // if < 0, initialize also all supplementary serial ports
+      if (port < 0)  // if < 0, initialize also all the supplementary serial ports
       {
         for (uint8_t i = 1; i < SERIAL_PORT_COUNT; i++)
         {
@@ -77,7 +77,7 @@ void Serial_DeInit(int8_t port)
     Serial_DeInitPrimary();
 
     #ifdef SERIAL_PORT_2
-      if (port < 0)  // if < 0, deinitialize also all supplementary serial ports
+      if (port < 0)  // if < 0, deinitialize also all the supplementary serial ports
       {
         for (uint8_t i = 1; i < SERIAL_PORT_COUNT; i++)
         {
