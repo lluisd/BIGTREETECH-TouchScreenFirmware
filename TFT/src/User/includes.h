@@ -83,6 +83,7 @@
 #include "MachineParameters.h"
 #include "menu.h"
 #include "ModeSwitching.h"
+#include "Movement.h"
 #include "Notification.h"
 #include "parseACK.h"
 #include "parseACKJson.hpp"
