@@ -1,4 +1,4 @@
-#include "Movement.h"
+#include "LevelingControl.h"
 #include "includes.h"
 
 void levelingGetPointCoords(LEVELING_POINT_COORDS coords)
@@ -15,9 +15,9 @@ void levelingGetPointCoords(LEVELING_POINT_COORDS coords)
     x_right = temp;
   }
 
-  // The Y-axis of different printer (move hotbed or move nozzle) move in different directions
-  // So Y-axis leveling invert can't follow up invert_axis[Y_AXIS]
-  // We separate a single variable to deal with the Y-axis leveling movement direction
+  // The Y-axis of different printer (move hotbed or move nozzle) move in different directions.
+  // So Y-axis leveling invert can't follow up invert_axis[Y_AXIS].
+  // We separate a single variable to deal with the Y-axis leveling movement direction.
   if (infoSettings.leveling_invert_y_axis)
   {
     int16_t temp = y_bottom;  // Swap lower and upper

@@ -3,7 +3,7 @@
 
 const uint8_t valIconIndex[LEVEL_POINT_COUNT] = {4, 5, 1, 0, 3};
 
-// Buffer current z value measured in Level Corner = {position 1, position 2, position 3, position 4, probe accuracy(M48)}
+// Buffer current Z value measured in Level Corner = {position 1, position 2, position 3, position 4, probe accuracy(M48)}
 float levelCornerPosition[LEVEL_POINT_COUNT] = {0};
 
 // Set level corner position from the Z offset measured by probe
@@ -91,8 +91,8 @@ void menuLevelCorner(void)
   menuDrawPage(&levelCornerItems);
   drawProbeAccuracyIcon(&levelCornerItems);
 
-  mustStoreCmd("G28\n");  // Init Coordinate
-  mustStoreCmd("G0 Z%.3f\n", infoSettings.level_z_raise);  // raise nozzle
+  if (coordinateIsKnown() == false)
+    probeHeightHomeAndRaise();  // home and raise nozzle
 
   // Check min edge limit for the probe with probe offset set in parseACK.c
   uint8_t edge_min = MAX(ABS(getParameter((int16_t)P_PROBE_OFFSET, AXIS_INDEX_X)),
