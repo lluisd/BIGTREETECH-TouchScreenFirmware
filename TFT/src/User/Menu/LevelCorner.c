@@ -1,9 +1,6 @@
 #include "LevelCorner.h"
 #include "includes.h"
 
-#define ENABLE_STEPPER_CMD  "M17 X Y Z\n"
-#define DISABLE_STEPPER_CMD "M18 S0 X Y Z\n"
-
 const uint8_t valIconIndex[LEVEL_POINT_COUNT] = {4, 5, 1, 0, 3};
 
 // Buffer current z value measured in Level Corner = {position 1, position 2, position 3, position 4, probe accuracy(M48)}
@@ -12,28 +9,7 @@ float levelCornerPosition[LEVEL_POINT_COUNT] = {0};
 // Set level corner position from the Z offset measured by probe
 void setLevelCornerPosition(int16_t x, int16_t y, float position)
 {
-  levelCornerPosition[getLevelingPoint(x, y)] = position;
-}
-
-void scanLevelCorner(LEVELING_POINT point)
-{
-  LEVELING_POINT_COORDS coords;
-
-  getLevelingPointCoords(coords);
-
-  if (infoSettings.touchmi_sensor != 0)
-  {
-    mustStoreCmd("M401\n");
-    mustStoreCmd("G30 E0 X%d Y%d\n", coords[point][0], coords[point][1]);  // move to selected point
-    mustStoreCmd("G1 Z10\n");
-  }
-  else
-  {
-    mustStoreCmd("G30 E1 X%d Y%d\n", coords[point][0], coords[point][1]);  // move to selected point
-  }
-
-  mustStoreCmd(ENABLE_STEPPER_CMD);
-  mustStoreCmd(DISABLE_STEPPER_CMD);
+  levelCornerPosition[levelingGetPoint(x, y)] = position;
 }
 
 // Draw values under icons
@@ -103,7 +79,7 @@ void menuLevelCorner(void)
 
   for (uint8_t i = 0; i < LEVEL_POINT_COUNT; i++)
   {
-    levelCornerItems.items[i].label.address = (uint8_t *)iconText[i];
+    levelCornerItems.items[valIconIndex[i]].label.address = (uint8_t *)iconText[i];
   }
 
   for (uint8_t i = 0; i < LEVEL_POINT_COUNT; i++)
@@ -133,11 +109,11 @@ void menuLevelCorner(void)
     switch (key_num)
     {
       case KEY_ICON_0:
-        scanLevelCorner(LEVEL_TOP_LEFT);
+        levelingProbePoint(LEVEL_TOP_LEFT);
         break;
 
       case KEY_ICON_1:
-        scanLevelCorner(LEVEL_TOP_RIGHT);
+        levelingProbePoint(LEVEL_TOP_RIGHT);
         break;
 
       case KEY_ICON_2:
@@ -156,18 +132,18 @@ void menuLevelCorner(void)
         break;
 
       case KEY_ICON_4:
-        scanLevelCorner(LEVEL_BOTTOM_LEFT);
+        levelingProbePoint(LEVEL_BOTTOM_LEFT);
         break;
 
       case KEY_ICON_5:
-        scanLevelCorner(LEVEL_BOTTOM_RIGHT);
+        levelingProbePoint(LEVEL_BOTTOM_RIGHT);
         break;
 
       case KEY_ICON_6:
-        scanLevelCorner(LEVEL_BOTTOM_LEFT);
-        scanLevelCorner(LEVEL_BOTTOM_RIGHT);
-        scanLevelCorner(LEVEL_TOP_RIGHT);
-        scanLevelCorner(LEVEL_TOP_LEFT);
+        levelingProbePoint(LEVEL_BOTTOM_LEFT);
+        levelingProbePoint(LEVEL_BOTTOM_RIGHT);
+        levelingProbePoint(LEVEL_TOP_RIGHT);
+        levelingProbePoint(LEVEL_TOP_LEFT);
         break;
 
       case KEY_ICON_7:

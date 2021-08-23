@@ -29,11 +29,11 @@ void menuManualLeveling(void)
     switch (key_num)
     {
       case KEY_ICON_0:
-        moveToLevelingPoint(LEVEL_TOP_LEFT);
+        levelingMoveToPoint(LEVEL_TOP_LEFT);
         break;
 
       case KEY_ICON_1:
-        moveToLevelingPoint(LEVEL_TOP_RIGHT);
+        levelingMoveToPoint(LEVEL_TOP_RIGHT);
         break;
 
       case KEY_ICON_2:
@@ -49,15 +49,15 @@ void menuManualLeveling(void)
         break;
 
       case KEY_ICON_4:
-        moveToLevelingPoint(LEVEL_BOTTOM_LEFT);
+        levelingMoveToPoint(LEVEL_BOTTOM_LEFT);
         break;
 
       case KEY_ICON_5:
-        moveToLevelingPoint(LEVEL_BOTTOM_RIGHT);
+        levelingMoveToPoint(LEVEL_BOTTOM_RIGHT);
         break;
 
       case KEY_ICON_6:
-        moveToLevelingPoint(LEVEL_CENTER);
+        levelingMoveToPoint(LEVEL_CENTER);
         break;
 
       case KEY_ICON_7:

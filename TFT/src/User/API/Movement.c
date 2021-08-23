@@ -1,7 +1,7 @@
 #include "Movement.h"
 #include "includes.h"
 
-void getLevelingPointCoords(LEVELING_POINT_COORDS coords)
+void levelingGetPointCoords(LEVELING_POINT_COORDS coords)
 {
   int16_t x_left = infoSettings.machine_size_min[X_AXIS] + infoSettings.level_edge;
   int16_t x_right = infoSettings.machine_size_max[X_AXIS] - infoSettings.level_edge;
@@ -37,16 +37,16 @@ void getLevelingPointCoords(LEVELING_POINT_COORDS coords)
   coords[LEVEL_CENTER][1] = (y_bottom + y_top) / 2;
 }
 
-LEVELING_POINT getLevelingPoint(int16_t x, int16_t y)
+LEVELING_POINT levelingGetPoint(int16_t x, int16_t y)
 {
   LEVELING_POINT_COORDS coords;
   uint8_t i;
 
-  getLevelingPointCoords(coords);
+  levelingGetPointCoords(coords);
 
   for (i = 0; i < LEVEL_POINT_COUNT; i++)
   {
-    if (coords[i][0] == x && coords[i][0] == y)  // if point is found, exit from loop
+    if (coords[i][0] == x && coords[i][1] == y)  // if point is found, exit from loop
       break;
   }
 
@@ -56,11 +56,32 @@ LEVELING_POINT getLevelingPoint(int16_t x, int16_t y)
   return LEVEL_CENTER;  // if point is not found, return the center point
 }
 
-void moveToLevelingPoint(LEVELING_POINT point)
+void levelingProbePoint(LEVELING_POINT point)
 {
   LEVELING_POINT_COORDS coords;
 
-  getLevelingPointCoords(coords);
+  levelingGetPointCoords(coords);
+
+  if (infoSettings.touchmi_sensor != 0)
+  {
+    mustStoreCmd("M401\n");
+    mustStoreCmd("G30 E0 X%d Y%d\n", coords[point][0], coords[point][1]);  // move to selected point
+    mustStoreCmd("G1 Z10\n");
+  }
+  else
+  {
+    mustStoreCmd("G30 E1 X%d Y%d\n", coords[point][0], coords[point][1]);  // move to selected point
+  }
+
+  mustStoreCmd(ENABLE_STEPPER_CMD);
+  mustStoreCmd(DISABLE_STEPPER_CMD);
+}
+
+void levelingMoveToPoint(LEVELING_POINT point)
+{
+  LEVELING_POINT_COORDS coords;
+
+  levelingGetPointCoords(coords);
 
   if (coordinateIsKnown() == false)
     storeCmd("G28\n");

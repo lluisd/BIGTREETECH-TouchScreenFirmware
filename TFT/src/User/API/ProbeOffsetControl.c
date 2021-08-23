@@ -14,22 +14,31 @@ void probeOffsetEnable(bool skipZOffset, float shim)
   // Z offset gcode sequence start
   probeHeightHome();  // home, disable ABL and raise nozzle
 
-  if (infoSettings.xy_offset_probing)  // if HW allows nozzle to reach XY probing point
+  bool relative = false;
+
+  if (infoSettings.xy_offset_probing)  // if homing without a probe
   {
-    probeHeightRelative();                                     // set relative position mode
-    mustStoreCmd("G1 X%.2f Y%.2f\n",
-                 getParameter(P_PROBE_OFFSET, AXIS_INDEX_X),
-                 getParameter(P_PROBE_OFFSET, AXIS_INDEX_Y));  // move nozzle to XY probing point and set feedrate
+    levelingProbePoint(LEVEL_CENTER);  // probe center of bed
+
+    relative = true;
   }
 
-  if (skipZOffset)
+  probeHeightRelative();                                     // set relative position mode
+  mustStoreCmd("G1 X%.2f Y%.2f\n",
+               getParameter(P_PROBE_OFFSET, AXIS_INDEX_X),
+               getParameter(P_PROBE_OFFSET, AXIS_INDEX_Y));  // move nozzle to XY probing point and set feedrate
+
+  if (!infoSettings.xy_offset_probing)  // if homing with a probe
   {
-    probeHeightStart(-probeOffsetGetValue() + shim, false);  // lower nozzle to probing Z0 point + shim
-    probeOffsetSetValue(0.0f);                               // reset Z offset in order probing Z0 matches absolute Z0 point
-  }
-  else
-  {
-    probeHeightStart(shim, false);  // lower nozzle to absolute Z0 point + shim
+    if (skipZOffset)
+    {
+      probeHeightStart(-probeOffsetGetValue() + shim, false/*relative*/);  // lower nozzle to probing Z0 point + shim
+      probeOffsetSetValue(0.0f);                                  // reset Z offset in order probing Z0 matches absolute Z0 point
+    }
+    else
+    {
+      probeHeightStart(shim, false);  // lower nozzle to absolute Z0 point + shim
+    }
   }
 
   probeHeightRelative();  // set relative position mode
