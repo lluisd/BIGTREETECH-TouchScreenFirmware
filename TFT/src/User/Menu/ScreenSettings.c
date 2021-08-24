@@ -155,12 +155,12 @@ void menuMarlinModeSettings(void)
 {
   LABEL title = {LABEL_MARLIN_MODE_SETTINGS};
   LISTITEM marlinModeitems[] = {
-  // icon                       ItemType          Item Title                item value text(only for custom value)
-    {CHARICON_FONT_COLOR,       LIST_CUSTOMVALUE, LABEL_FONT_COLOR,         LABEL_CUSTOM},
-    {CHARICON_BACKGROUND_COLOR, LIST_CUSTOMVALUE, LABEL_BG_COLOR,           LABEL_CUSTOM},
-    {CHARICON_TOGGLE_ON,        LIST_TOGGLE,      LABEL_MARLIN_FULL_SCREEN, LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,        LIST_TOGGLE,      LABEL_MARLIN_SHOW_TITLE,  LABEL_BACKGROUND},
-    {CHARICON_BLANK,            LIST_CUSTOMVALUE, LABEL_MARLIN_TYPE,        LABEL_DYNAMIC},
+  // icon                       ItemType          Item Title               item value text(only for custom value)
+    {CHARICON_FONT_COLOR,       LIST_CUSTOMVALUE, LABEL_FONT_COLOR,        LABEL_CUSTOM},
+    {CHARICON_BACKGROUND_COLOR, LIST_CUSTOMVALUE, LABEL_BG_COLOR,          LABEL_CUSTOM},
+    {CHARICON_TOGGLE_ON,        LIST_TOGGLE,      LABEL_MARLIN_FULLSCREEN, LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,        LIST_TOGGLE,      LABEL_MARLIN_SHOW_TITLE, LABEL_BACKGROUND},
+    {CHARICON_BLANK,            LIST_CUSTOMVALUE, LABEL_MARLIN_TYPE,       LABEL_DYNAMIC},
   };
 
   for (uint8_t i = 0; i < LCD_COLOR_COUNT; i++)
@@ -172,7 +172,7 @@ void menuMarlinModeSettings(void)
       marlinModeitems[1].valueLabel = lcd_color_names[i];
   }
 
-  marlinModeitems[2].icon = iconToggle[infoSettings.marlin_full_screen];
+  marlinModeitems[2].icon = iconToggle[infoSettings.marlin_fullscreen];
   marlinModeitems[3].icon = iconToggle[infoSettings.marlin_show_title];
 
   setDynamicTextValue(4, (char *)labelMarlinType[infoSettings.marlin_type]);
@@ -197,8 +197,8 @@ void menuMarlinModeSettings(void)
         break;
 
       case 2:
-        infoSettings.marlin_full_screen = (infoSettings.marlin_full_screen + 1) % 2;
-        marlinModeitems[2].icon = iconToggle[infoSettings.marlin_full_screen];
+        infoSettings.marlin_fullscreen = (infoSettings.marlin_fullscreen + 1) % 2;
+        marlinModeitems[2].icon = iconToggle[infoSettings.marlin_fullscreen];
         listViewRefreshItem(curIndex);
         break;
 
@@ -297,10 +297,10 @@ void menuUISettings(void)
     {CHARICON_TOGGLE_ON, LIST_TOGGLE,      LABEL_TERMINAL_ACK,         LABEL_BACKGROUND},
 
     #ifdef LED_COLOR_PIN
-      {CHARICON_BLANK,     LIST_CUSTOMVALUE, LABEL_KNOB_LED_COLOR,    LABEL_OFF},
+      {CHARICON_BLANK,     LIST_CUSTOMVALUE, LABEL_KNOB_LED_COLOR,       LABEL_OFF},
 
       #ifdef LCD_LED_PWM_CHANNEL
-        {CHARICON_TOGGLE_ON, LIST_TOGGLE,      LABEL_KNOB_LED_IDLE,     LABEL_BACKGROUND},
+        {CHARICON_TOGGLE_ON, LIST_TOGGLE,      LABEL_KNOB_LED_IDLE,        LABEL_BACKGROUND},
       #endif
     #endif
   };
@@ -397,11 +397,11 @@ void menuSoundSettings(void)
 {
   LABEL title = {LABEL_SOUND};
   LISTITEM sounditems[] = {
-  // icon                 ItemType     Item Title          item value text(only for custom value)
-    {CHARICON_TOGGLE_ON,  LIST_TOGGLE, LABEL_TOUCH_SOUND,  LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,  LIST_TOGGLE, LABEL_TOAST_SOUND,  LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,  LIST_TOGGLE, LABEL_ALERT_SOUND,  LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,  LIST_TOGGLE, LABEL_HEATER_SOUND, LABEL_BACKGROUND},
+  // icon                ItemType     Item Title          item value text(only for custom value)
+    {CHARICON_TOGGLE_ON, LIST_TOGGLE, LABEL_TOUCH_SOUND,  LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON, LIST_TOGGLE, LABEL_TOAST_SOUND,  LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON, LIST_TOGGLE, LABEL_ALERT_SOUND,  LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON, LIST_TOGGLE, LABEL_HEATER_SOUND, LABEL_BACKGROUND},
   };
 
   uint16_t curIndex = KEY_IDLE;

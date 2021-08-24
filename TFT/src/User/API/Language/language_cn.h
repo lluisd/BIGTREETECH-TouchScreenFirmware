@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "顶部温度信息"
     #define STRING_TERMINAL_ACK           "在G-code终端中显示温度信息"
     #define STRING_SERIAL_ALWAYS_ON       "串口常开"
-    #define STRING_MARLIN_FULL_SCREEN     "全屏显示Marlin模式"
+    #define STRING_MARLIN_FULLSCREEN      "全屏显示Marlin模式"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin模式显示标题"
     #define STRING_MARLIN_TYPE            "Marlin模式类型"
     #define STRING_MOVE_SPEED             "移动速度(X Y Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Block touch on idle"
     #define STRING_KNOB_LED_COLOR         "旋钮LED颜色"
     #define STRING_KNOB_LED_IDLE          "旋钮LED自动睡眠"
-    #define STRING_START_GCODE_ENABLED    "执行打印前起始Gcode"
-    #define STRING_END_GCODE_ENABLED      "执行打印后结束Gcode"
-    #define STRING_CANCEL_GCODE_ENABLED   "中断打印Gcode"
+    #define STRING_START_GCODE_ON         "执行打印前起始Gcode"
+    #define STRING_END_GCODE_ON           "执行打印后结束Gcode"
+    #define STRING_CANCEL_GCODE_ON        "中断打印Gcode"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "电机每毫米脉冲数(Steps/mm)"

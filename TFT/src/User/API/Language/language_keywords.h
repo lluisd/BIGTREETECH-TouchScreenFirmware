@@ -19,7 +19,7 @@ extern "C" {
 #define LANG_KEY_PERSISTENT_INFO              "label_persistent_info:"
 #define LANG_KEY_TERMINAL_ACK                 "label_terminal_ack:"
 #define LANG_KEY_SERIAL_ALWAYS_ON             "label_serial_always_on:"
-#define LANG_KEY_MARLIN_FULL_SCREEN           "label_marlin_full_screen:"
+#define LANG_KEY_MARLIN_FULLSCREEN            "label_marlin_fullscreen:"
 #define LANG_KEY_MARLIN_SHOW_TITLE            "label_marlin_show_title:"
 #define LANG_KEY_MARLIN_TYPE                  "label_marlin_type:"
 #define LANG_KEY_MOVE_SPEED                   "label_move_speed:"
@@ -41,9 +41,9 @@ extern "C" {
 #define LANG_KEY_BLOCK_TOUCH_ON_IDLE          "label_block_touch_on_idle:"
 #define LANG_KEY_KNOB_LED_COLOR               "label_knob_led_color:"
 #define LANG_KEY_KNOB_LED_IDLE                "label_knob_led_idle:"
-#define LANG_KEY_START_GCODE_ENABLED          "label_start_gcode_enabled:"
-#define LANG_KEY_END_GCODE_ENABLED            "label_end_gcode_enabled:"
-#define LANG_KEY_CANCEL_GCODE_ENABLED         "label_cancel_gcode_enabled:"
+#define LANG_KEY_START_GCODE_ON               "label_start_gcode_on:"
+#define LANG_KEY_END_GCODE_ON                 "label_end_gcode_on:"
+#define LANG_KEY_CANCEL_GCODE_ON              "label_cancel_gcode_on:"
 
 // Machine Parameter Settings - Param Title (ordered by gcode)
 #define LANG_KEY_STEPS_SETTING                "label_steps_setting:"

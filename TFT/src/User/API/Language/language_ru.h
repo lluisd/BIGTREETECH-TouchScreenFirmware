@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Нагрев в инфостроке"
     #define STRING_TERMINAL_ACK           "ACK терминала (C°)"
     #define STRING_SERIAL_ALWAYS_ON       "Серийный порт Всегда ВКЛЮЧЕН"
-    #define STRING_MARLIN_FULL_SCREEN     "Marlin на весь экран"
+    #define STRING_MARLIN_FULLSCREEN      "Marlin на весь экран"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin Mode Title Support"
     #define STRING_MARLIN_TYPE            "Marlin тип режима"
     #define STRING_MOVE_SPEED             "Скорость (X Y Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Block touch on idle"
     #define STRING_KNOB_LED_COLOR         "Подсветка энкодера"
     #define STRING_KNOB_LED_IDLE          "Простой подсветки энкодера"
-    #define STRING_START_GCODE_ENABLED    "G-код перед печатью"
-    #define STRING_END_GCODE_ENABLED      "G-код после печати"
-    #define STRING_CANCEL_GCODE_ENABLED   "G-код отмены печати"
+    #define STRING_START_GCODE_ON         "G-код перед печатью"
+    #define STRING_END_GCODE_ON           "G-код после печати"
+    #define STRING_CANCEL_GCODE_ON        "G-код отмены печати"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "Настройка шагов на мм"

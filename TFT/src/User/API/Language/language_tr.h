@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Kalıcı Durum Mesajı"
     #define STRING_TERMINAL_ACK           "Terminalde onay mesajları"
     #define STRING_SERIAL_ALWAYS_ON       "Seri Bağ. Sürekli Açık"
-    #define STRING_MARLIN_FULL_SCREEN     "Tam Ekran Marlin Modu"
+    #define STRING_MARLIN_FULLSCREEN      "Tam Ekran Marlin Modu"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin Modu Başlık Desteği"
     #define STRING_MARLIN_TYPE            "Marlin Mode Type"
     #define STRING_MOVE_SPEED             "Hareket Hızı(X Y Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Block touch on idle"
     #define STRING_KNOB_LED_COLOR         "Döner Düğme LED"
     #define STRING_KNOB_LED_IDLE          "Düğme LED bekleme"
-    #define STRING_START_GCODE_ENABLED    "Başlangıç gcodeu kullan"
-    #define STRING_END_GCODE_ENABLED      "Bitiş gcodeu kullan"
-    #define STRING_CANCEL_GCODE_ENABLED   "İptal gcodeu kullan"
+    #define STRING_START_GCODE_ON         "Başlangıç gcodeu kullan"
+    #define STRING_END_GCODE_ON           "Bitiş gcodeu kullan"
+    #define STRING_CANCEL_GCODE_ON        "İptal gcodeu kullan"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "mm/adım"

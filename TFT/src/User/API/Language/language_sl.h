@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Stalno prikazuj status"
     #define STRING_TERMINAL_ACK           "Pokaži ACK v terminalu"
     #define STRING_SERIAL_ALWAYS_ON       "Serial Always ON"
-    #define STRING_MARLIN_FULL_SCREEN     "Marlin čez cel zaslon"
+    #define STRING_MARLIN_FULLSCREEN      "Marlin čez cel zaslon"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin Mode Title Support"
     #define STRING_MARLIN_TYPE            "Marlin Mode Type"
     #define STRING_MOVE_SPEED             "Hitr. pomika (X Y Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Block touch on idle"
     #define STRING_KNOB_LED_COLOR         "LED enkoder gumba"
     #define STRING_KNOB_LED_IDLE          "Rotary Knob LED idle"
-    #define STRING_START_GCODE_ENABLED    "Zaženi startno G-kodo"
-    #define STRING_END_GCODE_ENABLED      "Zaženi končno G-kodo"
-    #define STRING_CANCEL_GCODE_ENABLED   "Zaženi G-kodo preklica"
+    #define STRING_START_GCODE_ON         "Zaženi startno G-kodo"
+    #define STRING_END_GCODE_ON           "Zaženi končno G-kodo"
+    #define STRING_CANCEL_GCODE_ON        "Zaženi G-kodo preklica"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "Št. korakov na MM"

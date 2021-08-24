@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "頂部溫度訊息"
     #define STRING_TERMINAL_ACK           "在G-code終端顯示溫度"
     #define STRING_SERIAL_ALWAYS_ON       "Serial Always ON"
-    #define STRING_MARLIN_FULL_SCREEN     "全螢幕Marlin模式"
+    #define STRING_MARLIN_FULLSCREEN      "全螢幕Marlin模式"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin Mode Title Support"
     #define STRING_MARLIN_TYPE            "Marlin Mode Type"
     #define STRING_MOVE_SPEED             "移動速度(X Y Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Block touch on idle"
     #define STRING_KNOB_LED_COLOR         "旋鈕LED顏色"
     #define STRING_KNOB_LED_IDLE          "旋鈕LED自動睡眠"
-    #define STRING_START_GCODE_ENABLED    "執行起始G-code"
-    #define STRING_END_GCODE_ENABLED      "執行結尾G-code"
-    #define STRING_CANCEL_GCODE_ENABLED   "中斷執行G-code"
+    #define STRING_START_GCODE_ON         "執行起始G-code"
+    #define STRING_END_GCODE_ON           "執行結尾G-code"
+    #define STRING_CANCEL_GCODE_ON        "中斷執行G-code"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "電機每毫米步數Steps/mm"

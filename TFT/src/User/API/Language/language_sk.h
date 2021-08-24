@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Trvalé info o stave"
     #define STRING_TERMINAL_ACK           "Show ACK in Terminal"
     #define STRING_SERIAL_ALWAYS_ON       "Serial Always ON"
-    #define STRING_MARLIN_FULL_SCREEN     "Marlin mode in fullscreen"
+    #define STRING_MARLIN_FULLSCREEN      "Marlin mode in fullscreen"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin Mode Title Support"
     #define STRING_MARLIN_TYPE            "Marlin Mode Type"
     #define STRING_MOVE_SPEED             "Rýchlosť pohybu XYZ"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Block touch on idle"
     #define STRING_KNOB_LED_COLOR         "LED otočného tlačidla"
     #define STRING_KNOB_LED_IDLE          "Rotary Knob LED idle"
-    #define STRING_START_GCODE_ENABLED    "Začiatočný Gcode"
-    #define STRING_END_GCODE_ENABLED      "Koncový Gcode"
-    #define STRING_CANCEL_GCODE_ENABLED   "Cancel Gcode"
+    #define STRING_START_GCODE_ON         "Začiatočný Gcode"
+    #define STRING_END_GCODE_ON           "Koncový Gcode"
+    #define STRING_CANCEL_GCODE_ON        "Cancel Gcode"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "Počet krokov na MM"

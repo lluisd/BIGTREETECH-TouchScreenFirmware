@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Zobrazení stavových ikon"
     #define STRING_TERMINAL_ACK           "zobrazit ACK Terminálu"
     #define STRING_SERIAL_ALWAYS_ON       "Sériový port vždy ON"
-    #define STRING_MARLIN_FULL_SCREEN     "Fullscreen režim Marlin"
+    #define STRING_MARLIN_FULLSCREEN      "Fullscreen režim Marlin"
     #define STRING_MARLIN_SHOW_TITLE      "Zobrazit tytulek Marlin"
     #define STRING_MARLIN_TYPE            "Typ Marlin Modu"
     #define STRING_MOVE_SPEED             "Rychlost pohybu X Y Z"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Blok. dotek při zatmavení"
     #define STRING_KNOB_LED_COLOR         "Rotační knob LED"
     #define STRING_KNOB_LED_IDLE          "Rotační knob LED idle"
-    #define STRING_START_GCODE_ENABLED    "Spustit Gcode před tiskem"
-    #define STRING_END_GCODE_ENABLED      "Spustit Gcode po tisku"
-    #define STRING_CANCEL_GCODE_ENABLED   "Spustit Gcode po stornu"
+    #define STRING_START_GCODE_ON         "Spustit Gcode před tiskem"
+    #define STRING_END_GCODE_ON           "Spustit Gcode po tisku"
+    #define STRING_CANCEL_GCODE_ON        "Spustit Gcode po stornu"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "Kroků/mm"

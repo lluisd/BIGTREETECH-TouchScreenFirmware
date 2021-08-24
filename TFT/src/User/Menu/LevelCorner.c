@@ -68,7 +68,7 @@ void menuLevelCorner(void)
   };
 
   KEY_VALUES key_num = KEY_IDLE;
-  LEVELING_POINT pointUpdated = -1;
+  LEVELING_POINT pointUpdated = LEVEL_NO_POINT;
   char iconText[LEVELING_POINT_COUNT][15];
 
   if (coordinateIsKnown() == false)
@@ -149,7 +149,7 @@ void menuLevelCorner(void)
 
     pointUpdated = levelingGetPointUpdated();
 
-    if (pointUpdated != -1)
+    if (pointUpdated != LEVEL_NO_POINT)
     {
       levelCornerPosition[pointUpdated] = levelingGetZProbed();
       refreshValue(&levelCornerItems, pointUpdated);

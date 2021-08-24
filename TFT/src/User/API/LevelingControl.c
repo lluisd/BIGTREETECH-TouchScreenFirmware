@@ -1,7 +1,7 @@
 #include "LevelingControl.h"
 #include "includes.h"
 
-LEVELING_POINT pointUpdated = -1;
+LEVELING_POINT pointUpdated = LEVEL_NO_POINT;
 float zProbed = 0.0f;
 
 void levelingGetPointCoords(LEVELING_POINT_COORDS coords)
@@ -101,8 +101,8 @@ LEVELING_POINT levelingGetPointUpdated(void)
 {
   LEVELING_POINT point = pointUpdated;
 
-  if (point != -1)
-    pointUpdated = -1;  // one shot point (resetted to -1 for next checks)
+  if (point != LEVEL_NO_POINT)
+    pointUpdated = LEVEL_NO_POINT;  // one shot point (resetted to LEVEL_NO_POINT for next checks)
 
   return point;
 }

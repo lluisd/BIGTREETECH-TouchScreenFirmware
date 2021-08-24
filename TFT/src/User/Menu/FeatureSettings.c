@@ -41,9 +41,9 @@ typedef enum
   SKEY_PLR_ON,
   SKEY_PLR_HOME,
   SKEY_BTT_MINI_UPS,
-  SKEY_START_GCODE_ENABLED,
-  SKEY_END_GCODE_ENABLED,
-  SKEY_CANCEL_GCODE_ENABLED,
+  SKEY_START_GCODE_ON,
+  SKEY_END_GCODE_ON,
+  SKEY_CANCEL_GCODE_ON,
   SKEY_RESET_SETTINGS,        // Keep reset always at the bottom of the settings menu list.
   SKEY_COUNT                  // keep this always at the end
 } SKEY_LIST;
@@ -101,16 +101,16 @@ void updateFeatureSettings(uint8_t item_index)
       infoSettings.btt_mini_ups = (infoSettings.btt_mini_ups + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_START_GCODE_ENABLED:
-      infoSettings.send_start_gcode = (infoSettings.send_start_gcode + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_START_GCODE_ON:
+      infoSettings.start_gcode_on = (infoSettings.start_gcode_on + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_END_GCODE_ENABLED:
-      infoSettings.send_end_gcode = (infoSettings.send_end_gcode + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_END_GCODE_ON:
+      infoSettings.end_gcode_on = (infoSettings.end_gcode_on + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_CANCEL_GCODE_ENABLED:
-      infoSettings.send_cancel_gcode = (infoSettings.send_cancel_gcode + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_CANCEL_GCODE_ON:
+      infoSettings.cancel_gcode_on = (infoSettings.cancel_gcode_on + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_RESET_SETTINGS:
@@ -181,16 +181,16 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
         item->icon = iconToggle[infoSettings.btt_mini_ups];
         break;
 
-      case SKEY_START_GCODE_ENABLED:
-        item->icon = iconToggle[infoSettings.send_start_gcode];
+      case SKEY_START_GCODE_ON:
+        item->icon = iconToggle[infoSettings.start_gcode_on];
         break;
 
-      case SKEY_END_GCODE_ENABLED:
-        item->icon = iconToggle[infoSettings.send_end_gcode];
+      case SKEY_END_GCODE_ON:
+        item->icon = iconToggle[infoSettings.end_gcode_on];
         break;
 
-      case SKEY_CANCEL_GCODE_ENABLED:
-        item->icon = iconToggle[infoSettings.send_cancel_gcode];
+      case SKEY_CANCEL_GCODE_ON:
+        item->icon = iconToggle[infoSettings.cancel_gcode_on];
         break;
 
       case SKEY_RESET_SETTINGS:
@@ -233,9 +233,9 @@ void menuFeatureSettings(void)
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PLR_ON,                 LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PLR_HOME,               LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_BTT_MINI_UPS,           LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_START_GCODE_ENABLED,    LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_END_GCODE_ENABLED,      LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_CANCEL_GCODE_ENABLED,   LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_START_GCODE_ON,         LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_END_GCODE_ON,           LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_CANCEL_GCODE_ON,        LABEL_BACKGROUND},
     // Keep reset settings always at the bottom of the settings menu list.
     {CHARICON_BLANK,       LIST_MOREBUTTON,    LABEL_SETTINGS_RESET,         LABEL_BACKGROUND}
   };

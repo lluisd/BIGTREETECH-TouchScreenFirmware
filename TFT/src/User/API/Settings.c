@@ -55,8 +55,8 @@ void infoSettingsReset(void)
   infoSettings.serial_always_on       = SERIAL_ALWAYS_ON;
   infoSettings.marlin_bg_color        = lcd_colors[MARLIN_BKCOLOR];
   infoSettings.marlin_font_color      = lcd_colors[MARLIN_FNCOLOR];
-  infoSettings.marlin_full_screen     = MARLIN_MODE_FULLSCREEN;
-  infoSettings.marlin_show_title      = MARLIN_SHOW_BANNER;
+  infoSettings.marlin_fullscreen      = MARLIN_FULLSCREEN;
+  infoSettings.marlin_show_title      = MARLIN_SHOW_TITLE;
   infoSettings.marlin_type            = LCD12864;
 
 // RRF Mode Settings
@@ -129,9 +129,9 @@ void infoSettingsReset(void)
   #endif
 
 // Start, End & Cancel Gcode Commands
-  infoSettings.send_start_gcode       = DISABLED;
-  infoSettings.send_end_gcode         = DISABLED;
-  infoSettings.send_cancel_gcode      = ENABLED;
+  infoSettings.start_gcode_on         = DISABLED;
+  infoSettings.end_gcode_on           = DISABLED;
+  infoSettings.cancel_gcode_on        = ENABLED;
 
 // All the remaining array initializations
   for (int i = 1; i < MAX_SERIAL_PORT_COUNT; i++)  // supplemetary serial ports

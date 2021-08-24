@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Mostra barra di stato"
     #define STRING_TERMINAL_ACK           "Mostra ACK in console"
     #define STRING_SERIAL_ALWAYS_ON       "Seriale sempre accesa"
-    #define STRING_MARLIN_FULL_SCREEN     "Marlin a schermo intero"
+    #define STRING_MARLIN_FULLSCREEN      "Marlin a schermo intero"
     #define STRING_MARLIN_SHOW_TITLE      "Mostra titolo in Marlin"
     #define STRING_MARLIN_TYPE            "Modalità Marlin"
     #define STRING_MOVE_SPEED             "Vel. movimenti(X Y Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Block touch on idle"
     #define STRING_KNOB_LED_COLOR         "LED manopola "
     #define STRING_KNOB_LED_IDLE          "LED manopola spento"
-    #define STRING_START_GCODE_ENABLED    "Inserisci start gcode"
-    #define STRING_END_GCODE_ENABLED      "Inserisci end gcode"
-    #define STRING_CANCEL_GCODE_ENABLED   "Script canc. stampa"
+    #define STRING_START_GCODE_ON         "Inserisci start gcode"
+    #define STRING_END_GCODE_ON           "Inserisci end gcode"
+    #define STRING_CANCEL_GCODE_ON        "Script canc. stampa"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "Step per mm"

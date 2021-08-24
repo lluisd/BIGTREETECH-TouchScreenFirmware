@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Állandó állapotinfó"
     #define STRING_TERMINAL_ACK           "ACK Megjelenítése"
     #define STRING_SERIAL_ALWAYS_ON       "Soros port folytonos"
-    #define STRING_MARLIN_FULL_SCREEN     "Nagyképernyős Marlin mód"
+    #define STRING_MARLIN_FULLSCREEN      "Nagyképernyős Marlin mód"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin mód cím támogatás"
     #define STRING_MARLIN_TYPE            "Marlin mód típusa"
     #define STRING_MOVE_SPEED             "Mozgás seb. (X-Y-Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Érintés tiltás alapjáraton"
     #define STRING_KNOB_LED_COLOR         "Forgatógomb LED"
     #define STRING_KNOB_LED_IDLE          "Forgatógomb tétlen"
-    #define STRING_START_GCODE_ENABLED    "Kezdő G-Kód"
-    #define STRING_END_GCODE_ENABLED      "Befejező G-Kód"
-    #define STRING_CANCEL_GCODE_ENABLED   "Leállító G-Kód"
+    #define STRING_START_GCODE_ON         "Kezdő G-Kód"
+    #define STRING_END_GCODE_ON           "Befejező G-Kód"
+    #define STRING_CANCEL_GCODE_ON        "Leállító G-Kód"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "Lépés beállítás"

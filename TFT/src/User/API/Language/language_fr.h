@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Temp. toujours affichées"
     #define STRING_TERMINAL_ACK           "Afficher ACK sur Terminal"
     #define STRING_SERIAL_ALWAYS_ON       "Serial toujours actif"
-    #define STRING_MARLIN_FULL_SCREEN     "Mode Marlin plein écran"
+    #define STRING_MARLIN_FULLSCREEN      "Mode Marlin plein écran"
     #define STRING_MARLIN_SHOW_TITLE      "Titre en Mode Marlin"
     #define STRING_MARLIN_TYPE            "Type du Mode Marlin"
     #define STRING_MOVE_SPEED             "Vitesse de déplacement (X Y Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Bloquer touches en veille"
     #define STRING_KNOB_LED_COLOR         "LED du bouton rotatif"
     #define STRING_KNOB_LED_IDLE          "Veille du bouton rotatif"
-    #define STRING_START_GCODE_ENABLED    "Gcode avant l'impression"
-    #define STRING_END_GCODE_ENABLED      "Gcode après l'impression"
-    #define STRING_CANCEL_GCODE_ENABLED   "Gcode d'annulation"
+    #define STRING_START_GCODE_ON         "Gcode avant l'impression"
+    #define STRING_END_GCODE_ON           "Gcode après l'impression"
+    #define STRING_CANCEL_GCODE_ON        "Gcode d'annulation"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "Steps par mm"

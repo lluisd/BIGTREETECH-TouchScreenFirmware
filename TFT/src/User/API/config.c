@@ -660,8 +660,8 @@ void parseConfigKey(uint16_t index)
         config_set_color(&infoSettings.marlin_font_color);
         break;
 
-      case C_INDEX_MARLIN_FULL_SCREEN:
-        infoSettings.marlin_full_screen = getOnOff();
+      case C_INDEX_MARLIN_FULLSCREEN:
+        infoSettings.marlin_fullscreen = getOnOff();
         break;
 
       case C_INDEX_MARLIN_SHOW_TITLE:
@@ -1063,15 +1063,15 @@ void parseConfigKey(uint16_t index)
     //----------------------------Start, End & Cancel Gcode Commands
 
     case C_INDEX_START_GCODE_ON:
-      infoSettings.send_start_gcode = getOnOff();
+      infoSettings.start_gcode_on = getOnOff();
       break;
 
     case C_INDEX_END_GCODE_ON:
-      infoSettings.send_end_gcode = getOnOff();
+      infoSettings.end_gcode_on = getOnOff();
       break;
 
     case C_INDEX_CANCEL_GCODE_ON:
-      infoSettings.send_cancel_gcode = getOnOff();
+      infoSettings.cancel_gcode_on = getOnOff();
       break;
 
     case C_INDEX_START_GCODE:

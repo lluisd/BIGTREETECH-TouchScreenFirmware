@@ -151,7 +151,7 @@ typedef struct
   uint8_t  serial_always_on;
   uint16_t marlin_bg_color;
   uint16_t marlin_font_color;
-  uint8_t  marlin_full_screen;
+  uint8_t  marlin_fullscreen;
   uint8_t  marlin_show_title;
   uint8_t  marlin_type;
 
@@ -229,9 +229,9 @@ typedef struct
   uint8_t  neopixel_pixels;
 
   // Start, End & Cancel Gcode Commands
-  uint8_t  send_start_gcode;
-  uint8_t  send_end_gcode;
-  uint8_t  send_cancel_gcode;
+  uint8_t  start_gcode_on;
+  uint8_t  end_gcode_on;
+  uint8_t  cancel_gcode_on;
 } SETTINGS;
 
 typedef struct

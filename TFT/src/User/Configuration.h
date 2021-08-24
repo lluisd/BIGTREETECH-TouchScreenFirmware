@@ -167,7 +167,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define MARLIN_MODE_FULLSCREEN 0  // Default: 0
+#define MARLIN_FULLSCREEN 0  // Default: 0
 
 /**
  * Marlin Mode Title Support
@@ -175,7 +175,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define MARLIN_SHOW_BANNER 1  // Default: 1
+#define MARLIN_SHOW_TITLE 1  // Default: 1
 
 /**
  * Marlin Mode Title

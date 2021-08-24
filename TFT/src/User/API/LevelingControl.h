@@ -12,11 +12,12 @@ extern "C" {
 
 typedef enum
 {
-  LEVEL_BOTTOM_LEFT = 0,  // bottom left bed corner
-  LEVEL_BOTTOM_RIGHT,     // bottom right bed corner
-  LEVEL_TOP_RIGHT,        // top right bed corner
-  LEVEL_TOP_LEFT,         // top left bed corner
-  LEVEL_CENTER,           // center bed point
+  LEVEL_NO_POINT = -1,
+  LEVEL_BOTTOM_LEFT,    // bottom left bed corner
+  LEVEL_BOTTOM_RIGHT,   // bottom right bed corner
+  LEVEL_TOP_RIGHT,      // top right bed corner
+  LEVEL_TOP_LEFT,       // top left bed corner
+  LEVEL_CENTER,         // center bed point
   LEVELING_POINT_COUNT
 } LEVELING_POINT;
 
@@ -29,7 +30,7 @@ LEVELING_POINT levelingGetPoint(int16_t x, int16_t y);      // return point matc
 void levelingProbePoint(LEVELING_POINT point);
 void levelingMoveToPoint(LEVELING_POINT point);
 void levelingUpdatePoint(int16_t x, int16_t y, float z);    // set Z offset measured by probe for point matching XY coords
-LEVELING_POINT levelingGetPointUpdated(void);               // get new updated point or -1 in case of no new update
+LEVELING_POINT levelingGetPointUpdated(void);               // get new updated point or LEVEL_NO_POINT in case of no new update
 inline float levelingGetZProbed(void) {return zProbed;};    // get new Z offset measured by probe
 
 #ifdef __cplusplus

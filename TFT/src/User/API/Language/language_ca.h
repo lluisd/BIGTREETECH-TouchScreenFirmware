@@ -12,7 +12,7 @@
     #define STRING_PERSISTENT_INFO        "Informació d'estat persistent"
     #define STRING_TERMINAL_ACK           "Mostra ACK a la terminal"
     #define STRING_SERIAL_ALWAYS_ON       "Serial Always ON"
-    #define STRING_MARLIN_FULL_SCREEN     "Mode Marlin a pantalla completa"
+    #define STRING_MARLIN_FULLSCREEN      "Mode Marlin a pantalla completa"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin Mode Title Support"
     #define STRING_MARLIN_TYPE            "Marlin Mode Type"
     #define STRING_MOVE_SPEED             "Velocitat de moviment(X Y Z)"
@@ -34,9 +34,9 @@
     #define STRING_BLOCK_TOUCH_ON_IDLE    "Block touch on idle"
     #define STRING_KNOB_LED_COLOR         "Perilla rotativa LED"
     #define STRING_KNOB_LED_IDLE          "Rotary Knob LED idle"
-    #define STRING_START_GCODE_ENABLED    "Enviar Gcode inicial"
-    #define STRING_END_GCODE_ENABLED      "Enviar Gcode final"
-    #define STRING_CANCEL_GCODE_ENABLED   "Cancel · lar Gcode"
+    #define STRING_START_GCODE_ON         "Enviar Gcode inicial"
+    #define STRING_END_GCODE_ON           "Enviar Gcode final"
+    #define STRING_CANCEL_GCODE_ON        "Cancel · lar Gcode"
 
     // Machine Parameter Settings - Param Title (ordered by gcode)
     #define STRING_STEPS_SETTING          "Passos per MM"
