@@ -604,7 +604,7 @@ void sendQueueCmd(void)
           if (fromTFT)
           {
             heatSetUpdateWaiting(false);
-            avoid_terminal = !infoSettings.terminalACK;
+            avoid_terminal = !infoSettings.terminal_ack;
           }
           break;
 
@@ -922,7 +922,7 @@ void sendQueueCmd(void)
           {
             // purge and pause only if emulated M600 is enabled.
             // if emulated M600 is disabled then let the printer pause the print to avoid premature pause
-            if (infoSettings.emulate_m600 == 1)
+            if (infoSettings.emulated_m600 == 1)
             {
               purgeLastCmd(true, avoid_terminal);
               printPause(true, PAUSE_NORMAL);
@@ -937,7 +937,7 @@ void sendQueueCmd(void)
             {
               // purge and pause only if emulated M600 is enabled.
               // if emulated M600 is disabled then let the printer pause the print to avoid premature pause
-              if (infoSettings.emulate_m600 == 1)
+              if (infoSettings.emulated_m600 == 1)
               {
                 purgeLastCmd(true, avoid_terminal);
                 printPause(true, PAUSE_NORMAL);

@@ -16,7 +16,7 @@ void probeOffsetEnable(bool skipZOffset, float shim)
 
   bool relative = false;
 
-  if (infoSettings.xy_offset_probing)  // if homing without a probe
+  if (infoSettings.probing_after_homing)  // if homing without a probe
   {
     levelingProbePoint(LEVEL_CENTER);  // probe center of bed
 
@@ -28,7 +28,7 @@ void probeOffsetEnable(bool skipZOffset, float shim)
                getParameter(P_PROBE_OFFSET, AXIS_INDEX_X),
                getParameter(P_PROBE_OFFSET, AXIS_INDEX_Y));  // move nozzle to XY probing point and set feedrate
 
-  if (!infoSettings.xy_offset_probing)  // if homing with a probe
+  if (!infoSettings.probing_after_homing)  // if homing with a probe
   {
     if (skipZOffset)
     {

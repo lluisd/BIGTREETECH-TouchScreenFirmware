@@ -118,7 +118,7 @@ typedef struct
 {
   // General Settings
   uint8_t  serial_port[MAX_SERIAL_PORT_COUNT];
-  uint8_t  emulate_m600;
+  uint8_t  emulated_m600;
 
   // UI Settings
   uint8_t  rotate_ui;
@@ -128,31 +128,31 @@ typedef struct
   uint16_t bg_color;
   uint16_t font_color;
   uint16_t reminder_color;
-  uint16_t sd_reminder_color;
+  uint16_t volume_status_color;
   uint16_t status_xyz_bg_color;
   uint16_t list_border_color;
-  uint16_t list_button_color;
+  uint16_t list_button_bg_color;
   uint16_t mesh_min_color;
   uint16_t mesh_max_color;
   uint8_t  terminal_color_scheme;
 
   uint8_t  ack_notification;
   uint8_t  files_sort_by;
-  uint8_t  file_listmode;
-  uint8_t  fan_percentage;
+  uint8_t  files_list_mode;
+  uint8_t  fan_speed_percentage;
   uint8_t  persistent_info;
-  uint8_t  terminalACK;
+  uint8_t  terminal_ack;
   uint8_t  notification_m117;
   uint8_t  prog_disp_type;
   uint8_t  layer_disp_type;
 
   // Marlin Mode Settings (only for TFT24 V1.1 & TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
   uint8_t  mode;
-  uint8_t  serial_alwaysOn;
-  uint16_t marlin_mode_bg_color;
-  uint16_t marlin_mode_font_color;
-  uint8_t  marlin_mode_fullscreen;
-  uint8_t  marlin_mode_showtitle;
+  uint8_t  serial_always_on;
+  uint16_t marlin_bg_color;
+  uint16_t marlin_font_color;
+  uint8_t  marlin_full_screen;
+  uint8_t  marlin_show_title;
   uint8_t  marlin_type;
 
   // RRF Mode Settings
@@ -174,10 +174,10 @@ typedef struct
   uint16_t z_speed[SPEED_COUNT];
   uint16_t ext_speed[SPEED_COUNT];
   uint8_t  auto_load_leveling;
-  uint8_t  onboardSD;
+  uint8_t  onboard_sd_support;
   uint8_t  m27_refresh_time;
-  uint8_t  m27_active;
-  uint8_t  longFileName;
+  uint8_t  m27_always_active;
+  uint8_t  long_filename_support;
   float    pause_retract_len;
   float    resume_purge_len;
   float    pause_pos[AXIS_NUM - 1];  // X, Y
@@ -190,36 +190,36 @@ typedef struct
 
   uint8_t  move_speed;  // index on infoSettings.axis_speed, infoSettings.ext_speed
 
-  uint8_t  invert_axis[AXIS_NUM];
-  uint8_t  leveling_invert_y_axis;
-  uint8_t  xy_offset_probing;
-  float    z_raise_probing;
+  uint8_t  inverted_axis[AXIS_NUM];
+  uint8_t  inverted_leveling_y_axis;
+  uint8_t  probing_after_homing;
+  float    probing_z_raise;
   uint8_t  z_steppers_alignment;
   uint8_t  touchmi_sensor;
 
   // Power Supply Settings (only if connected to TFT controller)
-  uint8_t  auto_off;
+  uint8_t  ps_on;
   uint8_t  ps_active_high;
-  uint8_t  auto_off_temp;
+  uint8_t  ps_auto_shutdown_temp;
 
   // Filament Runout Settings (only if connected to TFT controller)
-  uint8_t  runout;
-  uint8_t  runout_invert;
-  uint8_t  runout_nc;
-  uint16_t runout_noise_ms;
-  uint8_t  runout_distance;
+  uint8_t  fil_runout;
+  uint8_t  fil_runout_inverted;
+  uint8_t  fil_runout_nc;
+  uint16_t fil_runout_noise_ms;
+  uint8_t  fil_runout_distance;
 
   // Power Loss Recovery & BTT UPS Settings
-  uint8_t  powerloss_en;
-  uint8_t  powerloss_home;
-  uint8_t  powerloss_z_raise;
-  uint8_t  btt_ups;
+  uint8_t  plr_on;
+  uint8_t  plr_home;
+  uint8_t  plr_z_raise;
+  uint8_t  btt_mini_ups;
 
   // Other Device-Specific Settings
-  uint8_t  touchSound;
-  uint8_t  toastSound;
-  uint8_t  alertSound;
-  uint8_t  heaterSound;
+  uint8_t  touch_sound;
+  uint8_t  toast_sound;
+  uint8_t  alert_sound;
+  uint8_t  heater_sound;
   uint8_t  lcd_brightness;
   uint8_t  lcd_idle_brightness;
   uint8_t  lcd_idle_time;

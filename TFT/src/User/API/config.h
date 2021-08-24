@@ -16,18 +16,18 @@ extern "C" {
 
 //-----------------------------General Settings
 #define CONFIG_SERIAL_PORT            "serial_port:"
-#define CONFIG_EMULATE_M600           "emulate_m600:"
+#define CONFIG_EMULATED_M600          "emulated_m600:"
 
 //-----------------------------UI Settings
 #define CONFIG_ROTATE_UI              "rotate_ui:"
 #define CONFIG_LANGUAGE               "language:"
 #define CONFIG_STATUS_SCREEN          "status_screen:"
-#define CONFIG_TITLE_BG               "title_back_color:"
-#define CONFIG_MENU_BG_COLOR          "background_color:"
-#define CONFIG_MENU_FONT_COLOR        "font_color:"
-#define CONFIG_NOTIFY_COLOR           "reminder_color:"
-#define CONFIG_SD_NOTIFY_COLOR        "volume_status_color:"
-#define CONFIG_SS_XYZ_BG_COLOR        "status_xyz_bg_color:"
+#define CONFIG_TITLE_BG_COLOR         "title_background_color:"
+#define CONFIG_BG_COLOR               "background_color:"
+#define CONFIG_FONT_COLOR             "font_color:"
+#define CONFIG_REMINDER_COLOR         "reminder_color:"
+#define CONFIG_VOLUME_STATUS_COLOR    "volume_status_color:"
+#define CONFIG_STATUS_XYZ_BG_COLOR    "status_xyz_bg_color:"
 #define CONFIG_LIST_BORDER_COLOR      "list_border_color:"
 #define CONFIG_LIST_BUTTON_BG_COLOR   "list_button_bg_color:"
 #define CONFIG_MESH_MIN_COLOR         "mesh_min_color:"
@@ -36,19 +36,19 @@ extern "C" {
 
 #define CONFIG_ACK_NOTIFICATION       "ack_notification:"
 #define CONFIG_FILES_SORT_BY          "files_sort_by:"
-#define CONFIG_LIST_MODE              "files_list_mode:"
-#define CONFIG_FAN_PERCENT            "fan_speed_percent:"
-#define CONFIG_PERSISTENT_TEMP        "persistent_info:"
+#define CONFIG_FILES_LIST_MODE        "files_list_mode:"
+#define CONFIG_FAN_SPEED_PERCENTAGE   "fan_speed_percentage:"
+#define CONFIG_PERSISTENT_INFO        "persistent_info:"
 #define CONFIG_TERMINAL_ACK           "terminal_ack:"
 #define CONFIG_NOTIFICATION_M117      "notification_m117:"
 #define CONFIG_PROG_DISP_TYPE         "prog_disp_type:"
 #define CONFIG_LAYER_DISP_TYPE        "layer_disp_type:"
 //-----------------------------Marlin Mode Settings (only for TFT24 V1.1 & TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
 #define CONFIG_MODE                   "default_mode:"
-#define CONFIG_SERIAL_ON              "serial_always_on:"
-#define CONFIG_MARLIN_BG_COLOR        "marlin_bg_color:"
-#define CONFIG_MARLIN_FONT_COLOR      "marlin_fn_color:"
-#define CONFIG_MARLIN_FULLSCREEN      "marlin_fullscreen:"
+#define CONFIG_SERIAL_ALWAYS_ON       "serial_always_on:"
+#define CONFIG_MARLIN_BG_COLOR        "marlin_background_color:"
+#define CONFIG_MARLIN_FONT_COLOR      "marlin_font_color:"
+#define CONFIG_MARLIN_FULL_SCREEN     "marlin_full_screen:"
 #define CONFIG_MARLIN_SHOW_TITLE      "marlin_show_title:"
 #define CONFIG_MARLIN_TITLE           "marlin_title:"
 #define CONFIG_MARLIN_TYPE            "marlin_type:"
@@ -82,9 +82,9 @@ extern "C" {
 #define CONFIG_LEVEL_Z_POS            "level_z_pos:"
 #define CONFIG_LEVEL_Z_RAISE          "level_z_raise:"
 #define CONFIG_LEVEL_FEEDRATE         "level_feedrate:"
-#define CONFIG_INVERT_AXIS            "invert_axis:"
-#define CONFIG_XY_OFFSET_PROBING      "xy_offset_probing:"
-#define CONFIG_Z_RAISE_PROBING        "z_raise_probing:"
+#define CONFIG_INVERTED_AXIS          "inverted_axis:"
+#define CONFIG_PROBING_AFTER_HOMING   "probing_after_homing:"
+#define CONFIG_PROBING_Z_RAISE        "probing_z_raise:"
 #define CONFIG_Z_STEPPERS_ALIGNMENT   "z_steppers_alignment:"
 #define CONFIG_TOUCHMI_SENSOR         "touchmi_sensor:"
 #define CONFIG_PREHEAT_NAME_1         "preheat_name1:"
@@ -101,19 +101,19 @@ extern "C" {
 #define CONFIG_PREHEAT_TEMP_6         "preheat_temp6:"
 //-----------------------------Power Supply Settings (only if connected to TFT controller)
 #define CONFIG_PS_ON                  "ps_on:"
-#define CONFIG_PS_LOGIC               "ps_on_active_high:"
-#define CONFIG_SHUTDOWN_TEMP          "auto_shutdown_temp:"
+#define CONFIG_PS_LOGIC               "ps_active_high:"
+#define CONFIG_PS_SHUTDOWN_TEMP       "ps_auto_shutdown_temp:"
 //-----------------------------Filament Runout Settings (only if connected to TFT controller)
 #define CONFIG_RUNOUT                 "fil_runout:"
-#define CONFIG_RUNOUT_LOGIC           "fil_runout_inverting:"
+#define CONFIG_RUNOUT_LOGIC           "fil_runout_inverted:"
 #define CONFIG_RUNOUT_NC              "fil_runout_nc:"
-#define CONFIG_RUNOUT_NOISE           "fil_noise_threshold:"
+#define CONFIG_RUNOUT_NOISE           "fil_runout_noise_threshold:"
 #define CONFIG_RUNOUT_DISTANCE        "fil_runout_distance:"
 //-----------------------------Power Loss Recovery & BTT UPS Settings
-#define CONFIG_POWERLOSS_EN           "pl_recovery_en:"
-#define CONFIG_POWERLOSS_HOME         "pl_recovery_home:"
-#define CONFIG_POWERLOSS_ZRAISE       "pl_z_raise:"
-#define CONFIG_BTT_MINIUPS            "btt_mini_ups:"
+#define CONFIG_PLR_ON                 "plr_on:"
+#define CONFIG_PLR_HOME               "plr_home:"
+#define CONFIG_PLR_Z_RAISE            "plr_z_raise:"
+#define CONFIG_BTT_MINI_UPS           "btt_mini_ups:"
 //-----------------------------Other Device-Specific Settings
 #define CONFIG_TOUCH_SOUND            "touch_sound:"
 #define CONFIG_TOAST_SOUND            "toast_sound:"
@@ -184,7 +184,7 @@ extern "C" {
 #define GCODE_MIN_LENGTH          3  // gcode length less than this will not be parsed.
 #define MIN_XY_POS_LIMIT      -2000  // Set a negative minimum position for Delta printers
 #define MIN_Z_POS_LIMIT           0
-#define MIN_Z_RAISE_PROBING   -2000  // Set a negative minimum position for Delta printers
+#define MIN_PROBING_Z_RAISE   -2000  // Set a negative minimum position for Delta printers
 #define MIN_TOOL_TEMP            20  // extruder temp less than this will not be parsed.
 #define MIN_BED_TEMP             20  // bed temp less than this will not be parsed.
 #define MIN_CHAMBER_TEMP         20  // chamber temp less than this will not be parsed.

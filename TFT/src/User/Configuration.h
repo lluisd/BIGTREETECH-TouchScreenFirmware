@@ -39,7 +39,7 @@
 #define PRIMARY_BAUDRATE 6  // Default: 6
 
 /**
- * Emulate M600
+ * Emulated M600
  * The TFT intercepts the M600 gcode (filament change) and emulates the handling logic
  * otherwise provided by Marlin firmware.
  *
@@ -47,7 +47,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define EMULATE_M600 1  // Default: 1
+#define EMULATED_M600 1  // Default: 1
 
 //================================================================================
 //================================= UI Settings ==================================
@@ -328,15 +328,15 @@
                                    // started not from TFT35
 
 /**
- * Z Raise Probing Support (Probe Offset, Mesh Editor)
+ * Probing Z Raise (Probe Offset, Mesh Editor)
  * Used by the Probe Offset / Mesh Editor menu for the Z offset / Z height tuning process.
- * Z height to raise / drop after homing (G28) before starting to probe a point.
+ * Raise / drop Z axis by this relative value after homing (G28) before starting to probe a point.
  *
  * NOTES:
  *   - It MUST BE a value >= 0 (e.g. 20) for a Cartesian printer to avoid crashing into the bed.
  *   - It MUST BE a value <= 0 (e.g. -50) for a Delta printer to avoid crashing into the top of the tower.
  */
-#define Z_RAISE_PROBING 20.0f
+#define PROBING_Z_RAISE 20.0f
 
 /**
  * TouchMI settings (ABL)
@@ -357,7 +357,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define PS_ON_ACTIVE_HIGH 1  // Default: 1 ("0" for ATX (1), "1" for X-Box (2))
+#define PS_ACTIVE_HIGH 1  // Default: 1 ("0" for ATX (1), "1" for X-Box (2))
 
 /**
  * Power Supply Auto Shutdown Temperature
@@ -366,7 +366,7 @@
  * If the hotend temperature is higher than this value the fans will be turned on to cooldown and it
  * will wait for the hotend temperature to drop below this value before shutting down automatically.
  */
-#define AUTO_SHUT_DOWN_MAXTEMP 50  // Default: 50 (*C)
+#define PS_AUTO_SHUTDOWN_TEMP 50  // Default: 50 (*C)
 
 //================================================================================
 //=========================== Filament Runout Settings ===========================
@@ -382,35 +382,35 @@
 
 /**
  * Default Filament Runout Sensor
- * Select the type of filament/runout sensor and its default enabled/disabled state.
+ * Select the type of filament runout sensor and its default enabled/disabled state.
  *
  *   Options: [Normal Disabled: 0, Normal Enabled: 1, Smart Disabled: 2, Smart Enabled: 3]
  */
-#define FIL_SENSOR_TYPE 0  // Default: 0
+#define FIL_RUNOUT 0  // Default: 0
 
 /**
- * Inverted Filament Runout Logic
+ * Inverted Filament Runout Sensor Logic
  * Invert the logic of the sensor.
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define FIL_RUNOUT_INVERTING 1  // Default: 1
+#define FIL_RUNOUT_INVERTED 1  // Default: 1
 
 /**
- * Filament runout sensor NC(Normal Close)
+ * Filament Runout Sensor NC (Normal Close)
  * Invert the logic of the sensor.
  *
  *   Options: [Normal Open: 0, Normal Close: 1]
  */
 #define FIL_RUNOUT_NC 1  // Default: 1
 
-// Filament Noise Threshold
+// Filament Runout Noise Threshold
 // Pause print when filament runout is detected at least for this time period.
-#define FIL_NOISE_THRESHOLD 100   // Default: 100 (ms)
+#define FIL_RUNOUT_NOISE_THRESHOLD 100   // Default: 100 (ms)
 
 // Smart Filament Runout Detection
 // For use with an encoder disc that toggles runout pin as filament moves.
-#define FILAMENT_RUNOUT_DISTANCE_MM 7  // Default: 7 (mm)
+#define FIL_RUNOUT_DISTANCE_MM 7  // Default: 7 (mm)
 
 //================================================================================
 //==================== Power Loss Recovery & BTT UPS Settings ====================
@@ -427,14 +427,14 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define HOME_BEFORE_PLR 0  // Default: 0
+#define PLR_HOME 0  // Default: 0
 
-// Power Loss Z Raise
+// Power Loss Recovery Z Raise
 // Raise Z axis on resume (on power loss with UPS).
-#define POWER_LOSS_ZRAISE 10  // Default: 10 (mm)
+#define PLR_Z_RAISE 10  // Default: 10 (mm)
 
 /**
- * BTT UPS Support
+ * BTT Mini UPS Support
  * Enable backup power/UPS to move Z axis on power loss.
  *
  *   Options: [disable: 0, enable: 1]

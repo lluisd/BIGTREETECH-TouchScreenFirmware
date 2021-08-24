@@ -54,7 +54,7 @@ void menuFan(void)
       case KEY_ICON_0:
         if (fanGetSetSpeed(fan_index) > 0)
         {
-          if (infoSettings.fan_percentage == 1)
+          if (infoSettings.fan_speed_percentage == 1)
             fanSetPercent(fan_index, fanGetSetPercent(fan_index) - 1);
           else
             fanSetSpeed(fan_index, fanGetSetSpeed(fan_index) - 1);
@@ -65,7 +65,7 @@ void menuFan(void)
       {
         int16_t val;
 
-        if (infoSettings.fan_percentage == 1)
+        if (infoSettings.fan_speed_percentage == 1)
         {
           val = editIntValue(0, 100, 0, fanGetSetPercent(fan_index));
 
@@ -88,7 +88,7 @@ void menuFan(void)
       case KEY_ICON_3:
         if (fanGetSetSpeed(fan_index) < infoSettings.fan_max[fan_index])
         {
-          if (infoSettings.fan_percentage == 1)
+          if (infoSettings.fan_speed_percentage == 1)
             fanSetPercent(fan_index, fanGetSetPercent(fan_index) + 1);
           else
             fanSetSpeed(fan_index, fanGetSetSpeed(fan_index) + 1);
@@ -130,7 +130,7 @@ void menuFan(void)
           {
             if (fanGetSetSpeed(fan_index) < infoSettings.fan_max[fan_index] && encoderPosition > 0)
             {
-              if (infoSettings.fan_percentage == 1)
+              if (infoSettings.fan_speed_percentage == 1)
                 fanSetPercent(fan_index, fanGetSetPercent(fan_index) + 1);
               else
                 fanSetSpeed(fan_index, fanGetSetSpeed(fan_index) + 1);
@@ -138,7 +138,7 @@ void menuFan(void)
 
             if (fanGetSetSpeed(fan_index) > 0 && encoderPosition < 0)
             {
-              if (infoSettings.fan_percentage == 1)
+              if (infoSettings.fan_speed_percentage == 1)
                 fanSetPercent(fan_index, fanGetSetPercent(fan_index) - 1);
               else
                 fanSetSpeed(fan_index, fanGetSetSpeed(fan_index) - 1);

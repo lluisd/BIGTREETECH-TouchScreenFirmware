@@ -23,11 +23,11 @@ const LABEL itemToggleSmart[ITEM_TOGGLE_SMART_NUM] =
 // add key number index of the items
 typedef enum
 {
-  SKEY_EMULATE_M600 = 0,
+  SKEY_EMULATED_M600 = 0,
   SKEY_SERIAL_ALWAYS_ON,
   SKEY_SPEED,
   SKEY_AUTO_LOAD_LEVELING,
-  SKEY_XY_OFFSET_PROBING,
+  SKEY_PROBING_AFTER_HOMING,
   SKEY_Z_STEPPERS_ALIGNMENT,
 
   #ifdef PS_ON_PIN
@@ -38,8 +38,8 @@ typedef enum
     SKEY_FIL_RUNOUT,
   #endif
 
-  SKEY_PL_RECOVERY_EN,
-  SKEY_PL_RECOVERY_HOME,
+  SKEY_PLR_ON,
+  SKEY_PLR_HOME,
   SKEY_BTT_MINI_UPS,
   SKEY_START_GCODE_ENABLED,
   SKEY_END_GCODE_ENABLED,
@@ -53,12 +53,12 @@ void updateFeatureSettings(uint8_t item_index)
 {
   switch (item_index)
   {
-    case SKEY_EMULATE_M600:
-      infoSettings.emulate_m600 = (infoSettings.emulate_m600 + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_EMULATED_M600:
+      infoSettings.emulated_m600 = (infoSettings.emulated_m600 + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_SERIAL_ALWAYS_ON:
-      infoSettings.serial_alwaysOn = (infoSettings.serial_alwaysOn + 1) % ITEM_TOGGLE_NUM;
+      infoSettings.serial_always_on = (infoSettings.serial_always_on + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_SPEED:
@@ -69,8 +69,8 @@ void updateFeatureSettings(uint8_t item_index)
       infoSettings.auto_load_leveling = (infoSettings.auto_load_leveling + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_XY_OFFSET_PROBING:
-      infoSettings.xy_offset_probing = (infoSettings.xy_offset_probing + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_PROBING_AFTER_HOMING:
+      infoSettings.probing_after_homing = (infoSettings.probing_after_homing + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_Z_STEPPERS_ALIGNMENT:
@@ -79,26 +79,26 @@ void updateFeatureSettings(uint8_t item_index)
 
     #ifdef PS_ON_PIN
       case SKEY_PS_ON:
-        infoSettings.auto_off = (infoSettings.auto_off + 1) % ITEM_TOGGLE_AUTO_NUM;
+        infoSettings.ps_on = (infoSettings.ps_on + 1) % ITEM_TOGGLE_AUTO_NUM;
         break;
     #endif
 
     #ifdef FIL_RUNOUT_PIN
       case SKEY_FIL_RUNOUT:
-        infoSettings.runout ^= (1U << 0);
+        infoSettings.fil_runout ^= (1U << 0);
         break;
     #endif
 
-    case SKEY_PL_RECOVERY_EN:
-      infoSettings.powerloss_en = (infoSettings.powerloss_en + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_PLR_ON:
+      infoSettings.plr_on = (infoSettings.plr_on + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_PL_RECOVERY_HOME:
-      infoSettings.powerloss_home = (infoSettings.powerloss_home + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_PLR_HOME:
+      infoSettings.plr_home = (infoSettings.plr_home + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_BTT_MINI_UPS:
-      infoSettings.btt_ups = (infoSettings.btt_ups + 1) % ITEM_TOGGLE_NUM;
+      infoSettings.btt_mini_ups = (infoSettings.btt_mini_ups + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_START_GCODE_ENABLED:
@@ -130,12 +130,12 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
   {
     switch (item_index)
     {
-      case SKEY_EMULATE_M600:
-        item->icon = iconToggle[infoSettings.emulate_m600];
+      case SKEY_EMULATED_M600:
+        item->icon = iconToggle[infoSettings.emulated_m600];
         break;
 
       case SKEY_SERIAL_ALWAYS_ON:
-        item->icon = iconToggle[infoSettings.serial_alwaysOn];
+        item->icon = iconToggle[infoSettings.serial_always_on];
         break;
 
       case SKEY_SPEED:
@@ -146,8 +146,8 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
         item->icon = iconToggle[infoSettings.auto_load_leveling];
         break;
 
-      case SKEY_XY_OFFSET_PROBING:
-        item->icon = iconToggle[infoSettings.xy_offset_probing];
+      case SKEY_PROBING_AFTER_HOMING:
+        item->icon = iconToggle[infoSettings.probing_after_homing];
         break;
 
       case SKEY_Z_STEPPERS_ALIGNMENT:
@@ -156,29 +156,29 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
 
       #ifdef PS_ON_PIN
         case SKEY_PS_ON:
-          item->valueLabel = itemToggleAuto[infoSettings.auto_off];
+          item->valueLabel = itemToggleAuto[infoSettings.ps_on];
           break;
       #endif
 
       #ifdef FIL_RUNOUT_PIN
         case SKEY_FIL_RUNOUT:
         {
-          LABEL sensorLabel = itemToggleSmart[(infoSettings.runout >> 1) & 1];
-          item->valueLabel.index = (infoSettings.runout & 1) ? sensorLabel.index : LABEL_OFF ;
+          LABEL sensorLabel = itemToggleSmart[(infoSettings.fil_runout >> 1) & 1];
+          item->valueLabel.index = (infoSettings.fil_runout & 1) ? sensorLabel.index : LABEL_OFF ;
           break;
         }
       #endif
 
-      case SKEY_PL_RECOVERY_EN:
-        item->icon = iconToggle[infoSettings.powerloss_en];
+      case SKEY_PLR_ON:
+        item->icon = iconToggle[infoSettings.plr_on];
         break;
 
-      case SKEY_PL_RECOVERY_HOME:
-        item->icon = iconToggle[infoSettings.powerloss_home];
+      case SKEY_PLR_HOME:
+        item->icon = iconToggle[infoSettings.plr_home];
         break;
 
       case SKEY_BTT_MINI_UPS:
-        item->icon = iconToggle[infoSettings.btt_ups];
+        item->icon = iconToggle[infoSettings.btt_mini_ups];
         break;
 
       case SKEY_START_GCODE_ENABLED:
@@ -215,11 +215,11 @@ void menuFeatureSettings(void)
 
   // set item types
   LISTITEM settingPage[SKEY_COUNT] = {
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_EMULATE_M600,           LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_EMULATED_M600,          LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_SERIAL_ALWAYS_ON,       LABEL_BACKGROUND},
     {CHARICON_BLANK,       LIST_CUSTOMVALUE,   LABEL_MOVE_SPEED,             LABEL_NORMAL},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_AUTO_LOAD_LEVELING,     LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_XY_OFFSET_PROBING,      LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PROBING_AFTER_HOMING,   LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_Z_STEPPERS_ALIGNMENT,   LABEL_BACKGROUND},
 
     #ifdef PS_ON_PIN
@@ -230,8 +230,8 @@ void menuFeatureSettings(void)
       {CHARICON_BLANK,       LIST_CUSTOMVALUE,   LABEL_FIL_RUNOUT,             LABEL_OFF},
     #endif
 
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PL_RECOVERY_EN,         LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PL_RECOVERY_HOME,       LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PLR_ON,                 LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PLR_HOME,               LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_BTT_MINI_UPS,           LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_START_GCODE_ENABLED,    LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_END_GCODE_ENABLED,      LABEL_BACKGROUND},

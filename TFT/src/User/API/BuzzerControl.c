@@ -10,7 +10,7 @@ void Buzzer_play(SOUND sound)
   switch (sound)
   {
     case sound_ok:
-      if (infoSettings.alertSound != 1)
+      if (infoSettings.alert_sound != 1)
         break;
       Buzzer_TurnOn(3500, 50);
       Buzzer_TurnOn(0, 40);
@@ -18,7 +18,7 @@ void Buzzer_play(SOUND sound)
       break;
 
     case sound_success:
-      if (infoSettings.alertSound != 1)
+      if (infoSettings.alert_sound != 1)
         break;
       Buzzer_TurnOn(3500, 50);
       Buzzer_TurnOn(0, 50);
@@ -28,7 +28,7 @@ void Buzzer_play(SOUND sound)
       break;
 
     case sound_cancel:
-      if (infoSettings.alertSound != 1)
+      if (infoSettings.alert_sound != 1)
         break;
       Buzzer_TurnOn(5500, 50);
       Buzzer_TurnOn(0, 20);
@@ -36,7 +36,7 @@ void Buzzer_play(SOUND sound)
       break;
 
     case sound_notify:
-      if (infoSettings.alertSound != 1)
+      if (infoSettings.alert_sound != 1)
         break;
       Buzzer_TurnOn(3090, 50);
       Buzzer_TurnOn(0, 50);
@@ -52,21 +52,21 @@ void Buzzer_play(SOUND sound)
       break;
 
     case sound_deny:
-      if (infoSettings.alertSound != 1)
+      if (infoSettings.alert_sound != 1)
         break;
       Buzzer_TurnOn(500, 10);
       Buzzer_TurnOn(10000, 20);
       break;
 
     case sound_toast:
-      if (infoSettings.toastSound != 1)
+      if (infoSettings.toast_sound != 1)
         break;
       Buzzer_TurnOn(1500, 30);
       Buzzer_TurnOn(2000, 30);
       break;
 
     case sound_heated:
-      if (infoSettings.heaterSound != 1)
+      if (infoSettings.heater_sound != 1)
         break;
       Buzzer_TurnOn(3136, 50);
       Buzzer_TurnOn(0, 50);
@@ -76,7 +76,7 @@ void Buzzer_play(SOUND sound)
       break;
 
     case sound_cooled:
-      if (infoSettings.heaterSound != 1)
+      if (infoSettings.heater_sound != 1)
         break;
       Buzzer_TurnOn(3951, 50);
       Buzzer_TurnOn(0, 50);
@@ -87,7 +87,7 @@ void Buzzer_play(SOUND sound)
 
     case sound_keypress:
     default:
-      if (infoSettings.touchSound != 1)
+      if (infoSettings.touch_sound != 1)
         break;
       Buzzer_TurnOn(BUZZER_FREQUENCY_HZ, BUZZER_FREQUENCY_DURATION_MS);
       break;

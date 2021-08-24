@@ -36,7 +36,7 @@ void zOffsetDraw(bool status, float val)
   {
     sprintf(tempstr, "ZO:%.2f  ", val);
     sprintf(tempstr3, "Shim:%.3f", infoSettings.level_z_pos);
-    GUI_SetColor(infoSettings.sd_reminder_color);
+    GUI_SetColor(infoSettings.volume_status_color);
     sprintf(tempstr2, "  %.2f  ", val + infoSettings.level_z_pos);
   }
 

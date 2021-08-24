@@ -270,7 +270,7 @@ static inline void reDrawPrintingValue(uint8_t icon_pos, uint8_t draw_type)
         break;
 
       case ICON_POS_FAN:
-        if (infoSettings.fan_percentage == 1)
+        if (infoSettings.fan_speed_percentage == 1)
           sprintf(tempstr, "%3d%%", fanGetCurPercent(currentFan));
         else
           sprintf(tempstr, "%3d", fanGetCurSpeed(currentFan));

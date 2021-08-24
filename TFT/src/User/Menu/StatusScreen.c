@@ -148,7 +148,7 @@ void drawStatus(void)
   // FAN
   lvIcon.lines[0].text = (uint8_t *)fanID[currentFan];
 
-  if (infoSettings.fan_percentage == 1)
+  if (infoSettings.fan_speed_percentage == 1)
     sprintf(tempstr, "%3d%%", fanGetCurPercent(currentFan));
   else
     sprintf(tempstr, "%3d", fanGetCurSpeed(currentFan));

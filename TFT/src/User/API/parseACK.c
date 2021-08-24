@@ -517,7 +517,7 @@ void parseACK(void)
               heatSyncTargetTemp(i, ack_second_value() + 0.5f);
           }
         }
-        avoid_terminal = !infoSettings.terminalACK;
+        avoid_terminal = !infoSettings.terminal_ack;
         updateNextHeatCheckTime();
       }
       // parse and store M114, current position
@@ -721,7 +721,7 @@ void parseACK(void)
         tmpMsg[6] = '\0';
         if (strcmp(tmpMsg, "Mean: ") == 0)
         {
-          setLevelCornerPosition(-1, -1, ack_value());  // save value for LevelCorner menu
+          levelingUpdatePoint(-1, -1, ack_value());  // save probed Z value
           sprintf(tmpMsg, "%s\nStandard Deviation: %0.5f", (char *)getDialogMsgStr(), ack_value());
           setDialogText((uint8_t* )"Repeatability Test", (uint8_t *)tmpMsg, LABEL_CONFIRM, LABEL_BACKGROUND);
           showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
@@ -828,7 +828,7 @@ void parseACK(void)
         float x = ack_value();
         float y = 0;
         if (ack_seen("Y: ")) y = ack_value();
-        if (ack_seen("Z: ")) setLevelCornerPosition(x, y, ack_value());
+        if (ack_seen("Z: ")) levelingUpdatePoint(x, y, ack_value());  // save probed Z value
       }
 
       //----------------------------------------
@@ -1167,7 +1167,7 @@ void parseACK(void)
       {
         infoMachineSettings.promptSupport = ack_value();
       }
-      else if (ack_seen("Cap:SDCARD:") && infoSettings.onboardSD == AUTO)
+      else if (ack_seen("Cap:SDCARD:") && infoSettings.onboard_sd_support == AUTO)
       {
         infoMachineSettings.onboard_sd_support = ack_value();
       }
@@ -1175,7 +1175,7 @@ void parseACK(void)
       {
         infoMachineSettings.autoReportSDStatus = ack_value();
       }
-      else if (ack_seen("Cap:LONG_FILENAME:") && infoSettings.longFileName == AUTO)
+      else if (ack_seen("Cap:LONG_FILENAME:") && infoSettings.long_filename_support == AUTO)
       {
         infoMachineSettings.long_filename_support = ack_value();
       }

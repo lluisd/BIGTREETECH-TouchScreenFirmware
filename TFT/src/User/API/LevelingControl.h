@@ -17,15 +17,20 @@ typedef enum
   LEVEL_TOP_RIGHT,        // top right bed corner
   LEVEL_TOP_LEFT,         // top left bed corner
   LEVEL_CENTER,           // center bed point
-  LEVEL_POINT_COUNT
+  LEVELING_POINT_COUNT
 } LEVELING_POINT;
 
-typedef int16_t LEVELING_POINT_COORDS[LEVEL_POINT_COUNT][2];  // [][0] X coord, [][1] Y coord
+typedef int16_t LEVELING_POINT_COORDS[LEVELING_POINT_COUNT][2];  // [][0] X coord, [][1] Y coord
 
-void levelingGetPointCoords(LEVELING_POINT_COORDS coords);
-LEVELING_POINT levelingGetPoint(int16_t x, int16_t y);  // return the point matching XY coords or LEVEL_CENTER in case of no match
+extern float zProbed;  // last Z offset measured by probe
+
+void levelingGetPointCoords(LEVELING_POINT_COORDS coords);  // return all point coords
+LEVELING_POINT levelingGetPoint(int16_t x, int16_t y);      // return point matching XY coords or LEVEL_CENTER in case of no match
 void levelingProbePoint(LEVELING_POINT point);
 void levelingMoveToPoint(LEVELING_POINT point);
+void levelingUpdatePoint(int16_t x, int16_t y, float z);    // set Z offset measured by probe for point matching XY coords
+LEVELING_POINT levelingGetPointUpdated(void);               // get new updated point or -1 in case of no new update
+inline float levelingGetZProbed(void) {return zProbed;};    // get new Z offset measured by probe
 
 #ifdef __cplusplus
 }
