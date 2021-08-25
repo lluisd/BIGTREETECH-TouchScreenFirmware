@@ -721,7 +721,7 @@ void parseACK(void)
         tmpMsg[6] = '\0';
         if (strcmp(tmpMsg, "Mean: ") == 0)
         {
-          levelingUpdatePoint(-1, -1, ack_value());  // save probed Z value
+          levelingSetProbedPoint(-1, -1, ack_value());  // save probed Z value
           sprintf(tmpMsg, "%s\nStandard Deviation: %0.5f", (char *)getDialogMsgStr(), ack_value());
           setDialogText((uint8_t* )"Repeatability Test", (uint8_t *)tmpMsg, LABEL_CONFIRM, LABEL_BACKGROUND);
           showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
@@ -828,7 +828,7 @@ void parseACK(void)
         float x = ack_value();
         float y = 0;
         if (ack_seen("Y: ")) y = ack_value();
-        if (ack_seen("Z: ")) levelingUpdatePoint(x, y, ack_value());  // save probed Z value
+        if (ack_seen("Z: ")) levelingSetProbedPoint(x, y, ack_value());  // save probed Z value
       }
 
       //----------------------------------------

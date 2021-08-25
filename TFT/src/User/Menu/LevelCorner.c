@@ -68,7 +68,6 @@ void menuLevelCorner(void)
   };
 
   KEY_VALUES key_num = KEY_IDLE;
-  LEVELING_POINT pointUpdated = LEVEL_NO_POINT;
   char iconText[LEVELING_POINT_COUNT][15];
 
   if (coordinateIsKnown() == false)
@@ -147,12 +146,12 @@ void menuLevelCorner(void)
         break;
     }
 
-    pointUpdated = levelingGetPointUpdated();
-
-    if (pointUpdated != LEVEL_NO_POINT)
+    if (levelingGetProbedPoint() != LEVEL_NO_POINT)
     {
-      levelCornerPosition[pointUpdated] = levelingGetZProbed();
-      refreshValue(&levelCornerItems, pointUpdated);
+      levelCornerPosition[levelingGetProbedPoint()] = levelingGetProbedZ();
+      refreshValue(&levelCornerItems, levelingGetProbedPoint());
+
+      levelingResetProbedPoint();  // reset to check for new updates
     }
 
     loopProcess();

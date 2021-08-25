@@ -1,8 +1,8 @@
 #include "LevelingControl.h"
 #include "includes.h"
 
-LEVELING_POINT pointUpdated = LEVEL_NO_POINT;
-float zProbed = 0.0f;
+LEVELING_POINT probedPoint = LEVEL_NO_POINT;
+float probedZ = 0.0f;
 
 void levelingGetPointCoords(LEVELING_POINT_COORDS coords)
 {
@@ -56,6 +56,20 @@ LEVELING_POINT levelingGetPoint(int16_t x, int16_t y)
   return LEVEL_CENTER;  // if point is not found, return the center point
 }
 
+void levelingMoveToPoint(LEVELING_POINT point)
+{
+  LEVELING_POINT_COORDS coords;
+
+  levelingGetPointCoords(coords);
+
+  if (coordinateIsKnown() == false)
+    storeCmd("G28\n");
+
+  storeCmd("G0 Z%.3f F%d\n", infoSettings.level_z_raise, infoSettings.level_feedrate[FEEDRATE_Z]);
+  storeCmd("G0 X%d Y%d F%d\n", coords[point][0], coords[point][1], infoSettings.level_feedrate[FEEDRATE_XY]);
+  storeCmd("G0 Z%.3f F%d\n", infoSettings.level_z_pos, infoSettings.level_feedrate[FEEDRATE_Z]);
+}
+
 void levelingProbePoint(LEVELING_POINT point)
 {
   LEVELING_POINT_COORDS coords;
@@ -75,34 +89,12 @@ void levelingProbePoint(LEVELING_POINT point)
 
   mustStoreCmd(ENABLE_STEPPER_CMD);
   mustStoreCmd(DISABLE_STEPPER_CMD);
+
+  probedPoint = LEVEL_NO_POINT;  // reset probedPoint before waiting for new probed Z
 }
 
-void levelingMoveToPoint(LEVELING_POINT point)
+void levelingSetProbedPoint(int16_t x, int16_t y, float z)
 {
-  LEVELING_POINT_COORDS coords;
-
-  levelingGetPointCoords(coords);
-
-  if (coordinateIsKnown() == false)
-    storeCmd("G28\n");
-
-  storeCmd("G0 Z%.3f F%d\n", infoSettings.level_z_raise, infoSettings.level_feedrate[FEEDRATE_Z]);
-  storeCmd("G0 X%d Y%d F%d\n", coords[point][0], coords[point][1], infoSettings.level_feedrate[FEEDRATE_XY]);
-  storeCmd("G0 Z%.3f F%d\n", infoSettings.level_z_pos, infoSettings.level_feedrate[FEEDRATE_Z]);
-}
-
-void levelingUpdatePoint(int16_t x, int16_t y, float z)
-{
-  pointUpdated = levelingGetPoint(x, y);
-  zProbed = z;
-}
-
-LEVELING_POINT levelingGetPointUpdated(void)
-{
-  LEVELING_POINT point = pointUpdated;
-
-  if (point != LEVEL_NO_POINT)
-    pointUpdated = LEVEL_NO_POINT;  // one shot point (resetted to LEVEL_NO_POINT for next checks)
-
-  return point;
+  probedPoint = levelingGetPoint(x, y);
+  probedZ = z;
 }
