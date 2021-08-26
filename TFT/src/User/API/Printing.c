@@ -403,7 +403,7 @@ void printComplete(void)
   BUZZER_PLAY(sound_success);
   printEnd();
 
-  if (infoSettings.ps_on)  // Auto shut down after print
+  if (infoSettings.ps_on)  // Auto shutdown after print
   {
     shutdownStart();
   }
@@ -745,6 +745,7 @@ void loopPrintFromHost(void)
 
   if (infoFile.source < BOARD_SD) return;
   if (infoMachineSettings.autoReportSDStatus == ENABLED) return;
+  if (infoMenu.menu[infoMenu.cur] == menuTerminal) return;
   if (!infoSettings.m27_always_active && !infoPrinting.printing) return;
 
   static uint32_t nextCheckPrintTime = 0;
