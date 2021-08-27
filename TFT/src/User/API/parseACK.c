@@ -1158,7 +1158,7 @@ void parseACK(void)
       {
         infoMachineSettings.promptSupport = ack_value();
       }
-      else if (ack_seen("Cap:SDCARD:") && infoSettings.onboard_sd_support == AUTO)
+      else if (ack_seen("Cap:SDCARD:") && infoSettings.onboard_sd == AUTO)
       {
         infoMachineSettings.onboard_sd_support = ack_value();
       }
@@ -1166,7 +1166,7 @@ void parseACK(void)
       {
         infoMachineSettings.autoReportSDStatus = ack_value();
       }
-      else if (ack_seen("Cap:LONG_FILENAME:") && infoSettings.long_filename_support == AUTO)
+      else if (ack_seen("Cap:LONG_FILENAME:") && infoSettings.long_filename == AUTO)
       {
         infoMachineSettings.long_filename_support = ack_value();
       }

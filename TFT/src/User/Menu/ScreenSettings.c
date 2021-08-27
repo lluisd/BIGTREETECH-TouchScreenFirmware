@@ -311,7 +311,7 @@ void menuUISettings(void)
   setDynamicTextValue(0, (char *)itemNotificationType[infoSettings.ack_notification]);
   setDynamicTextValue(1, (char *)itemSortBy[infoSettings.files_sort_by]);
   uiItems[2].icon = iconToggle[infoSettings.files_list_mode];
-  uiItems[3].icon = iconToggle[infoSettings.fan_speed_percentage];
+  uiItems[3].icon = iconToggle[infoSettings.fan_percentage];
   uiItems[4].icon = iconToggle[infoSettings.persistent_info];
   uiItems[5].icon = iconToggle[infoSettings.terminal_ack];
 
@@ -346,8 +346,8 @@ void menuUISettings(void)
         break;
 
       case 3:
-        infoSettings.fan_speed_percentage = (infoSettings.fan_speed_percentage + 1) % ITEM_TOGGLE_NUM;
-        uiItems[curIndex].icon = iconToggle[infoSettings.fan_speed_percentage];
+        infoSettings.fan_percentage = (infoSettings.fan_percentage + 1) % ITEM_TOGGLE_NUM;
+        uiItems[curIndex].icon = iconToggle[infoSettings.fan_percentage];
         break;
 
       case 4:

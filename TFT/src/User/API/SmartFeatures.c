@@ -89,7 +89,7 @@ bool FIL_NormalRunoutDetect(void)
     runout = trueTimes > falseTimes ? true : false;
     trueTimes = 0;
     falseTimes = 0;
-    nextRunoutTime = OS_GetTimeMs() + infoSettings.fil_runout_noise_ms;
+    nextRunoutTime = OS_GetTimeMs() + infoSettings.runout_noise_ms;
   }
   else
   {
@@ -143,7 +143,7 @@ bool FIL_NormalRunoutDetect(void)
   }
 
   // Detect HIGH/LOW level, Suitable for general mechanical / photoelectric switches
-  return (runout == infoSettings.fil_runout_inverted);
+  return (runout == infoSettings.runout_inverted);
 }
 
 bool FIL_SmartRunoutDetect(void)
@@ -184,7 +184,7 @@ bool FIL_SmartRunoutDetect(void)
     }
   }
 
-  if (ABS(posE - lastPosE) >= infoSettings.fil_runout_distance)
+  if (ABS(posE - lastPosE) >= infoSettings.runout_distance)
   {
     lastPosE = posE;
 
@@ -204,10 +204,10 @@ bool FIL_SmartRunoutDetect(void)
 
 bool FIL_IsRunout(void)
 {
-  if (infoSettings.fil_runout & 1)
+  if (infoSettings.runout & 1)
   {
     // Get sensor type
-    uint8_t sensorType = (infoSettings.fil_runout >> 1) & 1;
+    uint8_t sensorType = (infoSettings.runout >> 1) & 1;
 
     switch (sensorType)
     {
@@ -227,7 +227,7 @@ bool FIL_IsRunout(void)
 
 void FIL_BE_CheckRunout(void)
 {
-  if (!(infoSettings.fil_runout & 1))  // Filament runout turn off
+  if (!(infoSettings.runout & 1))  // Filament runout turn off
     return;
 
   setPrintRunout(FIL_IsRunout());  // Need constant scanning to filter interference

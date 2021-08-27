@@ -128,7 +128,7 @@ typedef struct
   uint16_t bg_color;
   uint16_t font_color;
   uint16_t reminder_color;
-  uint16_t volume_status_color;
+  uint16_t status_color;
   uint16_t status_xyz_bg_color;
   uint16_t list_border_color;
   uint16_t list_button_bg_color;
@@ -139,7 +139,7 @@ typedef struct
   uint8_t  ack_notification;
   uint8_t  files_sort_by;
   uint8_t  files_list_mode;
-  uint8_t  fan_speed_percentage;
+  uint8_t  fan_percentage;
   uint8_t  persistent_info;
   uint8_t  terminal_ack;
   uint8_t  notification_m117;
@@ -174,10 +174,10 @@ typedef struct
   uint16_t z_speed[SPEED_COUNT];
   uint16_t ext_speed[SPEED_COUNT];
   uint8_t  auto_load_leveling;
-  uint8_t  onboard_sd_support;
+  uint8_t  onboard_sd;
   uint8_t  m27_refresh_time;
-  uint8_t  m27_always_active;
-  uint8_t  long_filename_support;
+  uint8_t  m27_active;
+  uint8_t  long_filename;
   float    pause_retract_len;
   float    resume_purge_len;
   float    pause_pos[AXIS_NUM - 1];  // X, Y
@@ -198,19 +198,19 @@ typedef struct
   uint8_t  touchmi_sensor;
 
   // Power Supply Settings (only if connected to TFT controller)
-  uint8_t  ps_on;
+  uint8_t  auto_off;
   uint8_t  ps_active_high;
-  uint8_t  ps_auto_shutdown_temp;
+  uint8_t  auto_off_temp;
 
   // Filament Runout Settings (only if connected to TFT controller)
-  uint8_t  fil_runout;
-  uint8_t  fil_runout_inverted;
-  uint8_t  fil_runout_nc;
-  uint16_t fil_runout_noise_ms;
-  uint8_t  fil_runout_distance;
+  uint8_t  runout;
+  uint8_t  runout_inverted;
+  uint8_t  runout_nc;
+  uint16_t runout_noise_ms;
+  uint8_t  runout_distance;
 
   // Power Loss Recovery & BTT UPS Settings
-  uint8_t  plr_on;
+  uint8_t  plr;
   uint8_t  plr_home;
   uint8_t  plr_z_raise;
   uint8_t  btt_mini_ups;
@@ -229,9 +229,9 @@ typedef struct
   uint8_t  neopixel_pixels;
 
   // Start, End & Cancel Gcode Commands
-  uint8_t  start_gcode_on;
-  uint8_t  end_gcode_on;
-  uint8_t  cancel_gcode_on;
+  uint8_t  start_gcode_state;
+  uint8_t  end_gcode_state;
+  uint8_t  cancel_gcode_state;
 } SETTINGS;
 
 typedef struct

@@ -77,7 +77,7 @@
 #define BACKGROUND_COLOR            1  // Background color (Default: 1)
 #define FONT_COLOR                  0  // Font foreground color (Default: 0)
 #define REMINDER_FONT_COLOR         2  // Reminder font color, such as: "No print attached", "Busy processing", etc (Default: 2)
-#define VOLUME_REMINDER_FONT_COLOR  5  // Volume status/reminder font color, such as: "Card inserted", "Card removed" (Default: 5)
+#define STATUS_FONT_COLOR           5  // Status (e.g. volume reminder) font color, such as: "Card inserted", "Card removed" (Default: 5)
 #define STATUS_XYZ_BG_COLOR        15  // Backgroud color for X Y Z position display in Status Screen menu (Default: 15)
 #define LISTVIEW_BORDER_COLOR      15  // List View border color (Default: 15)
 #define LISTVIEW_ICON_COLOR        15  // List View button background color (Default: 15)

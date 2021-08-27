@@ -79,18 +79,18 @@ void updateFeatureSettings(uint8_t item_index)
 
     #ifdef PS_ON_PIN
       case SKEY_PS_ON:
-        infoSettings.ps_on = (infoSettings.ps_on + 1) % ITEM_TOGGLE_AUTO_NUM;
+        infoSettings.auto_off = (infoSettings.auto_off + 1) % ITEM_TOGGLE_AUTO_NUM;
         break;
     #endif
 
     #ifdef FIL_RUNOUT_PIN
       case SKEY_FIL_RUNOUT:
-        infoSettings.fil_runout ^= (1U << 0);
+        infoSettings.runout ^= (1U << 0);
         break;
     #endif
 
     case SKEY_PLR_ON:
-      infoSettings.plr_on = (infoSettings.plr_on + 1) % ITEM_TOGGLE_NUM;
+      infoSettings.plr = (infoSettings.plr + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_PLR_HOME:
@@ -102,15 +102,15 @@ void updateFeatureSettings(uint8_t item_index)
       break;
 
     case SKEY_START_GCODE_ON:
-      infoSettings.start_gcode_on = (infoSettings.start_gcode_on + 1) % ITEM_TOGGLE_NUM;
+      infoSettings.start_gcode_state = (infoSettings.start_gcode_state + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_END_GCODE_ON:
-      infoSettings.end_gcode_on = (infoSettings.end_gcode_on + 1) % ITEM_TOGGLE_NUM;
+      infoSettings.end_gcode_state = (infoSettings.end_gcode_state + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_CANCEL_GCODE_ON:
-      infoSettings.cancel_gcode_on = (infoSettings.cancel_gcode_on + 1) % ITEM_TOGGLE_NUM;
+      infoSettings.cancel_gcode_state = (infoSettings.cancel_gcode_state + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_RESET_SETTINGS:
@@ -156,21 +156,21 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
 
       #ifdef PS_ON_PIN
         case SKEY_PS_ON:
-          item->valueLabel = itemToggleAuto[infoSettings.ps_on];
+          item->valueLabel = itemToggleAuto[infoSettings.auto_off];
           break;
       #endif
 
       #ifdef FIL_RUNOUT_PIN
         case SKEY_FIL_RUNOUT:
         {
-          LABEL sensorLabel = itemToggleSmart[(infoSettings.fil_runout >> 1) & 1];
-          item->valueLabel.index = (infoSettings.fil_runout & 1) ? sensorLabel.index : LABEL_OFF ;
+          LABEL sensorLabel = itemToggleSmart[(infoSettings.runout >> 1) & 1];
+          item->valueLabel.index = (infoSettings.runout & 1) ? sensorLabel.index : LABEL_OFF ;
           break;
         }
       #endif
 
       case SKEY_PLR_ON:
-        item->icon = iconToggle[infoSettings.plr_on];
+        item->icon = iconToggle[infoSettings.plr];
         break;
 
       case SKEY_PLR_HOME:
@@ -182,15 +182,15 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
         break;
 
       case SKEY_START_GCODE_ON:
-        item->icon = iconToggle[infoSettings.start_gcode_on];
+        item->icon = iconToggle[infoSettings.start_gcode_state];
         break;
 
       case SKEY_END_GCODE_ON:
-        item->icon = iconToggle[infoSettings.end_gcode_on];
+        item->icon = iconToggle[infoSettings.end_gcode_state];
         break;
 
       case SKEY_CANCEL_GCODE_ON:
-        item->icon = iconToggle[infoSettings.cancel_gcode_on];
+        item->icon = iconToggle[infoSettings.cancel_gcode_state];
         break;
 
       case SKEY_RESET_SETTINGS:

@@ -101,7 +101,7 @@ void mblDrawHeader(uint8_t *point)
   if (point != NULL)
   {
     sprintf(tempstr, "P:%-4d", *point);
-    GUI_SetColor(infoSettings.volume_status_color);
+    GUI_SetColor(infoSettings.status_color);
   }
   else
   {

@@ -218,7 +218,7 @@ void shutdownStart(void)
   char tempstr[75];
 
   LABELCHAR(tempbody, LABEL_WAIT_TEMP_SHUT_DOWN);
-  sprintf(tempstr, tempbody, infoSettings.ps_auto_shutdown_temp);
+  sprintf(tempstr, tempbody, infoSettings.auto_off_temp);
 
   for (uint8_t i = 0; i < infoSettings.fan_count; i++)
   {
@@ -356,7 +356,7 @@ void printStart(FIL * file, uint32_t size)
       infoPrinting.file = *file;
       infoPrinting.cur = infoPrinting.file.fptr;
 
-      if (infoSettings.start_gcode_on == 1 && infoPrinting.cur == 0)  // PLR continue printing, CAN NOT use start gcode
+      if (infoSettings.start_gcode_state == 1 && infoPrinting.cur == 0)  // PLR continue printing, CAN NOT use start gcode
       {
         sendPrintCodes(0);
       }
@@ -390,7 +390,7 @@ void printEnd(void)
   setPrintRemainingTime(0);
   preparePrintSummary();  // update print summary. infoPrinting are used
 
-  if (infoSettings.end_gcode_on == 1)
+  if (infoSettings.end_gcode_state == 1)
   {
     sendPrintCodes(1);
   }
@@ -403,7 +403,7 @@ void printComplete(void)
   BUZZER_PLAY(sound_success);
   printEnd();
 
-  if (infoSettings.ps_on)  // Auto shutdown after print
+  if (infoSettings.auto_off)  // Auto shutdown after print
   {
     shutdownStart();
   }
@@ -461,7 +461,7 @@ void printAbort(void)
       break;
   }
 
-  if (infoSettings.cancel_gcode_on == 1)
+  if (infoSettings.cancel_gcode_state == 1)
     sendPrintCodes(2);
 
   printEnd();
@@ -746,7 +746,7 @@ void loopPrintFromHost(void)
   if (infoFile.source < BOARD_SD) return;
   if (infoMachineSettings.autoReportSDStatus == ENABLED) return;
   if (infoMenu.menu[infoMenu.cur] == menuTerminal) return;
-  if (!infoSettings.m27_always_active && !infoPrinting.printing) return;
+  if (!infoSettings.m27_active && !infoPrinting.printing) return;
 
   static uint32_t nextCheckPrintTime = 0;
   uint32_t update_M27_time = infoSettings.m27_refresh_time * 1000;
