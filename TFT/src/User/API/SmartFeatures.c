@@ -44,7 +44,7 @@ void FIL_Runout_Init(void)
   #if defined(MKS_TFT)
     MGPIO_MODE_IPN;  // MKS TFTs already have an external pull-up resistor on PB0 and PB1 pins
   #else
-    (infoSettings.fil_runout_inverted ^ infoSettings.fil_runout_nc) ? MGPIO_MODE_IPD : MGPIO_MODE_IPU;
+    (infoSettings.runout_inverted ^ infoSettings.runout_nc) ? MGPIO_MODE_IPD : MGPIO_MODE_IPU;
   #endif
 
   GPIO_InitSet(FIL_RUNOUT_PIN, pull, 0);
@@ -89,7 +89,7 @@ bool FIL_NormalRunoutDetect(void)
     runout = trueTimes > falseTimes ? true : false;
     trueTimes = 0;
     falseTimes = 0;
-    nextRunoutTime = OS_GetTimeMs() + infoSettings.runout_noise_ms;
+    nextRunoutTime = OS_GetTimeMs() + infoSettings.runout_noise;
   }
   else
   {

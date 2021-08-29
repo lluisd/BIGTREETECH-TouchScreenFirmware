@@ -16,7 +16,7 @@ void probeOffsetEnable(float shim)
 
   float probedZ = 0.0f;
 
-  if (infoSettings.probing_after_homing)  // if homing without a probe (e.g. with a min endstop)
+  if (infoSettings.probing_z_offset)  // if homing without a probe (e.g. with a min endstop)
   {
     levelingProbePoint(LEVEL_CENTER);  // probe center of bed
 

@@ -27,23 +27,23 @@ typedef enum
   SKEY_SERIAL_ALWAYS_ON,
   SKEY_SPEED,
   SKEY_AUTO_LOAD_LEVELING,
-  SKEY_PROBING_AFTER_HOMING,
+  SKEY_PROBING_Z_OFFSET,
   SKEY_Z_STEPPERS_ALIGNMENT,
 
   #ifdef PS_ON_PIN
-    SKEY_PS_ON,
+    SKEY_PS_AUTO_SHUTDOWN,
   #endif
 
   #ifdef FIL_RUNOUT_PIN
     SKEY_FIL_RUNOUT,
   #endif
 
-  SKEY_PLR_ON,
-  SKEY_PLR_HOME,
+  SKEY_PL_RECOVERY,
+  SKEY_PL_RECOVERY_HOME,
   SKEY_BTT_MINI_UPS,
-  SKEY_START_GCODE_ON,
-  SKEY_END_GCODE_ON,
-  SKEY_CANCEL_GCODE_ON,
+  SKEY_START_GCODE_ENABLED,
+  SKEY_END_GCODE_ENABLED,
+  SKEY_CANCEL_GCODE_ENABLED,
   SKEY_RESET_SETTINGS,        // Keep reset always at the bottom of the settings menu list.
   SKEY_COUNT                  // keep this always at the end
 } SKEY_LIST;
@@ -69,8 +69,8 @@ void updateFeatureSettings(uint8_t item_index)
       infoSettings.auto_load_leveling = (infoSettings.auto_load_leveling + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_PROBING_AFTER_HOMING:
-      infoSettings.probing_after_homing = (infoSettings.probing_after_homing + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_PROBING_Z_OFFSET:
+      infoSettings.probing_z_offset = (infoSettings.probing_z_offset + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_Z_STEPPERS_ALIGNMENT:
@@ -78,8 +78,8 @@ void updateFeatureSettings(uint8_t item_index)
       break;
 
     #ifdef PS_ON_PIN
-      case SKEY_PS_ON:
-        infoSettings.auto_off = (infoSettings.auto_off + 1) % ITEM_TOGGLE_AUTO_NUM;
+      case SKEY_PS_AUTO_SHUTDOWN:
+        infoSettings.auto_shutdown = (infoSettings.auto_shutdown + 1) % ITEM_TOGGLE_AUTO_NUM;
         break;
     #endif
 
@@ -89,11 +89,11 @@ void updateFeatureSettings(uint8_t item_index)
         break;
     #endif
 
-    case SKEY_PLR_ON:
+    case SKEY_PL_RECOVERY:
       infoSettings.plr = (infoSettings.plr + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_PLR_HOME:
+    case SKEY_PL_RECOVERY_HOME:
       infoSettings.plr_home = (infoSettings.plr_home + 1) % ITEM_TOGGLE_NUM;
       break;
 
@@ -101,16 +101,16 @@ void updateFeatureSettings(uint8_t item_index)
       infoSettings.btt_mini_ups = (infoSettings.btt_mini_ups + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_START_GCODE_ON:
-      infoSettings.start_gcode_state = (infoSettings.start_gcode_state + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_START_GCODE_ENABLED:
+      infoSettings.send_start_gcode = (infoSettings.send_start_gcode + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_END_GCODE_ON:
-      infoSettings.end_gcode_state = (infoSettings.end_gcode_state + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_END_GCODE_ENABLED:
+      infoSettings.send_end_gcode = (infoSettings.send_end_gcode + 1) % ITEM_TOGGLE_NUM;
       break;
 
-    case SKEY_CANCEL_GCODE_ON:
-      infoSettings.cancel_gcode_state = (infoSettings.cancel_gcode_state + 1) % ITEM_TOGGLE_NUM;
+    case SKEY_CANCEL_GCODE_ENABLED:
+      infoSettings.send_cancel_gcode = (infoSettings.send_cancel_gcode + 1) % ITEM_TOGGLE_NUM;
       break;
 
     case SKEY_RESET_SETTINGS:
@@ -146,8 +146,8 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
         item->icon = iconToggle[infoSettings.auto_load_leveling];
         break;
 
-      case SKEY_PROBING_AFTER_HOMING:
-        item->icon = iconToggle[infoSettings.probing_after_homing];
+      case SKEY_PROBING_Z_OFFSET:
+        item->icon = iconToggle[infoSettings.probing_z_offset];
         break;
 
       case SKEY_Z_STEPPERS_ALIGNMENT:
@@ -155,8 +155,8 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
         break;
 
       #ifdef PS_ON_PIN
-        case SKEY_PS_ON:
-          item->valueLabel = itemToggleAuto[infoSettings.auto_off];
+        case SKEY_PS_AUTO_SHUTDOWN:
+          item->valueLabel = itemToggleAuto[infoSettings.auto_shutdown];
           break;
       #endif
 
@@ -169,11 +169,11 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
         }
       #endif
 
-      case SKEY_PLR_ON:
+      case SKEY_PL_RECOVERY:
         item->icon = iconToggle[infoSettings.plr];
         break;
 
-      case SKEY_PLR_HOME:
+      case SKEY_PL_RECOVERY_HOME:
         item->icon = iconToggle[infoSettings.plr_home];
         break;
 
@@ -181,16 +181,16 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
         item->icon = iconToggle[infoSettings.btt_mini_ups];
         break;
 
-      case SKEY_START_GCODE_ON:
-        item->icon = iconToggle[infoSettings.start_gcode_state];
+      case SKEY_START_GCODE_ENABLED:
+        item->icon = iconToggle[infoSettings.send_start_gcode];
         break;
 
-      case SKEY_END_GCODE_ON:
-        item->icon = iconToggle[infoSettings.end_gcode_state];
+      case SKEY_END_GCODE_ENABLED:
+        item->icon = iconToggle[infoSettings.send_end_gcode];
         break;
 
-      case SKEY_CANCEL_GCODE_ON:
-        item->icon = iconToggle[infoSettings.cancel_gcode_state];
+      case SKEY_CANCEL_GCODE_ENABLED:
+        item->icon = iconToggle[infoSettings.send_cancel_gcode];
         break;
 
       case SKEY_RESET_SETTINGS:
@@ -219,23 +219,23 @@ void menuFeatureSettings(void)
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_SERIAL_ALWAYS_ON,       LABEL_BACKGROUND},
     {CHARICON_BLANK,       LIST_CUSTOMVALUE,   LABEL_MOVE_SPEED,             LABEL_NORMAL},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_AUTO_LOAD_LEVELING,     LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PROBING_AFTER_HOMING,   LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PROBING_Z_OFFSET,       LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_Z_STEPPERS_ALIGNMENT,   LABEL_BACKGROUND},
 
     #ifdef PS_ON_PIN
-      {CHARICON_BLANK,       LIST_CUSTOMVALUE,   LABEL_PS_ON,                  LABEL_OFF},
+      {CHARICON_BLANK,       LIST_CUSTOMVALUE,   LABEL_PS_AUTO_SHUTDOWN,       LABEL_OFF},
     #endif
 
     #ifdef FIL_RUNOUT_PIN
       {CHARICON_BLANK,       LIST_CUSTOMVALUE,   LABEL_FIL_RUNOUT,             LABEL_OFF},
     #endif
 
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PLR_ON,                 LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PLR_HOME,               LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PL_RECOVERY,            LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_PL_RECOVERY_HOME,       LABEL_BACKGROUND},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_BTT_MINI_UPS,           LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_START_GCODE_ON,         LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_END_GCODE_ON,           LABEL_BACKGROUND},
-    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_CANCEL_GCODE_ON,        LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_START_GCODE_ENABLED,    LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_END_GCODE_ENABLED,      LABEL_BACKGROUND},
+    {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_CANCEL_GCODE_ENABLED,   LABEL_BACKGROUND},
     // Keep reset settings always at the bottom of the settings menu list.
     {CHARICON_BLANK,       LIST_MOREBUTTON,    LABEL_SETTINGS_RESET,         LABEL_BACKGROUND}
   };

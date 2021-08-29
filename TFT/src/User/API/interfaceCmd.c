@@ -29,7 +29,7 @@ bool isEnqueued(const char *cmd)
 // Check the presence of the specified 'code' character in the current gcode command.
 static bool cmd_seen(char code)
 {
-  for (cmd_index = 0; infoCmd.queue[infoCmd.index_r].gcode[cmd_index] != 0 && cmd_index < CMD_MAX_CHAR; cmd_index++)
+  for (cmd_index = 0; cmd_index < CMD_MAX_CHAR && infoCmd.queue[infoCmd.index_r].gcode[cmd_index] != 0; cmd_index++)
   {
     if (infoCmd.queue[infoCmd.index_r].gcode[cmd_index] == code)
     {
@@ -1110,7 +1110,7 @@ void sendQueueCmd(void)
           storeCmd("M503 S0\n");
           break;
 
-        #if ENABLE_BL_VALUE > 0  // if not Disabled
+        #if BED_LEVELING_TYPE > 0  // if not Disabled
           case 29:  // G29
           {
             if (infoMachineSettings.firmwareType != FW_REPRAPFW)

@@ -243,16 +243,19 @@ bool inLimit(int val, int min, int max)
   }
 }
 
-// check if config keyword exits in the buffer line
+// check if config keyword exits with a full matching in the buffer line
 bool key_seen(const char * keyStr)
 {
   uint16_t i;
   for (c_index = 0; c_index < LINE_MAX_CHAR && cur_line[c_index] != 0; c_index++)
   {
-    for (i = 0; keyStr[i] != 0 && cur_line[c_index + i] != 0 && cur_line[c_index + i] == keyStr[i]; i++)
+    for (i = 0; (c_index + i) < LINE_MAX_CHAR && keyStr[i] != 0 && cur_line[c_index + i] == keyStr[i]; i++)
     {}
     if (keyStr[i] == 0)
     {
+      if (c_index > 0 && cur_line[c_index - 1] != ' ')  // if keyStr is not fully matching (it is a substring of another key)
+        return false;
+
       c_index += i;
       return true;
     }
@@ -450,9 +453,9 @@ void resetConfig(void)
   }
 
   // restore print gcodes
-  strcpy(tempPC.start_gcode, PRINT_START_GCODE);
-  strcpy(tempPC.end_gcode, PRINT_END_GCODE);
-  strcpy(tempPC.cancel_gcode, PRINT_CANCEL_GCODE);
+  strcpy(tempPC.start_gcode, START_GCODE);
+  strcpy(tempPC.end_gcode, END_GCODE);
+  strcpy(tempPC.cancel_gcode, CANCEL_GCODE);
 
   // write restored config
   writeConfig((uint8_t *)&tempCG, sizeof(CUSTOM_GCODES), CUSTOM_GCODE_ADDR, CUSTOM_GCODE_MAX_SIZE);
@@ -564,19 +567,19 @@ void parseConfigKey(uint16_t index)
       config_set_color(&infoSettings.title_bg_color);
       break;
 
-    case C_INDEX_BG_COLOR:
+    case C_INDEX_MENU_BG_COLOR:
       config_set_color(&infoSettings.bg_color);
       break;
 
-    case C_INDEX_FONT_COLOR:
+    case C_INDEX_MENU_FONT_COLOR:
       config_set_color(&infoSettings.font_color);
       break;
 
-    case C_INDEX_REMINDER_COLOR:
+    case C_INDEX_REMINDER_FONT_COLOR:
       config_set_color(&infoSettings.reminder_color);
       break;
 
-    case C_INDEX_STATUS_COLOR:
+    case C_INDEX_STATUS_FONT_COLOR:
       config_set_color(&infoSettings.status_color);
       break;
 
@@ -830,8 +833,8 @@ void parseConfigKey(uint16_t index)
       if (key_seen("LY")) infoSettings.inverted_leveling_y_axis = getOnOff();
       break;
 
-    case C_INDEX_PROBING_AFTER_HOMING:
-      infoSettings.probing_after_homing = getOnOff();
+    case C_INDEX_PROBING_Z_OFFSET:
+      infoSettings.probing_z_offset = getOnOff();
       break;
 
     case C_INDEX_PROBING_Z_RAISE:
@@ -878,40 +881,40 @@ void parseConfigKey(uint16_t index)
     //----------------------------Power Supply Settings (only if connected to TFT controller)
 
     #ifdef PS_ON_PIN
-      case C_INDEX_PS_AUTO_SHUTDOWN:
-        SET_VALID_INT_VALUE(infoSettings.auto_off, 0, 2);
-        break;
-
       case C_INDEX_PS_ACTIVE_HIGH:
         infoSettings.ps_active_high = getOnOff();
         break;
 
+      case C_INDEX_PS_AUTO_SHUTDOWN:
+        SET_VALID_INT_VALUE(infoSettings.auto_shutdown, 0, 2);
+        break;
+
       case C_INDEX_PS_AUTO_SHUTDOWN_TEMP:
-        SET_VALID_INT_VALUE(infoSettings.auto_off_temp, MIN_TOOL_TEMP, MAX_TOOL_TEMP);
+        SET_VALID_INT_VALUE(infoSettings.auto_shutdown_temp, MIN_TOOL_TEMP, MAX_TOOL_TEMP);
         break;
     #endif
 
     //----------------------------Filament Runout Settings (only if connected to TFT controller)
 
     #ifdef FIL_RUNOUT_PIN
-      case C_INDEX_RUNOUT:
+      case C_INDEX_FIL_RUNOUT:
         if (inLimit(config_int(), 0, 3))
           infoSettings.runout = config_int();
         break;
 
-      case C_INDEX_RUNOUT_INVERTED:
+      case C_INDEX_FIL_RUNOUT_INVERTED:
         infoSettings.runout_inverted = getOnOff();
         break;
 
-      case C_INDEX_RUNOUT_NC:
+      case C_INDEX_FIL_RUNOUT_NC:
         infoSettings.runout_nc = getOnOff();
         break;
 
-      case C_INDEX_RUNOUT_NOISE:
-        SET_VALID_INT_VALUE(infoSettings.runout_noise_ms, MIN_DELAY_MS, MAX_DELAY_MS);
+      case C_INDEX_FIL_RUNOUT_NOISE:
+        SET_VALID_INT_VALUE(infoSettings.runout_noise, MIN_DELAY_MS, MAX_DELAY_MS);
         break;
 
-      case C_INDEX_RUNOUT_DISTANCE:
+      case C_INDEX_FIL_RUNOUT_DISTANCE:
         SET_VALID_INT_VALUE(infoSettings.runout_distance, MIN_RUNOUT_DISTANCE, MAX_RUNOUT_DISTANCE);
         break;
     #endif
@@ -957,17 +960,17 @@ void parseConfigKey(uint16_t index)
     #endif
 
     #ifdef LCD_LED_PWM_CHANNEL
-      case C_INDEX_BRIGHTNESS:
+      case C_INDEX_LCD_BRIGHTNESS:
         SET_VALID_INT_VALUE(infoSettings.lcd_brightness, 0, LCD_BRIGHTNESS_COUNT - 1);
         if (infoSettings.lcd_brightness == 0)
           infoSettings.lcd_brightness = 1;  // If someone set it to 0 set it to 1
         break;
 
-      case C_INDEX_BRIGHTNESS_IDLE:
+      case C_INDEX_LCD_IDLE_BRIGHTNESS:
         SET_VALID_INT_VALUE(infoSettings.lcd_idle_brightness, 0, LCD_BRIGHTNESS_COUNT - 1);
         break;
 
-      case C_INDEX_BRIGHTNESS_IDLE_TIME:
+      case C_INDEX_LCD_IDLE_TIME:
         SET_VALID_INT_VALUE(infoSettings.lcd_idle_time, 0, LCD_IDLE_TIME_COUNT - 1);
         break;
 
@@ -1056,16 +1059,16 @@ void parseConfigKey(uint16_t index)
 
     //----------------------------Start, End & Cancel Gcode Commands
 
-    case C_INDEX_START_GCODE_STATE:
-      infoSettings.start_gcode_state = getOnOff();
+    case C_INDEX_START_GCODE_ENABLED:
+      infoSettings.send_start_gcode = getOnOff();
       break;
 
-    case C_INDEX_END_GCODE_STATE:
-      infoSettings.end_gcode_state = getOnOff();
+    case C_INDEX_END_GCODE_ENABLED:
+      infoSettings.send_end_gcode = getOnOff();
       break;
 
-    case C_INDEX_CANCEL_GCODE_STATE:
-      infoSettings.cancel_gcode_state = getOnOff();
+    case C_INDEX_CANCEL_GCODE_ENABLED:
+      infoSettings.send_cancel_gcode = getOnOff();
       break;
 
     case C_INDEX_START_GCODE:

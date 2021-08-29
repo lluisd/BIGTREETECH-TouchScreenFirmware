@@ -192,21 +192,21 @@ typedef struct
 
   uint8_t  inverted_axis[AXIS_NUM];
   uint8_t  inverted_leveling_y_axis;
-  uint8_t  probing_after_homing;
+  uint8_t  probing_z_offset;
   float    probing_z_raise;
   uint8_t  z_steppers_alignment;
   uint8_t  touchmi_sensor;
 
   // Power Supply Settings (only if connected to TFT controller)
-  uint8_t  auto_off;
   uint8_t  ps_active_high;
-  uint8_t  auto_off_temp;
+  uint8_t  auto_shutdown;
+  uint8_t  auto_shutdown_temp;
 
   // Filament Runout Settings (only if connected to TFT controller)
   uint8_t  runout;
   uint8_t  runout_inverted;
   uint8_t  runout_nc;
-  uint16_t runout_noise_ms;
+  uint16_t runout_noise;
   uint8_t  runout_distance;
 
   // Power Loss Recovery & BTT UPS Settings
@@ -229,9 +229,9 @@ typedef struct
   uint8_t  neopixel_pixels;
 
   // Start, End & Cancel Gcode Commands
-  uint8_t  start_gcode_state;
-  uint8_t  end_gcode_state;
-  uint8_t  cancel_gcode_state;
+  uint8_t  send_start_gcode;
+  uint8_t  send_end_gcode;
+  uint8_t  send_cancel_gcode;
 } SETTINGS;
 
 typedef struct
