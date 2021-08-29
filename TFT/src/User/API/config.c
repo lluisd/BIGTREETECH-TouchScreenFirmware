@@ -243,7 +243,7 @@ bool inLimit(int val, int min, int max)
   }
 }
 
-// check if config keyword exits with a full matching in the buffer line
+// check if config keyword exits in the buffer line
 bool key_seen(const char * keyStr)
 {
   uint16_t i;
@@ -253,14 +253,27 @@ bool key_seen(const char * keyStr)
     {}
     if (keyStr[i] == 0)
     {
-      if (c_index > 0 && cur_line[c_index - 1] != ' ')  // if keyStr is not fully matching (it is a substring of another key)
-        return false;
-
       c_index += i;
       return true;
     }
   }
   return false;
+}
+
+// check if config keyword exits with a full matching in the buffer line
+bool param_seen(const char * keyStr)
+{
+  bool found = key_seen(keyStr);
+  if (found)
+  {
+    size_t index = c_index - strlen(keyStr);
+    if (index > 0)
+    {
+      if (cur_line[index - 1] != ' ')  // if keyStr is not fully matching (it is a substring of another key))
+        return false;
+    }
+  }
+  return found;
 }
 
 // Get the int after config keyword.
@@ -340,7 +353,7 @@ void parseConfigLine(void)
 {
   for (uint16_t i = 0; i < CONFIG_COUNT; i++)
   {
-    if (key_seen(config_keywords[i]))
+    if (param_seen(config_keywords[i]))
     {
       PRINTDEBUG("\n");
       PRINTDEBUG((char *)config_keywords[i]);
