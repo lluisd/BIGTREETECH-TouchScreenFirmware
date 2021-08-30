@@ -16,6 +16,8 @@ const uint16_t default_pause_speed[]   = {NOZZLE_PAUSE_XY_FEEDRATE, NOZZLE_PAUSE
 const uint16_t default_preheat_ext[]   = PREHEAT_HOTEND;
 const uint16_t default_preheat_bed[]   = PREHEAT_BED;
 const uint8_t default_custom_enabled[] = CUSTOM_GCODE_ENABLED;
+const uint8_t default_sounds           = 0b00001111;  // all sounds enabled
+const uint8_t default_inverted_axis    = 0b00000000;  // all inverted axis disabled
 
 // Reset settings data
 void infoSettingsReset(void)
@@ -59,9 +61,6 @@ void infoSettingsReset(void)
   infoSettings.marlin_show_title      = MARLIN_SHOW_TITLE;
   infoSettings.marlin_type            = LCD12864;
 
-// RRF Mode Settings
-  infoSettings.rrf_macros_enable      = 0;
-
 // Printer / Machine Settings
   infoSettings.hotend_count           = HOTEND_NUM;
   infoSettings.bed_en                 = ENABLE;
@@ -88,6 +87,8 @@ void infoSettingsReset(void)
 
   infoSettings.move_speed             = 1;  // index on infoSettings.axis_speed, infoSettings.ext_speed
 
+  infoSettings.inverted_axis          = default_inverted_axis;
+
   infoSettings.probing_z_offset       = ENABLED;
   infoSettings.probing_z_raise        = PROBING_Z_RAISE;
   infoSettings.z_steppers_alignment   = DISABLED;
@@ -99,9 +100,7 @@ void infoSettingsReset(void)
   infoSettings.auto_shutdown_temp     = PS_AUTO_SHUTDOWN_TEMP;
 
 // Filament Runout Settings (only if connected to TFT controller)
-  infoSettings.runout                 = FIL_RUNOUT;
-  infoSettings.runout_inverted        = FIL_RUNOUT_INVERTED;
-  infoSettings.runout_nc              = FIL_RUNOUT_NC;
+  infoSettings.runout                 = (FIL_RUNOUT | (FIL_RUNOUT_INVERTED << RUNOUT_INVERTED) | (FIL_RUNOUT_NC << RUNOUT_NO_NC));
   infoSettings.runout_noise           = FIL_RUNOUT_NOISE_THRESHOLD;
   infoSettings.runout_distance        = FIL_RUNOUT_DISTANCE;
 
@@ -109,13 +108,10 @@ void infoSettingsReset(void)
   infoSettings.plr                    = ENABLED;
   infoSettings.plr_home               = PL_RECOVERY_HOME;
   infoSettings.plr_z_raise            = PL_RECOVERY_Z_RAISE;
-  infoSettings.btt_mini_ups           = BTT_MINI_UPS;
+  infoSettings.btt_ups                = BTT_MINI_UPS;
 
 // Other Device-Specific Settings
-  infoSettings.touch_sound            = ENABLED;
-  infoSettings.toast_sound            = ENABLED;
-  infoSettings.alert_sound            = ENABLED;
-  infoSettings.heater_sound           = ENABLED;
+  infoSettings.sounds                 = default_sounds;
   infoSettings.lcd_brightness         = DEFAULT_LCD_BRIGHTNESS;
   infoSettings.lcd_idle_brightness    = DEFAULT_LCD_IDLE_BRIGHTNESS;
   infoSettings.lcd_idle_time          = DEFAULT_LCD_IDLE_TIME;
@@ -129,9 +125,7 @@ void infoSettingsReset(void)
   #endif
 
 // Start, End & Cancel Gcode Commands
-  infoSettings.send_start_gcode       = DISABLED;
-  infoSettings.send_end_gcode         = DISABLED;
-  infoSettings.send_cancel_gcode      = ENABLED;
+  infoSettings.send_gcodes            = DISABLED;
 
 // All the remaining array initializations
   for (int i = 1; i < MAX_SERIAL_PORT_COUNT; i++)  // supplemetary serial ports
@@ -151,11 +145,10 @@ void infoSettingsReset(void)
 
   for (int i = 0; i < AXIS_NUM; i++)  //x, y, z
   {
-    infoSettings.inverted_axis[i]     = DISABLED;
     infoSettings.machine_size_min[i]  = default_size_min[i];
     infoSettings.machine_size_max[i]  = default_size_max[i];
   }
-  infoSettings.inverted_leveling_y_axis = DISABLED;
+  infoSettings.leveling_inverted_y_axis = DISABLED;
 
   for (int i = 0; i < FEEDRATE_COUNT - 1 ; i++)  //xy, z
   {
@@ -246,6 +239,7 @@ void setupMachine(void)
   if (infoMachineSettings.firmwareType == FW_REPRAPFW)
   {
     mustStoreCmd("M555 P2\n");  //  Set RRF compatibility behaves similar to 2: Marlin
+    mustStoreCmd("M552\n");     // query network state, populate IP if the screen boots up after RRF
   }
   mustStoreCmd("M82\n");  // Set extruder to absolute mode
   mustStoreCmd("G90\n");  // Set to Absolute Positioning

@@ -407,10 +407,10 @@ void menuSoundSettings(void)
   uint16_t curIndex = KEY_IDLE;
   SETTINGS now = infoSettings;
 
-  sounditems[0].icon = iconToggle[infoSettings.touch_sound];
-  sounditems[1].icon = iconToggle[infoSettings.toast_sound];
-  sounditems[2].icon = iconToggle[infoSettings.alert_sound];
-  sounditems[3].icon = iconToggle[infoSettings.heater_sound];
+  for (uint8_t i = 0; i < SOUND_TYPE_COUNT; i++)
+  {
+    sounditems[i].icon = iconToggle[GET_BIT(infoSettings.sounds, i)];
+  }
 
   listViewCreate(title, sounditems, COUNT(sounditems), NULL, true, NULL, NULL);
 
@@ -418,34 +418,12 @@ void menuSoundSettings(void)
   {
     curIndex = listViewGetSelectedIndex();
 
-    switch (curIndex)
+    if (curIndex < SOUND_TYPE_COUNT)
     {
-      case 0:
-        infoSettings.touch_sound = (infoSettings.touch_sound + 1) % 2;
-        sounditems[0].icon = iconToggle[infoSettings.touch_sound];
-        break;
-
-      case 1:
-        infoSettings.toast_sound = (infoSettings.toast_sound + 1) % 2;
-        sounditems[1].icon = iconToggle[infoSettings.toast_sound];
-        break;
-
-      case 2:
-        infoSettings.alert_sound = (infoSettings.alert_sound + 1) % 2;
-        sounditems[2].icon = iconToggle[infoSettings.alert_sound];
-        break;
-
-      case 3:
-        infoSettings.heater_sound = (infoSettings.heater_sound + 1) % 2;
-        sounditems[3].icon = iconToggle[infoSettings.heater_sound];
-        break;
-
-      default:
-        break;
-    }
-
-    if (curIndex < sizeof(sounditems))
+      TOGGLE_BIT(infoSettings.sounds, curIndex);
+      sounditems[curIndex].icon = iconToggle[GET_BIT(infoSettings.sounds, curIndex)];
       listViewRefreshItem(curIndex);
+    }
 
     loopProcess();
   }

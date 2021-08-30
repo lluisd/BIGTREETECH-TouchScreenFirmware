@@ -166,7 +166,7 @@ void menuConnectionSettings(void)
         infoMenu.cur--;
         break;
 
-      default :
+      default:
         break;
     }
 

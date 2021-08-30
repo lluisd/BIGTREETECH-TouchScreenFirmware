@@ -170,7 +170,7 @@ bool powerFailedGetData(void)
   {
     uint16_t z_raised = 0;
 
-    if (infoSettings.btt_mini_ups == 1)
+    if (infoSettings.btt_ups == 1)
       z_raised += infoSettings.plr_z_raise;
 
     if (infoBreakPoint.pause)

@@ -11,14 +11,14 @@ void levelingGetPointCoords(LEVELING_POINT_COORDS coords)
   int16_t y_bottom = infoSettings.machine_size_min[Y_AXIS] + infoSettings.level_edge;
   int16_t y_top = infoSettings.machine_size_max[Y_AXIS] - infoSettings.level_edge;
 
-  if (infoSettings.inverted_axis[X_AXIS])
+  if (GET_BIT(infoSettings.inverted_axis, X_AXIS))
   {
     int16_t temp = x_left;  // Swap left and right
     x_left = x_right;
     x_right = temp;
   }
 
-  if (infoSettings.inverted_leveling_y_axis)
+  if (infoSettings.leveling_inverted_y_axis)
   {
     int16_t temp = y_bottom;  // Swap lower and upper
     y_bottom = y_top;
