@@ -1257,15 +1257,15 @@ void parseACK(void)
     }
 
   parse_end:
-    if (ack_src_port_index != PORT_1)  // if different than port index for SERIAL_PORT
-    {
+    if (ack_src_port_index != PORT_1)  // if the ACK message is related to a gcode originated by a supplementary serial port,
+    {                                  // forward the message to the supplementary serial port
       Serial_Puts(serialPort[ack_src_port_index].port, dmaL2Cache);
     }
     #ifdef SERIAL_PORT_2
       else if (!ack_seen("ok") || ack_seen("T:") || ack_seen("T0:"))  // if a spontaneous ACK message
       {
         // pass on the spontaneous ACK message to all the supplementary serial ports (since these messages come unrequested)
-        for (uint8_t i = 1; i < SERIAL_PORT_COUNT; i++)
+        for (uint8_t i = PORT_2; i < SERIAL_PORT_COUNT; i++)
         {
           if (infoSettings.serial_port[i] > 0)  // if serial port is enabled
           {
@@ -1288,7 +1288,7 @@ void parseRcvGcode(void)
     uint8_t port;
 
     // scan all the supplementary serial ports
-    for (uint8_t i = 1; i < SERIAL_PORT_COUNT; i++)
+    for (uint8_t i = PORT_2; i < SERIAL_PORT_COUNT; i++)
     {
       if (infoSettings.serial_port[i] > 0)  // if serial port is enabled
       {
