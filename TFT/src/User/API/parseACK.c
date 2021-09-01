@@ -5,6 +5,7 @@
 #define L2_CACHE_SIZE 512  // including ending character '\0'
 
 char dmaL2Cache[L2_CACHE_SIZE];
+uint16_t dmaL2Cache_data_len = 0;            // length of data present in dmaL2Cache
 static uint16_t ack_index = 0;
 static uint8_t ack_src_port_index = PORT_1;  // port index for SERIAL_PORT;
 
@@ -73,12 +74,18 @@ void setCurrentAckSrc(uint8_t portIndex)
 
 static bool ack_seen(const char * str)
 {
+  size_t str_len = strlen(str);
+
+  if (dmaL2Cache_data_len < str_len)  // if no match can be found
+    return false;
+
   uint16_t i;
-  for (ack_index = 0; ack_index < L2_CACHE_SIZE && dmaL2Cache[ack_index] != 0; ack_index++)
+
+  for (ack_index = 0; ack_index < dmaL2Cache_data_len; ack_index++)
   {
-    for (i = 0; (ack_index + i) < L2_CACHE_SIZE && str[i] != 0 && dmaL2Cache[ack_index + i] == str[i]; i++)
+    for (i = 0; (ack_index + i) < dmaL2Cache_data_len && i < str_len && dmaL2Cache[ack_index + i] == str[i]; i++)
     {}
-    if (str[i] == 0)
+    if (i == str_len)  // if end of str is reached, a match was found
     {
       ack_index += i;
       return true;
@@ -89,13 +96,19 @@ static bool ack_seen(const char * str)
 
 static bool ack_continue_seen(const char * str)
 { // unlike "ack_seen()", this retains "ack_index" if the searched string is not found
+  size_t str_len = strlen(str);
+
+  if (dmaL2Cache_data_len < str_len)  // if no match can be found
+    return false;
+
   uint16_t i;
   uint16_t indexBackup = ack_index;
-  for (; ack_index < L2_CACHE_SIZE && dmaL2Cache[ack_index] != 0; ack_index++)
+
+  for (; ack_index < dmaL2Cache_data_len; ack_index++)
   {
-    for (i = 0; (ack_index + i) < L2_CACHE_SIZE && str[i] != 0 && dmaL2Cache[ack_index + i] == str[i]; i++)
+    for (i = 0; (ack_index + i) < dmaL2Cache_data_len && i < str_len && dmaL2Cache[ack_index + i] == str[i]; i++)
     {}
-    if (str[i] == 0)
+    if (i == str_len)  // if end of str is reached, a match was found
     {
       ack_index += i;
       return true;
@@ -108,12 +121,12 @@ static bool ack_continue_seen(const char * str)
 static bool ack_cmp(const char * str)
 {
   uint16_t i;
-  for (i = 0; i < L2_CACHE_SIZE && dmaL2Cache[i] != 0 && str[i] != 0; i++)
+  for (i = 0; i < dmaL2Cache_data_len && str[i] != 0; i++)
   {
     if (str[i] != dmaL2Cache[i])
       return false;
   }
-  if (dmaL2Cache[i] != 0)
+  if (str[i] != 0)
     return false;
   return true;
 }
@@ -241,7 +254,8 @@ bool syncL2CacheFromL1(uint8_t port)
       break;
   }
 
-  dmaL2Cache[i] = 0;  // end character
+  dmaL2Cache_data_len = i;  // length of data in the cache
+  dmaL2Cache[i] = 0;        // end character
 
   return true;
 }
