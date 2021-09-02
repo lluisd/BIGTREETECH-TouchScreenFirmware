@@ -5,9 +5,9 @@
 #define L2_CACHE_SIZE 512  // including ending character '\0'
 
 char dmaL2Cache[L2_CACHE_SIZE];
-uint16_t dmaL2Cache_data_len = 0;            // length of data present in dmaL2Cache
-static uint16_t ack_index = 0;
-static uint8_t ack_src_port_index = PORT_1;  // port index for SERIAL_PORT;
+uint16_t dmaL2Cache_len;                    // length of data currently present in dmaL2Cache
+uint16_t ack_index;
+SERIAL_PORT_INDEX ack_port_index = PORT_1;  // index of target serial port for the ACK message (related to originating gcode)
 
 static const char errormagic[] = "Error:";
 static const char echomagic[] = "echo:";
@@ -35,7 +35,7 @@ typedef enum  // popup message types available to display an echo message
 
 typedef struct
 {
-  ECHO_NOTIFY_TYPE   notifyType;
+  ECHO_NOTIFY_TYPE notifyType;
   const char * const msg;
 } ECHO;
 
@@ -67,23 +67,62 @@ const ECHO knownEcho[] = {
 //  forceIgnore[msgId] = state;
 //}
 
-void setCurrentAckSrc(uint8_t portIndex)
+void setCurrentAckSrc(SERIAL_PORT_INDEX portIndex)
 {
-  ack_src_port_index = portIndex;
+  ack_port_index = portIndex;
+}
+
+bool syncL2CacheFromL1(uint8_t port)
+{
+  DMA_CIRCULAR_BUFFER * dmaL1Data_ptr = &dmaL1Data[port];  // make access to most used variables/attributes faster reducing also the code
+  uint16_t * rIndex_ptr = &dmaL1Data_ptr->rIndex;          // make access to most used variables/attributes faster reducing also the code
+
+  if (*rIndex_ptr == dmaL1Data_ptr->wIndex)  // if L1 cache is empty
+    return false;
+
+  uint16_t i = 0;
+
+  while (i < (L2_CACHE_SIZE - 1) && *rIndex_ptr != dmaL1Data_ptr->wIndex)  // retrieve data until L2 cache is full or L1 cache is empty
+  {
+    dmaL2Cache[i] = dmaL1Data_ptr->cache[*rIndex_ptr];
+    *rIndex_ptr = (*rIndex_ptr + 1) % dmaL1Data_ptr->cacheSize;
+
+    if (dmaL2Cache[i++] == '\n')
+      break;
+  }
+
+  dmaL2Cache_len = i;  // length of data in the cache
+  dmaL2Cache[i] = 0;   // end character
+
+  return true;
+}
+
+static bool ack_cmp(const char * str)
+{
+  uint16_t i;
+  for (i = 0; i < dmaL2Cache_len && str[i] != 0; i++)
+  {
+    if (str[i] != dmaL2Cache[i])
+      return false;
+  }
+  if (str[i] != 0)
+    return false;
+  return true;
 }
 
 static bool ack_seen(const char * str)
 {
-  size_t str_len = strlen(str);
+  int16_t str_len = strlen(str);
+  int16_t max_len = dmaL2Cache_len - str_len;
 
-  if (dmaL2Cache_data_len < str_len)  // if no match can be found
+  if (max_len < 0)  // if str is longer than data present in cache, no match can be found
     return false;
 
   uint16_t i;
 
-  for (ack_index = 0; ack_index < dmaL2Cache_data_len; ack_index++)
+  for (ack_index = 0; ack_index <= max_len; ack_index++)
   {
-    for (i = 0; (ack_index + i) < dmaL2Cache_data_len && i < str_len && dmaL2Cache[ack_index + i] == str[i]; i++)
+    for (i = 0; i < str_len && str[i] == dmaL2Cache[ack_index + i]; i++)
     {}
     if (i == str_len)  // if end of str is reached, a match was found
     {
@@ -96,17 +135,18 @@ static bool ack_seen(const char * str)
 
 static bool ack_continue_seen(const char * str)
 { // unlike "ack_seen()", this retains "ack_index" if the searched string is not found
-  size_t str_len = strlen(str);
+  int16_t str_len = strlen(str);
+  int16_t max_len = dmaL2Cache_len - str_len;
 
-  if (dmaL2Cache_data_len < str_len)  // if no match can be found
+  if (max_len < 0)  // if str is longer than data present in cache, no match can be found
     return false;
 
+  uint16_t ack_index_orig = ack_index;
   uint16_t i;
-  uint16_t indexBackup = ack_index;
 
-  for (; ack_index < dmaL2Cache_data_len; ack_index++)
+  for (; ack_index <= max_len; ack_index++)
   {
-    for (i = 0; (ack_index + i) < dmaL2Cache_data_len && i < str_len && dmaL2Cache[ack_index + i] == str[i]; i++)
+    for (i = 0; i < str_len && str[i] == dmaL2Cache[ack_index + i]; i++)
     {}
     if (i == str_len)  // if end of str is reached, a match was found
     {
@@ -114,21 +154,8 @@ static bool ack_continue_seen(const char * str)
       return true;
     }
   }
-  ack_index = indexBackup;
+  ack_index = ack_index_orig;
   return false;
-}
-
-static bool ack_cmp(const char * str)
-{
-  uint16_t i;
-  for (i = 0; i < dmaL2Cache_data_len && str[i] != 0; i++)
-  {
-    if (str[i] != dmaL2Cache[i])
-      return false;
-  }
-  if (str[i] != 0)
-    return false;
-  return true;
 }
 
 static float ack_value()
@@ -150,7 +177,7 @@ static float ack_second_value()
   }
 }
 
-void ack_values_sum(float *data)
+void ack_values_sum(float * data)
 {
   while (((dmaL2Cache[ack_index] < '0') || (dmaL2Cache[ack_index] > '9')) && dmaL2Cache[ack_index] != '\n')
     ack_index++;
@@ -233,31 +260,6 @@ bool processKnownEcho(void)
     //}
   }
   return isKnown;
-}
-
-bool syncL2CacheFromL1(uint8_t port)
-{
-  DMA_CIRCULAR_BUFFER * dmaL1Data_ptr = &dmaL1Data[port];  // make access to most used variables/attributes faster reducing also the code
-  uint16_t * rIndex_ptr = &dmaL1Data_ptr->rIndex;          // make access to most used variables/attributes faster reducing also the code
-
-  if (*rIndex_ptr == dmaL1Data_ptr->wIndex)  // if L1 cache is empty
-    return false;
-
-  uint16_t i = 0;
-
-  while (i < (L2_CACHE_SIZE - 1) && *rIndex_ptr != dmaL1Data_ptr->wIndex)  // retrieve data until L2 cache is full or L1 cache is empty
-  {
-    dmaL2Cache[i] = dmaL1Data_ptr->cache[*rIndex_ptr];
-    *rIndex_ptr = (*rIndex_ptr + 1) % dmaL1Data_ptr->cacheSize;
-
-    if (dmaL2Cache[i++] == '\n')
-      break;
-  }
-
-  dmaL2Cache_data_len = i;  // length of data in the cache
-  dmaL2Cache[i] = 0;        // end character
-
-  return true;
 }
 
 void hostActionCommands(void)
@@ -605,7 +607,7 @@ void parseACK(void)
       // parse pause message
       else if (!infoMachineSettings.promptSupport && ack_seen("paused for user"))
       {
-        setDialogText((uint8_t*)"Printer is Paused", (uint8_t*)"Paused for user\ncontinue?", LABEL_CONFIRM, LABEL_BACKGROUND);
+        setDialogText((uint8_t *)"Printer is Paused", (uint8_t *)"Paused for user\ncontinue?", LABEL_CONFIRM, LABEL_BACKGROUND);
         showDialog(DIALOG_TYPE_QUESTION, breakAndContinue, NULL, NULL);
       }
       // parse host action commands. Required "HOST_ACTION_COMMANDS" and other settings in Marlin
@@ -719,7 +721,7 @@ void parseACK(void)
         {
           sprintf (&tmpMsg[strlen(tmpMsg)], "\nRange: %0.5f", ack_value());
         }
-        setDialogText((uint8_t* )"Repeatability Test", (uint8_t *)tmpMsg, LABEL_CONFIRM, LABEL_BACKGROUND);
+        setDialogText((uint8_t *)"Repeatability Test", (uint8_t *)tmpMsg, LABEL_CONFIRM, LABEL_BACKGROUND);
         showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
       }
       // parse M48, Standard Deviation
@@ -732,7 +734,7 @@ void parseACK(void)
         {
           levelingSetProbedPoint(-1, -1, ack_value());  // save probed Z value
           sprintf(tmpMsg, "%s\nStandard Deviation: %0.5f", (char *)getDialogMsgStr(), ack_value());
-          setDialogText((uint8_t* )"Repeatability Test", (uint8_t *)tmpMsg, LABEL_CONFIRM, LABEL_BACKGROUND);
+          setDialogText((uint8_t *)"Repeatability Test", (uint8_t *)tmpMsg, LABEL_CONFIRM, LABEL_BACKGROUND);
           showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
         }
       }
@@ -1081,7 +1083,7 @@ void parseACK(void)
       // parse M115 capability report
       else if (ack_seen("FIRMWARE_NAME:"))
       {
-        uint8_t *string = (uint8_t *)&dmaL2Cache[ack_index];
+        uint8_t * string = (uint8_t *)&dmaL2Cache[ack_index];
         uint16_t string_start = ack_index;
         uint16_t string_end = string_start;
 
@@ -1233,7 +1235,7 @@ void parseACK(void)
         }
         else if (ack_seen("access point "))
         {
-          uint8_t *string = (uint8_t *)&dmaL2Cache[ack_index];
+          uint8_t * string = (uint8_t *)&dmaL2Cache[ack_index];
           uint16_t string_start = ack_index;
           uint16_t string_end = string_start;
           if (ack_seen(","))
@@ -1276,15 +1278,15 @@ void parseACK(void)
     }
 
   parse_end:
-    if (ack_src_port_index != PORT_1)  // if the ACK message is related to a gcode originated by a supplementary serial port,
-    {                                  // forward the message to the supplementary serial port
-      Serial_Puts(serialPort[ack_src_port_index].port, dmaL2Cache);
+    if (ack_port_index != PORT_1)  // if the ACK message is related to a gcode originated by a supplementary serial port,
+    {                              // forward the message to the supplementary serial port
+      Serial_Puts(serialPort[ack_port_index].port, dmaL2Cache);
     }
     #ifdef SERIAL_PORT_2
       else if (!ack_seen("ok") || ack_seen("T:") || ack_seen("T0:"))  // if a spontaneous ACK message
       {
         // pass on the spontaneous ACK message to all the supplementary serial ports (since these messages come unrequested)
-        for (uint8_t i = PORT_2; i < SERIAL_PORT_COUNT; i++)
+        for (SERIAL_PORT_INDEX i = PORT_2; i < SERIAL_PORT_COUNT; i++)
         {
           if (infoSettings.serial_port[i] > 0)  // if serial port is enabled
           {
@@ -1296,7 +1298,7 @@ void parseACK(void)
 
     if (avoid_terminal != true)
     {
-      terminalCache(dmaL2Cache, TERMINAL_ACK);
+      terminalCache(dmaL2Cache, dmaL2Cache_len, ack_port_index, TERMINAL_ACK);
     }
   }
 }
@@ -1307,7 +1309,7 @@ void parseRcvGcode(void)
     uint8_t port;
 
     // scan all the supplementary serial ports
-    for (uint8_t i = PORT_2; i < SERIAL_PORT_COUNT; i++)
+    for (SERIAL_PORT_INDEX i = PORT_2; i < SERIAL_PORT_COUNT; i++)
     {
       if (infoSettings.serial_port[i] > 0)  // if serial port is enabled
       {

@@ -476,7 +476,7 @@ static inline void keyboardDrawMenu(void)
 static inline void menuKeyboardView(void)
 {
   KEY_VALUES key_num = KEY_IDLE;
-  char gcodeBuf[CMD_MAX_CHAR] = {0};
+  char gcodeBuf[CMD_MAX_SIZE] = {0};
   uint8_t nowIndex = 0;
   uint8_t lastIndex = 0;
 
@@ -520,7 +520,7 @@ static inline void menuKeyboardView(void)
         break;
 
       case GKEY_SPACE:
-        if (nowIndex < CMD_MAX_CHAR - 1 && nowIndex > 0)
+        if (nowIndex < CMD_MAX_SIZE - 1 && nowIndex > 0)
         {
           gcodeBuf[nowIndex++] = ' ';
           gcodeBuf[nowIndex] = 0;
@@ -528,7 +528,7 @@ static inline void menuKeyboardView(void)
         break;
 
       default:
-        if (nowIndex < CMD_MAX_CHAR - 1)
+        if (nowIndex < CMD_MAX_SIZE - 1)
         {
           gcodeBuf[nowIndex++] = (numpad) ? gcodeKey123[key_num][0] : gcodeKeyABC[key_num][0];
           gcodeBuf[nowIndex] = 0;
@@ -570,7 +570,7 @@ static inline void saveGcodeTerminalCache(const char *str)
   }
 }
 
-void terminalCache(char *stream, TERMINAL_SRC src)
+void terminalCache(char *stream, uint16_t streamLen, SERIAL_PORT_INDEX portIndex, TERMINAL_SRC src)
 {
   if (infoMenu.menu[infoMenu.cur] != menuTerminal) return;
 
@@ -585,7 +585,7 @@ void terminalCache(char *stream, TERMINAL_SRC src)
 
   if (src == TERMINAL_GCODE)
   {
-    saveGcodeTerminalCache(serialPort[infoCmd.queue[infoCmd.index_r].port_index].id);  // serial port ID (e.g. "2" for SERIAL_PORT_2)
+    saveGcodeTerminalCache(serialPort[portIndex].id);  // serial port ID (e.g. "2" for SERIAL_PORT_2)
     saveGcodeTerminalCache(">>");
   }
 

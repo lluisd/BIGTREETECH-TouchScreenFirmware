@@ -17,7 +17,7 @@ const MENUITEMS connectionSettingsItems = {
   }
 };
 
-uint8_t portIndex = 0;  // index on serialPort array
+SERIAL_PORT_INDEX portIndex = 0;  // index on serialPort array
 
 // Set uart pins to input, free uart
 void menuDisconnect(void)
@@ -26,7 +26,7 @@ void menuDisconnect(void)
   GUI_DispStringInRect(20, 0, LCD_WIDTH - 20, LCD_HEIGHT, textSelect(LABEL_DISCONNECT_INFO));
   GUI_DispStringInRect(20, LCD_HEIGHT - (BYTE_HEIGHT * 2), LCD_WIDTH - 20, LCD_HEIGHT, textSelect(LABEL_TOUCH_TO_EXIT));
 
-  Serial_DeInit(-1);
+  Serial_DeInit(ALL_PORTS);
   while (!isPress())
   {
     #ifdef LCD_LED_PWM_CHANNEL
@@ -39,7 +39,7 @@ void menuDisconnect(void)
       LCD_CheckDimming();
     #endif
   }
-  Serial_Init(-1);
+  Serial_Init(ALL_PORTS);
 
   infoMenu.cur--;
 }
@@ -47,7 +47,7 @@ void menuDisconnect(void)
 void menuBaudrate(void)
 {
   LABEL title = {LABEL_BAUDRATE};
-  uint8_t minIndex = portIndex == 0 ? 1 : 0;  // if primary serial port, set minIndex to 1 (value OFF is skipped)
+  uint8_t minIndex = portIndex == PORT_1 ? 1 : 0;  // if primary serial port, set minIndex to 1 (value OFF is skipped)
   uint8_t size = BAUDRATE_COUNT - minIndex;
   LISTITEM totalItems[size];
   KEY_VALUES curIndex = KEY_IDLE;
@@ -107,7 +107,7 @@ void menuSerialPorts(void)
   LISTITEM totalItems[SERIAL_PORT_COUNT];
   KEY_VALUES curIndex = KEY_IDLE;
 
-  for (uint8_t i = PORT_1; i < SERIAL_PORT_COUNT; i++)
+  for (SERIAL_PORT_INDEX i = PORT_1; i < SERIAL_PORT_COUNT; i++)
   {
     totalItems[i].icon = CHARICON_EDIT;
     totalItems[i].itemType = LIST_CUSTOMVALUE;
@@ -124,7 +124,7 @@ void menuSerialPorts(void)
 
     if (curIndex < (KEY_VALUES)SERIAL_PORT_COUNT)
     {
-      portIndex = curIndex;
+      portIndex = (SERIAL_PORT_INDEX)curIndex;
       infoMenu.menu[++infoMenu.cur] = menuBaudrate;
     }
 

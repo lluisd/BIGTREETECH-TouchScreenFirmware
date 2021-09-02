@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "SerialConnection.h"
 
 extern bool hostDialog;
 
@@ -37,7 +38,7 @@ typedef enum
 inline bool isHostDialog() {return hostDialog;}
 
 //void setIgnoreEcho(ECHO_ID msgId, bool state);
-void setCurrentAckSrc(uint8_t portIndex);
+void setCurrentAckSrc(SERIAL_PORT_INDEX portIndex);
 void parseACK(void);
 void parseRcvGcode(void);
 

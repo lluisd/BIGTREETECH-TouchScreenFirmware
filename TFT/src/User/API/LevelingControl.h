@@ -13,11 +13,11 @@ extern "C" {
 typedef enum
 {
   LEVEL_NO_POINT = -1,
-  LEVEL_BOTTOM_LEFT,    // bottom left bed corner
-  LEVEL_BOTTOM_RIGHT,   // bottom right bed corner
-  LEVEL_TOP_RIGHT,      // top right bed corner
-  LEVEL_TOP_LEFT,       // top left bed corner
-  LEVEL_CENTER,         // center bed point
+  LEVEL_BOTTOM_LEFT = 0,  // bottom left bed corner
+  LEVEL_BOTTOM_RIGHT,     // bottom right bed corner
+  LEVEL_TOP_RIGHT,        // top right bed corner
+  LEVEL_TOP_LEFT,         // top left bed corner
+  LEVEL_CENTER,           // center bed point
   LEVELING_POINT_COUNT
 } LEVELING_POINT;
 
