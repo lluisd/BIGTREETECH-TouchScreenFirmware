@@ -5,9 +5,9 @@
 #define L2_CACHE_SIZE 512  // including ending character '\0'
 
 char dmaL2Cache[L2_CACHE_SIZE];
-uint16_t dmaL2Cache_data_len = 0;            // length of data present in dmaL2Cache
-static uint16_t ack_index = 0;
-static uint8_t ack_src_port_index = PORT_1;  // port index for SERIAL_PORT;
+uint16_t dmaL2Cache_len;          // length of data currently present in dmaL2Cache
+uint16_t ack_index;
+uint8_t ack_port_index = PORT_1;  // index of target serial port for the ACK message (related to originating gcode)
 
 static const char errormagic[] = "Error:";
 static const char echomagic[] = "echo:";
@@ -69,21 +69,22 @@ const ECHO knownEcho[] = {
 
 void setCurrentAckSrc(uint8_t portIndex)
 {
-  ack_src_port_index = portIndex;
+  ack_port_index = portIndex;
 }
 
 static bool ack_seen(const char * str)
 {
   size_t str_len = strlen(str);
+  size_t max_len = dmaL2Cache_len - str_len;
 
-  if (dmaL2Cache_data_len < str_len)  // if no match can be found
+  if (max_len < 0)  // if str is longer than data present in cache, no match can be found
     return false;
 
   uint16_t i;
 
-  for (ack_index = 0; ack_index < dmaL2Cache_data_len; ack_index++)
+  for (ack_index = 0; ack_index <= max_len; ack_index++)
   {
-    for (i = 0; (ack_index + i) < dmaL2Cache_data_len && i < str_len && dmaL2Cache[ack_index + i] == str[i]; i++)
+    for (i = 0; i < str_len && str[i] == dmaL2Cache[ack_index + i]; i++)
     {}
     if (i == str_len)  // if end of str is reached, a match was found
     {
@@ -97,16 +98,17 @@ static bool ack_seen(const char * str)
 static bool ack_continue_seen(const char * str)
 { // unlike "ack_seen()", this retains "ack_index" if the searched string is not found
   size_t str_len = strlen(str);
+  size_t max_len = dmaL2Cache_len - str_len;
 
-  if (dmaL2Cache_data_len < str_len)  // if no match can be found
+  if (max_len < 0)  // if str is longer than data present in cache, no match can be found
     return false;
 
+  uint16_t ack_index_orig = ack_index;
   uint16_t i;
-  uint16_t indexBackup = ack_index;
 
-  for (; ack_index < dmaL2Cache_data_len; ack_index++)
+  for (; ack_index < max_len; ack_index++)
   {
-    for (i = 0; (ack_index + i) < dmaL2Cache_data_len && i < str_len && dmaL2Cache[ack_index + i] == str[i]; i++)
+    for (i = 0; i < str_len && str[i] == dmaL2Cache[ack_index + i]; i++)
     {}
     if (i == str_len)  // if end of str is reached, a match was found
     {
@@ -114,14 +116,16 @@ static bool ack_continue_seen(const char * str)
       return true;
     }
   }
-  ack_index = indexBackup;
+  ack_index = ack_index_orig;
   return false;
 }
 
 static bool ack_cmp(const char * str)
 {
+//  return (strstr(dmaL2Cache, str) == dmaL2Cache) ? true : false;
+
   uint16_t i;
-  for (i = 0; i < dmaL2Cache_data_len && str[i] != 0; i++)
+  for (i = 0; i < dmaL2Cache_len && str[i] != 0; i++)
   {
     if (str[i] != dmaL2Cache[i])
       return false;
@@ -254,8 +258,8 @@ bool syncL2CacheFromL1(uint8_t port)
       break;
   }
 
-  dmaL2Cache_data_len = i;  // length of data in the cache
-  dmaL2Cache[i] = 0;        // end character
+  dmaL2Cache_len = i;  // length of data in the cache
+  dmaL2Cache[i] = 0;   // end character
 
   return true;
 }
@@ -1276,9 +1280,9 @@ void parseACK(void)
     }
 
   parse_end:
-    if (ack_src_port_index != PORT_1)  // if the ACK message is related to a gcode originated by a supplementary serial port,
-    {                                  // forward the message to the supplementary serial port
-      Serial_Puts(serialPort[ack_src_port_index].port, dmaL2Cache);
+    if (ack_port_index != PORT_1)  // if the ACK message is related to a gcode originated by a supplementary serial port,
+    {                              // forward the message to the supplementary serial port
+      Serial_Puts(serialPort[ack_port_index].port, dmaL2Cache);
     }
     #ifdef SERIAL_PORT_2
       else if (!ack_seen("ok") || ack_seen("T:") || ack_seen("T0:"))  // if a spontaneous ACK message
@@ -1296,7 +1300,7 @@ void parseACK(void)
 
     if (avoid_terminal != true)
     {
-      terminalCache(dmaL2Cache, TERMINAL_ACK);
+      terminalCache(dmaL2Cache, dmaL2Cache_len, ack_port_index, TERMINAL_ACK);
     }
   }
 }

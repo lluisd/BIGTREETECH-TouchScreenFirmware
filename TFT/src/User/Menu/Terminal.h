@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 typedef enum
 {
   TERMINAL_GCODE,
@@ -12,7 +14,7 @@ typedef enum
 } TERMINAL_SRC;
 
 void menuTerminal(void);
-void terminalCache(char *stream, TERMINAL_SRC src);
+void terminalCache(char *stream, uint16_t streamLen, uint8_t portIndex, TERMINAL_SRC src);
 
 #ifdef __cplusplus
 }
