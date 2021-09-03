@@ -34,7 +34,7 @@ bool isNotEmptyCmdQueue(void)
   return (infoCmd.count != 0 || infoHost.wait == true);
 }
 
-bool isEnqueued(CMD cmd)
+bool isEnqueued(const CMD cmd)
 {
   bool found = false;
   for (int i = 0; i < infoCmd.count && !found; ++i)
@@ -114,7 +114,7 @@ void mustStoreScript(const char * format, ...)
 
   char * p = script;
   uint16_t i = 0;
-  char cmd[CMD_MAX_SIZE];
+  CMD cmd;
   for (;;)
   {
     char c = *p++;
@@ -133,7 +133,7 @@ void mustStoreScript(const char * format, ...)
 // Store gcode cmd received from UART (e.g. ESP3D, OctoPrint, other TouchScreen etc...) to infoCmd queue.
 // This command will be sent to the printer by sendQueueCmd().
 // If the infoCmd queue is full, a reminder message is displayed and the command is discarded.
-bool storeCmdFromUART(SERIAL_PORT_INDEX portIndex, CMD cmd)
+bool storeCmdFromUART(SERIAL_PORT_INDEX portIndex, const CMD cmd)
 {
   if (strlen(cmd) == 0) return false;
 
@@ -235,10 +235,10 @@ void purgeCmd(bool purged, bool avoidTerminal)
   infoCmd.index_r = (infoCmd.index_r + 1) % CMD_QUEUE_SIZE;
 }
 
-// Check if 'string' starts with 'search'.
-static bool cmd_start_with(TCHAR * search, TCHAR * string)
+// Check if 'cmd' starts with 'key'.
+static bool cmd_start_with(const CMD cmd, const char * key)
 {
-  return (strstr(string, search) - string == cmd_index) ? true : false;
+  return (strstr(cmd, key) - cmd == cmd_index) ? true : false;
 }
 
 // Check the presence of the specified 'code' character in the current gcode command.
@@ -274,7 +274,7 @@ void sendQueueCmd(void)
   if (infoCmd.count == 0) return;
 
   bool avoid_terminal = false;
-  uint16_t  cmd = 0;
+  uint16_t cmd = 0;
   cmd_index = 0;
   // check if cmd is from TFT or other host
   bool fromTFT = getCmd();  // retrieve leading gcode in the queue
@@ -327,10 +327,10 @@ void sendQueueCmd(void)
           case 20:  // M20
             if (!fromTFT)
             {
-              if (cmd_start_with("M20 SD:", cmd_ptr) ||
-                  cmd_start_with("M20 U:", cmd_ptr))
+              if (cmd_start_with(cmd_ptr, "M20 SD:") ||
+                  cmd_start_with(cmd_ptr, "M20 U:"))
               {
-                if (cmd_start_with("M20 SD:", cmd_ptr))
+                if (cmd_start_with(cmd_ptr, "M20 SD:"))
                   infoFile.source = TFT_SD;
                 else
                   infoFile.source = TFT_UDISK;
@@ -370,10 +370,10 @@ void sendQueueCmd(void)
           case 23:  // M23
             if (!fromTFT)
             {
-              if (cmd_start_with("M23 SD:", cmd_ptr) ||
-                  cmd_start_with("M23 U:", cmd_ptr))
+              if (cmd_start_with(cmd_ptr, "M23 SD:") ||
+                  cmd_start_with(cmd_ptr, "M23 U:"))
               {
-                if (cmd_start_with("M23 SD:", cmd_ptr))
+                if (cmd_start_with(cmd_ptr, "M23 SD:"))
                   infoFile.source = TFT_SD;
                 else
                   infoFile.source = TFT_UDISK;
@@ -510,10 +510,10 @@ void sendQueueCmd(void)
           case 30:  // M30
             if (!fromTFT)
             {
-              if (cmd_start_with("M30 SD:", cmd_ptr) ||
-                  cmd_start_with("M30 U:", cmd_ptr))
+              if (cmd_start_with(cmd_ptr, "M30 SD:") ||
+                  cmd_start_with(cmd_ptr, "M30 U:"))
               {
-                if (cmd_start_with("M30 SD:", cmd_ptr))
+                if (cmd_start_with(cmd_ptr, "M30 SD:"))
                   infoFile.source = TFT_SD;
                 else
                   infoFile.source = TFT_UDISK;
@@ -553,7 +553,7 @@ void sendQueueCmd(void)
             return;
 
           case 115:  // M115 TFT
-            if (!fromTFT && cmd_start_with("M115 TFT", cmd_ptr))
+            if (!fromTFT && cmd_start_with(cmd_ptr, "M115 TFT"))
             {
               char buf[50];
               Serial_Puts(SERIAL_PORT_2,
@@ -750,13 +750,13 @@ void sendQueueCmd(void)
           break;
 
         case 117:  // M117
-          if (cmd_start_with("Time Left", &cmd_ptr[cmd_index + 5]))
+          if (cmd_start_with(&cmd_ptr[cmd_index + 5], "Time Left"))
           {
             parsePrintRemainingTime(&cmd_ptr[cmd_index + 14]);
           }
           else
           {
-            char message[CMD_MAX_SIZE];
+            CMD message;
 
             strncpy(message, &cmd_ptr[cmd_index + 4], CMD_MAX_SIZE);
             // strip out any checksum that might be in the string
@@ -943,7 +943,7 @@ void sendQueueCmd(void)
               {
                 uint16_t ms = cmd_value();
                 Buzzer_TurnOn(hz, ms);
-                if (!fromTFT && cmd_start_with("M300 TFT", cmd_ptr))
+                if (!fromTFT && cmd_start_with(cmd_ptr, "M300 TFT"))
                 {
                   purgeCmd(true, avoid_terminal);
                   return;

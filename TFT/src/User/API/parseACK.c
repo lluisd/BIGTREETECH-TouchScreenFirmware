@@ -2,30 +2,6 @@
 #include "includes.h"
 #include "RRFParseACK.hpp"
 
-#define L2_CACHE_SIZE 512  // including ending character '\0'
-
-char dmaL2Cache[L2_CACHE_SIZE];
-uint16_t dmaL2Cache_len;                    // length of data currently present in dmaL2Cache
-uint16_t ack_index;
-SERIAL_PORT_INDEX ack_port_index = PORT_1;  // index of target serial port for the ACK message (related to originating gcode)
-
-static const char errormagic[] = "Error:";
-static const char echomagic[] = "echo:";
-static const char warningmagic[] = "Warning:";                     // RRF warning
-static const char messagemagic[] = "message";                      // RRF message in Json format
-static const char errorZProbe[] = "ZProbe triggered before move";  // smoothieware message
-
-bool hostDialog = false;
-
-struct HOST_ACTION
-{
-  char prompt_begin[30];
-  char prompt_button1[20];
-  char prompt_button2[20];
-  bool prompt_show;         // Show popup reminder or not
-  uint8_t button;           // Number of buttons
-} hostAction;
-
 typedef enum  // popup message types available to display an echo message
 {
   ECHO_NOTIFY_NONE = 0,  // ignore the echo message
@@ -60,12 +36,39 @@ const ECHO knownEcho[] = {
   {ECHO_NOTIFY_NONE, "Unknown command: \"M150"},  // M150
 };
 
-//uint8_t forceIgnore[ECHO_ID_COUNT] = {0};
+const char magic_error[] = "Error:";
+const char magic_echo[] = "echo:";
+const char magic_warning[] = "Warning:";  // RRF warning
+const char magic_message[] = "message";   // RRF message in Json format
+
+#define L2_CACHE_SIZE 512  // including ending character '\0'
+
+char dmaL2Cache[L2_CACHE_SIZE];
+uint16_t dmaL2Cache_len;                    // length of data currently present in dmaL2Cache
+uint16_t ack_index;
+SERIAL_PORT_INDEX ack_port_index = PORT_1;  // index of target serial port for the ACK message (related to originating gcode)
+bool hostDialog = false;
+
+struct HOST_ACTION
+{
+  char prompt_begin[30];
+  char prompt_button1[20];
+  char prompt_button2[20];
+  bool prompt_show;         // Show popup reminder or not
+  uint8_t button;           // Number of buttons
+} hostAction;
 
 //void setIgnoreEcho(ECHO_ID msgId, bool state)
 //{
+//  static uint8_t forceIgnore[ECHO_ID_COUNT] = {0};
+//
 //  forceIgnore[msgId] = state;
 //}
+
+bool isHostDialog()
+{
+  return hostDialog;
+}
 
 void setCurrentAckSrc(SERIAL_PORT_INDEX portIndex)
 {
@@ -193,17 +196,17 @@ void ackPopupInfo(const char * info)
 {
   bool show_dialog = true;
   if (infoMenu.menu[infoMenu.cur] == menuTerminal ||
-      (infoMenu.menu[infoMenu.cur] == menuStatus && info == echomagic))
+      (infoMenu.menu[infoMenu.cur] == menuStatus && info == magic_echo))
     show_dialog = false;
 
   // play notification sound if buzzer for ACK is enabled
-  if (info == errormagic)
+  if (info == magic_error)
     BUZZER_PLAY(SOUND_ERROR);
-  else if (info == echomagic && infoSettings.ack_notification == 1)
+  else if (info == magic_echo && infoSettings.ack_notification == 1)
     BUZZER_PLAY(SOUND_NOTIFY);
 
   // set echo message in status screen
-  if (info == echomagic || info == messagemagic)
+  if (info == magic_echo || info == magic_message)
   {
     // ignore all messages if parameter settings is open
     if (infoMenu.menu[infoMenu.cur] == menuParameterSettings)
@@ -255,7 +258,7 @@ bool processKnownEcho(void)
       else if (knownEcho[i].notifyType == ECHO_NOTIFY_DIALOG)
       {
         BUZZER_PLAY(SOUND_NOTIFY);
-        addNotification(DIALOG_TYPE_INFO, (char *)echomagic, (char *)dmaL2Cache + ack_index, true);
+        addNotification(DIALOG_TYPE_INFO, (char *)magic_echo, (char *)dmaL2Cache + ack_index, true);
       }
     //}
   }
@@ -277,7 +280,7 @@ void hostActionCommands(void)
     }
     else
     {
-      statusScreen_setMsg((uint8_t *)echomagic, (uint8_t *)dmaL2Cache + index);  // always display the notification on status screen
+      statusScreen_setMsg((uint8_t *)magic_echo, (uint8_t *)dmaL2Cache + index);  // always display the notification on status screen
 
       if (!ack_seen("Ready."))  // avoid to display unneeded/frequent useless notifications (e.g. "My printer Ready.")
       {
@@ -285,7 +288,7 @@ void hostActionCommands(void)
           addToast(DIALOG_TYPE_INFO, dmaL2Cache + index);
 
         if (infoSettings.notification_m117 == ENABLED)
-          addNotification(DIALOG_TYPE_INFO, (char *)echomagic, (char *)dmaL2Cache + index, false);
+          addNotification(DIALOG_TYPE_INFO, (char *)magic_echo, (char *)dmaL2Cache + index, false);
       }
     }
   }
@@ -408,7 +411,7 @@ void parseACK(void)
     if (infoHost.connected == false)  // Not connected to printer
     {
       // parse error information even though not connected to printer
-      if (ack_seen(errormagic)) ackPopupInfo(errormagic);
+      if (ack_seen(magic_error)) ackPopupInfo(magic_error);
 
       // the first response should be such as "T:25/50\n"
       if (!(ack_seen("@") && ack_seen("T:")) && !ack_seen("T0:")) goto parse_end;
@@ -486,7 +489,7 @@ void parseACK(void)
       {
         requestCommandInfo.done = true;
         requestCommandInfo.inResponse = false;
-        ackPopupInfo(errormagic);
+        ackPopupInfo(magic_error);
       }
       infoHost.wait = false;
       requestCommandInfo.inJson = false;
@@ -1209,29 +1212,29 @@ void parseACK(void)
       //----------------------------------------
 
       // parse error messages
-      else if (ack_seen(errormagic))
+      else if (ack_seen(magic_error))
       {
-        ackPopupInfo(errormagic);
+        ackPopupInfo(magic_error);
       }
       // parse echo messages
-      else if (ack_seen(echomagic))
+      else if (ack_seen(magic_echo))
       {
         if (!processKnownEcho())  // if no known echo was found and processed, then popup the echo message
         {
-          ackPopupInfo(echomagic);
+          ackPopupInfo(magic_echo);
         }
       }
 
       // keep it here and parse it the latest
       else if (infoMachineSettings.firmwareType == FW_REPRAPFW)
       {
-        if (ack_seen(warningmagic))
+        if (ack_seen(magic_warning))
         {
-          ackPopupInfo(warningmagic);
+          ackPopupInfo(magic_warning);
         }
-        else if (ack_seen(messagemagic))
+        else if (ack_seen(magic_message))
         {
-          ackPopupInfo(messagemagic);
+          ackPopupInfo(magic_message);
         }
         else if (ack_seen("access point "))
         {
@@ -1255,7 +1258,7 @@ void parseACK(void)
       }
       else if (infoMachineSettings.firmwareType == FW_SMOOTHIEWARE)
       {
-        if (ack_seen(errorZProbe))  // smoothieboard ZProbe triggered before move, aborting command.
+        if (ack_seen("ZProbe triggered before move"))  // smoothieboard ZProbe triggered before move, aborting command.
         {
           ackPopupInfo("ZProbe triggered before move.\nAborting Print!");
         }

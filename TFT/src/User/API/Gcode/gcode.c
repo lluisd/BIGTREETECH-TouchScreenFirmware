@@ -245,7 +245,7 @@ void request_M0(void)
 
 void request_M98(char *filename)
 {
-  char command[CMD_MAX_SIZE];
+  CMD command;
   snprintf(command, CMD_MAX_SIZE, "M98 P/%s\n", filename);
   rrfStatusSetMacroBusy();
   mustStoreCmd(command);

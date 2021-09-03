@@ -9,8 +9,6 @@ extern "C" {
 #include <stdint.h>
 #include "SerialConnection.h"
 
-extern bool hostDialog;
-
 // append at the end of this list the id of any new echo message for
 // which a specific popup message type must be used to notify the user
 typedef enum
@@ -35,9 +33,8 @@ typedef enum
   ECHO_ID_COUNT,
 } ECHO_ID;
 
-inline bool isHostDialog() {return hostDialog;}
-
 //void setIgnoreEcho(ECHO_ID msgId, bool state);
+bool isHostDialog();
 void setCurrentAckSrc(SERIAL_PORT_INDEX portIndex);
 void parseACK(void);
 void parseRcvGcode(void);

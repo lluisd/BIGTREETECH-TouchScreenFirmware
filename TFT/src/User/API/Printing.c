@@ -645,7 +645,7 @@ void loopPrintFromTFT(void)
   bool    read_comment = false;
   bool    read_leading_space = true;
   char    read_char;
-  char    gcode[CMD_MAX_SIZE];
+  CMD     gcode;
   uint8_t gCode_count = 0;
   uint8_t comment_count = 0;
   UINT    br = 0;
