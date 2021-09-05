@@ -524,7 +524,7 @@
 /**
  * Start/End/Cancel Gcode
  * Gcode that runs after a print starts, ends, or canceled.
- * Enable Start/End/Cancel gcode in SETTINGS -> FEATURE menu.
+ * Enable Start/End/Cancel gcode in Settings -> Feature menu.
  *
  * NOTES for users having a filament sensor connected to the mainboard:
  *   1) Enable the start/end gcode.
@@ -578,11 +578,12 @@
  * If one of the DEBUG_x below is defined the SERIAL_DEBUG_PORT defined in board specific Pin_xx.h file
  * will be used for debugging purposes. DON'T enable one of the DEBUG_x below for normal printing.
  *
- * Warning: SERIAL_DEBUG_PORT needs to be activated specifically. Please consider settings MULTI_SERIAL > 0
- * in the Configuration.h or set e.g. "multi_serial: 2" in the config.ini.
- * If the TFT is only showing the boot logo and is not responding anymore, check the MULTI_SERIAL setting.
- * If you update the config.ini you need to reset the TFT *twice* (first reset to update the config, second
- * reset to enable the SERIAL_DEBUG_PORT due to the changed firmware config).
+ * WARNINGS:
+ *   - SERIAL_DEBUG_PORT needs to be activated specifically. Please consider SERIAL_PORT setting
+ *     in the config.ini.
+ *   - If the TFT is only showing the boot logo and is not responding anymore, check the SERIAL_PORT setting.
+ *   - If you update the config.ini you need to reset the TFT *twice* (first reset to update the config, second
+ *     reset to enable the SERIAL_DEBUG_PORT due to the changed firmware config).
  */
 
 /**
@@ -692,11 +693,19 @@
 #define RAPID_SERIAL_COMM  // Default: uncommented (enabled)
 
 /**
- * LCD/Touch Encoder
- * In case LCD/Touch Encoder's sliding buttons (pin LCD_ENCA_PIN and LCD_ENCB_PIN)
- * don't produce any movement on menu, try to increase the delay in ms (e.g. 64).
+ * LCD Encoder Settings (HW Rotary Encoder)
+ * In case LCD Encoder's sliding buttons (pin LCD_ENCA_PIN and LCD_ENCB_PIN) don't produce
+ * any movement on menu, try to increase the delay (in MilliSeconds) (e.g. 64).
  */
-#define LCD_ENCODER_DELAY 64  // Default: 8 (ms) (1 ms = 0.000001 seconds)
+#ifdef MKS_TFT
+  #define LCD_ENC_DELAY           40  // in ms. Default: 8
+  #define LCD_ENC_PULSES_PER_STEP  2  // Default: 4
+  #define LCD_ENC_BUTTON_INTERVAL 20  // in ms. Default: 20
+#else
+  #define LCD_ENC_DELAY            8  // in ms. Default: 8
+  #define LCD_ENC_PULSES_PER_STEP  4  // Default: 4
+  #define LCD_ENC_BUTTON_INTERVAL 20  // in ms. Default: 20
+#endif
 
 /**
  * Buzzer Settings
@@ -707,8 +716,8 @@
  * NOTE: Test audio output with the G-Code:
  *       M300 S<frequency Hz> P<duration MilliSeconds>
  */
-#define BUZZER_FREQUENCY_DURATION_MS    20  // (MilliSeconds) Default: 20
-#define BUZZER_FREQUENCY_HZ          10000  // (Hz) Default: 10000 (20Hz to 60000Hz)
+#define BUZZER_FREQUENCY_DURATION_MS    20  // in ms. Default: 20
+#define BUZZER_FREQUENCY_HZ          10000  // in Hz (20Hz to 60000Hz). Default: 10000
 
 /**
  * Buzzer Stop Level
@@ -747,9 +756,10 @@
 
 /**
  * Quick EEPROM Menu
- * Enable EEPROM menu (save/load/reset buttons) in Settings > Machine Menu.
+ * Enable EEPROM menu (save/load/reset buttons) in Settings -> Machine menu.
  *
- * NOTE: If disabled, EEPROM operations can also be accessed in the (settings > machine > parameters) menu.
+ * NOTE: If disabled, EEPROM operations can also be accessed in
+ *       Settings -> Machine -> Parameter Settings menu.
  */
 #define QUICK_EEPROM_BUTTON  // Default: uncommented (enabled)
 
@@ -757,7 +767,7 @@
  * Toast Notification Duration (in MilliSeconds)
  * Set the duration for displaying toast notification on top of the screen.
  */
-#define TOAST_DURATION (3 * 1000)  // (MilliSeconds)  1000 MilliSeconds = 1 Second
+#define TOAST_DURATION (3 * 1000)  // in ms. Default: 3 * 1000
 
 /**
  * Keyboard On Left Side (Mesh Editor, RGB Settings Custom)
