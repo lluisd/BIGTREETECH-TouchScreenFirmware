@@ -90,19 +90,19 @@ bool syncL2CacheFromL1(uint8_t port)
 
   if (*rIndex_ptr == dmaL1Data_ptr->wIndex)  // if L1 cache is empty
   {
-    infoHost.rx_ok[port] = false;
+    infoHost.rx_ok[port] = false;  // mark the port as containing no more data
 
     return false;
   }
 
   uint16_t i = 0;
 
-  while (i < (L2_CACHE_SIZE - 1) && *rIndex_ptr != dmaL1Data_ptr->wIndex)  // retrieve data until L2 cache is full or L1 cache is empty
+  while (i < (L2_CACHE_SIZE - 1) && *rIndex_ptr != dmaL1Data_ptr->wIndex)  // retrieve data at maximum until L2 cache is full or L1 cache is empty
   {
     dmaL2Cache[i] = dmaL1Data_ptr->cache[*rIndex_ptr];
     *rIndex_ptr = (*rIndex_ptr + 1) % dmaL1Data_ptr->cacheSize;
 
-    if (dmaL2Cache[i++] == '\n')
+    if (dmaL2Cache[i++] == '\n')  // if data end marker is found, exit from the loop
       break;
   }
 
