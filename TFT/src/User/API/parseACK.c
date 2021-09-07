@@ -82,7 +82,7 @@ void setCurrentAckSrc(SERIAL_PORT_INDEX portIndex)
 
 bool syncL2CacheFromL1(uint8_t port)
 {
-  if (infoHost.rx_ok[port] != true)  // if nothing to read
+  if (infoHost.rx_ok[port] != true)  // if no data to read from L1 cache
     return false;
 
   DMA_CIRCULAR_BUFFER * dmaL1Data_ptr = &dmaL1Data[port];  // make access to most used variables/attributes faster reducing also the code
@@ -97,7 +97,7 @@ bool syncL2CacheFromL1(uint8_t port)
 
   uint16_t i = 0;
 
-  while (i < (L2_CACHE_SIZE - 1) && *rIndex_ptr != dmaL1Data_ptr->wIndex)  // retrieve data at maximum until L2 cache is full or L1 cache is empty
+  while (i < (L2_CACHE_SIZE - 1) && *rIndex_ptr != dmaL1Data_ptr->wIndex)  // retrieve data at most until L2 cache is full or L1 cache is empty
   {
     dmaL2Cache[i] = dmaL1Data_ptr->cache[*rIndex_ptr];
     *rIndex_ptr = (*rIndex_ptr + 1) % dmaL1Data_ptr->cacheSize;
