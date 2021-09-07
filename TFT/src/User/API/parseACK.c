@@ -82,11 +82,18 @@ void setCurrentAckSrc(SERIAL_PORT_INDEX portIndex)
 
 bool syncL2CacheFromL1(uint8_t port)
 {
+  if (infoHost.rx_ok[port] != true)  // if nothing to read
+    return false;
+
   DMA_CIRCULAR_BUFFER * dmaL1Data_ptr = &dmaL1Data[port];  // make access to most used variables/attributes faster reducing also the code
   uint16_t * rIndex_ptr = &dmaL1Data_ptr->rIndex;          // make access to most used variables/attributes faster reducing also the code
 
   if (*rIndex_ptr == dmaL1Data_ptr->wIndex)  // if L1 cache is empty
+  {
+    infoHost.rx_ok[port] = false;
+
     return false;
+  }
 
   uint16_t i = 0;
 
@@ -400,12 +407,9 @@ void hostActionCommands(void)
 
 void parseACK(void)
 {
-  if (infoHost.rx_ok[SERIAL_PORT] != true) return;  // not get response data
-
   while (syncL2CacheFromL1(SERIAL_PORT))  // if some data are retrieved from L1 to L2 cache
   {
     bool avoid_terminal = false;
-    infoHost.rx_ok[SERIAL_PORT] = false;
 
     #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
       // dump raw serial data received to debug port
@@ -1332,23 +1336,13 @@ void parseACK(void)
 void parseRcvGcode(void)
 {
   #ifdef SERIAL_PORT_2
-    uint8_t port;
-
-    // scan all the supplementary serial ports
-    for (SERIAL_PORT_INDEX i = PORT_2; i < SERIAL_PORT_COUNT; i++)
+    for (SERIAL_PORT_INDEX i = PORT_2; i < SERIAL_PORT_COUNT; i++)  // scan all the supplementary serial ports
     {
       if (infoSettings.serial_port[i] > 0)  // if serial port is enabled
       {
-        port = serialPort[i].port;
-
-        if (infoHost.rx_ok[port] == true)
+        while (syncL2CacheFromL1(serialPort[i].port))  // if some data are retrieved from L1 to L2 cache
         {
-          infoHost.rx_ok[port] = false;
-
-          while (syncL2CacheFromL1(port))  // if some data are retrieved from L1 to L2 cache
-          {
-            storeCmdFromUART(i, dmaL2Cache);
-          }
+          storeCmdFromUART(i, dmaL2Cache);
         }
       }
     }
