@@ -1310,6 +1310,8 @@ void parseACK(void)
   parse_end:
     if (ack_port_index != PORT_1)  // if the ACK message is related to a gcode originated by a supplementary serial port,
     {                              // forward the message to the supplementary serial port
+      ack_port_index = PORT_1;  // reset ACK port index to avoid wrong relaying (in case no more commands will be sent by interfaceCmd)
+                                // of any successive spontaneous ACK message
       Serial_Puts(serialPort[ack_port_index].port, dmaL2Cache);
     }
     #ifdef SERIAL_PORT_2

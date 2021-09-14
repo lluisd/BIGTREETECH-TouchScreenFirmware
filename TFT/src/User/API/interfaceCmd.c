@@ -609,7 +609,7 @@ void sendQueueCmd(void)
           if (cmd_seen('R'))
           {
             setPrintRemainingTime((cmd_value() * 60));
-            setM73_presence(0);  // disable parsing remaning time from gCode comments
+            setM73_presence(false);  // disable parsing remaning time from gCode comments
           }
 
           if (!infoMachineSettings.buildPercent)  // if M73 is not supported by Marlin, skip it
@@ -1221,7 +1221,16 @@ void sendQueueCmd(void)
 
   infoHost.wait = infoHost.connected;
 
-  setCurrentAckSrc(cmd_port_index);
-  Serial_Puts(SERIAL_PORT, cmd_ptr);
-  purgeCmd(false, avoid_terminal);
+  if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 0)  // if not in listening mode
+  {
+    setCurrentAckSrc(cmd_port_index);
+    Serial_Puts(SERIAL_PORT, cmd_ptr);
+    purgeCmd(false, avoid_terminal);
+
+    return;
+  }
+
+  // if in listening mode, purge the command
+  setCurrentAckSrc(PORT_1);
+  purgeCmd(true, avoid_terminal);
 }  // sendQueueCmd

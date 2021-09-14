@@ -4,7 +4,7 @@
 SETTINGS infoSettings;
 MACHINESETTINGS infoMachineSettings;
 
-const uint8_t default_general_settings = 0b00000011;  // emulated M600 / M109 / M190 enabled
+const uint8_t default_general_settings = 0b00000110;  // listening mode disabled, emulated M600 and emulated M109 / M190 enabled
 const uint16_t default_max_temp[]      = HEAT_MAX_TEMP;
 const uint16_t default_max_fanPWM[]    = FAN_MAX_PWM;
 const uint16_t default_size_min[]      = {X_MIN_POS, Y_MIN_POS, Z_MIN_POS};
