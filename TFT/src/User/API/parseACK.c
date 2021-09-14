@@ -443,7 +443,7 @@ void parseACK(void)
         infoMachineSettings.softwareEndstops = ENABLED;
         infoHost.wait = false;
         storeCmd("M92\n");
-        storeCmd("M115\n");
+        storeCmd("M115\n");  // as last command to identify the FW type!
       }
 
       if (infoMachineSettings.firmwareType == FW_NOT_DETECTED)  // if never connected to the printer since boot
@@ -451,9 +451,10 @@ void parseACK(void)
         storeCmd("M503\n");  // Query detailed printer capabilities
         storeCmd("M92\n");   // Steps/mm of extruder is an important parameter for Smart filament runout
                              // Avoid can't getting this parameter due to disabled M503 in Marlin
-        storeCmd("M115\n");
         storeCmd("M211\n");  // retrieve the software endstops state
+        storeCmd("M115\n");  // as last command to identify the FW type!
       }
+
       infoHost.connected = true;
       requestCommandInfo.inJson = false;
     }
@@ -1136,6 +1137,10 @@ void parseACK(void)
           infoMachineSettings.firmwareType = FW_UNKNOWN;
           setupMachine();
         }
+
+        if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 1)  // if TFT in listening mode, display a reminder message
+          reminderMessage(LABEL_LISTENING, STATUS_LISTENING);
+
         if (ack_seen("FIRMWARE_URL:"))  // For Smoothieware
           string_end = ack_index - sizeof("FIRMWARE_URL:");
         else if (ack_seen("SOURCE_CODE_URL:"))  // For Marlin

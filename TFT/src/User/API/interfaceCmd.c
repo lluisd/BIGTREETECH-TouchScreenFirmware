@@ -1219,10 +1219,11 @@ void sendQueueCmd(void)
 
   }  // end parsing cmd
 
-  infoHost.wait = infoHost.connected;
-
-  if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 0)  // if not in listening mode
+  if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 0 ||
+      infoMachineSettings.firmwareType == FW_NOT_DETECTED)  // if TFT not in listening mode or FW not detected yet
   {
+    infoHost.wait = infoHost.connected;
+
     setCurrentAckSrc(cmd_port_index);
     Serial_Puts(SERIAL_PORT, cmd_ptr);
     purgeCmd(false, avoid_terminal);
@@ -1230,7 +1231,9 @@ void sendQueueCmd(void)
     return;
   }
 
-  // if in listening mode, purge the command
+  // if TFT in listening mode, purge the command
+  infoHost.wait = false;
+
   setCurrentAckSrc(PORT_1);
   purgeCmd(true, avoid_terminal);
 }  // sendQueueCmd

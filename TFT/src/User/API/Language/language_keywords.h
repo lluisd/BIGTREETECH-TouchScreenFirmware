@@ -150,6 +150,7 @@ extern "C" {
 #define LANG_KEY_BUSY                         "label_busy:"
 #define LANG_KEY_LOADING                      "label_loading:"
 #define LANG_KEY_UNCONNECTED                  "label_unconnected:"
+#define LANG_KEY_LISTENING                    "label_listening:"
 
 // Process Info
 #define LANG_KEY_INFO                         "label_info:" //Info Sign
@@ -261,6 +262,8 @@ extern "C" {
 #define LANG_KEY_CONNECTION_SETTINGS          "label_connection_settings:"
 #define LANG_KEY_SERIAL_PORTS                 "label_serial_ports:"
 #define LANG_KEY_BAUDRATE                     "label_baudrate:"
+#define LANG_KEY_LISTENING_ENABLE             "label_listening_enable:"
+#define LANG_KEY_LISTENING_DISABLE            "label_listening_disable:"
 #define LANG_KEY_EEPROM_SETTINGS              "label_eeprom_settings:"
 #define LANG_KEY_RGB_SETTINGS                 "label_rgb_settings:"
 #define LANG_KEY_RGB_OFF                      "label_rgb_off:"

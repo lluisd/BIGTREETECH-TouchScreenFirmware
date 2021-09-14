@@ -7,14 +7,12 @@ void updateListeningMode(MENUITEMS * menu)
 {
   if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 1)
   {
-    menu->items[4].icon = ICON_LEVELING_ON;
-    menu->items[4].label.index = LABEL_BL_ENABLE;
-    reminderMessage(LABEL_UNCONNECTED, STATUS_LISTENING);
+    menu->items[4].label.index = LABEL_LISTENING_ENABLE;
+    reminderMessage(LABEL_LISTENING, STATUS_LISTENING);
   }
   else
   {
-    menu->items[4].icon = ICON_LEVELING_OFF;
-    menu->items[4].label.index = LABEL_BL_DISABLE;
+    menu->items[4].label.index = LABEL_LISTENING_DISABLE;
   }
 }
 
@@ -142,7 +140,7 @@ void menuConnectionSettings(void)
       {ICON_DISCONNECT,              LABEL_DISCONNECT},
       {ICON_STOP,                    LABEL_EMERGENCYSTOP},
       {ICON_SHUT_DOWN,               LABEL_SHUT_DOWN},
-      {ICON_LEVELING_OFF,            LABEL_BL_DISABLE},
+      {ICON_BAUD_RATE,               LABEL_LISTENING_DISABLE},
       {ICON_BACKGROUND,              LABEL_BACKGROUND},
       {ICON_BACKGROUND,              LABEL_BACKGROUND},
       {ICON_BACK,                    LABEL_BACK},
