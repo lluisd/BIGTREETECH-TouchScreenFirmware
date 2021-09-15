@@ -143,6 +143,7 @@
     #define STRING_BUSY                   "Feldolgozás alatt, kérlek várj..."
     #define STRING_LOADING                "Betöltés..."
     #define STRING_UNCONNECTED            "Nincs nyomtató csatlakoztatva!"
+    #define STRING_LISTENING              "TFT in Listening Mode!"
 
     // Process Info
     #define STRING_INFO                   "Infó"
@@ -254,6 +255,8 @@
     #define STRING_CONNECTION_SETTINGS    "Kapcsolat"
     #define STRING_SERIAL_PORTS           "S. Portok"
     #define STRING_BAUDRATE               "Kapcsolat"
+    #define STRING_LISTENING_ENABLE       "Listen: on"
+    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "LED Szín"
     #define STRING_RGB_OFF                "LED Ki"

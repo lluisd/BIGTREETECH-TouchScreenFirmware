@@ -143,6 +143,7 @@
     #define STRING_BUSY                   "系統繁忙請稍等"
     #define STRING_LOADING                "讀取中"
     #define STRING_UNCONNECTED            "尚未連線到主機板"
+    #define STRING_LISTENING              "TFT in Listening Mode!"
 
     // Process Info
     #define STRING_INFO                   "提示" //Info Sign
@@ -254,6 +255,8 @@
     #define STRING_CONNECTION_SETTINGS    "连接"
     #define STRING_SERIAL_PORTS           "S. Ports"
     #define STRING_BAUDRATE               "串列傳輸速率"
+    #define STRING_LISTENING_ENABLE       "Listen: on"
+    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "燈光顏色"
     #define STRING_RGB_OFF                "關閉燈光"

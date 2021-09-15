@@ -143,6 +143,7 @@
     #define STRING_BUSY                   "Zpracovávám, čekejte prosím..."
     #define STRING_LOADING                "Nahrávám..."
     #define STRING_UNCONNECTED            "Tiskárna není připojena!"
+    #define STRING_LISTENING              "TFT in Listening Mode!"
 
     // Process Info
     #define STRING_INFO                   "Info"
@@ -254,6 +255,8 @@
     #define STRING_CONNECTION_SETTINGS    "Připojení"
     #define STRING_SERIAL_PORTS           "SerialPort"
     #define STRING_BAUDRATE               "Rychlost"
+    #define STRING_LISTENING_ENABLE       "Listen: on"
+    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "Barva LED"
     #define STRING_RGB_OFF                "LED vyp."

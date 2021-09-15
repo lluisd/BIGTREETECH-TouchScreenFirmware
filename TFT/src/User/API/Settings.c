@@ -198,8 +198,14 @@ void setupMachine(void)
 {
   // Avoid repeated calls caused by manually sending M115 in terminal menu
   static bool firstCall = true;
-  if (!firstCall) return;
+
+  if (!firstCall)
+    return;
+
   firstCall = false;
+
+  if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 1)  // if TFT in listening mode, display a reminder message
+    reminderMessage(LABEL_LISTENING, STATUS_LISTENING);
 
   #ifdef BED_LEVELING_TYPE
     #if BED_LEVELING_TYPE == 2
@@ -214,9 +220,7 @@ void setupMachine(void)
   #endif
 
   if (infoMachineSettings.leveling != BL_DISABLED && infoMachineSettings.EEPROM == 1 && infoSettings.auto_load_leveling == 1)
-  {
     storeCmd("M420 S1\n");
-  }
 
   if (infoMachineSettings.firmwareType != FW_MARLIN)  // Smoothieware does not report detailed M115 capabilities
   {
@@ -229,6 +233,7 @@ void setupMachine(void)
     infoMachineSettings.emergencyParser         = ENABLED;
     infoMachineSettings.autoReportSDStatus      = DISABLED;
   }
+
   if (infoSettings.onboard_sd != AUTO)
     infoMachineSettings.onboardSD = infoSettings.onboard_sd;
 
@@ -242,6 +247,7 @@ void setupMachine(void)
     mustStoreCmd("M555 P2\n");  //  Set RRF compatibility behaves similar to 2: Marlin
     mustStoreCmd("M552\n");     // query network state, populate IP if the screen boots up after RRF
   }
+
   mustStoreCmd("M82\n");  // Set extruder to absolute mode
   mustStoreCmd("G90\n");  // Set to Absolute Positioning
 }
@@ -250,6 +256,7 @@ float flashUsedPercentage(void)
 {
   uint32_t total = W25Qxx_ReadCapacity();
   float percent = ((float)FLASH_USED * 100) / total;
+
   return percent;
 }
 

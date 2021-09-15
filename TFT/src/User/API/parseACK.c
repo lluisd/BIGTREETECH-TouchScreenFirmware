@@ -409,13 +409,13 @@ void parseACK(void)
 {
   while (syncL2CacheFromL1(SERIAL_PORT))  // if some data are retrieved from L1 to L2 cache
   {
-    bool avoid_terminal = false;
-
     #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
       // dump raw serial data received to debug port
       Serial_Puts(SERIAL_DEBUG_PORT, "<<");
       Serial_Puts(SERIAL_DEBUG_PORT, dmaL2Cache);
     #endif
+
+    bool avoid_terminal = false;
 
     if (infoHost.connected == false)  // Not connected to printer
     {
@@ -1125,21 +1125,17 @@ void parseACK(void)
         else if (ack_seen("RepRapFirmware"))
         {
           infoMachineSettings.firmwareType = FW_REPRAPFW;
-          setupMachine();
         }
         else if (ack_seen("Smoothieware"))
         {
           infoMachineSettings.firmwareType = FW_SMOOTHIEWARE;
-          setupMachine();
         }
         else
         {
           infoMachineSettings.firmwareType = FW_UNKNOWN;
-          setupMachine();
         }
 
-        if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 1)  // if TFT in listening mode, display a reminder message
-          reminderMessage(LABEL_LISTENING, STATUS_LISTENING);
+        setupMachine();  // setup machine
 
         if (ack_seen("FIRMWARE_URL:"))  // For Smoothieware
           string_end = ack_index - sizeof("FIRMWARE_URL:");
@@ -1162,6 +1158,7 @@ void parseACK(void)
             }
             string_end = ack_index - sizeof("EXTRUDER_COUNT:");
           }
+
           infoSetMachineType(string, string_end - string_start);  // Set firmware name
         }
       }

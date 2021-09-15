@@ -143,6 +143,7 @@
     #define STRING_BUSY                   "Απασχολημένη επεξεργασία, παρακάλω περιμένετε ..."
     #define STRING_LOADING                "Φόρτωση..."
     #define STRING_UNCONNECTED            "Δεν υπάρχει συνδεδεμένος εκτυπωτής!"
+    #define STRING_LISTENING              "TFT in Listening Mode!"
 
     // Process Info
     #define STRING_INFO                   "\u0884 Πληροφορίες" //Info Sign
@@ -254,6 +255,8 @@
     #define STRING_CONNECTION_SETTINGS    "Connection"
     #define STRING_SERIAL_PORTS           "S. Ports"
     #define STRING_BAUDRATE               "BaudRate"
+    #define STRING_LISTENING_ENABLE       "Listen: on"
+    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "Χρώμα LED"
     #define STRING_RGB_OFF                "Απενεργοποίηση LED"

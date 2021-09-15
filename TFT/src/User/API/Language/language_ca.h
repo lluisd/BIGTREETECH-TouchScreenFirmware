@@ -143,6 +143,7 @@
     #define STRING_BUSY                   "Processament ocupat, si us plau esperi ..."
     #define STRING_LOADING                "Carregant ..."
     #define STRING_UNCONNECTED            "No hi ha comunicació amb impressora!"
+    #define STRING_LISTENING              "TFT in Listening Mode!"
 
     // Process Info
     #define STRING_INFO                   "Informació"
@@ -254,6 +255,8 @@
     #define STRING_CONNECTION_SETTINGS    "Connection"
     #define STRING_SERIAL_PORTS           "S. Ports"
     #define STRING_BAUDRATE               "Velocitat de transmissió"
+    #define STRING_LISTENING_ENABLE       "Listen: on"
+    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "Color LED"
     #define STRING_RGB_OFF                "Apagar LED"

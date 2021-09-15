@@ -143,6 +143,7 @@
     #define STRING_BUSY                   "系统繁忙,请稍候..."
     #define STRING_LOADING                "加载中..."
     #define STRING_UNCONNECTED            "未连接到打印机!"
+    #define STRING_LISTENING              "TFT in Listening Mode!"
 
     // Process Info
     #define STRING_INFO                   "提示"
@@ -254,6 +255,8 @@
     #define STRING_CONNECTION_SETTINGS    "连接"
     #define STRING_SERIAL_PORTS           "S. Ports"
     #define STRING_BAUDRATE               "波特率"
+    #define STRING_LISTENING_ENABLE       "Listen: on"
+    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "灯光颜色"
     #define STRING_RGB_OFF                "熄灭灯光"

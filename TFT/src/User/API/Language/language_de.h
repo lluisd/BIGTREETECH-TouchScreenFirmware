@@ -143,6 +143,7 @@
     #define STRING_BUSY                   "Bitte warten ..."
     #define STRING_LOADING                "Lade ..."
     #define STRING_UNCONNECTED            "Keine Verbindung zum Drucker!"
+    #define STRING_LISTENING              "TFT in Listening Mode!"
 
     // Process Info
     #define STRING_INFO                   "Info" //Info Sign
@@ -254,6 +255,8 @@
     #define STRING_CONNECTION_SETTINGS    "Verbindung"
     #define STRING_SERIAL_PORTS           "S. Ports"
     #define STRING_BAUDRATE               "Baudrate"
+    #define STRING_LISTENING_ENABLE       "Listen: on"
+    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "LED Farbe"
     #define STRING_RGB_OFF                "LED aus"

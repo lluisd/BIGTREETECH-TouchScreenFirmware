@@ -143,6 +143,7 @@
     #define STRING_BUSY                   "ビジー状態、しばらくお待ちください..."
     #define STRING_LOADING                "ロッド中..."
     #define STRING_UNCONNECTED            "プリンターに連続していない!"
+    #define STRING_LISTENING              "TFT in Listening Mode!"
 
     // Process Info
     #define STRING_INFO                   "情報"
@@ -254,6 +255,8 @@
     #define STRING_CONNECTION_SETTINGS    "Connection"
     #define STRING_SERIAL_PORTS           "S. Ports"
     #define STRING_BAUDRATE               "ポートレート"
+    #define STRING_LISTENING_ENABLE       "Listen: on"
+    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "LED カラー"
     #define STRING_RGB_OFF                "LED オフ"
