@@ -192,20 +192,21 @@ void initMachineSetting(void)
   infoMachineSettings.babyStepping            = DISABLED;
   infoMachineSettings.buildPercent            = DISABLED;
   infoMachineSettings.softwareEndstops        = ENABLED;
+
+  // reset the state to restart the temperature polling process
+  // needed by parseAck() function to establish the connection
+  heatSetUpdateWaiting(false);
 }
 
-void setupMachine(void)
+void setupMachine(FW_TYPE fwType)
 {
-  // Avoid repeated calls caused by manually sending M115 in terminal menu
-  static bool firstCall = true;
-
-  if (!firstCall)
+  if (infoMachineSettings.firmwareType != FW_NOT_DETECTED)  // Avoid repeated calls caused by manually sending M115 in terminal menu
     return;
-
-  firstCall = false;
 
   if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 1)  // if TFT in listening mode, display a reminder message
     reminderMessage(LABEL_LISTENING, STATUS_LISTENING);
+
+  infoMachineSettings.firmwareType = fwType;
 
   #if BED_LEVELING_TYPE > 1  // if not disabled and not auto-detect
     #if BED_LEVELING_TYPE == 2
@@ -236,7 +237,9 @@ void setupMachine(void)
 
   if (infoMachineSettings.firmwareType == FW_REPRAPFW)
   {
-    mustStoreCmd("M555 P2\n");  //  Set RRF compatibility behaves similar to 2: Marlin
+    infoMachineSettings.softwareEndstops = ENABLED;
+
+    mustStoreCmd("M555 P2\n");  // Set RRF compatibility behaves similar to 2: Marlin
     mustStoreCmd("M552\n");     // query network state, populate IP if the screen boots up after RRF
   }
 

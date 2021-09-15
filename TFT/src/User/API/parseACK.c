@@ -439,9 +439,6 @@ void parseACK(void)
 
       if (!ack_seen("@"))  // It's RepRapFirmware
       {
-        infoMachineSettings.firmwareType = FW_REPRAPFW;
-        infoMachineSettings.softwareEndstops = ENABLED;
-        infoHost.wait = false;
         storeCmd("M92\n");
         storeCmd("M115\n");  // as last command to identify the FW type!
       }
@@ -1120,22 +1117,20 @@ void parseACK(void)
 
         if (ack_seen("Marlin"))
         {
-          infoMachineSettings.firmwareType = FW_MARLIN;
+          setupMachine(FW_MARLIN);
         }
         else if (ack_seen("RepRapFirmware"))
         {
-          infoMachineSettings.firmwareType = FW_REPRAPFW;
+          setupMachine(FW_REPRAPFW);
         }
         else if (ack_seen("Smoothieware"))
         {
-          infoMachineSettings.firmwareType = FW_SMOOTHIEWARE;
+          setupMachine(FW_SMOOTHIEWARE);
         }
         else
         {
-          infoMachineSettings.firmwareType = FW_UNKNOWN;
+          setupMachine(FW_UNKNOWN);
         }
-
-        setupMachine();  // setup machine
 
         if (ack_seen("FIRMWARE_URL:"))  // For Smoothieware
           string_end = ack_index - sizeof("FIRMWARE_URL:");
@@ -1233,7 +1228,6 @@ void parseACK(void)
       else if (ack_seen("Cap:CHAMBER_TEMPERATURE:"))
       {
         infoSettings.chamber_en = ack_value();
-        setupMachine();
       }
 
       //----------------------------------------

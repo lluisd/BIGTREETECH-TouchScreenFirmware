@@ -358,9 +358,9 @@ extern const uint16_t default_preheat_ext[];
 extern const uint16_t default_preheat_bed[];
 extern const uint8_t default_custom_enabled[];
 
-void initMachineSetting(void);
 void infoSettingsReset(void);
-void setupMachine(void);
+void initMachineSetting(void);
+void setupMachine(FW_TYPE fwType);
 float flashUsedPercentage(void);
 void checkflashSign(void);
 bool getFlashSignStatus(int index);

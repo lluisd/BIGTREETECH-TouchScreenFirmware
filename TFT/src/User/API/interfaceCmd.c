@@ -1219,7 +1219,6 @@ void sendQueueCmd(void)
       cmd = strtol(&cmd_ptr[cmd_index + 1], NULL, 10);
       heatSetCurrentTool(cmd);
       break;
-
   }  // end parsing cmd
 
   if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 0 ||
