@@ -341,10 +341,10 @@ typedef struct
   uint8_t babyStepping;
   uint8_t buildPercent;
   uint8_t softwareEndstops;
-} MACHINESETTINGS;
+} MACHINE_SETTINGS;
 
 extern SETTINGS infoSettings;
-extern MACHINESETTINGS infoMachineSettings;
+extern MACHINE_SETTINGS infoMachineSettings;
 
 extern const uint16_t default_max_temp[];
 extern const uint16_t default_max_fanPWM[];

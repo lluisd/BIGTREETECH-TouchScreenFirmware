@@ -2,7 +2,7 @@
 #include "includes.h"
 
 SETTINGS infoSettings;
-MACHINESETTINGS infoMachineSettings;
+MACHINE_SETTINGS infoMachineSettings;
 
 const uint8_t default_general_settings = 0b00000110;  // listening mode disabled, emulated M600 and emulated M109 / M190 enabled
 const uint16_t default_max_temp[]      = HEAT_MAX_TEMP;
@@ -207,7 +207,7 @@ void setupMachine(void)
   if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 1)  // if TFT in listening mode, display a reminder message
     reminderMessage(LABEL_LISTENING, STATUS_LISTENING);
 
-  #ifdef BED_LEVELING_TYPE
+  #if BED_LEVELING_TYPE > 1  // if not disabled and not auto-detect
     #if BED_LEVELING_TYPE == 2
         infoMachineSettings.leveling = BL_ABL;
     #elif BED_LEVELING_TYPE == 3
@@ -222,25 +222,17 @@ void setupMachine(void)
   if (infoMachineSettings.leveling != BL_DISABLED && infoMachineSettings.EEPROM == 1 && infoSettings.auto_load_leveling == 1)
     storeCmd("M420 S1\n");
 
-  if (infoMachineSettings.firmwareType != FW_MARLIN)  // Smoothieware does not report detailed M115 capabilities
-  {
-    infoMachineSettings.EEPROM                  = ENABLED;
-    infoMachineSettings.autoReportTemp          = DISABLED;
-    infoMachineSettings.autoReportPos           = DISABLED;
-    infoMachineSettings.leveling                = ENABLED;
-    infoMachineSettings.zProbe                  = ENABLED;
-    infoMachineSettings.levelingData            = ENABLED;
-    infoMachineSettings.emergencyParser         = ENABLED;
-    infoMachineSettings.autoReportSDStatus      = DISABLED;
-  }
-
   if (infoSettings.onboard_sd != AUTO)
     infoMachineSettings.onboardSD = infoSettings.onboard_sd;
 
   if (infoSettings.long_filename != AUTO)
     infoMachineSettings.longFilename = infoSettings.long_filename;
 
-  mustStoreCmd("M503 S0\n");
+  if (infoMachineSettings.firmwareType == FW_SMOOTHIEWARE)  // Smoothieware does not report detailed M115 capabilities
+  {
+    infoMachineSettings.leveling        = BL_ABL;
+    infoMachineSettings.emergencyParser = ENABLED;
+  }
 
   if (infoMachineSettings.firmwareType == FW_REPRAPFW)
   {
@@ -248,6 +240,7 @@ void setupMachine(void)
     mustStoreCmd("M552\n");     // query network state, populate IP if the screen boots up after RRF
   }
 
+  mustStoreCmd("M503 S0\n");
   mustStoreCmd("M82\n");  // Set extruder to absolute mode
   mustStoreCmd("G90\n");  // Set to Absolute Positioning
 }
