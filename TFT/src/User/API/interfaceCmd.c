@@ -202,9 +202,13 @@ void updateCmd(const char * buf)
 }
 
 // Send gcode cmd to printer and remove leading gcode cmd from infoCmd queue.
-void sendCmd(bool purge, bool avoidTerminal)
+bool sendCmd(bool purge, bool avoidTerminal)
 {
   char * purgeStr = "[Purged] ";
+
+  if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 1 &&  // if TFT is in listening mode and FW type was already detected,
+      infoMachineSettings.firmwareType != FW_NOT_DETECTED)            // purge the command
+    purge = true;
 
   #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
     // dump serial data sent to debug port
@@ -230,6 +234,8 @@ void sendCmd(bool purge, bool avoidTerminal)
 
   infoCmd.count--;
   infoCmd.index_r = (infoCmd.index_r + 1) % CMD_QUEUE_SIZE;
+
+  return !purge;  // return true if command was sent
 }
 
 // Check if 'cmd' starts with 'key'.
@@ -1218,15 +1224,6 @@ void sendQueueCmd(void)
       break;
   }  // end parsing cmd
 
-  if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 0 ||
-      infoMachineSettings.firmwareType == FW_NOT_DETECTED)  // if TFT is not in listening mode or FW is not detected yet,
-  {                                                         // send the command to printer
-    sendCmd(false, avoid_terminal);  // send the command
+  if (sendCmd(false, avoid_terminal) == true)  // if command was sent
     infoHost.wait = infoHost.connected;
-
-    return;
-  }
-
-  // if TFT is in listening mode, purge the command
-  sendCmd(true, avoid_terminal);  // purge the command
 }  // sendQueueCmd
