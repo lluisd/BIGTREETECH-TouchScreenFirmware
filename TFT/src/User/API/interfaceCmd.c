@@ -235,7 +235,7 @@ bool sendCmd(bool purge, bool avoidTerminal)
   infoCmd.count--;
   infoCmd.index_r = (infoCmd.index_r + 1) % CMD_QUEUE_SIZE;
 
-  return !purge;  // return true if command was sent
+  return !purge;  // return true if command was sent. Otherwise, return false
 }
 
 // Check if 'cmd' starts with 'key'.
@@ -1051,12 +1051,6 @@ void sendQueueCmd(void)
           if (cmd_seen('Z')) setParameter(P_DELTA_ENDSTOP, 2, cmd_float());
           break;
         }
-
-        #ifdef LOAD_UNLOAD_M701_M702
-          case 701:  // M701 Load filament
-          case 702:  // M702 Unload filament
-            break;
-        #endif
 
         case 710:  // M710 Controller Fan
         {
