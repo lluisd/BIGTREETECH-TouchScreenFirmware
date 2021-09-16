@@ -255,8 +255,6 @@
     #define STRING_CONNECTION_SETTINGS    "Connection"
     #define STRING_SERIAL_PORTS           "S. Ports"
     #define STRING_BAUDRATE               "ポートレート"
-    #define STRING_LISTENING_ENABLE       "Listen: on"
-    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "LED カラー"
     #define STRING_RGB_OFF                "LED オフ"

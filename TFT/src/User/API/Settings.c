@@ -20,8 +20,8 @@ const uint8_t default_custom_enabled[] = CUSTOM_GCODE_ENABLED;
 const uint8_t default_sounds           = 0b00001111;  // all sounds enabled
 const uint8_t default_inverted_axis    = 0b00000000;  // all inverted axis disabled
 
-// Reset settings data
-void infoSettingsReset(void)
+// Init settings data with default values
+void initSettings(void)
 {
 // General Settings
   infoSettings.serial_port[0]         = PRIMARY_BAUDRATE;  // primary serial port
@@ -171,7 +171,7 @@ void infoSettingsReset(void)
   resetConfig();
 }
 
-void initMachineSetting(void)
+void initMachineSettings(void)
 {
   // some settings are assumes as active unless reported disabled by marlin
   infoMachineSettings.firmwareType            = FW_NOT_DETECTED;  // set fimware type to not_detected to avoid repeated ABL gcode on mode change

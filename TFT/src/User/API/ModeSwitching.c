@@ -19,7 +19,7 @@ void Mode_Switch(void)
 
       // always init the machine settings to restart the temperature polling
       // process needed by parseAck() function to establish the connection
-      initMachineSetting();
+      initMachineSettings();
 
       if (infoSettings.status_screen == 1)  // if Status Screen menu is selected
         infoMenu.menu[infoMenu.cur] = menuStatus;  // status screen as default home screen on boot

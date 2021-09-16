@@ -195,7 +195,7 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
 
 void resetSettings(void)
 {
-  infoSettingsReset();
+  initSettings();
   storePara();
   popupReminder(DIALOG_TYPE_SUCCESS, LABEL_INFO, LABEL_SETTINGS_RESET_DONE);
 }

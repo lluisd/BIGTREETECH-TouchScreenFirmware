@@ -255,8 +255,6 @@
     #define STRING_CONNECTION_SETTINGS    "Connecties"
     #define STRING_SERIAL_PORTS           "S. Ports"
     #define STRING_BAUDRATE               "Baudsnelheid"
-    #define STRING_LISTENING_ENABLE       "Listen: on"
-    #define STRING_LISTENING_DISABLE      "Normal: on"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "LED Kleur"
     #define STRING_RGB_OFF                "LED Uit"
