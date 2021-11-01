@@ -855,7 +855,7 @@
  *     1: apply icon background colors to live text
  *     2: apply sampled icon background uniform color to live text
  */
-#define LIVE_TEXT_BG_COLOR_PRINTING 2  // Default: 0
+#define LIVE_TEXT_BG_COLOR_PRINTING 2  // Default: 0 (disabled)
 
 /**
  * Live Text Background Color Rendering Technique (Status Screen menu)
@@ -869,7 +869,7 @@
  *     5: apply icon background colors to both live text 1 and live text 2
  *     6: apply sampled icon background uniform color to both live text 1 and live text 2
  */
-#define LIVE_TEXT_BG_COLOR_STATUS 2  // Default: 0
+#define LIVE_TEXT_BG_COLOR_STATUS 2  // Default: 0 (disabled)
 
 /**
  * Show Embedded Thumbnails Of Gcode Files
