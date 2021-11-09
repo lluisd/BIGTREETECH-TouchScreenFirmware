@@ -86,8 +86,8 @@ void initSettings(void)
 
   infoSettings.move_speed             = 1;  // index on infoSettings.axis_speed, infoSettings.ext_speed
 
-  infoSettings.inverted_axis          = ((INVERTED_X_AXIS << X_AXIS) | (INVERTED_Y_AXIS << Y_AXIS) | (INVERTED_Z_AXIS << Z_AXIS));
-  infoSettings.inverted_ly_axis       = INVERTED_LY_AXIS;
+  infoSettings.inverted_axis          = ((INVERTED_X_AXIS << X_AXIS) | (INVERTED_Y_AXIS << Y_AXIS) |
+                                         (INVERTED_Z_AXIS << Z_AXIS) | (INVERTED_LY_AXIS << E_AXIS));
 
   infoSettings.probing_z_offset       = PROBING_Z_OFFSET;
   infoSettings.probing_z_raise        = PROBING_Z_RAISE;
@@ -120,7 +120,11 @@ void initSettings(void)
   infoSettings.lcd_lock_on_idle       = LCD_LOCK_ON_IDLE;
   infoSettings.knob_led_color         = KNOB_LED_COLOR;
   infoSettings.knob_led_idle          = KNOB_LED_IDLE;
-  infoSettings.neopixel_pixels        = NEOPIXEL_PIXELS;
+  #ifdef NEOPIXEL_PIXELS
+    infoSettings.neopixel_pixels      = NEOPIXEL_PIXELS;
+  #else
+    infoSettings.neopixel_pixels      = 0;
+  #endif
 
 // Start, End & Cancel G-code Commands
   infoSettings.send_gcodes            = ((START_GCODE_ENABLED << SEND_GCODES_START_PRINT) | (END_GCODE_ENABLED << SEND_GCODES_END_PRINT) |
