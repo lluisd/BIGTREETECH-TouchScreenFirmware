@@ -350,8 +350,8 @@
 
 /**
  * Controller Fan Support
- * Enable/disable controller fan speed control for Idle and Active cooling if marlin
- * supports ontroller fan (M710).
+ * Enable/disable controller fan speed control for Active and Idle cooling if Marlin
+ * firmware supports controller fan (M710).
  *   Options: [disable: 0, enable: 1]
  */
 #define CONTROLLER_FAN 0  // Default: 0
@@ -377,8 +377,10 @@
 
 /**
  * Fan Maximum PWM Speed
- * Set minimum and maximum fan speed allowed by the printer.
- *   Format: [fan_max: F0:<max PWM> F1:<max PWM> F2:<max PWM> F3:<max PWM> F4:<max PWM> F5:<max PWM> CtL:<max PWM> CtI:<max PWM>]
+ * Set minimum and maximum fan speed allowed by the printer for Cooling Fans & Controller Fan.
+ * Cooling fans have index from F0 to F5.
+ * Controller fan has index CtA and CtI (Active and Idle). It requires "CONTROLLER_FAN" is enabled.
+ *   Format: [fan_max: F0:<max PWM> F1:<max PWM> F2:<max PWM> F3:<max PWM> F4:<max PWM> F5:<max PWM> CtA:<max PWM> CtI:<max PWM>]
  *   Unit: [PWM]
  *   Value range: [min: 25, max: 255]
  */
@@ -484,25 +486,74 @@
  * Pause/Nozzle Park Settings
  * These settings are used when a print is paused or in any feature which requires moving/parking the nozzle
  * before performing a task like in (Un)Load or Extruder Tuning menus.
+ *
+ * Pause Retract Length
+ *   Format: [pause_retract: R<retract length> P<resume purge length>]
+ *   Unit: [length in mm]
+ *   Value range: [min: 0.0, max: 20.0]
+ *
+ * Pause XY Position
+ * NOTES:
+ *   - It MUST BE a value >= 0 for a Cartesian printer.
+ *   - It MUST BE a value <= 0 for a Delta printer.
+ *
+ *   Format: [pause_pos: X<position> Y<position>]
+ *   Unit: [position in mm]
+ *   Value range: [min: -2000.0, max: 2000.0]
+ *
+ * Pause Z Raise
+ * Raise Z axis by this value relative to the current layer height.
+ *   Unit: [distance in mm]
+ *   Value range: [min: 0.0, max: 2000.0]
+ *
+ * Pause Feed Rate
+ * Feedrate to use when moving an axis when printing is paused.
+ *   Format: [pause_feedrate: XY<feedrate> Z<feedrate> E<feedrate>]
+ *   Unit: [feedrate in mm/min]
+ *   Value range: [min: 10, max: 12000]
  */
-#define NOZZLE_PAUSE_RETRACT_LENGTH               15.0f  // (mm) (Default: 15.0f)
-#define NOZZLE_RESUME_PURGE_LENGTH                16.0f  // (mm) (Default: 16.0f)
-#define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10.0f)  // (mm) Must be an integer (Default: 10.0f)
-#define NOZZLE_PAUSE_Y_POSITION     (Y_MIN_POS + 10.0f)  // (mm) Must be an integer (Default: 10.0f)
-#define NOZZLE_PAUSE_Z_RAISE                      10.0f  // (mm) (Default: 10.0f)
-#define NOZZLE_PAUSE_XY_FEEDRATE                   6000  // (mm/min) X and Y axes feedrate (Default: 6000)
-#define NOZZLE_PAUSE_Z_FEEDRATE                    6000  // (mm/min) Z axis feedrate (Default: 6000)
-#define NOZZLE_PAUSE_E_FEEDRATE                     600  // (mm/min) retract & purge feedrate (Default: 600)
+#define NOZZLE_PAUSE_RETRACT_LENGTH               15.0f  // Default: 15.0f
+#define NOZZLE_RESUME_PURGE_LENGTH                16.0f  // Default: 16.0f
+#define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10.0f)  // Default: 10.0f
+#define NOZZLE_PAUSE_Y_POSITION     (Y_MIN_POS + 10.0f)  // Default: 10.0f
+#define NOZZLE_PAUSE_Z_RAISE                      10.0f  // Default: 10.0f)
+#define NOZZLE_PAUSE_XY_FEEDRATE                   6000  // X and Y axes feedrate (Default: 6000)
+#define NOZZLE_PAUSE_Z_FEEDRATE                    6000  // Z axis feedrate (Default: 6000)
+#define NOZZLE_PAUSE_E_FEEDRATE                     600  // retract & purge feedrate (Default: 600)
 
 /**
  * Leveling Settings
  * These settings are used for leveling.
+ *
+ * Leveling Edge Distance (Manual Leveling)
+ * Inset distance from bed edges. This distance is added to minimum X & Y bed coordinates and
+ * subtracted from maximum X & Y bed coordinates to calculate manual leveling points.
+ *   Unit: [distance in mm]
+ *   Value range: [min: 0, max: 2000]
+ *
+ * Leveling Z Position (Manual Leveling, Mesh Leveling, Probe/Home Offset, Mesh Tuner)
+ * For Manual Leveling and MBL, lower Z axis to this absolute position after reaching a leveling point.
+ * For Probe/Home Offset and ABL in Mesh Tuner, raise Z axis by this relative position after reaching
+ * a leveling point.
+ *   Unit: [position in mm]
+ *   Value range: [min: 0.0, max: 2000.0]
+ *
+ * Leveling Z Raise (Manual Leveling, Mesh Leveling)
+ * Raise Z axis by this relative value before moving to another point during leveling/probing procedures.
+ *   Unit: [distance in mm]
+ *   Value range: [min: 0.0, max: 2000.0]
+ *
+ * Leveling Feed Rate (Manual Leveling, Mesh Leveling)
+ * Feedrate to use when moving an axis during leveling/probing procedures.
+ *   Format: [level_feedrate: XY<feedrate> Z<feedrate>]
+ *   Unit: [feedrate in mm/min]
+ *   Value range: [min: 10, max: 12000]
  */
 #define LEVELING_EDGE_DISTANCE    20  // Inset distance from bed's edge for calculating leveling point location (Default: 20)
 #define LEVELING_Z_POS          0.2f  // Z-axis position when nozzle stays for leveling (Default: 0.2f)
 #define LEVELING_Z_RAISE       10.0f  // Z-axis position when nozzle move to next point (Default: 10.0f)
-#define LEVELING_XY_FEEDRATE    6000  // (mm/min) X and Y axes move feedrate (Default: 6000)
-#define LEVELING_Z_FEEDRATE     6000  // (mm/min) Z axis move feedrate (Default: 6000)
+#define LEVELING_XY_FEEDRATE    6000  // X and Y axes move feedrate (Default: 6000)
+#define LEVELING_Z_FEEDRATE     6000  // Z axis move feedrate (Default: 6000)
 
 /**
  * Inverted Axes (Manual Leveling, Move, Probe Offset)
@@ -551,7 +602,7 @@
  *   - It MUST BE a value <= 0 (e.g. -50) for a Delta printer to avoid crashing into the top of the tower.
  *
  *   Unit: [distance in mm]
- *   Value range: [min: -2000, max: 2000]
+ *   Value range: [min: -2000.0, max: 2000.0]
  */
 #define PROBING_Z_RAISE 20.0f  // Default: 20.0f
 
@@ -698,7 +749,7 @@
  * Power Loss Recovery Z Raise
  * Raise Z axis on resume (on power loss with UPS).
  *   Unit: [distance in mm]
- *   Value range: [min: 0, max: 2000]
+ *   Value range: [min: 0.0, max: 2000.0]
  */
 #define PL_RECOVERY_Z_RAISE 10.0f  // Default: 10.0f
 
@@ -846,7 +897,6 @@
 //================================================================================
 
 /**
- * Start/End/Cancel G-code
  * NOTES for users having a filament sensor connected to the mainboard:
  *   1) Enable the start/end G-code below.
  *   2) Add the following commands to the start/end G-code:
@@ -950,15 +1000,16 @@
 #define HEAT_CMD        {"M104 T0", "M104 T1", "M104 T2", "M104 T3", "M104 T4", "M104 T5", "M140", "M141"}
 #define HEAT_WAIT_CMD   {"M109 T0", "M109 T1", "M109 T2", "M109 T3", "M109 T4", "M109 T5", "M190", "M191"}
 
+// Tool Change / Extruder Id
 #define TOOL_CHANGE {"T0", "T1", "T2", "T3", "T4", "T5"}
 #define EXTRUDER_ID {"E0", "E1", "E2", "E3", "E4", "E5"}
 
 /**
- * Cooling Fan & Controller Fan
- * Cooling fan have index from 0 to 5.
- * Controller fan have two speed (Active and Idle) index 6 and 7.
+ * Cooling Fans & Controller Fan
+ * Cooling fans have index from 0 to 5.
+ * Controller fan has index 6 and 7 (Active and Idle).
  */
-#define FAN_DISPLAY_ID {"F0 ", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "CtS", "CtI"}
+#define FAN_DISPLAY_ID {"F0 ", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "CtA", "CtI"}
 #define FAN_CMD        {"M106 P0 S%d\n", "M106 P1 S%d\n", "M106 P2 S%d\n", "M106 P3 S%d\n", "M106 P4 S%d\n", "M106 P5 S%d\n", \
                         "M710 S%d\n",    "M710 I%d\n" }
 
