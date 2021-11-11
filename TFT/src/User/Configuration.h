@@ -106,7 +106,7 @@
  * Set colors used in Touch Mode.
  *
  * NOTE: Select an option from the provided list or set the color (RGB888 format) hex value directly
- *       (start with “0x”), such as: Red: 0xFF0000, Green: 0x00FF00, Blue: 0x0000FF.
+ *       (start with "0x"), such as: Red: 0xFF0000, Green: 0x00FF00, Blue: 0x0000FF.
  *
  *   Options: [ WHITE: 0,  BLACK: 1,  RED: 2,  GREEN: 3,      BLUE: 4,       CYAN: 5,  MAGENTA: 6,    YELLOW: 7,
  *             ORANGE: 8, PURPLE: 9, LIME: 10, BROWN: 11, DARKBLUE: 12, DARKGREEN: 13,    GRAY: 14, DARKGRAY: 15]
@@ -272,7 +272,7 @@
  * Set colors used in Marlin Mode.
  *
  * NOTE: Select an option from the provided list or set the color (RGB888 format) hex value directly
- *       (start with “0x”), such as: Red: 0xFF0000, Green: 0x00FF00, Blue: 0x0000FF.
+ *       (start with "0x"), such as: Red: 0xFF0000, Green: 0x00FF00, Blue: 0x0000FF.
  *
  *   Options: [ WHITE: 0,  BLACK: 1,  RED: 2,  GREEN: 3,      BLUE: 4,       CYAN: 5,  MAGENTA: 6,    YELLOW: 7,
  *             ORANGE: 8, PURPLE: 9, LIME: 10, BROWN: 11, DARKBLUE: 12, DARKGREEN: 13,    GRAY: 14, DARKGRAY: 15]
@@ -1116,7 +1116,7 @@
  *             SPANISH,    FRENCH,   PORTUGUESE,  ITALIAN,    POLISH,    SLOVAK,        DUTCH,
  *             HUNGARIAN,  TURKISH,  GREEK,       SLOVENIAN,  CATALAN,   TRAD_CHINESE,  UKRAINIAN]
  */
-#define DEFAULT_LANGUAGE ENGLISH  // Default: ENGLISH
+#define SYSTEM_LANGUAGE ENGLISH  // Default: ENGLISH
 
 /**
  * Rapid Serial Communication

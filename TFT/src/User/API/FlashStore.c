@@ -9,7 +9,7 @@
 enum
 {
   PARA_TSC_EXIST = (1 << 0),
-  PARA_NOT_STORED = (1<< 1),
+  PARA_NOT_STORED = (1 << 1),
 };
 
 int32_t TSC_Para[7];

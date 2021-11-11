@@ -8,7 +8,7 @@ extern "C" {
 #include <stdbool.h>
 #include "ff.h"
 
-//after changing/adding/removing a keyword, change the CONFIG_FLASH_SIGN in Settings.h and PARA_SIGN in FlashStore.c
+// after changing/adding/removing a keyword, change the CONFIG_FLASH_SIGN in Settings.h and PARA_SIGN in FlashStore.c
 
 #define LINE_MAX_CHAR                 200
 #define CONFIG_FILE_PATH              "0:config.ini"
@@ -229,12 +229,12 @@ void drawProgressPage(uint8_t * title);
 void drawProgress(void);
 void showError(CONFIG_STATS stat);
 
-//This List is Auto-Generated. Please add new icons in icon_list.inc only
+// This List is Auto-Generated. Please add new config in config.inc only
 enum
 {
-  #define X_CONFIG(NAME) C_INDEX_##NAME ,
+  #define  X_CONFIG(NAME) C_INDEX_##NAME ,
   #include "config.inc"
-  #undef  X_CONFIG
+  #undef   X_CONFIG
 
   CONFIG_COUNT,
 };
