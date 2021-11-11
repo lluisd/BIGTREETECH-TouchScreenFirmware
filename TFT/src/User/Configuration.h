@@ -1,7 +1,7 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
 
-#define CONFIG_VERSION 20211106
+#define CONFIG_VERSION 20211111
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -64,6 +64,16 @@
  *   Options: [disable: 0, enable: 1]
  */
 #define EMULATED_M109_M190 1  // Default: 1
+
+/**
+ * G-code File Comment Parsing
+ * The TFT parses and processes extra information provided by the slicer as comments in the G-code file.
+ *
+ * NOTE: Enable it in case the slicer (e.g. Cura) supports extra information.
+ *
+ *   Options: [disable: 0, enable: 1]
+ */
+#define FILE_COMMENT_PARSING 1  // Default: 1
 
 //================================================================================
 //================================= UI Settings ==================================
@@ -512,14 +522,14 @@
  *   Unit: [feedrate in mm/min]
  *   Value range: [min: 10, max: 12000]
  */
-#define NOZZLE_PAUSE_RETRACT_LENGTH               15.0f  // Default: 15.0f
-#define NOZZLE_RESUME_PURGE_LENGTH                16.0f  // Default: 16.0f
-#define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10.0f)  // Default: 10.0f
-#define NOZZLE_PAUSE_Y_POSITION     (Y_MIN_POS + 10.0f)  // Default: 10.0f
-#define NOZZLE_PAUSE_Z_RAISE                      10.0f  // Default: 10.0f)
-#define NOZZLE_PAUSE_XY_FEEDRATE                   6000  // X and Y axes feedrate (Default: 6000)
-#define NOZZLE_PAUSE_Z_FEEDRATE                    6000  // Z axis feedrate (Default: 6000)
-#define NOZZLE_PAUSE_E_FEEDRATE                     600  // retract & purge feedrate (Default: 600)
+#define NOZZLE_PAUSE_RETRACT_LENGTH               15.0f  // (mm) Default: 15.0f
+#define NOZZLE_RESUME_PURGE_LENGTH                16.0f  // (mm) Default: 16.0f
+#define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10.0f)  // (mm) Default: 10.0f
+#define NOZZLE_PAUSE_Y_POSITION     (Y_MIN_POS + 10.0f)  // (mm) Default: 10.0f
+#define NOZZLE_PAUSE_Z_RAISE                      10.0f  // (mm) Default: 10.0f)
+#define NOZZLE_PAUSE_XY_FEEDRATE                   6000  // (mm/min) X and Y axes feedrate (Default: 6000)
+#define NOZZLE_PAUSE_Z_FEEDRATE                    6000  // (mm/min) Z axis feedrate (Default: 6000)
+#define NOZZLE_PAUSE_E_FEEDRATE                     600  // (mm/min) retract & purge feedrate (Default: 600)
 
 /**
  * Leveling Settings
@@ -549,11 +559,11 @@
  *   Unit: [feedrate in mm/min]
  *   Value range: [min: 10, max: 12000]
  */
-#define LEVELING_EDGE_DISTANCE    20  // Inset distance from bed's edge for calculating leveling point location (Default: 20)
-#define LEVELING_Z_POS          0.2f  // Z-axis position when nozzle stays for leveling (Default: 0.2f)
-#define LEVELING_Z_RAISE       10.0f  // Z-axis position when nozzle move to next point (Default: 10.0f)
-#define LEVELING_XY_FEEDRATE    6000  // X and Y axes move feedrate (Default: 6000)
-#define LEVELING_Z_FEEDRATE     6000  // Z axis move feedrate (Default: 6000)
+#define LEVELING_EDGE_DISTANCE    20  // (mm) Inset distance from bed's edge for calculating leveling point location (Default: 20)
+#define LEVELING_Z_POS          0.2f  // (mm) Z-axis position when nozzle stays for leveling (Default: 0.2f)
+#define LEVELING_Z_RAISE       10.0f  // (mm) Z-axis position when nozzle move to next point (Default: 10.0f)
+#define LEVELING_XY_FEEDRATE    6000  // (mm/min) X and Y axes move feedrate (Default: 6000)
+#define LEVELING_Z_FEEDRATE     6000  // (mm/min) Z axis move feedrate (Default: 6000)
 
 /**
  * Inverted Axes (Manual Leveling, Move, Probe Offset)
