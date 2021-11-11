@@ -17,7 +17,7 @@ void lowerCase(char * tempChar)
   }
 }
 
-void setM73_presence(bool present)
+void setM73R_presence(bool present)
 {
   M73R_presence = present;
 }

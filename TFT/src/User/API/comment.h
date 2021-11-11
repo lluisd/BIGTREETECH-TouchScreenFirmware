@@ -18,7 +18,7 @@ typedef struct
 
 extern COMMENT gCode_comment;
 
-void setM73_presence(bool present);
+void setM73R_presence(bool present);
 void parseComment(void);
 
 #ifdef __cplusplus
