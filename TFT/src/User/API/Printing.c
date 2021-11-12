@@ -678,27 +678,28 @@ void setPrintResume(bool updateHost)
 // get gcode command from TFT (SD card or USB)
 void loopPrintFromTFT(void)
 {
-  CMD     gcode;
-  uint8_t gcode_count = 0;
-  uint8_t comment_count = 0;
-  char    read_char = '0';
-  UINT    br = 0;
-
   if (heatHasWaiting() || isNotEmptyCmdQueue() || infoPrinting.pause) return;
   if (moveCacheToCmd() == true) return;
   if (!infoPrinting.printing || infoFile.source >= BOARD_SD) return;
 
   powerFailedCache(infoPrinting.file.fptr);
 
-  for ( ; infoPrinting.cur < infoPrinting.size;)  // parse only the gcode (not the comment, if any)
+  CMD      gcode;
+  uint8_t  gcode_count = 0;
+  uint8_t  comment_count = 0;
+  char     read_char = '0';
+  UINT     br = 0;
+  FIL *    ip_file = &infoPrinting.file;
+  uint32_t ip_cur = infoPrinting.cur;
+  uint32_t ip_size = infoPrinting.size;
+
+  for ( ; ip_cur < ip_size; ip_cur++)  // parse only the gcode (not the comment, if any)
   {
-    if (f_read(&infoPrinting.file, &read_char, 1, &br) != FR_OK)
+    if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
     { // in case of error reading from file, force the end of the print
-      infoPrinting.cur = infoPrinting.size;
+      ip_cur = ip_size;
       break;
     }
-
-    infoPrinting.cur++;
 
     if (read_char == '\n' || read_char == ';')  // '\n' is command end flag, ';' is command comment flag
     {
@@ -711,37 +712,34 @@ void loopPrintFromTFT(void)
 
       break;
     }
-    else if (gcode_count >= CMD_MAX_SIZE - 2)
-    { // if command length is beyond the maximum, skip gcode (do not try to send a truncated gcode)
-      break;
-    }
     else if (read_char == ' ' && gcode_count == 0)  // ignore initial ' ' space bytes
     {}
     else if (read_char != '\r')
     {
-      gcode[gcode_count++] = read_char;
+      if (gcode_count < CMD_MAX_SIZE - 2)
+        gcode[gcode_count++] = read_char;
+      else  // if command length is beyond the maximum, skip gcode (do not try to send a truncated gcode)
+        break;
     }
   }
 
   if (read_char != '\n')  // continue to parse the line (e.g. comment) until command end flag
   {
     // if file comment parsing is enabled and a comment tag was previously intercepted parsing the gcode, enable comment parsing
-    bool parse_comment = (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1 &&
-                          read_char == ';') ? true : false;
+    bool comment_parsing = (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1 &&
+                            read_char == ';') ? true : false;
 
-    for ( ; infoPrinting.cur < infoPrinting.size;)
+    for ( ; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
     {
-      if (f_read(&infoPrinting.file, &read_char, 1, &br) != FR_OK)
+      if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
       { // in case of error reading from file, force the end of the print
-        infoPrinting.cur = infoPrinting.size;
+        ip_cur = ip_size;
         break;
       }
 
-      infoPrinting.cur++;
-
       if (read_char == '\n' )  // '\n' is command end flag
       {
-        if (parse_comment && comment_count != 0)
+        if (comment_parsing && comment_count != 0)
         {
           gCode_comment.content[comment_count++] = '\n';
           gCode_comment.content[comment_count] = 0;  // terminate string
@@ -750,13 +748,9 @@ void loopPrintFromTFT(void)
 
         break;
       }
-      else if (parse_comment)
+      else if (comment_parsing)
       {
-        if (comment_count >= COMMENT_MAX_CHAR - 2)
-        { // if comment length is beyond the maximum, skip comment (but continue to read line)
-          parse_comment = false;
-        }
-        else if (read_char == ';')  // ';' is command comment flag
+        if (read_char == ';')  // ';' is command comment flag
         {
           comment_count = 0;  // there might be a comment in a commented line
         }
@@ -764,13 +758,18 @@ void loopPrintFromTFT(void)
         {}
         else if (read_char != '\r')
         {
-          gCode_comment.content[comment_count++] = read_char;
+          if (comment_count < COMMENT_MAX_CHAR - 2)
+            gCode_comment.content[comment_count++] = read_char;
+          else  // if comment length is beyond the maximum, skip comment but continue to parse the line until command end flag
+            comment_parsing = false;
         }
       }
     }
   }
 
-  if (infoPrinting.printing && (infoPrinting.cur >= infoPrinting.size))  // end of .gcode file
+  infoPrinting.cur = ip_cur;  // update infoPrinting.cur with current file position
+
+  if (infoPrinting.printing && (ip_cur >= ip_size))  // end of .gcode file
   {
     printComplete();
   }
