@@ -696,7 +696,7 @@ void loopPrintFromTFT(void)
   for ( ; ip_cur < ip_size; ip_cur++)  // parse only the gcode (not the comment, if any)
   {
     if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
-    { // in case of error reading from file, force the end of the print
+    { // in case of error reading from file, abort the print
       ip_cur = ip_size;
       continue;
     }
@@ -735,7 +735,7 @@ void loopPrintFromTFT(void)
     for ( ; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
     {
       if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
-      { // in case of error reading from file, force the end of the print
+      { // in case of error reading from file, abort the print
         ip_cur = ip_size;
         continue;
       }
@@ -770,18 +770,22 @@ void loopPrintFromTFT(void)
     }
   }
 
-  infoPrinting.cur = ip_cur;  // update infoPrinting.cur with current file position
-
   if (ip_cur > ip_size)  // in case of error reading from file (ip_cur == ip_size + 1), display an error message
   {
     BUZZER_PLAY(SOUND_ERROR);
 
     popupReminder(DIALOG_TYPE_ERROR, LABEL_READ_TFTSD_ERROR, LABEL_PROCESS_ABORTED);
-  }
 
-  if (infoPrinting.printing && (ip_cur >= ip_size))  // end of .gcode file
+    printAbort();
+  }
+  else
   {
-    printComplete();
+    infoPrinting.cur = ip_cur;  // update infoPrinting.cur with current file position
+
+    if (infoPrinting.printing && (ip_cur >= ip_size))  // end of .gcode file
+    {
+      printComplete();
+    }
   }
 }
 
