@@ -703,14 +703,17 @@ void loopPrintFromTFT(void)
 
     if (read_char == '\n' || read_char == ';')  // '\n' is command end flag, ';' is command comment flag
     {
-      if (gcode_count != 0)
+      if (gcode_count != 0)  // if a gcode was found, finalize and enqueue the gcode and exit from loop
       {
         gcode[gcode_count++] = '\n';
         gcode[gcode_count] = 0;  // terminate string
         storeCmdFromUART(PORT_1, gcode);
+
+        break;
       }
 
-      break;
+      if (read_char == ';')  // if a comment was found, exit from loop. Otherwise (empty line found), continue parsing the next line
+        break;
     }
     else if (read_char == ' ' && gcode_count == 0)  // ignore initial ' ' space bytes
     {}
@@ -718,7 +721,7 @@ void loopPrintFromTFT(void)
     {
       if (gcode_count < CMD_MAX_SIZE - 2)
         gcode[gcode_count++] = read_char;
-      else  // if command length is beyond the maximum, skip gcode (do not try to send a truncated gcode)
+      else  // if command length is beyond the maximum, skip gcode (avoid to send a truncated gcode) and also further comment, if any
         break;
     }
   }
@@ -737,22 +740,22 @@ void loopPrintFromTFT(void)
         break;
       }
 
-      if (read_char == '\n' )  // '\n' is command end flag
+      if (read_char == '\n')  // '\n' is command end flag
       {
-        if (comment_parsing && comment_count != 0)
+        if (comment_parsing && comment_count != 0)  // if a comment was found, finalize the comment data structure
         {
           gCode_comment.content[comment_count++] = '\n';
           gCode_comment.content[comment_count] = 0;  // terminate string
           gCode_comment.handled = false;
         }
 
-        break;
+        break;  // line was parsed so always exit from loop
       }
       else if (comment_parsing)
       {
         if (read_char == ';')  // ';' is command comment flag
         {
-          comment_count = 0;  // there might be a comment in a commented line
+          comment_count = 0;  // there might be a comment in a commented line. We always consider the last comment
         }
         else if (read_char == ' ' && comment_count == 0)  // ignore initial ' ' space bytes
         {}

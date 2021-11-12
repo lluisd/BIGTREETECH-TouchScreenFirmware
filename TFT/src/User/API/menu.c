@@ -971,8 +971,7 @@ void loopBackEnd(void)
 
   if (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1)  // if file comment parsing is enabled
   {
-    // Parse comment from gCode file
-    parseComment();
+    parseComment();  // Parse comment from gCode file
   }
 
   #ifdef SERIAL_PORT_2
