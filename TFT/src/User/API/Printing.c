@@ -679,7 +679,7 @@ uint32_t handlePrintError(uint32_t cur, uint32_t size)
 {
   // TO DO
   // PUT HERE ANY SPECIFIC ERROR HANDLING PROCEDURE
-  // (E.G. MAXIMUM RETRY ATTEMPTS, DEVICE RE-INITIALIZATION ETC)
+  // (E.G. MAXIMUM RETRY ATTEMPTS, DEVICE RE-INITIALIZATION ETC...)
 
   // ALWAYS return "size" to force print abort or "cur - 1" to force read retry on "cur" position
   return size;
