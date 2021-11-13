@@ -675,6 +675,16 @@ void setPrintResume(bool updateHost)
   }
 }
 
+uint32_t handlePrintError(uint32_t cur, uint32_t size)
+{
+  // TO DO
+  // PUT HERE ANY SPECIFIC ERROR HANDLING PROCEDURE
+  // (E.G. MAXIMUM RETRY ATTEMPTS, DEVICE RE-INITIALIZATION ETC)
+
+  // ALWAYS return "size" to force print abort or "cur - 1" to force read retry on "cur" position
+  return size;
+}
+
 // get gcode command from TFT (SD card or USB)
 void loopPrintFromTFT(void)
 {
@@ -696,9 +706,9 @@ void loopPrintFromTFT(void)
   for ( ; ip_cur < ip_size; ip_cur++)  // parse only the gcode (not the comment, if any)
   {
     if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
-    { // in case of error reading from file, abort the print
-      ip_cur = ip_size;
-      continue;
+    { // in case of error reading from file, invoke error handling function
+      ip_cur = handlePrintError(ip_cur, ip_size);  // returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
+      continue;                                    // "continue" will force also to execute "ip_cur++" in the "for" statement
     }
 
     if (read_char == '\n' || read_char == ';')  // '\n' is command end flag, ';' is command comment flag
@@ -735,9 +745,9 @@ void loopPrintFromTFT(void)
     for ( ; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
     {
       if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
-      { // in case of error reading from file, abort the print
-        ip_cur = ip_size;
-        continue;
+      { // in case of error reading from file, invoke error handling function
+        ip_cur = handlePrintError(ip_cur, ip_size);  // returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
+        continue;                                    // "continue" will force also to execute "ip_cur++" in the "for" statement
       }
 
       if (read_char == '\n')  // '\n' is command end flag
@@ -770,11 +780,10 @@ void loopPrintFromTFT(void)
     }
   }
 
-  if (ip_cur > ip_size)  // in case of error reading from file (ip_cur == ip_size + 1), display an error message
+  if (ip_cur > ip_size)  // in case of print abort (ip_cur == ip_size + 1), display an error message and abort the print
   {
     BUZZER_PLAY(SOUND_ERROR);
-
-    popupReminder(DIALOG_TYPE_ERROR, LABEL_READ_TFTSD_ERROR, LABEL_PROCESS_ABORTED);
+    popupReminder(DIALOG_TYPE_ERROR, (infoFile.source == TFT_SD) ? LABEL_READ_TFTSD_ERROR : LABEL_READ_U_DISK_ERROR, LABEL_PROCESS_ABORTED);
 
     printAbort();
   }
