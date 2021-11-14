@@ -675,14 +675,14 @@ void setPrintResume(bool updateHost)
   }
 }
 
-uint32_t handlePrintError(uint32_t cur, uint32_t size)
+uint32_t handlePrintError(uint32_t cur, uint8_t * errorNum)
 {
   // TO DO
   // PUT HERE ANY SPECIFIC ERROR HANDLING PROCEDURE
   // (E.G. MAXIMUM RETRY ATTEMPTS, DEVICE RE-INITIALIZATION ETC...)
 
-  // ALWAYS return "size" to force print abort or "cur - 1" to force read retry on "cur" position
-  return size;
+  // ALWAYS return "infoPrinting.size" to force a print abort or "cur - 1" to force a read retry on "cur" position
+  return infoPrinting.size;
 }
 
 // get gcode command from TFT (SD card or USB)
@@ -703,12 +703,13 @@ void loopPrintFromTFT(void)
   uint32_t ip_cur = infoPrinting.cur;
   uint32_t ip_size = infoPrinting.size;
 
-  for ( ; ip_cur < ip_size; ip_cur++)  // parse only the gcode (not the comment, if any)
+  for (uint8_t error_num = 0; ip_cur < ip_size; ip_cur++)  // parse only the gcode (not the comment, if any)
   {
     if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
-    { // in case of error reading from file, invoke error handling function
-      ip_cur = handlePrintError(ip_cur, ip_size);  // returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
-      continue;                                    // "continue" will force also to execute "ip_cur++" in the "for" statement
+    { // in case of error reading from file, invoke error handling function.
+      // Returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
+      ip_cur = handlePrintError(ip_cur, &error_num);
+      continue;  // "continue" will force also to execute "ip_cur++" in the "for" statement
     }
 
     if (read_char == '\n' || read_char == ';')  // '\n' is command end flag, ';' is command comment flag
@@ -742,12 +743,13 @@ void loopPrintFromTFT(void)
     bool comment_parsing = (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1 &&
                             read_char == ';') ? true : false;
 
-    for ( ; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
+    for (uint8_t error_num = 0; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
     {
       if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
-      { // in case of error reading from file, invoke error handling function
-        ip_cur = handlePrintError(ip_cur, ip_size);  // returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
-        continue;                                    // "continue" will force also to execute "ip_cur++" in the "for" statement
+      { // in case of error reading from file, invoke error handling function.
+        // Returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
+        ip_cur = handlePrintError(ip_cur, &error_num);
+        continue;  // "continue" will force also to execute "ip_cur++" in the "for" statement
       }
 
       if (read_char == '\n')  // '\n' is command end flag
@@ -787,14 +789,13 @@ void loopPrintFromTFT(void)
 
     printAbort();
   }
+  else if (ip_cur == ip_size)  // in case of end of gcode file, finalize the print
+  {
+    printComplete();
+  }
   else
   {
     infoPrinting.cur = ip_cur;  // update infoPrinting.cur with current file position
-
-    if (infoPrinting.printing && (ip_cur >= ip_size))  // end of .gcode file
-    {
-      printComplete();
-    }
   }
 }
 
