@@ -675,14 +675,14 @@ void setPrintResume(bool updateHost)
   }
 }
 
-uint32_t handlePrintError(uint32_t cur, uint8_t * errorNum)
+bool handlePrintError(uint32_t cur, uint8_t * errorNum)
 {
   // TO DO
   // PUT HERE ANY SPECIFIC ERROR HANDLING PROCEDURE
   // (E.G. MAXIMUM RETRY ATTEMPTS, DEVICE RE-INITIALIZATION ETC...)
 
-  // ALWAYS return "infoPrinting.size" to force a print abort or "cur - 1" to force a read retry on "cur" position
-  return infoPrinting.size;
+  // return "false" to force a print abort or "true" to force a read retry on "cur" position
+  return false;
 }
 
 // get gcode command from TFT (SD card or USB)
@@ -707,8 +707,8 @@ void loopPrintFromTFT(void)
   {
     if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
     { // in case of error reading from file, invoke error handling function.
-      // Returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
-      ip_cur = handlePrintError(ip_cur, &error_num);
+      // Returned "false" to force a print abort or "true" to force a read retry on "ip_cur" position
+      ip_cur = (handlePrintError(ip_cur, &error_num) == true) ? ip_cur - 1 : ip_size;
       continue;  // "continue" will force also to execute "ip_cur++" in the "for" statement
     }
 
@@ -747,8 +747,8 @@ void loopPrintFromTFT(void)
     {
       if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
       { // in case of error reading from file, invoke error handling function.
-        // Returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
-        ip_cur = handlePrintError(ip_cur, &error_num);
+        // Returned "false" to force a print abort or "true" to force a read retry on "ip_cur" position
+        ip_cur = (handlePrintError(ip_cur, &error_num) == true) ? ip_cur - 1 : ip_size;
         continue;  // "continue" will force also to execute "ip_cur++" in the "for" statement
       }
 
