@@ -782,20 +782,18 @@ void loopPrintFromTFT(void)
     }
   }
 
-  if (ip_cur > ip_size)  // in case of print abort (ip_cur == ip_size + 1), display an error message and abort the print
+  infoPrinting.cur = ip_cur;  // update infoPrinting.cur with current file position
+
+  if (ip_cur == ip_size)  // in case of end of gcode file, finalize the print
+  {
+    printComplete();
+  }
+  else if (ip_cur > ip_size)  // in case of print abort (ip_cur == ip_size + 1), display an error message and abort the print
   {
     BUZZER_PLAY(SOUND_ERROR);
     popupReminder(DIALOG_TYPE_ERROR, (infoFile.source == TFT_SD) ? LABEL_READ_TFTSD_ERROR : LABEL_READ_U_DISK_ERROR, LABEL_PROCESS_ABORTED);
 
     printAbort();
-  }
-  else if (ip_cur == ip_size)  // in case of end of gcode file, finalize the print
-  {
-    printComplete();
-  }
-  else
-  {
-    infoPrinting.cur = ip_cur;  // update infoPrinting.cur with current file position
   }
 }
 
