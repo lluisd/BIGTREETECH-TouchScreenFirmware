@@ -168,9 +168,9 @@ void menuBeforePrinting(void)
           return;
         }
 
-        if (powerFailedCreate(infoFile.title) == false)
+        if (powerFailedCreate(infoFile.title) == false)  // open Power-loss Recovery file
         {}
-        powerFailedlSeek(&file);
+        powerFailedlSeek(&file);  // seek on Power-loss Recovery file
 
         printStart(&file, f_size(&file));
         break;

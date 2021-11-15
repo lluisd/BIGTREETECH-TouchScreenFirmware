@@ -412,11 +412,10 @@ void printEnd(void)
     case TFT_UDISK:
     case TFT_SD:
       f_close(&infoPrinting.file);
+      powerFailedClose();   // close Power-loss Recovery file
+      powerFailedDelete();  // delete Power-loss Recovery file
       break;
   }
-
-  powerFailedClose();
-  powerFailedDelete();
 
   infoPrinting.cur = infoPrinting.size;  // always update the print progress to 100% even if the print terminated
   infoPrinting.printing = infoPrinting.pause = false;
@@ -658,7 +657,7 @@ void setPrintPause(bool updateHost, PAUSE_TYPE pauseType)
     infoPrinting.pauseType = pauseType;
   }
 
-  if (updateHost)
+  if (updateHost || infoFile.source >= BOARD_SD_REMOTE)  // in case of BOARD_SD_REMOTE, force always to "false"
     infoHost.printing = false;
 }
 
@@ -667,7 +666,7 @@ void setPrintResume(bool updateHost)
   // no need to check it is printing when setting the value to false
   infoPrinting.pause = false;
 
-  if (updateHost)
+  if (updateHost || infoFile.source >= BOARD_SD_REMOTE)  // in case of BOARD_SD_REMOTE, force always to "true"
   {
     // if printing from onboard SD or remote host
     if (infoPrinting.printing && infoFile.source >= BOARD_SD)
@@ -692,7 +691,7 @@ void loopPrintFromTFT(void)
   if (moveCacheToCmd() == true) return;
   if (!infoPrinting.printing || infoFile.source >= BOARD_SD) return;
 
-  powerFailedCache(infoPrinting.file.fptr);
+  powerFailedCache(infoPrinting.file.fptr);  // update Power-loss Recovery file
 
   CMD      gcode;
   uint8_t  gcode_count = 0;
@@ -803,7 +802,7 @@ void loopPrintFromHost(void)
     if (MENU_IS(menuMarlinMode)) return;
   #endif
 
-  if (infoHost.printing && !infoPrinting.printing)  // if a print starting form a remote host is intercepted
+  if (infoHost.printing && !infoPrinting.printing)  // if a print starting from a remote host is intercepted
   {
     printRemoteStart();
   }

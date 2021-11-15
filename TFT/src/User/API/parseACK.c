@@ -300,7 +300,17 @@ void hostActionCommands(void)
       }
     }
   }
-  else if (ack_seen(":paused") || ack_seen(":pause"))
+  else if (ack_seen(":print_start"))  // print started from remote host (e.g. USB, Octoprint etc...)
+  {
+    sprintf(infoFile.title, "Remote printing...");
+    setPrintHost(true);
+  }
+  else if (ack_seen(":print_end"))  // print ended from remote host (e.g. USB, Octoprint etc...)
+  {
+    setPrintHost(false);
+    printComplete();
+  }
+  else if (ack_seen(":pause") || ack_seen(":paused"))
   {
     if (infoMachineSettings.firmwareType == FW_MARLIN)
     {
@@ -310,8 +320,10 @@ void hostActionCommands(void)
       //  hostDialog = false;     // enable Resume/Pause button in the Printing menu
     }
 
-    // pass value "false" to let Marlin report when the host is not
-    // printing (when notification ack "Not SD printing" is caught)
+    // pass value "false" to let Marlin report (in case of printing from onboard SD) when
+    // the host is not printing (when notification ack "Not SD printing" is caught).
+    // In case of printing from remote host (e.g. USB), the host printing status is always
+    // forced to "false" due to no other notification will be received
     setPrintPause(false, PAUSE_EXTERNAL);
 
     if (ack_seen("filament_runout"))
@@ -319,12 +331,14 @@ void hostActionCommands(void)
       setRunoutAlarmTrue();
     }
   }
-  else if (ack_seen(":resumed") || ack_seen(":resume"))
+  else if (ack_seen(":resume") || ack_seen(":resumed"))
   {
     hostDialog = false;  // enable Resume/Pause button in the Printing menu
 
-    // pass value "true" to report the host is printing without waiting
-    // from Marlin (when notification ack "SD printing byte" is caught)
+    // pass value "true" to report (in case of printing from onboard SD) the host is printing
+    // without waiting from Marlin (when notification ack "SD printing byte" is caught).
+    // In case of printing from remote host (e.g. USB), the host printing status is always
+    // forced to "true" due to no other notification will be received
     setPrintResume(true);
   }
   else if (ack_seen(":cancel"))  // To be added to Marlin abortprint routine
@@ -339,15 +353,20 @@ void hostActionCommands(void)
 
     if (ack_seen("Nozzle Parked"))
     {
-      // pass value "false" to let Marlin report when the host is not
-      // printing (when notification ack "Not SD printing" is caught)
+      // pass value "false" to let Marlin report (in case of printing from onboard SD) when
+      // the host is not printing (when notification ack "Not SD printing" is caught).
+      // In case of printing from remote host (e.g. USB), the host printing status is always
+      // forced to "false" due to no other notification will be received
       setPrintPause(false, PAUSE_EXTERNAL);
     }
     else if (ack_seen("Resuming"))  // resuming from onboard SD or TFT
     {
-      // pass value "true" to report the host is printing without waiting
-      // from Marlin (when notification ack "SD printing byte" is caught)
+      // pass value "true" to report (in case of printing from onboard SD) the host is printing
+      // without waiting from Marlin (when notification ack "SD printing byte" is caught).
+      // In case of printing from remote host (e.g. USB), the host printing status is always
+      // forced to "true" due to no other notification will be received
       setPrintResume(true);
+
       hostAction.prompt_show = false;
       Serial_Puts(SERIAL_PORT, "M876 S0\n");  // auto-respond to a prompt request that is not shown on the TFT
     }
@@ -426,7 +445,7 @@ void parseACK(void)
         storeCmd("M115\n");  // as last command to identify the FW type!
         coordinateQuerySetWait(true);
       }
-	  else if (infoMachineSettings.firmwareType == FW_NOT_DETECTED)  // if never connected to the printer since boot
+      else if (infoMachineSettings.firmwareType == FW_NOT_DETECTED)  // if never connected to the printer since boot
       {
         storeCmd("M503\n");  // Query detailed printer capabilities
         storeCmd("M92\n");   // Steps/mm of extruder is an important parameter for Smart filament runout
@@ -660,7 +679,7 @@ void parseACK(void)
         uint16_t start_index = ack_index;
         uint16_t end_index = ack_continue_seen(fileEndString) ? (ack_index - strlen(fileEndString)) : start_index;
         uint16_t path_len = MIN(end_index - start_index, MAX_PATH_LEN - strlen(getCurFileSource()) - 1);
-        sprintf(infoFile.title,"%s/", getCurFileSource());
+        sprintf(infoFile.title, "%s/", getCurFileSource());
         strncat(infoFile.title, dmaL2Cache + start_index, path_len);
         infoFile.title[path_len + strlen(getCurFileSource()) + 1] = '\0';
 
