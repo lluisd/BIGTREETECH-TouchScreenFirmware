@@ -18,9 +18,9 @@ const GUI_RECT  rectProgressframe = {BYTE_WIDTH/2-2, LCD_HEIGHT-(BYTE_HEIGHT*2+B
 const GUI_POINT pointProgressText = {BYTE_WIDTH/2-2, LCD_HEIGHT-(BYTE_HEIGHT*4)};
 
 const char * const config_keywords[CONFIG_COUNT] = {
-  #define  X_CONFIG(NAME) CONFIG_##NAME ,
-  #include "config.inc"
-  #undef   X_CONFIG
+  #define X_CONFIG(NAME) CONFIG_##NAME ,
+    #include "config.inc"
+  #undef X_CONFIG
 };
 
 const char * const cgList[] = CUSTOM_GCODE_LIST;

@@ -282,8 +282,12 @@ void hostActionCommands(void)
   {
     uint16_t index = ack_index;  // save the current index for further usage
 
-    if (ack_seen("Time Left"))
-    {
+    if (ack_seen("Data Left"))  // parsing printing data left
+    { // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
+      setPrintProgress(ack_value(), ack_second_value());
+    }
+    else if (ack_seen("Time Left"))  // parsing printing time left
+    { // format: Time Left <XX>h<YY>m<ZZ>s (e.g. Time Left 02h04m06s)
       parsePrintRemainingTime((char *)dmaL2Cache + ack_index);
     }
     else
@@ -302,13 +306,11 @@ void hostActionCommands(void)
   }
   else if (ack_seen(":print_start"))  // print started from remote host (e.g. USB, Octoprint etc...)
   {
-    sprintf(infoFile.title, "Remote printing...");
-    setPrintHost(true);
+    printRemoteStart(NULL);
   }
   else if (ack_seen(":print_end"))  // print ended from remote host (e.g. USB, Octoprint etc...)
   {
-    setPrintHost(false);
-    printComplete();
+    printEnd();
   }
   else if (ack_seen(":pause") || ack_seen(":paused"))
   {
@@ -320,8 +322,8 @@ void hostActionCommands(void)
       //  hostDialog = false;     // enable Resume/Pause button in the Printing menu
     }
 
-    // pass value "false" to let Marlin report (in case of printing from onboard SD) when
-    // the host is not printing (when notification ack "Not SD printing" is caught).
+    // pass value "false" to let Marlin report (in case of printing from (remote) onboard SD)
+    // when the host is not printing (when notification ack "Not SD printing" is caught).
     // In case of printing from remote host (e.g. USB), the host printing status is always
     // forced to "false" due to no other notification will be received
     setPrintPause(false, PAUSE_EXTERNAL);
@@ -335,8 +337,8 @@ void hostActionCommands(void)
   {
     hostDialog = false;  // enable Resume/Pause button in the Printing menu
 
-    // pass value "true" to report (in case of printing from onboard SD) the host is printing
-    // without waiting from Marlin (when notification ack "SD printing byte" is caught).
+    // pass value "true" to report (in case of printing from (remote) onboard SD) the host is
+    // printing without waiting from Marlin (when notification ack "SD printing byte" is caught).
     // In case of printing from remote host (e.g. USB), the host printing status is always
     // forced to "true" due to no other notification will be received
     setPrintResume(true);
@@ -353,16 +355,16 @@ void hostActionCommands(void)
 
     if (ack_seen("Nozzle Parked"))
     {
-      // pass value "false" to let Marlin report (in case of printing from onboard SD) when
-      // the host is not printing (when notification ack "Not SD printing" is caught).
+      // pass value "false" to let Marlin report (in case of printing from (remote) onboard SD)
+      // when the host is not printing (when notification ack "Not SD printing" is caught).
       // In case of printing from remote host (e.g. USB), the host printing status is always
       // forced to "false" due to no other notification will be received
       setPrintPause(false, PAUSE_EXTERNAL);
     }
-    else if (ack_seen("Resuming"))  // resuming from onboard SD or TFT
+    else if (ack_seen("Resuming"))  // resuming from (remote) onboard SD or TFT
     {
-      // pass value "true" to report (in case of printing from onboard SD) the host is printing
-      // without waiting from Marlin (when notification ack "SD printing byte" is caught).
+      // pass value "true" to report (in case of printing from (remote) onboard SD) the host is
+      // printing without waiting from Marlin (when notification ack "SD printing byte" is caught).
       // In case of printing from remote host (e.g. USB), the host printing status is always
       // forced to "true" due to no other notification will be received
       setPrintResume(true);
@@ -679,35 +681,35 @@ void parseACK(void)
         uint16_t start_index = ack_index;
         uint16_t end_index = ack_continue_seen(fileEndString) ? (ack_index - strlen(fileEndString)) : start_index;
         uint16_t path_len = MIN(end_index - start_index, MAX_PATH_LEN - strlen(getCurFileSource()) - 1);
-        sprintf(infoFile.title, "%s/", getCurFileSource());
-        strncat(infoFile.title, dmaL2Cache + start_index, path_len);
-        infoFile.title[path_len + strlen(getCurFileSource()) + 1] = '\0';
+        char file_name[MAX_PATH_LEN];
+        sprintf(file_name, "%s/", getCurFileSource());
+        strncat(file_name, dmaL2Cache + start_index, path_len);
+        file_name[path_len + strlen(getCurFileSource()) + 1] = '\0';
 
-        setPrintHost(true);
+        printRemoteStart(file_name);
       }
       else if (infoMachineSettings.onboardSD == ENABLED &&
-               infoFile.source >= BOARD_SD &&
-               ack_seen("Not SD printing"))
+               infoFile.source >= BOARD_SD && infoFile.source <= BOARD_SD_REMOTE &&
+               ack_seen("Not SD printing"))  // if printing from (remote) onboard SD
       {
         setPrintPause(true, PAUSE_EXTERNAL);
       }
       else if (infoMachineSettings.onboardSD == ENABLED &&
-               infoFile.source >= BOARD_SD &&
-               ack_seen("SD printing byte"))
+               infoFile.source >= BOARD_SD && infoFile.source <= BOARD_SD_REMOTE &&
+               ack_seen("SD printing byte"))  // if printing from (remote) onboard SD
       {
         setPrintResume(false);
 
-        // Parsing printing data
-        // Example: SD printing byte 123/12345
+        // parsing printing data
+        // format: SD printing byte <XXXX>/<YYYY> (e.g. SD printing byte 123/12345)
         setPrintProgress(ack_value(), ack_second_value());
         //powerFailedCache(position);
       }
       else if (infoMachineSettings.onboardSD == ENABLED &&
-               infoFile.source >= BOARD_SD &&
-               ack_seen("Done printing file"))
+               infoFile.source >= BOARD_SD && infoFile.source <= BOARD_SD_REMOTE &&
+               ack_seen("Done printing file"))  // if printing from (remote) onboard SD
       {
-        setPrintHost(false);
-        printComplete();
+        printEnd();
       }
 
       //----------------------------------------
