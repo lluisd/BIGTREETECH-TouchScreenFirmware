@@ -327,7 +327,7 @@
 
 /**
  * Hotend Count
- *   Value range: [min: 1, max: 6]
+ *   Value range: [min: 0, max: 6]
  */
 #define HOTEND_COUNT 1  // Default: 1
 
@@ -346,7 +346,7 @@
 
 /**
  * Extruder Count
- *   Value range: [min: 1, max: 6]
+ *   Value range: [min: 0, max: 6]
  */
 #define EXTRUDER_COUNT  1  // Default: 1
 #define MIXING_EXTRUDER 0  // Default: 0. For mixing_extruder set to 1 (This option turns off autodetection
