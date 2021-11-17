@@ -382,6 +382,8 @@ void printComplete(void)
 
 void printRemoteStart(const char * filename)
 {
+  infoHost.printing = true;  // always set (even if printing from onboard SD)
+
   if (infoPrinting.printing && infoFile.source <= BOARD_SD) return;  // if printing from TFT or onboard SD
 
   // always clean infoPrinting first and then set the needed attributes
@@ -391,8 +393,6 @@ void printRemoteStart(const char * filename)
   infoPrinting.size = 1;  // .size must be different than .cur to avoid 100% progress on TFT
   infoPrinting.printing = true;
   initPrintSummary();  // init print summary
-
-  infoHost.printing = true;
 
   if (filename != NULL)
   {
@@ -432,7 +432,7 @@ void printStart(FIL * file, uint32_t size)
       return;
 
     case BOARD_SD:
-      infoHost.printing = true;
+      //infoHost.printing = true;                  // Not so fast! Let Marlin tell that he started printing!
       request_M24(0);                              // start print from onboard SD
       request_M27(infoSettings.m27_refresh_time);  // use gcode M27 in case of a print running from onboard SD
       break;
@@ -492,7 +492,7 @@ void printAbort(void)
 
     case BOARD_SD_REMOTE:
     case BOARD_SD:
-      //infoHost.printing = false;  // not so fast! Let Marlin tell that he's done!
+      //infoHost.printing = false;  // Not so fast! Let Marlin tell that he's done!
 
       // several M108 are sent to Marlin because consecutive blocking operations
       // such as heating bed, extruder may defer processing of M524
@@ -681,22 +681,34 @@ void setPrintAbort(void)
 
 void setPrintPause(bool updateHost, PAUSE_TYPE pauseType)
 {
+  // pass value "false" for updateHost to let Marlin report (in case of printing from (remote) onboard SD)
+  // when the host is not printing (when notification ack "Not SD printing" is caught).
+  // In case of printing from remote host (e.g. USB) or infoSettings.m27_active set to "false", the host
+  // printing status is always forced to "false" due to no other notification will be received
+
   if (infoPrinting.printing)
   {
     infoPrinting.pause = true;
     infoPrinting.pauseType = pauseType;
   }
 
-  if (updateHost || infoFile.source == REMOTE_HOST)  // in case of remote host, always force to "false"
+  // in case of printing from remote host or infoSettings.m27_active set to "false", always force to "false"
+  if (updateHost || infoFile.source == REMOTE_HOST || !infoSettings.m27_active)
     infoHost.printing = false;
 }
 
 void setPrintResume(bool updateHost)
 {
+  // pass value "true" for updateHost to report (in case of printing from (remote) onboard SD) the host is
+  // printing without waiting from Marlin (when notification ack "SD printing byte" is caught).
+  // In case of printing from remote host (e.g. USB) or infoSettings.m27_active set to "false", the host
+  // printing status is always forced to "true" due to no other notification will be received
+
   // no need to check it is printing when setting the value to "false"
   infoPrinting.pause = false;
 
-  if (updateHost || infoFile.source == REMOTE_HOST)  // in case of remote host, always force to "true"
+  // in case of printing from remote host or infoSettings.m27_active set to "false", always force to "true"
+  if (updateHost || infoFile.source == REMOTE_HOST || !infoSettings.m27_active)
   {
     // if printing from (remote) onboard SD or remote host
     if (infoPrinting.printing && infoFile.source >= BOARD_SD)

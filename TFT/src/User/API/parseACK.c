@@ -322,10 +322,6 @@ void hostActionCommands(void)
       //  hostDialog = false;     // enable Resume/Pause button in the Printing menu
     }
 
-    // pass value "false" to let Marlin report (in case of printing from (remote) onboard SD)
-    // when the host is not printing (when notification ack "Not SD printing" is caught).
-    // In case of printing from remote host (e.g. USB), the host printing status is always
-    // forced to "false" due to no other notification will be received
     setPrintPause(false, PAUSE_EXTERNAL);
 
     if (ack_seen("filament_runout"))
@@ -337,13 +333,9 @@ void hostActionCommands(void)
   {
     hostDialog = false;  // enable Resume/Pause button in the Printing menu
 
-    // pass value "true" to report (in case of printing from (remote) onboard SD) the host is
-    // printing without waiting from Marlin (when notification ack "SD printing byte" is caught).
-    // In case of printing from remote host (e.g. USB), the host printing status is always
-    // forced to "true" due to no other notification will be received
     setPrintResume(true);
   }
-  else if (ack_seen(":cancel"))  // To be added to Marlin abortprint routine
+  else if (ack_seen(":cancel"))  // to be added to Marlin abortprint routine
   {
     setPrintAbort();
   }
@@ -355,18 +347,10 @@ void hostActionCommands(void)
 
     if (ack_seen("Nozzle Parked"))
     {
-      // pass value "false" to let Marlin report (in case of printing from (remote) onboard SD)
-      // when the host is not printing (when notification ack "Not SD printing" is caught).
-      // In case of printing from remote host (e.g. USB), the host printing status is always
-      // forced to "false" due to no other notification will be received
       setPrintPause(false, PAUSE_EXTERNAL);
     }
-    else if (ack_seen("Resuming"))  // resuming from (remote) onboard SD or TFT
+    else if (ack_seen("Resuming"))  // resuming from TFT or (remote) onboard SD
     {
-      // pass value "true" to report (in case of printing from (remote) onboard SD) the host is
-      // printing without waiting from Marlin (when notification ack "SD printing byte" is caught).
-      // In case of printing from remote host (e.g. USB), the host printing status is always
-      // forced to "true" due to no other notification will be received
       setPrintResume(true);
 
       hostAction.prompt_show = false;
