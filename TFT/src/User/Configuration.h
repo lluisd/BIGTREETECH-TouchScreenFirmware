@@ -236,6 +236,7 @@
  * pressing the nozzle icon. At each click it will alter between the 3 variants.
  *
  * NOTES:
+ *   - It requires "FILE_COMMENT_PARSING" is enabled.
  *   - This feature uses the layer number comments added by slicers at the starting of each layer.
  *   - Some slicers may not include the total number of layers in the G-code file. In this case only
  *     the current layer will be displayed. To display total number of layers, a comment should be
