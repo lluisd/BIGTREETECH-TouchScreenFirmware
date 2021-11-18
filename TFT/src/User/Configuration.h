@@ -236,7 +236,7 @@
  * pressing the nozzle icon. At each click it will alter between the 3 variants.
  *
  * NOTES:
- *   - It requires "FILE_COMMENT_PARSING" is enabled.
+ *   - It requires "FILE_COMMENT_PARSING" to be enabled.
  *   - This feature uses the layer number comments added by slicers at the starting of each layer.
  *   - Some slicers may not include the total number of layers in the G-code file. In this case only
  *     the current layer will be displayed. To display total number of layers, a comment should be
@@ -393,7 +393,7 @@
  * Fan Maximum PWM Speed
  * Set minimum and maximum fan speed allowed by the printer for Cooling Fans & Controller Fan.
  * Cooling fans have index from F0 to F5.
- * Controller fan has index CtA and CtI (Active and Idle). It requires "CONTROLLER_FAN" is enabled.
+ * Controller fan has index CtA and CtI (Active and Idle). It requires "CONTROLLER_FAN" to be enabled.
  *   Format: [fan_max: F0:<max PWM> F1:<max PWM> F2:<max PWM> F3:<max PWM> F4:<max PWM> F5:<max PWM> CtA:<max PWM> CtI:<max PWM>]
  *   Unit: [PWM]
  *   Value range: [min: 25, max: 255]
