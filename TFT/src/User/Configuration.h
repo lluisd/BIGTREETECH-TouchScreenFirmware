@@ -68,6 +68,9 @@
 /**
  * G-code File Comment Parsing
  * The TFT parses and processes extra information provided by the slicer as comments in the G-code file.
+ * If enabled, the current implementation parses and processes print time and print layer information
+ * from the G-code file (nothing else).
+ * If disabled, the "layer_disp_type" setting provided in "UI Settings" section becomes redundant.
  *
  * NOTE: Enable it in case the slicer (e.g. Cura) supports extra information.
  *
