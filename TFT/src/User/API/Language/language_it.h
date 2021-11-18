@@ -144,7 +144,7 @@
     #define STRING_BUSY                   "Stampante occupata, attendere..."
     #define STRING_LOADING                "Caricamento..."
     #define STRING_UNCONNECTED            "Stampante non connessa"
-    #define STRING_LISTENING              "TFT in Listening Mode!"
+    #define STRING_LISTENING              "TFT in Modalità Ascolto!"
 
     // Process Info
     #define STRING_INFO                   "Info"
@@ -254,7 +254,7 @@
     #define STRING_PARAMETER_SETTINGS     "Parametri"
     #define STRING_FEATURE_SETTINGS       "Configura"
     #define STRING_CONNECTION_SETTINGS    "Connessioni"
-    #define STRING_SERIAL_PORTS           "S. Ports"
+    #define STRING_SERIAL_PORTS           "Porte S."
     #define STRING_BAUDRATE               "Baudrate"
     #define STRING_EEPROM_SETTINGS        "EEPROM"
     #define STRING_RGB_SETTINGS           "LED RGB"
@@ -354,13 +354,13 @@
     #define STRING_CLICK_FOR_MORE         "Clicca per riepilogo"
     #define STRING_EXT_TEMPLOW            "La temperatura dell'hotend è al di sotto della temperatura minima (%d℃)."
     #define STRING_HEAT_HOTEND            "Scaldo l'hotend a %d℃?"
-    #define STRING_DESIRED_TEMPLOW        "Hotend temperature is below\ndesired temperature (%d℃)."
-    #define STRING_WAIT_HEAT_UP           "Wait for it to heat up."
+    #define STRING_DESIRED_TEMPLOW        "La temperatura dell'hotend è al di sotto della temperatura desiderata (%d℃)."
+    #define STRING_WAIT_HEAT_UP           "Attendi fine riscaldamento."
     #define STRING_Z_ALIGN                "Allinea Z"
     #define STRING_MACROS                 "Macro"
     #define STRING_MESH_VALID             "Validazione mesh"
-    #define STRING_CONNECT_PROBE          "Connect probe before starting the process. Make sure to disconnect it afterwards."
-    #define STRING_DISCONNECT_PROBE       "Make sure you have disconnected probe before using this feature."
+    #define STRING_CONNECT_PROBE          "Connetti la probe prima di iniziare il processo. Disconnettila quando finito."
+    #define STRING_DISCONNECT_PROBE       "Assicurati che la probe sia disconnessa prima di usare questa funzionalità."
     #define STRING_CALIBRATION            "Calibra"
 
 #endif
