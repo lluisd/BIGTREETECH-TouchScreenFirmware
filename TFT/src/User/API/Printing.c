@@ -716,17 +716,7 @@ void setPrintResume(bool updateHost)
   }
 }
 
-bool handlePrintError(uint32_t cur, uint8_t * errorNum)
-{
-  // TO DO
-  // PUT HERE ANY SPECIFIC ERROR HANDLING PROCEDURE
-  // (E.G. MAXIMUM RETRY ATTEMPTS, DEVICE RE-INITIALIZATION ETC...)
-
-  // return "false" to force a print abort or "true" to force a read retry on "cur" position
-  return false;
-}
-
-// get gcode command from TFT (SD card or USB)
+// get gcode command from TFT (SD card or USB stick)
 void loopPrintFromTFT(void)
 {
   if (!infoPrinting.printing) return;
@@ -745,12 +735,11 @@ void loopPrintFromTFT(void)
   uint32_t ip_cur = infoPrinting.cur;
   uint32_t ip_size = infoPrinting.size;
 
-  for (uint8_t error_num = 0; ip_cur < ip_size; ip_cur++)  // parse only the gcode (not the comment, if any)
+  for ( ; ip_cur < ip_size; ip_cur++)  // parse only the gcode (not the comment, if any)
   {
     if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
-    { // in case of error reading from file, invoke error handling function.
-      // Returned "false" to force a print abort or "true" to force a read retry on "ip_cur" position
-      ip_cur = (handlePrintError(ip_cur, &error_num) == true) ? ip_cur - 1 : ip_size;
+    { // in case of error reading from file, force a print abort
+      ip_cur = ip_size;
       continue;  // "continue" will force also to execute "ip_cur++" in the "for" statement
     }
 
@@ -785,12 +774,11 @@ void loopPrintFromTFT(void)
     bool comment_parsing = (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1 &&
                             read_char == ';') ? true : false;
 
-    for (uint8_t error_num = 0; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
+    for ( ; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
     {
       if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
-      { // in case of error reading from file, invoke error handling function.
-        // Returned "false" to force a print abort or "true" to force a read retry on "ip_cur" position
-        ip_cur = (handlePrintError(ip_cur, &error_num) == true) ? ip_cur - 1 : ip_size;
+      { // in case of error reading from file, force a print abort
+        ip_cur = ip_size;
         continue;  // "continue" will force also to execute "ip_cur++" in the "for" statement
       }
 
