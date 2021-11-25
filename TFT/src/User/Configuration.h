@@ -1304,7 +1304,7 @@
  *     5: apply icon background colors to both live text 1 and live text 2
  *     6: apply sampled icon background uniform color to both live text 1 and live text 2
  */
-#define LIVE_TEXT_BG_COLOR_STATUS 6  // Default: 0 (disabled)
+#define LIVE_TEXT_BG_COLOR_STATUS 2  // Default: 0 (disabled)
 
 /**
  * Show Embedded Thumbnails Of Gcode Files
