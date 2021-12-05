@@ -1248,7 +1248,7 @@
 #define KEYBOARD_COLOR_LAYOUT 0  // Default: 0
 
 /**
- * QWERTY/QWERTZ Keyboard Layout
+ * QWERTY/QWERTZ Keyboard Layout (Terminal menu)
  * Keyboard layout for Terminal Keyboard (Only for TFT70 V3.0).
  *   Options: [qwerty: 0, qwertz: 1, azerty: 2]
  *     qwerty: The typically keyboard Layout for english.
@@ -1270,6 +1270,15 @@
  * Comment to enable a standard progress bar.
  */
 #define MARKED_PROGRESS_BAR  // Default: commented (disabled)
+
+/**
+ * Live Text Common Color Layout (Status Screen menu)
+ * Some topics require to use a common color for live text in Status Screen menu.
+ * Uncomment to use the color of live text 1 (name) also for live text 2 (value)
+ * (e.g. for THEME_Rep Rap Firmware Dark theme).
+ * Comment to use standard colors.
+ */
+//#define LIVE_TEXT_COMMON_COLOR  // Default: commented (disabled)
 
 /**
  * Live Text Background Color Rendering Technique (Printing menu and Status Screen menu)
