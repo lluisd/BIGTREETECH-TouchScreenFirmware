@@ -7,11 +7,11 @@ bool mountGcodeSDCard(void)
   // Send M21 ( Init SD )
   // wait result
   // return 0=Error 1=OK
-  /*
->>> M21
-SENDING:M21
-echo:SD card ok
-*/
+  //
+  // >>> M21
+  // SENDING:M21
+  // echo:SD card ok
+  //
   if (infoMachineSettings.firmwareType == FW_REPRAPFW)
   {
     return true;
@@ -28,20 +28,20 @@ static inline void rrfScanPrintFilesGcodeFs(void)
 //static uint32_t date = 0;
 //static FILINFO finfo;
 //static uint16_t len = 0;
-/*
-SENDING:M20
-Begin file list
-PI3MK2~1.GCO 11081207
-/YEST~1/TEST2/PI3MK2~1.GCO 11081207
-/YEST~1/TEST2/PI3MK2~3.GCO 11081207
-/YEST~1/TEST2/PI3MK2~2.GCO 11081207
-/YEST~1/TEST2/PI3MK2~4.GCO 11081207
-/YEST~1/TEST2/PI3MK2~5.GCO 11081207
-/YEST~1/PI3MK2~1.GCO 11081207
-/YEST~1/PI3MK2~3.GCO 11081207
-/YEST~1/PI3MK2~2.GCO 11081207
-End file list
-*/
+//
+// SENDING:M20
+// Begin file list
+// PI3MK2~1.GCO 11081207
+// /YEST~1/TEST2/PI3MK2~1.GCO 11081207
+// /YEST~1/TEST2/PI3MK2~3.GCO 11081207
+// /YEST~1/TEST2/PI3MK2~2.GCO 11081207
+// /YEST~1/TEST2/PI3MK2~4.GCO 11081207
+// /YEST~1/TEST2/PI3MK2~5.GCO 11081207
+// /YEST~1/PI3MK2~1.GCO 11081207
+// /YEST~1/PI3MK2~3.GCO 11081207
+// /YEST~1/PI3MK2~2.GCO 11081207
+// End file list
+//
 bool scanPrintFilesGcodeFs(void)
 {
   clearInfoFile();
@@ -51,6 +51,7 @@ bool scanPrintFilesGcodeFs(void)
     rrfScanPrintFilesGcodeFs();
     return true;
   }
+
   char *ret = request_M20();
   char *data = malloc(strlen(ret) + 1);
   strcpy(data, ret);
@@ -61,16 +62,21 @@ bool scanPrintFilesGcodeFs(void)
 
   for (; line != NULL; line = strtok(NULL, s))
   {
-    if (strcmp(line, "Begin file list") == 0 || strcmp(line, "End file list") == 0 || strcmp(line, "ok") == 0) continue;  // Start and Stop tag
-    if (strlen(line) < strlen(infoFile.title) - 4) continue;  // No path line exclude
-    if (strlen(infoFile.title) > 4 && strstr(line, infoFile.title + 4) == NULL) continue;  // No current directory
+    if (strcmp(line, "Begin file list") == 0 || strcmp(line, "End file list") == 0 || strcmp(line, "ok") == 0)  // Start and Stop tag
+      continue;
 
-    char *pline = line + strlen(infoFile.title) - 4;
-    if (strlen(infoFile.title) > 4) pline++;
+    if (strlen(line) < strlen(infoFile.title) - 4)  // if "line" cannot include current directory
+      continue;
 
-    if (strchr(pline, '/') == NULL)
+    // "line" never has "/" at the beginning of a path (e.g. "sub_dir/cap.gcode") while "infoFile.title" has it
+    // (e.g. "bSD:/sub_dir"), so we skip it during the check of current directory match (index 5 used instead of 4)
+    if (strlen(infoFile.title) > 5 && strstr(line, infoFile.title + 5) == NULL)  // if "line" doesn't include current directory
+      continue;
+
+    char *pline = line + strlen(infoFile.title) - 4;  // e.g. "cap.gcode", "sub_dir_2/base.gcode" etc...
+
+    if (strchr(pline, '/') == NULL)  // if FILE
     {
-      // FILE
       if (infoFile.fileCount >= FILE_NUM)
         continue;  // Gcode max number is FILE_NUM
 
@@ -145,9 +151,8 @@ bool scanPrintFilesGcodeFs(void)
       infoFile.file[infoFile.fileCount][strlen(file) + 1] = 0;  // set to 0 the extra byte for file extension check
       infoFile.fileCount++;
     }
-    else
+    else  // if DIRECTORY
     {
-      // DIRECTORY
       if (infoFile.folderCount >= FOLDER_NUM)
         continue;  // floder max number is FOLDER_NUM
 
