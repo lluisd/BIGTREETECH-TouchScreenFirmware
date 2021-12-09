@@ -76,13 +76,13 @@ bool scanPrintFilesGcodeFs(void)
 
       if (infoMachineSettings.longFilename == ENABLED)
       {
-        char *Pstr_tmp = strrchr(line, ' ');
+        char *Pstr_tmp = strrchr(line, ' ');  // check and remove file size at the end of line
         if (Pstr_tmp != NULL)
           *Pstr_tmp = 0;
-        // remove file size from line
+
         char *longfilename;
-        if (strrchr(line, '~') != NULL)  // check if file name is 8.3 format
-          longfilename = request_M33(line);
+        if (strrchr(line, '~') != NULL)      // check if file name is 8.3 format
+          longfilename = request_M33(line);  // if 8.1 format, retrieve long filename
         else
           longfilename = line;
 
@@ -104,22 +104,46 @@ bool scanPrintFilesGcodeFs(void)
         else
           Pstr_tmp++;
 
-        infoFile.Longfile[infoFile.fileCount] = malloc(strlen(Pstr_tmp) + 1);
-
+        infoFile.Longfile[infoFile.fileCount] = malloc(strlen(Pstr_tmp) + 2);  // plus one extra byte for file extension check
         if (infoFile.Longfile[infoFile.fileCount] == NULL)
         {
           clearRequestCommandInfo();
           break;
         }
         strcpy(infoFile.Longfile[infoFile.fileCount], Pstr_tmp);
-        clearRequestCommandInfo();  // for M33
+        infoFile.Longfile[infoFile.fileCount][strlen(Pstr_tmp) + 1] = 0;  // set to 0 the extra byte for file extension check
+        clearRequestCommandInfo();  // finally free the buffer allocated by M33, if any
+      }
+      else  // if long filename is not supported
+      {
+        infoFile.Longfile[infoFile.fileCount] = 0;  // long filename is not supported, so always set it to 0
       }
 
       char* rest = pline;
       char* file = strtok_r(rest, " ", &rest);  // remove file size from pline
-      infoFile.file[infoFile.fileCount] = malloc(strlen(file) + 1);
-      if (infoFile.file[infoFile.fileCount] == NULL) break;
-      strcpy(infoFile.file[infoFile.fileCount++], file);
+
+      // NOTE: no need to filter files based on file extension because files are already filtered by Marlin,
+      // so leave the following block commented
+/*      if (IsSupportedFile(file) == NULL)  // if filename doesn't provide a supported file extension
+      {
+        if (infoFile.Longfile[infoFile.fileCount] != 0)
+          free(infoFile.Longfile[infoFile.fileCount]);
+
+        continue;
+      }*/
+
+      infoFile.file[infoFile.fileCount] = malloc(strlen(file) + 2);  // plus one extra byte for file extension check
+      if (infoFile.file[infoFile.fileCount] == NULL)
+      {
+        if (infoFile.Longfile[infoFile.fileCount] != 0)
+          free(infoFile.Longfile[infoFile.fileCount]);
+
+        break;
+      }
+
+      strcpy(infoFile.file[infoFile.fileCount], file);
+      infoFile.file[infoFile.fileCount][strlen(file) + 1] = 0;  // set to 0 the extra byte for file extension check
+      infoFile.fileCount++;
     }
     else
     {
