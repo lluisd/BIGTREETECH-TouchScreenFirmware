@@ -1,7 +1,7 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
 
-#define CONFIG_VERSION 20211210
+#define CONFIG_VERSION 20211213
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -77,6 +77,11 @@
  *   Options: [disable: 0, enable: 1]
  */
 #define FILE_COMMENT_PARSING 1  // Default: 1
+
+/**
+ *   Options: [disable: 0, enable: 1]
+ */
+#define EVENT_LED 0  // Default: 1
 
 //================================================================================
 //================================= UI Settings ==================================
