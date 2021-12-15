@@ -21,7 +21,7 @@ extern "C" {
 
 #define CENTER_Y          ((exhibitRect.y1 - exhibitRect.y0) / 2 + exhibitRect.y0)
 #define CENTER_X          ((exhibitRect.x1 - exhibitRect.x0 - BYTE_WIDTH) / 2 + exhibitRect.x0)
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   #define LISTITEM_WIDTH  (LCD_WIDTH - (3 * START_X))
   #define LISTITEM_HEIGHT ((LCD_HEIGHT - ICON_START_Y - START_X) / 6)
 #else

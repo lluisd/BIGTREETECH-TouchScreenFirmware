@@ -7,7 +7,7 @@
 // LCD resolution, font and icon size
 #ifndef TFT_RESOLUTION
   #define TFT_RESOLUTION
-  #ifdef PORTRAIT
+  #ifdef PORTRAIT_MODE
     #include "./Resolution/TFT_yyyYyyy.h"
   #else
     #include "./Resolution/TFT_xxxXxxx.h"
@@ -25,7 +25,7 @@
 
 // Hardware version config
 #ifndef HARDWARE_VERSION
-  #ifdef PORTRAIT
+  #ifdef PORTRAIT_MODE
     #define HARDWARE_VERSION "TFTxx_Vx.x_P"
   #else
     #define HARDWARE_VERSION "TFTxx_Vx.x"

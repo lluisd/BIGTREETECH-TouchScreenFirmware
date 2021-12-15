@@ -79,9 +79,12 @@
 #define FILE_COMMENT_PARSING 1  // Default: 1
 
 /**
+ * Event LED
+ * When printing from TFT SD / TFT U Disk, the TFT periodically set the printer's (neopixel) LED color
+ * and TFT's knob LED color, if any, according to the current nozzle and bed temperatures.
  *   Options: [disable: 0, enable: 1]
  */
-#define EVENT_LED 0  // Default: 1
+#define EVENT_LED 1  // Default: 1
 
 //================================================================================
 //================================= UI Settings ==================================

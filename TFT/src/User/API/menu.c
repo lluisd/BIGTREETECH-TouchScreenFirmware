@@ -4,7 +4,7 @@
 #include "Notification.h"
 
 const GUI_RECT exhibitRect = {
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   // exhibitRect is 2 ICON Space in the Lowest Row and 2 Center column.
   0.5*ICON_WIDTH+0*SPACE_X+START_X,  0*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  2.5*ICON_WIDTH+1*SPACE_X+START_X,  1*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y
 #else  // Landscape Mode
@@ -15,7 +15,7 @@ const GUI_RECT exhibitRect = {
 
 // MENU FOR A TEMPERATURE DISPLAY SCREEN (TOOL TEMP, PID, ETC...)
 const GUI_RECT rect_of_keysIN[TM_RECT_COUNT] = {
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   // 8 icons area VERTICAL GUI
   {0*ICON_WIDTH+0*SPACE_X+START_X,    1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,    2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},  // decrease
   {0.5*ICON_WIDTH+0*SPACE_X+START_X,  0*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  1.5*ICON_WIDTH+0*SPACE_X+START_X,  1*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y},  // empty
@@ -73,7 +73,7 @@ const GUI_RECT rect_of_keysIN[TM_RECT_COUNT] = {
 };
 
 const GUI_RECT rect_of_key[MENU_RECT_COUNT] = {
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   // 3 icons per row 2 rows last row 2 icons VERTICAL GUI
   {0*ICON_WIDTH+0*SPACE_X+START_X,  0*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,  1*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
   {1*ICON_WIDTH+1*SPACE_X+START_X,  0*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  2*ICON_WIDTH+1*SPACE_X+START_X,  1*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
@@ -150,7 +150,7 @@ const GUI_RECT rect_of_keySS[SS_RECT_COUNT] = {
 
   // infobox area
   {1*ICON_WIDTH+1*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  3*ICON_WIDTH+2*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y}
-#elif defined(PORTRAIT)
+#elif defined(PORTRAIT_MODE)
   // 3 icons per row 2 rows last row status bar centered VERTICAL GUI
   {0*ICON_WIDTH+0*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},
   {1*ICON_WIDTH+1*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  2*ICON_WIDTH+1*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},
@@ -207,8 +207,8 @@ const GUI_RECT rect_of_keySS[SS_RECT_COUNT] = {
 #endif
 };
 
-const GUI_RECT rect_of_keyPS[] = { // PS = PRINT SCREEN, This template is used to locate the live icons on the printing screen.
-#ifdef PORTRAIT
+const GUI_RECT rect_of_keyPS[] = { // PS = PRINT SCREEN, This template is used to locate the live icons on the Printing Screen.
+#ifdef PORTRAIT_MODE
   // hotend area VERTICAL GUI
   {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
    START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
@@ -265,8 +265,8 @@ const GUI_RECT rect_of_keyPS[] = { // PS = PRINT SCREEN, This template is used t
   {0, 0, LCD_WIDTH, ICON_START_Y}
 };
 
-#ifdef PORTRAIT
-const GUI_RECT rect_of_keyPS_draw[] = { // VERTICAL GUI Print menu for drawing UI
+#ifdef PORTRAIT_MODE
+const GUI_RECT rect_of_keyPS_draw[] = { // VERTICAL GUI Printing menu for drawing UI
   {0, 0, 0, 0},
   {0, 0, 0, 0},
   {0, 0, 0, 0},
@@ -298,7 +298,7 @@ const GUI_RECT rect_of_keyPS_draw[] = { // VERTICAL GUI Print menu for drawing U
 #endif
 
 const GUI_RECT rect_of_keyPS_end[] = {
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   // hotend area VERTICAL GUI
   {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
    START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
@@ -365,7 +365,7 @@ const GUI_RECT rect_of_keyPS_end[] = {
 };
 
 const GUI_RECT rect_of_keyListView[ITEM_PER_PAGE + 1] = {
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   // list area VERTICAL GUI
   {START_X,  0*LISTITEM_HEIGHT+ICON_START_Y,  LISTITEM_WIDTH+START_X,  1*LISTITEM_HEIGHT+ICON_START_Y},
   {START_X,  1*LISTITEM_HEIGHT+ICON_START_Y,  LISTITEM_WIDTH+START_X,  2*LISTITEM_HEIGHT+ICON_START_Y},
@@ -456,7 +456,7 @@ void menuClearGaps(void)
       GUI_ClearPrect(gapsMenu + i);
     }
   }
-#elif defined(PORTRAIT)  // clear gaps on Portrait Mode except TFT70
+#elif defined(PORTRAIT_MODE)  // clear gaps on Portrait Mode except TFT70
   const GUI_RECT gaps[] = {
     {0,                  0,                  LCD_WIDTH,          TITLE_END_Y},
     {0,                  TITLE_END_Y,        LCD_WIDTH,          rect_of_key[0].y0},
@@ -854,7 +854,7 @@ void menuDrawPage(const MENUITEMS *menuItems)
   TSC_ReDrawIcon = (MENU_IS(menuPrinting)) ? itemDrawIconPress_PS : itemDrawIconPress;
   curMenuRedrawHandle = NULL;
 
-  #ifdef PORTRAIT
+  #ifdef PORTRAIT_MODE
     if (MENU_IS(menuPrinting))
       curRect = rect_of_keyPS_draw;
     else if (MENU_IS(menuStatus))

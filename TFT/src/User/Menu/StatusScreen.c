@@ -14,7 +14,7 @@
 
 #define UPDATE_TOOL_TIME 2000  // 1 seconds is 1000
 
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   #define XYZ_STATUS " X: %.2f  Y: %.2f  Z: %.2f "
 #else
   #define XYZ_STATUS "   X: %.2f   Y: %.2f   Z: %.2f   "
@@ -69,7 +69,7 @@ const GUI_POINT ss_val_point   = {SSICON_WIDTH / 2, SSICON_VAL_Y0};
 #endif
 
 // info box msg area
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   const  GUI_RECT msgRect = {START_X + 0.5 * ICON_WIDTH + 0 * SPACE_X + 2, ICON_START_Y +  0 * ICON_HEIGHT + 0 * SPACE_Y + STATUS_MSG_BODY_YOFFSET,
                              START_X + 2.5 * ICON_WIDTH + 1 * SPACE_X - 2, ICON_START_Y +  1 * ICON_HEIGHT + 0 * SPACE_Y - STATUS_MSG_BODY_BOTTOM};
 
@@ -491,7 +491,7 @@ void menuStatus(void)
         OPEN_MENU(menuMain);
         break;
 
-      #ifdef PORTRAIT
+      #ifdef PORTRAIT_MODE
         case KEY_ICON_5:
           OPEN_MENU(menuPrint);
           break;

@@ -7,7 +7,7 @@
 // LCD resolution, font and icon size
 #ifndef TFT_RESOLUTION
   #define TFT_RESOLUTION
-  #ifdef PORTRAIT
+  #ifdef PORTRAIT_MODE
     #include "./Resolution/TFT_240X320.h"
   #else
     #include "./Resolution/TFT_320X240.h"
@@ -25,7 +25,7 @@
 
 // Hardware version config
 #ifndef HARDWARE_VERSION
-  #ifdef PORTRAIT
+  #ifdef PORTRAIT_MODE
     #define HARDWARE_VERSION "TFT24_V1.1_P"
   #else
     #define HARDWARE_VERSION "TFT24_V1.1"

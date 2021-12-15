@@ -2,7 +2,7 @@
 #include "includes.h"
 
 const GUI_RECT printinfo_val_rect[6] = {
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
    START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
 
@@ -42,7 +42,7 @@ const GUI_RECT printinfo_val_rect[6] = {
 };
 
 #define PROGRESS_BAR_RAW_X0   (START_X)                             // X0 aligned to first icon
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   #define PROGRESS_BAR_RAW_X1 (START_X + 3*ICON_WIDTH + 2*SPACE_X)  // X1 aligned to last icon
 #else
   #define PROGRESS_BAR_RAW_X1 (START_X + 4*ICON_WIDTH + 3*SPACE_X)  // X1 aligned to last icon
@@ -61,7 +61,7 @@ const GUI_RECT printinfo_val_rect[6] = {
 #define PROGRESS_BAR_FULL_WIDTH  (PROGRESS_BAR_X1 - PROGRESS_BAR_X0)  // 100% progress bar width
 #define PROGRESS_BAR_SLICE_WIDTH (PROGRESS_BAR_FULL_WIDTH / 10)       // 10% progress bar width
 
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   const GUI_RECT progressBar = {PROGRESS_BAR_X0, TITLE_END_Y + 1,
                                 PROGRESS_BAR_X1, PICON_START_Y - PICON_SPACE_Y - 1};
 #else
