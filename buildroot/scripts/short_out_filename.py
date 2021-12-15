@@ -10,6 +10,9 @@ def make_short_file(source, target, env):
     if filename == None:
         filename = flags.get("HARDWARE") + "." + flags.get("SOFTWARE_VERSION")
     filename_short = flags.get("HARDWARE_SHORT") + flags.get("SOFTWARE_VERSION_SHORT")
+    if flags.get("PORTRAIT") != None:
+        filename = filename + "_P"
+        filename_short = filename_short + "_P"
     shutil.copyfile(buildDir + "/" + filename + ".bin", buildDir + "/" + filename_short + ".new")
     print("Done.")
 
