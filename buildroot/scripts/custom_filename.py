@@ -9,7 +9,7 @@ filename = flags.get("BINARY_FILENAME")
 if filename == None:
     filename = flags.get("HARDWARE") + "." + flags.get("SOFTWARE_VERSION")
 if flags.get("PORTRAIT_MODE") != None:
-    filename = filename + "_PM"
+    filename = filename + "_portrait"
 #print(filename)
 print("Done.")
 

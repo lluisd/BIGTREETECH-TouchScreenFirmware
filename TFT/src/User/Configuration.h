@@ -80,7 +80,7 @@
 
 /**
  * Event LED
- * When printing from TFT SD / TFT U Disk, the TFT periodically set the printer's (neopixel) LED color
+ * When printing from TFT SD / TFT U Disk, the TFT periodically sets the printer's (neopixel) LED color
  * and TFT's knob LED color, if any, according to the current nozzle and bed temperatures.
  *   Options: [disable: 0, enable: 1]
  */
