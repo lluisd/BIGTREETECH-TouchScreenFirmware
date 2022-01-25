@@ -1,9 +1,17 @@
 #include "HW_Init.h"
 #include "includes.h"
 
+#ifdef I2C_EEPROM  // added I2C_EEPROM support for MKS_TFT35_V1_0
+  #include "i2c_eeprom.h"
+#endif
+
 void HW_GetClocksFreq(CLOCKS *clk)
 {
+#ifdef GD32F2XX
+  RCU_GetClocksFreq(&clk->rccClocks);
+#else
   RCC_GetClocksFreq(&clk->rccClocks);
+#endif
 
   if (clk->rccClocks.PCLK1_Frequency < clk->rccClocks.HCLK_Frequency)  // if (APBx presc = 1) x1 else x2
     clk->PCLK1_Timer_Frequency = clk->rccClocks.PCLK1_Frequency * 2;
@@ -19,21 +27,22 @@ void HW_GetClocksFreq(CLOCKS *clk)
 void HW_Init(void)
 {
   HW_GetClocksFreq(&mcuClocks);
-
+#ifdef GD32F2XX
+  nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
+#else
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+#endif
   Delay_init();
 
   #ifdef DISABLE_JTAG
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-    GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);  // disable JTAG, enable SWD
+    DISABLE_JTAG();  // disable JTAG, enable SWD
   #endif
 
   #ifdef DISABLE_DEBUG
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-    GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE);  // disable JTAG & SWD
+    DISABLE_DEBUG();  // disable JTAG & SWD
   #endif
 
-  #if defined(MKS_TFT)
+  #if defined(MKS_TFT) && !defined (MKS_TFT35_V1_0)  // not used by MKS_TFT35_V1_0
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
     GPIO_PinRemapConfig(GPIO_Remap_USART2, ENABLE);
   #endif
@@ -42,6 +51,11 @@ void HW_Init(void)
   OS_TimerInitMs();  // system clock timer, cycle 1ms, called after XPT2046_Init()
   W25Qxx_Init();
   LCD_Init();
+
+  #ifdef I2C_EEPROM  // added I2C_EEPROM support for MKS_TFT35_V1_0
+    i2C_Init_EEPROM();
+  #endif
+
   readStoredPara();  // read settings parameter
 
   #if defined(SERIAL_DEBUG_PORT) && defined(SERIAL_DEBUG_ENABLED)
@@ -84,7 +98,7 @@ void HW_Init(void)
   #endif
 
   #ifdef U_DISK_SUPPORT
-    USBH_Init(&USB_OTG_Core, USB_OTG_FS_CORE_ID, &USB_Host, &USBH_MSC_cb, &USR_cb);
+    USB_Init();
   #endif
 
   if (readIsTSCExist() == false)  // read settings parameter

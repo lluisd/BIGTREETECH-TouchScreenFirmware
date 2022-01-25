@@ -13,10 +13,10 @@ extern "C" {
 // Config version support
 // change if new elements/keywords are added/removed/changed in the configuration.h Format YYYYMMDD
 // this number should match CONFIG_VERSION in configuration.h
-#define CONFIG_SUPPPORT 20211213
+#define CONFIG_SUPPPORT 20220124
 
 #define FONT_FLASH_SIGN       20210522  // (YYYYMMDD) change if fonts require updating
-#define CONFIG_FLASH_SIGN     20211213  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
+#define CONFIG_FLASH_SIGN     20220124  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
 #define LANGUAGE_FLASH_SIGN   20211111  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
 #define ICON_FLASH_SIGN       20211122  // (YYYYMMDD) change if any icon(s) is added or removed
 
@@ -38,6 +38,7 @@ extern "C" {
 #define AXIS_NUM              (TOTAL_AXIS - 1)
 #define SPEED_COUNT            3
 #define PREHEAT_COUNT          6
+#define LED_COLOR_COUNT        6
 #define CUSTOM_GCODES_COUNT   15
 #define MAX_STRING_LENGTH     75
 #define MAX_LABEL_LENGTH       7
@@ -264,6 +265,8 @@ typedef struct
   uint8_t  lcd_idle_brightness;
   uint8_t  lcd_idle_time;
   uint8_t  lcd_lock_on_idle;
+  uint8_t  led_color[LED_COLOR_COUNT];
+  uint8_t  led_keep_on_startup;
   uint8_t  knob_led_color;
   uint8_t  knob_led_idle;
   uint8_t  neopixel_pixels;

@@ -179,7 +179,32 @@ extern "C" {
 
 #endif  // LED_COLOR_PIN
 
-void LED_SetColor(uint8_t r, uint8_t g, uint8_t b, bool skipPrinterLed);
+// data structures
+#define LED_VECT_SIZE 6
+
+// LED color components array:
+// R: red
+// G: green
+// B: blue
+// W: white;     NEOPIXEL or RGB(W)
+// P: intensity; NEOPIXEL
+// I: index;     NEOPIXEL
+typedef uint8_t LED_VECT[LED_VECT_SIZE];
+
+extern const LED_VECT ledRed;
+extern const LED_VECT ledGreen;
+extern const LED_VECT ledBlue;
+extern const LED_VECT ledWhite;
+extern const LED_VECT ledOff;
+
+extern LED_VECT ledColor;
+
+void LED_SendColor(const LED_VECT * led);
+uint16_t LED_GetRGBColor(LED_VECT * led);
+void LED_SetRGBColor(uint8_t r, uint8_t g, uint8_t b, uint8_t w, uint8_t p, uint8_t i);
+void LED_GetColor(LED_VECT * led);
+void LED_SetColor(const LED_VECT * led, bool skipNeopixel);
+void LED_ChangeColor(const LED_VECT * led, bool skipPrinterLed);
 
 #ifdef __cplusplus
 }
