@@ -174,7 +174,7 @@ void initSettings(void)
     infoSettings.level_feedrate[i]    = default_level_speed[i];
   }
 
-  for (int i = 0; i < LED_COLOR_COUNT - 1 ; i++)
+  for (int i = 0; i < LED_COMPONENT_COUNT - 1 ; i++)
   {
     infoSettings.led_color[i]         = default_led_color[i];
   }

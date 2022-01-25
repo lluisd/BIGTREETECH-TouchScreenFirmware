@@ -7,9 +7,11 @@
 #endif
 
 // Knob LED Color pins
-#define LED_COLOR_PIN PC7
-#define WS2812_FAST_WRITE_HIGH() GPIOC->BSRRL = 1<<7
-#define WS2812_FAST_WRITE_LOW()  GPIOC->BSRRH = 1<<7
+#ifndef LED_COLOR_PIN
+  #define LED_COLOR_PIN PC7
+  #define WS2812_FAST_WRITE_HIGH() GPIOC->BSRRL = 1<<7
+  #define WS2812_FAST_WRITE_LOW()  GPIOC->BSRRH = 1<<7
+#endif
 
 // Neopixel LEDs number
 #ifndef NEOPIXEL_PIXELS

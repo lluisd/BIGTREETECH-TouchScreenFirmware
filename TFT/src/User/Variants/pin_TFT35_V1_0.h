@@ -50,10 +50,12 @@
 
 // SERIAL_PORT:   communicating with host (Marlin, RRF etc...)
 // SERIAL_PORT_X: communicating with other controllers (Octoprint, ESP3D, other UART Touch Screen etc...)
-#define SERIAL_PORT   _USART1  // default USART port
-//#define SERIAL_PORT_2 _USART2
-//#define SERIAL_PORT_3 _USART3
-//#define SERIAL_PORT_4 _UART4
+#ifndef SERIAL_PORT
+  #define SERIAL_PORT   _USART1  // default USART port
+  //#define SERIAL_PORT_2 _USART2
+  //#define SERIAL_PORT_3 _USART3
+  //#define SERIAL_PORT_4 _UART4
+#endif
 
 // Serial port for debugging
 #ifdef SERIAL_DEBUG_ENABLED
@@ -70,12 +72,14 @@
 
 // SD Card SDIO/SPI pins
 //#define SD_SDIO_SUPPORT
-#define SD_SPI_SUPPORT
-#ifdef SD_SPI_SUPPORT
-  #define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
-  #define SD_HIGH_SPEED 0      // 2 frequency division
-  #define SD_SPI        _SPI2
-  #define SD_CS_PIN     PB12
+#ifndef SD_SPI_SUPPORT
+  #define SD_SPI_SUPPORT
+  #ifdef SD_SPI_SUPPORT
+    #define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
+    #define SD_HIGH_SPEED 0      // 2 frequency division
+    #define SD_SPI        _SPI2
+    #define SD_CS_PIN     PB12
+  #endif
 #endif
 
 // W25Qxx SPI Flash Memory pins
