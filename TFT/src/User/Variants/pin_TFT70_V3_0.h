@@ -142,7 +142,9 @@
 #endif
 
 // Buzzer PWM pin
-#define BUZZER_PIN PD13
+#ifndef BUZZER_PIN
+  #define BUZZER_PIN PD13
+#endif
 
 // LCD Encoder pins
 #define LCD_ENCA_PIN   PA8

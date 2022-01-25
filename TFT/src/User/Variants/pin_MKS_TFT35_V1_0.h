@@ -102,10 +102,12 @@
 #define W25Qxx_CS_PIN PB9
 
 // Buzzer PWM pin
-#define BUZZER_PIN           PA2
-#define BUZZER_PIN_ALTERNATE GPIO_AF_TIM5  // alternate function 2 for PWM
-#define BUZZER_PWM_CHANNEL   _TIM5_CH3
-#define BUZZER_PWM_TIMER     TIM5
+#ifndef BUZZER_PIN
+  #define BUZZER_PIN           PA2
+  #define BUZZER_PIN_ALTERNATE GPIO_AF_TIM5  // alternate function 2 for PWM
+  #define BUZZER_PWM_CHANNEL   _TIM5_CH3
+  #define BUZZER_PWM_TIMER     TIM5
+#endif
 
 // LCD Encoder pins
 // It can be added using available pins (PB0, PB1, PB4, PB5). Switch encoder/button to ground

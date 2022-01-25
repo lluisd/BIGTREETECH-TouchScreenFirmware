@@ -198,7 +198,9 @@
 #endif
 
 // Buzzer PWM pin
-#define BUZZER_PIN PA2
+#ifndef BUZZER_PIN
+  #define BUZZER_PIN PA2
+#endif
 
 // Marlin mode + LCD Encoder pins
 #ifdef ST7920_EMULATOR

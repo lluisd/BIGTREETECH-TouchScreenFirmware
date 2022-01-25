@@ -96,7 +96,9 @@
 #define W25Qxx_CS_PIN PA4
 
 // Buzzer PWM pin
-#define BUZZER_PIN PB2
+#ifndef BUZZER_PIN
+  #define BUZZER_PIN PB2
+#endif
 
 // Auto Power Off Detection pin
 #ifndef PS_ON_PIN
