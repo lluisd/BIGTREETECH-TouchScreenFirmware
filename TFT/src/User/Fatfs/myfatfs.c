@@ -51,11 +51,11 @@ bool mountSDCard(void)
 }
 
 /*
- mount U disk from Fatfs
+ mount USB disk from Fatfs
 */
 bool mountUDisk(void)
 {
-  return (f_mount(&fatfs[VOLUMES_U_DISK], "U:", 1) == FR_OK);
+  return (f_mount(&fatfs[VOLUMES_USB_DISK], "U:", 1) == FR_OK);
 }
 
 /*

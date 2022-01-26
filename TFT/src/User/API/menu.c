@@ -1268,7 +1268,7 @@ void loopBackEnd(void)
     loopPrintFromOnboardSD();  // handle a print from (remote) onboard SD, if any
   }
 
-  #ifdef U_DISK_SUPPORT
+  #ifdef USB_FLASH_DRIVE_SUPPORT
     USB_LoopProcess();
   #endif
 
@@ -1317,7 +1317,7 @@ void loopBackEnd(void)
 // UI-related background loop tasks
 void loopFrontEnd(void)
 {
-  // Check if volume source(SD/U disk) insert
+  // Check if volume source (SD/USB) insert
   loopVolumeSource();
   // Loop to check and run toast messages
   loopToast();

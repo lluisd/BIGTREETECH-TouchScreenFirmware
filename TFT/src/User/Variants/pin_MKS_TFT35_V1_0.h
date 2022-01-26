@@ -117,9 +117,9 @@
 #define LCD_ENCB_PIN PB1
 #define LCD_BTN_PIN  PB5
 
-// U disk support
-#ifndef U_DISK_SUPPORT
-  #define U_DISK_SUPPORT
+// USB Disk support
+#ifndef USB_FLASH_DRIVE_SUPPORT
+  #define USB_FLASH_DRIVE_SUPPORT
   #define USE_USB_OTG_FS
 #endif
 

@@ -152,9 +152,9 @@
 #define LCD_BTN_PIN    PC8
 #define LCD_ENC_EN_PIN PC6
 
-// U disk support
-#ifndef U_DISK_SUPPORT
-  #define U_DISK_SUPPORT
+// USB Disk support
+#ifndef USB_FLASH_DRIVE_SUPPORT
+  #define USB_FLASH_DRIVE_SUPPORT
   #define USE_USB_OTG_FS
 #endif
 
