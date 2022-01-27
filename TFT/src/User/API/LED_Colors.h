@@ -162,49 +162,49 @@ extern "C" {
 
   typedef enum
   {
-    LED_OFF = 0,
-    LED_WHITE,
-    LED_RED,
-    LED_ORANGE,
-    LED_YELLOW,
-    LED_GREEN,
-    LED_BLUE,
-    LED_INDIGO,
-    LED_VIOLET,
-    LED_COLOR_COUNT
-  } LED_COLOR;
+    KNOB_LED_OFF = 0,
+    KNOB_LED_WHITE,
+    KNOB_LED_RED,
+    KNOB_LED_ORANGE,
+    KNOB_LED_YELLOW,
+    KNOB_LED_GREEN,
+    KNOB_LED_BLUE,
+    KNOB_LED_INDIGO,
+    KNOB_LED_VIOLET,
+    KNOB_LED_COLOR_COUNT
+  } KNOB_LED_COLORS;
 
-  extern const uint32_t led_colors[LED_COLOR_COUNT];
-  extern const LABEL led_color_names[LED_COLOR_COUNT];
+  extern const uint32_t knob_led_colors[KNOB_LED_COLOR_COUNT];
+  extern const LABEL knob_led_color_names[KNOB_LED_COLOR_COUNT];
 
 #endif  // LED_COLOR_PIN
 
 // data structures
-#define LED_VECT_SIZE 6
+#define LED_COLOR_COMPONENT_COUNT 6
 
 // LED color components array:
-// R: red
-// G: green
-// B: blue
-// W: white;     NEOPIXEL or RGB(W)
-// P: intensity; NEOPIXEL
-// I: index;     NEOPIXEL
-typedef uint8_t LED_VECT[LED_VECT_SIZE];
+// R: Red
+// G: Green
+// B: Blue
+// W: White;     NEOPIXEL or RGB(W)
+// P: Intensity; NEOPIXEL
+// I: Index;     NEOPIXEL
+typedef uint8_t LED_COLOR[LED_COLOR_COMPONENT_COUNT];
 
-extern const LED_VECT ledRed;
-extern const LED_VECT ledGreen;
-extern const LED_VECT ledBlue;
-extern const LED_VECT ledWhite;
-extern const LED_VECT ledOff;
+extern const LED_COLOR ledRed;
+extern const LED_COLOR ledGreen;
+extern const LED_COLOR ledBlue;
+extern const LED_COLOR ledWhite;
+extern const LED_COLOR ledOff;
 
-extern LED_VECT ledColor;
+extern LED_COLOR ledColor;  // (neopixel) LED light current color
 
-void LED_SendColor(const LED_VECT * led);
-uint16_t LED_GetRGBColor(LED_VECT * led);
-void LED_SetRGBColor(uint8_t r, uint8_t g, uint8_t b, uint8_t w, uint8_t p, uint8_t i);
-void LED_GetColor(LED_VECT * led);
-void LED_SetColor(const LED_VECT * led, bool skipNeopixel);
-void LED_ChangeColor(const LED_VECT * led, bool skipPrinterLed);
+void LED_SendColor(const LED_COLOR * led);
+uint16_t LED_GetRGBColor(LED_COLOR * led);
+void LED_SetRGBColor(LED_COLOR * led, uint8_t r, uint8_t g, uint8_t b, uint8_t w, uint8_t p, uint8_t i);
+void LED_GetColor(LED_COLOR * led);
+void LED_SetColor(const LED_COLOR * led, bool skipNeopixel);
+void LED_ChangeColor(const LED_COLOR * led, bool skipPrinterLed);
 
 #ifdef __cplusplus
 }

@@ -122,7 +122,7 @@ void initSettings(void)
   infoSettings.lcd_idle_brightness    = LCD_IDLE_BRIGHTNESS;
   infoSettings.lcd_idle_time          = LCD_IDLE_TIME;
   infoSettings.lcd_lock_on_idle       = LCD_LOCK_ON_IDLE;
-  infoSettings.led_keep_on_startup    = LED_KEEP_ON_STARTUP;
+  infoSettings.led_always_on          = LED_ALWAYS_ON;
   infoSettings.knob_led_color         = KNOB_LED_COLOR;
   infoSettings.knob_led_idle          = KNOB_LED_IDLE;
   #ifdef NEOPIXEL_PIXELS
@@ -174,7 +174,7 @@ void initSettings(void)
     infoSettings.level_feedrate[i]    = default_level_speed[i];
   }
 
-  for (int i = 0; i < LED_COMPONENT_COUNT - 1 ; i++)
+  for (int i = 0; i < LED_COLOR_COMPONENT_COUNT - 1 ; i++)
   {
     infoSettings.led_color[i]         = default_led_color[i];
   }
@@ -263,11 +263,8 @@ void setupMachine(FW_TYPE fwType)
 
   mustStoreCmd("G90\n");  // Set to Absolute Positioning
 
-  if (infoSettings.led_keep_on_startup == 1)
-  {
-    LED_SetColor(&infoSettings.led_color, false);  // set (neopixel) LED light to configured color
-    LED_SendColor(&ledColor);                      // send command to printer
-  }
+  if (infoSettings.led_always_on == 1)
+    LED_SendColor(&ledColor);  // set (neopixel) LED light to current color (initialized in HW_Init function)
 }
 
 float flashUsedPercentage(void)

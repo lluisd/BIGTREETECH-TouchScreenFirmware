@@ -851,14 +851,32 @@
  */
 #define LCD_LOCK_ON_IDLE 0  // Default: 0
 
-#define LED_R 0    // R: red (Default: 0)
-#define LED_G 255    // G: green (Default: 0)
-#define LED_B 255    // B: blue (Default: 0)
-#define LED_W 0    // W: white;     NEOPIXEL or RGB(W) (Default: 0)
-#define LED_P 255  // P: intensity; NEOPIXEL (Default: 0)
-#define LED_I 255  // I: index;     NEOPIXEL (Default: 0)
+/**
+ * LED Color
+ * Printer's LED color used by some features such as Event LED and PID processes.
+ *   Format: [led_color: R:<component> G:<component> B:<component> W:<component> P:<component> I:<component>
+ *   Target component: R: Red
+ *                     G: Green
+ *                     B: Blue
+ *                     W: White;     NEOPIXEL or RGB(W)
+ *                     P: Intensity; NEOPIXEL
+ *                     I: Index;     NEOPIXEL
+ *   Value range: [min: 0, max: 255]
+ */
+#define LED_R 255  // R: Red (Default: 0)
+#define LED_G 255  // G: Green (Default: 0)
+#define LED_B 255  // B: Blue (Default: 0)
+#define LED_W 255  // W: White;     NEOPIXEL or RGB(W) (Default: 0)
+#define LED_P 255  // P: Intensity; NEOPIXEL (Default: 0)
+#define LED_I 255  // I: Index;     NEOPIXEL (Default: 0)
 
-#define LED_KEEP_ON_STARTUP 1  // Default: 1
+/**
+ * LED Always ON
+ * Keep printers's LED on at startup and after Event LED and PID processes terminate.
+ * The printer's LED color is configured in "LED_COLOR".
+ *   Options: [disable: 0, enable: 1]
+ */
+#define LED_ALWAYS_ON 1  // Default: 1
 
 /**
  * Knob LED Color (only for TFT28/TFT35_E3/TFT43/TFT50/TFT70 V3.0)

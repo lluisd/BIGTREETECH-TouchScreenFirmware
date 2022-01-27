@@ -300,12 +300,12 @@ void menuPid(void)
         break;
 
       case KEY_ICON_7:
-        if (infoSettings.led_keep_on_startup == 1)
-          LED_ChangeColor(&infoSettings.led_color, false);  // set (neopixel) LED light to configured color
+        if (infoSettings.led_always_on == 1)
+          LED_ChangeColor(&ledColor, false);  // set (neopixel) LED light to current color
         else
-          LED_ChangeColor(&ledOff, false);                  // set (neopixel) LED light to OFF
+          LED_ChangeColor(&ledOff, false);    // set (neopixel) LED light to OFF
 
-        LCD_SET_KNOB_LED_IDLE(true);   // restore infoSettings.knob_led_idle and knob LED color to their default values
+        LCD_SET_KNOB_LED_IDLE(true);  // restore infoSettings.knob_led_idle and knob LED color to their default values
 
         CLOSE_MENU();
         break;

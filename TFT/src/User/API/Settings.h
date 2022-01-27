@@ -8,7 +8,8 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 #include "variants.h"
-#include "coordinate.h"
+#include "coordinate.h"  // for TOTAL_AXIS
+#include "LED_Colors.h"  // for LED_COLOR_COMPONENT_COUNT
 
 // Config version support
 // change if new elements/keywords are added/removed/changed in the configuration.h Format YYYYMMDD
@@ -38,7 +39,6 @@ extern "C" {
 #define AXIS_NUM              (TOTAL_AXIS - 1)
 #define SPEED_COUNT            3
 #define PREHEAT_COUNT          6
-#define LED_COMPONENT_COUNT    6
 #define CUSTOM_GCODES_COUNT   15
 #define MAX_STRING_LENGTH     75
 #define MAX_LABEL_LENGTH       7
@@ -265,8 +265,8 @@ typedef struct
   uint8_t  lcd_idle_brightness;
   uint8_t  lcd_idle_time;
   uint8_t  lcd_lock_on_idle;
-  uint8_t  led_color[LED_COMPONENT_COUNT];
-  uint8_t  led_keep_on_startup;
+  uint8_t  led_color[LED_COLOR_COMPONENT_COUNT];
+  uint8_t  led_always_on;
   uint8_t  knob_led_color;
   uint8_t  knob_led_idle;
   uint8_t  neopixel_pixels;

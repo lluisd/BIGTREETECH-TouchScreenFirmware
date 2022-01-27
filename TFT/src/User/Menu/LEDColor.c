@@ -29,7 +29,7 @@ typedef enum
 #define ROW_NUM      (KB_ROW_NUM + 1)                                      // keyboard rows + control bar
 #define ROW_HEIGHT   (LCD_HEIGHT / ROW_NUM)                                // button height
 #define PAGE_ITEMS   3
-#define PAGE_NUM     (LED_VECT_SIZE / PAGE_ITEMS)
+#define PAGE_NUM     (LED_COLOR_COMPONENT_COUNT / PAGE_ITEMS)
 
 // keyboard key sizes
 #define KB_WIDTH  (LCD_WIDTH / KB_COL_NUM)
@@ -125,10 +125,11 @@ const char *const ledKeyString[2] = {
   ">",  // NEXT
 };
 
-const char * const ledString[LED_VECT_SIZE] = {"R", "G", "B", "W", "P", "I"};
+const char * const ledString[LED_COLOR_COMPONENT_COUNT] = {"R", "G", "B", "W", "P", "I"};
 
 uint8_t ledPage = 0;
 uint8_t ledIndex = 0;
+SETTINGS * nowInfoSettings = NULL;
 
 uint8_t ledGetComponentIndex(uint8_t index)
 {
@@ -166,7 +167,7 @@ uint8_t ledGetControlSubIndex(uint8_t keyNum)
 
 uint16_t ledGetComponentRGBColor(uint8_t component, uint8_t index)
 {
-  LED_VECT led = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  // component RGB color in RGB 565 16 bit format
+  LED_COLOR led = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  // component RGB color in RGB 565 16 bit format
 
   led[index] = component;
 
@@ -318,12 +319,12 @@ void ledDrawMenu(void)
 void menuLEDColorCustom(void)
 {
   LED_KEY_VALUES key_num = LED_KEY_IDLE;
-  LED_VECT origLedValue;
+  LED_COLOR origLedColor;
   uint8_t newIndex;
-  uint16_t newValue, curValue;
+  uint8_t newValue, curValue;
   bool updateForced, sendingNeeded;
 
-  LED_GetColor(&origLedValue);  // get initial LED color components array
+  LED_GetColor(&origLedColor);  // get initial LED color components array
   newIndex = ledIndex;
   newValue = curValue = ledGetComponentValue(newIndex);
   updateForced = sendingNeeded = false;
@@ -355,7 +356,10 @@ void menuLEDColorCustom(void)
 
       // apply new LED color and exit
       case LED_KEY_OK:
-        LED_GetColor(&origLedValue);
+        LED_GetColor(&infoSettings.led_color);  // set (neopixel) LED light configured color to current color
+
+        // needed by following reset case (restore original LED color) just to align and set the original color with the new one
+        LED_GetColor(&origLedColor);
         // no break here
 
       // restore original LED color and exit
@@ -365,7 +369,7 @@ void menuLEDColorCustom(void)
 
       // restore original LED color
       case LED_KEY_RESET:
-        LED_SetColor(&origLedValue, false);
+        LED_SetColor(&origLedColor, false);
 
         updateForced = true;
         break;
@@ -417,7 +421,12 @@ void menuLEDColorCustom(void)
     }
 
     if (updateForced)
+    {
       ledDrawKeyboard();  // draw all
+
+      // needed in case reset button is pressed (restore original LED color) just to align the values with the restored one
+      newValue = curValue = ledGetComponentValue(newIndex);
+    }
 
     if (newIndex != ledIndex)
     {
@@ -469,6 +478,18 @@ const MENUITEMS LEDColorItems = {
 void menuLEDColor(void)
 {
   KEY_VALUES key_num = KEY_IDLE;
+  bool forceLedOff, forceExit;
+
+  if (nowInfoSettings == NULL)
+  {
+    nowInfoSettings = (SETTINGS *) malloc(sizeof(SETTINGS));
+    *nowInfoSettings = infoSettings;
+  }
+
+  LED_SetColor(&infoSettings.led_color, false);  // set (neopixel) LED light current color to configured color
+  LED_SendColor(&ledColor);                      // set (neopixel) LED light to current color
+  forceLedOff = false;
+  forceExit = false;
 
   menuDrawPage(&LEDColorItems);
 
@@ -502,13 +523,17 @@ void menuLEDColor(void)
         OPEN_MENU(menuLEDColorCustom);
         break;
 
-      // turn off
+      // switch off
       case KEY_ICON_6:
         LED_SendColor(&ledOff);
+
+        forceLedOff = true;
         break;
 
       case KEY_ICON_7:
         CLOSE_MENU();
+
+        forceExit = true;
         break;
 
       default:
@@ -516,8 +541,25 @@ void menuLEDColor(void)
     }
 
     if (key_num <= KEY_ICON_5)  // change LED color
+    {
       LED_SendColor(&ledColor);
+      LED_GetColor(&infoSettings.led_color);  // set (neopixel) LED light configured color to current color
+
+      forceLedOff = false;
+    }
 
     loopProcess();
+  }
+
+  if (forceExit)
+  {
+    if (memcmp(nowInfoSettings, &infoSettings, sizeof(SETTINGS)))  // if configured color is changed, save it to flash
+      storePara();
+
+    if (forceLedOff)  // if LED is switched off, set (neopixel) LED light current color to OFF
+      LED_SetColor(&ledOff, false);
+
+    free(nowInfoSettings);
+    nowInfoSettings = NULL;
   }
 }
