@@ -4,7 +4,9 @@
 // MCU type (STM32F10x, STM32F2xx, STM32F4xx)
 #include "stm32f10x.h"
 
-//#undef PORTRAIT_MODE  // comment this line in case the TFT variant supports Portrait Mode
+// Portrait Mode support
+// Comment the following line in case the TFT variant supports Portrait Mode
+//#undef PORTRAIT_MODE
 
 // LCD resolution, font and icon size
 #ifndef TFT_RESOLUTION
@@ -36,15 +38,33 @@
   #define SOFTWARE_MANUFACTURER HARDWARE_VERSION"."
 #endif
 
+// XPT2046 Software SPI pins for touch screen
+// It needs CS/SCK/MISO/MOSI for Software SPI and TPEN for pen interrupt
+#define XPT2046_CS   PC9
+#define XPT2046_SCK  PC10
+#define XPT2046_MISO PC11
+#define XPT2046_MOSI PC12
+#define XPT2046_TPEN PC5
+
+// W25Qxx SPI Flash Memory pins
+#define W25Qxx_SPEED  1
+#define W25Qxx_SPI    _SPI1
+#define W25Qxx_CS_PIN PB9
+
 // LCD interface
 // Supported LCD drivers: [ST7789, SSD1963, RM68042, NT35310, ILI9488, ILI9341, ILI9325, HX8558]
 #ifndef TFTLCD_DRIVER
   #define TFTLCD_DRIVER HX8558
 #endif
 
-//#define STM32_HAS_FSMC  // FSMC 8080 interface (high speed) or normal IO interface (low speed)
+// FSMC 8080 interface (high speed) or normal IO interface (low speed)
+#ifndef STM32_HAS_FSMC
+  //#define STM32_HAS_FSMC
+#endif
+
+// LCD data 16bit or 8bit
 #ifndef LCD_DATA_16BIT
-  #define LCD_DATA_16BIT 1  // LCD data 16bit or 8bit
+  #define LCD_DATA_16BIT 1
 #endif
 
 // SERIAL_PORT:   communicating with host (Marlin, RRF etc...)
@@ -65,33 +85,25 @@
   #define SERIAL_DEBUG_PORT SERIAL_PORT_3
 #endif
 
-// XPT2046 Software SPI pins for touch screen
-// It needs CS/SCK/MISO/MOSI for Software SPI and TPEN for pen interrupt
-#define XPT2046_CS   PC9
-#define XPT2046_SCK  PC10
-#define XPT2046_MISO PC11
-#define XPT2046_MOSI PC12
-#define XPT2046_TPEN PC5
-
-// SD Card SDIO/SPI pins
-//#define SD_SDIO_SUPPORT
+// SD Card SPI pins
 #ifndef SD_SPI_SUPPORT
   #define SD_SPI_SUPPORT
-  #ifdef SD_SPI_SUPPORT
-    #define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
-    #define SD_HIGH_SPEED 1      // 2 frequency division
-    #define SD_SPI        _SPI1
-    #define SD_CS_PIN     PD11
-  #endif
+  #define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
+  #define SD_HIGH_SPEED 1      // 2 frequency division
+  #define SD_SPI        _SPI1
+  #define SD_CS_PIN     PD11
 #endif
 
 // SD Card CD Detect pin
-#define SD_CD_PIN PB15
+#ifndef SD_CD_PIN
+  #define SD_CD_PIN PB15
+#endif
 
-// W25Qxx SPI Flash Memory pins
-#define W25Qxx_SPEED  1
-#define W25Qxx_SPI    _SPI1
-#define W25Qxx_CS_PIN PB9
+// USB Disk support
+#ifndef USB_FLASH_DRIVE_SUPPORT
+  #define USB_FLASH_DRIVE_SUPPORT
+  #define USE_USB_OTG_FS
+#endif
 
 //
 //----------------------------------------------------------------------------
@@ -193,18 +205,9 @@
   #define ST7920_SPI _SPI3
 #endif
 
-#if defined(ST7920_EMULATOR) || defined(LCD2004_EMULATOR)
-  #define HAS_EMULATOR
-#endif
-
-// Buzzer PWM pin
-#ifndef BUZZER_PIN
-  #define BUZZER_PIN PA2
-#endif
-
-// Marlin mode + LCD Encoder pins
+// LCD Encoder pins + Marlin mode
 #ifdef ST7920_EMULATOR
-  // free JTAG (PB3/PB4) for SPI3 and free SWDIO PA13 PA14 for encoder pins
+  // Free JTAG (PB3/PB4) for SPI3 and free SWDIO, PA13, PA14 for encoder pins
   #define DISABLE_DEBUG() RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE); \
                           GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE)
 
@@ -221,12 +224,6 @@
   #endif
 #endif
 
-// USB Disk support
-#ifndef USB_FLASH_DRIVE_SUPPORT
-  #define USB_FLASH_DRIVE_SUPPORT
-  #define USE_USB_OTG_FS
-#endif
-
 #if !defined(ST7920_EMULATOR) || defined(SPI3_PIN_SMART_USAGE)
   // Auto Power Off Detection pin
   #ifndef PS_ON_PIN
@@ -237,6 +234,11 @@
   #ifndef FIL_RUNOUT_PIN
     #define FIL_RUNOUT_PIN PB1
   #endif
+#endif
+
+// Buzzer PWM pin
+#ifndef BUZZER_PIN
+  #define BUZZER_PIN PA2
 #endif
 
 #endif

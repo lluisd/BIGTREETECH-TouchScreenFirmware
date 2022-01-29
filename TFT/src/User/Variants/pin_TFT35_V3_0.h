@@ -7,7 +7,9 @@
   #include "stm32f2xx.h"
 #endif
 
-//#undef PORTRAIT_MODE  // comment this line in case the TFT variant supports Portrait Mode
+// Portrait Mode support
+// Comment the following line in case the TFT variant supports Portrait Mode
+//#undef PORTRAIT_MODE
 
 // LCD resolution, font and icon size
 #ifndef TFT_RESOLUTION
@@ -39,6 +41,19 @@
   #define SOFTWARE_MANUFACTURER HARDWARE_VERSION"."
 #endif
 
+// XPT2046 Software SPI pins for touch screen
+// It needs CS/SCK/MISO/MOSI for Software SPI and TPEN for pen interrupt
+#define XPT2046_CS   PE6
+#define XPT2046_SCK  PE5
+#define XPT2046_MISO PE4
+#define XPT2046_MOSI PE3
+#define XPT2046_TPEN PC13
+
+// W25Qxx SPI Flash Memory pins
+#define W25Qxx_SPEED  0
+#define W25Qxx_SPI    _SPI3
+#define W25Qxx_CS_PIN PB6
+
 // LCD interface
 // Supported LCD drivers: [ST7789, SSD1963, RM68042, NT35310, ILI9488, ILI9341, ILI9325, HX8558]
 #ifndef TFTLCD_DRIVER
@@ -46,16 +61,14 @@
   #define TFTLCD_DRIVER_SPEED 0x03
 #endif
 
-#define STM32_HAS_FSMC  // FSMC 8080 interface (high speed) or normal IO interface (low speed)
-#ifndef LCD_DATA_16BIT
-  #define LCD_DATA_16BIT 1  // LCD data 16bit or 8bit
+// FSMC 8080 interface (high speed) or normal IO interface (low speed)
+#ifndef STM32_HAS_FSMC
+  #define STM32_HAS_FSMC
 #endif
 
-// LCD Backlight pins (adjust brightness with LED PWM)
-#ifndef LCD_LED_PIN
-  #define LCD_LED_PIN           PD12
-  #define LCD_LED_PIN_ALTERNATE GPIO_AF_TIM4
-  #define LCD_LED_PWM_CHANNEL   _TIM4_CH1
+// LCD data 16bit or 8bit
+#ifndef LCD_DATA_16BIT
+  #define LCD_DATA_16BIT 1
 #endif
 
 // SERIAL_PORT:   communicating with host (Marlin, RRF etc...)
@@ -72,33 +85,60 @@
   #define SERIAL_DEBUG_PORT SERIAL_PORT_3
 #endif
 
-// XPT2046 Software SPI pins for touch screen
-// It needs CS/SCK/MISO/MOSI for Software SPI and TPEN for pen interrupt
-#define XPT2046_CS   PE6
-#define XPT2046_SCK  PE5
-#define XPT2046_MISO PE4
-#define XPT2046_MOSI PE3
-#define XPT2046_TPEN PC13
-
-// SD Card SDIO/SPI pins
-//#define SD_SDIO_SUPPORT
+// SD Card SPI pins
 #ifndef SD_SPI_SUPPORT
   #define SD_SPI_SUPPORT
-  #ifdef SD_SPI_SUPPORT
-    #define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
-    #define SD_HIGH_SPEED 0      // 2 frequency division
-    #define SD_SPI        _SPI1
-    #define SD_CS_PIN     PA4
-  #endif
+  #define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
+  #define SD_HIGH_SPEED 0      // 2 frequency division
+  #define SD_SPI        _SPI1
+  #define SD_CS_PIN     PA4
 #endif
 
 // SD Card CD Detect pin
-#define SD_CD_PIN PC4
+#ifndef SD_CD_PIN
+  #define SD_CD_PIN PC4
+#endif
 
-// W25Qxx SPI Flash Memory pins
-#define W25Qxx_SPEED  0
-#define W25Qxx_SPI    _SPI3
-#define W25Qxx_CS_PIN PB6
+// USB Disk support
+#ifndef USB_FLASH_DRIVE_SUPPORT
+  #define USB_FLASH_DRIVE_SUPPORT
+  #define USE_USB_OTG_FS
+#endif
+
+// Auto Power Off Detection pin
+#ifndef PS_ON_PIN
+  #define PS_ON_PIN PC12  // the string on TFT35 V3.0 board (PA12) is wrong, PC12 is the correct IO
+#endif
+
+// Filament Runout Detection pin
+#ifndef FIL_RUNOUT_PIN
+  #define FIL_RUNOUT_PIN PA15    // extruder T0
+  //#define FIL_RUNOUT_PIN_1 PC12  // extruder T1. Attention: It's the same pin as PS_ON
+  //#define FIL_RUNOUT_PIN_2 PB10  // extruder T2.            It's the same pin as USART3 TX
+  //#define FIL_RUNOUT_PIN_3 PB11  // extruder T3.            It's the same pin as USART3 RX
+  //#define FIL_RUNOUT_PIN_4 PA0   // extruder T4.            It's the same pin as USART4 TX
+  //#define FIL_RUNOUT_PIN_5 PA1   // extruder T5.            It's the same pin as USART4 RX
+#endif
+
+// Buzzer PWM pin
+#ifndef BUZZER_PIN
+  #define BUZZER_PIN PD13
+#endif
+
+// LCD Backlight pins (adjust brightness with LED PWM)
+#ifndef LCD_LED_PIN
+  #define LCD_LED_PIN           PD12
+  #define LCD_LED_PIN_ALTERNATE GPIO_AF_TIM4
+  #define LCD_LED_PWM_CHANNEL   _TIM4_CH1
+#endif
+
+// LCD Encoder pins
+#ifndef LCD_ENCA_PIN
+  #define LCD_ENCA_PIN   PA8
+  #define LCD_ENCB_PIN   PC9
+  #define LCD_BTN_PIN    PC8
+  #define LCD_ENC_EN_PIN PC6
+#endif
 
 // ST7920 Emulator SPI pins
 #define ST7920_EMULATOR  // uncomment to enable Marlin mode
@@ -123,42 +163,6 @@
   #define LCD_D5_PORT GPIOB
   #define LCD_D6_PORT GPIOC
   #define LCD_D7_PORT GPIOC
-#endif
-
-#if defined(ST7920_EMULATOR) || defined(LCD2004_EMULATOR)
-  #define HAS_EMULATOR
-#endif
-
-// Buzzer PWM pin
-#ifndef BUZZER_PIN
-  #define BUZZER_PIN PD13
-#endif
-
-// LCD Encoder pins
-#define LCD_ENCA_PIN   PA8
-#define LCD_ENCB_PIN   PC9
-#define LCD_BTN_PIN    PC8
-#define LCD_ENC_EN_PIN PC6
-
-// USB Disk support
-#ifndef USB_FLASH_DRIVE_SUPPORT
-  #define USB_FLASH_DRIVE_SUPPORT
-  #define USE_USB_OTG_FS
-#endif
-
-// Auto Power Off Detection pin
-#ifndef PS_ON_PIN
-  #define PS_ON_PIN PC12  // the string on TFT35 V3.0 board (PA12) is wrong, PC12 is the correct IO
-#endif
-
-// Filament Runout Detection pin
-#ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN PA15    // extruder T0
-  //#define FIL_RUNOUT_PIN_1 PC12  // extruder T1. Attention: It's the same pin as PS_ON
-  //#define FIL_RUNOUT_PIN_2 PB10  // extruder T2.            It's the same pin as USART3 TX
-  //#define FIL_RUNOUT_PIN_3 PB11  // extruder T3.            It's the same pin as USART3 RX
-  //#define FIL_RUNOUT_PIN_4 PA0   // extruder T4.            It's the same pin as USART4 TX
-  //#define FIL_RUNOUT_PIN_5 PA1   // extruder T5.            It's the same pin as USART4 RX
 #endif
 
 #endif

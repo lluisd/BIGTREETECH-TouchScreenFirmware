@@ -1,6 +1,7 @@
 #ifndef _PIN_TFT43_V3_0_H_  // modify to actual filename !!!
 #define _PIN_TFT43_V3_0_H_  // modify to actual filename !!!
 
+// LCD resolution, font and icon size
 #ifndef TFT_RESOLUTION
   #define TFT_RESOLUTION
   #ifdef PORTRAIT_MODE
@@ -27,7 +28,8 @@
   #define TFTLCD_DRIVER_SPEED 0x10     // SSD1963 needs slower speed
 #endif
 
-#ifndef SSD1963_LCD_PARA  // only for TFTLCD_DRIVER SSD1963
+// Only for TFTLCD_DRIVER SSD1963
+#ifndef SSD1963_LCD_PARA
   #define SSD1963_LCD_PARA
   #define SSD_DCLK_FREQUENCY  12  // 12Mhz
 

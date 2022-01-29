@@ -1,7 +1,9 @@
 #ifndef _PIN_MKS_TFT32_V1_3_H_  // modify to actual filename !!!
 #define _PIN_MKS_TFT32_V1_3_H_  // modify to actual filename !!!
 
-#undef PORTRAIT_MODE  // comment this line in case the TFT variant supports Portrait Mode
+// Portrait Mode support
+// Comment the following line in case the TFT variant supports Portrait Mode
+#undef PORTRAIT_MODE
 
 // Hardware version config
 #ifndef HARDWARE_VERSION

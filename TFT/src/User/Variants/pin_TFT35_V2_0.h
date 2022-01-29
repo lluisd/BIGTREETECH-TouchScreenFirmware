@@ -4,7 +4,9 @@
 // MCU type (STM32F10x, STM32F2xx, STM32F4xx)
 #include "stm32f10x.h"
 
-//#undef PORTRAIT_MODE  // comment this line in case the TFT variant supports Portrait Mode
+// Portrait Mode support
+// Comment the following line in case the TFT variant supports Portrait Mode
+//#undef PORTRAIT_MODE
 
 // LCD resolution, font and icon size
 #ifndef TFT_RESOLUTION
@@ -36,6 +38,24 @@
   #define SOFTWARE_MANUFACTURER HARDWARE_VERSION"."
 #endif
 
+// Debug support (free pins for other functions)
+// Free JTAG (PB3/PB4) for SPI3
+#define DISABLE_JTAG() RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE); \
+                       GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE)
+
+// XPT2046 Software SPI pins for touch screen
+// It needs CS/SCK/MISO/MOSI for Software SPI and TPEN for pen interrupt
+#define XPT2046_CS   PC0
+#define XPT2046_SCK  PB3
+#define XPT2046_MISO PB4
+#define XPT2046_MOSI PB5
+#define XPT2046_TPEN PC1
+
+// W25Qxx SPI Flash Memory pins
+#define W25Qxx_SPEED  1      // stm32f103 spi1 max 4 division
+#define W25Qxx_SPI    _SPI1
+#define W25Qxx_CS_PIN PA4
+
 // LCD interface
 // Supported LCD drivers: [ST7789, SSD1963, RM68042, NT35310, ILI9488, ILI9341, ILI9325, HX8558]
 #ifndef TFTLCD_DRIVER
@@ -43,15 +63,15 @@
   #define TFTLCD_DRIVER_SPEED 0x03
 #endif
 
-#define STM32_HAS_FSMC  // FSMC 8080 interface (high speed) or normal IO interface (low speed)
-#ifndef LCD_DATA_16BIT
-  #define LCD_DATA_16BIT 1  // LCD data 16bit or 8bit
+// FSMC 8080 interface (high speed) or normal IO interface (low speed)
+#ifndef STM32_HAS_FSMC
+  #define STM32_HAS_FSMC
 #endif
 
-// Debug support (free pins for other functions)
-// free JTAG (PB3/PB4) for SPI3
-#define DISABLE_JTAG() RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE); \
-                       GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE)
+// LCD data 16bit or 8bit
+#ifndef LCD_DATA_16BIT
+  #define LCD_DATA_16BIT 1
+#endif
 
 // SERIAL_PORT:   communicating with host (Marlin, RRF etc...)
 // SERIAL_PORT_X: communicating with other controllers (Octoprint, ESP3D, other UART Touch Screen etc...)
@@ -67,37 +87,23 @@
   #define SERIAL_DEBUG_PORT SERIAL_PORT_3
 #endif
 
-// XPT2046 Software SPI pins for touch screen
-// It needs CS/SCK/MISO/MOSI for Software SPI and TPEN for pen interrupt
-#define XPT2046_CS   PC0
-#define XPT2046_SCK  PB3
-#define XPT2046_MISO PB4
-#define XPT2046_MOSI PB5
-#define XPT2046_TPEN PC1
-
-// SD Card SDIO/SPI pins
-#define SD_SDIO_SUPPORT
+// SD Card SPI pins
 #ifndef SD_SPI_SUPPORT
   //#define SD_SPI_SUPPORT
-  #ifdef SD_SPI_SUPPORT
-    #define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
-    #define SD_HIGH_SPEED 0      // 2 frequency division
-    #define SD_SPI        _SPI2
-    #define SD_CS_PIN     PB12
-  #endif
+  //#define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
+  //#define SD_HIGH_SPEED 0      // 2 frequency division
+  //#define SD_SPI        _SPI2
+  //#define SD_CS_PIN     PB12
+#endif
+
+// SD Card SDIO support
+#ifndef SD_SDIO_SUPPORT
+  #define SD_SDIO_SUPPORT
 #endif
 
 // SD Card CD Detect pin
-#define SD_CD_PIN PC6
-
-// W25Qxx SPI Flash Memory pins
-#define W25Qxx_SPEED  1      // stm32f103 spi1 max 4 division
-#define W25Qxx_SPI    _SPI1
-#define W25Qxx_CS_PIN PA4
-
-// Buzzer PWM pin
-#ifndef BUZZER_PIN
-  #define BUZZER_PIN PB2
+#ifndef SD_CD_PIN
+  #define SD_CD_PIN PC6
 #endif
 
 // Auto Power Off Detection pin
@@ -108,6 +114,11 @@
 // Filament Runout Detection pin
 #ifndef FIL_RUNOUT_PIN
   #define FIL_RUNOUT_PIN PD11
+#endif
+
+// Buzzer PWM pin
+#ifndef BUZZER_PIN
+  #define BUZZER_PIN PB2
 #endif
 
 #endif

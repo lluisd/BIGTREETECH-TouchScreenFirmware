@@ -13,8 +13,9 @@
   #define TFTLCD_DRIVER_SPEED 0x03
 #endif
 
+// LCD data 16bit or 8bit
 #ifndef LCD_DATA_16BIT
-  #define LCD_DATA_16BIT 1  // LCD data 16bit or 8bit
+  #define LCD_DATA_16BIT 1
 #endif
 
 #include "pin_TFT35_V1_0.h"
