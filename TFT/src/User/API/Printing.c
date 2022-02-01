@@ -271,17 +271,14 @@ void shutdownStart(void)
 void initPrintSummary(void)
 {
   last_E_pos = ((infoFile.source >= BOARD_SD) ? coordinateGetAxisActual(E_AXIS) : coordinateGetAxisTarget(E_AXIS));
-  infoPrintSummary = (PRINT_SUMMARY){.name[0] = '\0', 0, 0, 0, 0};
+  infoPrintSummary = (PRINT_SUMMARY){{'\0'}, 0, 0, 0, 0};
   hasFilamentData = false;
+
+  sprintf(infoPrintSummary.name, "%." STRINGIFY(SUMMARY_NAME_LEN) "s", getFilename(infoFile.fileIndex));
 }
 
 void preparePrintSummary(void)
 {
-  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
-    sprintf(infoPrintSummary.name,"%." STRINGIFY(SUMMARY_NAME_LEN) "s", infoFile.longFile[infoFile.fileIndex]);
-  else
-    sprintf(infoPrintSummary.name,"%." STRINGIFY(SUMMARY_NAME_LEN) "s", getPrintName(infoFile.title));
-
   infoPrintSummary.time = infoPrinting.time;
 
   if (speedGetCurPercent(1) != 100)

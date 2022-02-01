@@ -142,14 +142,29 @@ char * isSupportedFile(char * filename)
   return extPos;
 }
 
-char * hideFileExtension(uint8_t index)
+char * getFoldername(uint8_t index)
 {
-  char * filename = infoFile.file[index];
-  char * extPos;
+/*  if (infoFile.longFolder[index] != NULL)
+    return infoFile.longFolder[index];
+  else*/
+    return infoFile.folder[index];
+}
+
+char * getFilename(uint8_t index)
+{
+  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
+    return infoFile.longFile[index];
+  else
+    return infoFile.file[index];
+}
+
+char * hideFilenameExtension(uint8_t index)
+{
+  char * filename = getFilename(index);
 
   if (infoSettings.filename_extension == 0)  // if filename extension is disabled
   {
-    extPos = isSupportedFile(filename);
+    char * extPos = isSupportedFile(filename);
 
     // if filename provides a supported filename extension then
     // check extra byte for filename extension check. If 0, no filename extension was previously hidden
@@ -157,43 +172,17 @@ char * hideFileExtension(uint8_t index)
       filename[extPos - filename] = 0;  // temporary hide filename extension
   }
 
-  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
-  {
-    filename = infoFile.longFile[index];
-
-    if (infoSettings.filename_extension == 0)  // if filename extension is disabled
-    {
-      extPos = isSupportedFile(filename);
-
-      // if filename provides a supported filename extension then
-      // check extra byte for filename extension check. If 0, no filename extension was previously hidden
-      if (extPos != NULL && filename[strlen(filename) + 1] == 0)
-        filename[extPos - filename] = 0;  // temporary hide filename extension
-    }
-  }
-
   return filename;
 }
 
-char * restoreFileExtension(uint8_t index)
+char * restoreFilenameExtension(uint8_t index)
 {
-  char * filename = infoFile.file[index];
+  char * filename = getFilename(index);
 
   if (infoSettings.filename_extension == 0)  // if filename extension is disabled
   {
     if (filename[strlen(filename) + 1] != 0)  // check extra byte for filename extension check. If 0, no filename extension was previously hidden
       filename[strlen(filename)] = '.';       // restore filename extension
-  }
-
-  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
-  {
-    filename = infoFile.longFile[index];
-
-    if (infoSettings.filename_extension == 0)  // if filename extension is disabled
-    {
-      if (filename[strlen(filename) + 1] != 0)  // check extra byte for filename extension check. If 0, no filename extension was previously hidden
-        filename[strlen(filename)] = '.';       // restore filename extension
-    }
   }
 
   return filename;
