@@ -274,7 +274,7 @@ void initPrintSummary(void)
   infoPrintSummary = (PRINT_SUMMARY){{'\0'}, 0, 0, 0, 0};
   hasFilamentData = false;
 
-  sprintf(infoPrintSummary.name, "%." STRINGIFY(SUMMARY_NAME_LEN) "s", getFilename(infoFile.fileIndex));
+  sprintf(infoPrintSummary.name, "%." STRINGIFY(SUMMARY_NAME_LEN) "s", getFilename(infoFile.fileIndex));  // get short or long filename
 }
 
 void preparePrintSummary(void)

@@ -152,16 +152,14 @@ char * getFoldername(uint8_t index)
 
 char * getFilename(uint8_t index)
 {
-  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
+  if (infoFile.longFile[index] != NULL)
     return infoFile.longFile[index];
   else
     return infoFile.file[index];
 }
 
-char * hideFilenameExtension(uint8_t index)
+char * hideExtension(char * filename)
 {
-  char * filename = getFilename(index);
-
   if (infoSettings.filename_extension == 0)  // if filename extension is disabled
   {
     char * extPos = isSupportedFile(filename);
@@ -175,15 +173,34 @@ char * hideFilenameExtension(uint8_t index)
   return filename;
 }
 
-char * restoreFilenameExtension(uint8_t index)
+char * restoreExtension(char * filename)
 {
-  char * filename = getFilename(index);
-
   if (infoSettings.filename_extension == 0)  // if filename extension is disabled
   {
-    if (filename[strlen(filename) + 1] != 0)  // check extra byte for filename extension check. If 0, no filename extension was previously hidden
-      filename[strlen(filename)] = '.';       // restore filename extension
+    // check extra byte for filename extension check. If 0, no filename extension was previously hidden
+    if (filename[strlen(filename) + 1] != 0)
+      filename[strlen(filename)] = '.';  // restore filename extension
   }
+
+  return filename;
+}
+
+char * hideFilenameExtension(uint8_t index)
+{
+  char * filename = hideExtension(infoFile.file[index]);
+
+  if (infoFile.longFile[index] != NULL)
+    filename = hideExtension(infoFile.longFile[index]);
+
+  return filename;
+}
+
+char * restoreFilenameExtension(uint8_t index)
+{
+  char * filename = restoreExtension(infoFile.file[index]);
+
+  if (infoFile.longFile[index] != NULL)
+    filename = restoreExtension(infoFile.longFile[index]);
 
   return filename;
 }

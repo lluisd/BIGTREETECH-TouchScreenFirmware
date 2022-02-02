@@ -124,7 +124,7 @@ bool scanPrintFilesGcodeFs(void)
       }
       else  // if long filename is not supported
       {
-        infoFile.longFile[infoFile.fileCount] = 0;  // long filename is not supported, so always set it to 0
+        infoFile.longFile[infoFile.fileCount] = NULL;  // long filename is not supported, so always set it to NULL
       }
 
       char* rest = pline;
@@ -134,7 +134,7 @@ bool scanPrintFilesGcodeFs(void)
       // so leave the following block commented
 /*      if (IsSupportedFile(file) == NULL)  // if filename doesn't provide a supported filename extension
       {
-        if (infoFile.Longfile[infoFile.fileCount] != 0)
+        if (infoFile.Longfile[infoFile.fileCount] != NULL)
           free(infoFile.Longfile[infoFile.fileCount]);
 
         continue;
@@ -143,7 +143,7 @@ bool scanPrintFilesGcodeFs(void)
       infoFile.file[infoFile.fileCount] = malloc(strlen(file) + 2);  // plus one extra byte for filename extension check
       if (infoFile.file[infoFile.fileCount] == NULL)
       {
-        if (infoFile.longFile[infoFile.fileCount] != 0)
+        if (infoFile.longFile[infoFile.fileCount] != NULL)
           free(infoFile.longFile[infoFile.fileCount]);
 
         break;
