@@ -1236,13 +1236,20 @@ void parseACK(void)
     }
 
   parse_end:
+    if (avoid_terminal != true)
+    {
+      terminalCache(dmaL2Cache, dmaL2Cache_len, ack_port_index, SRC_TERMINAL_ACK);
+    }
+
     if (ack_port_index != PORT_1)  // if the ACK message is related to a gcode originated by a supplementary serial port,
     {                              // forward the message to the supplementary serial port
       Serial_Puts(serialPort[ack_port_index].port, dmaL2Cache);
-      ack_port_index = PORT_1;  // reset ACK port index to avoid wrong relaying (in case no more commands will
-                                // be sent by interfaceCmd) of any successive spontaneous ACK message
+
+      if (!infoHost.wait)         // if "ok" has been received
+        ack_port_index = PORT_1;  // reset ACK port index to avoid wrong relaying (in case no more commands will
+                                  // be sent by interfaceCmd) of any successive spontaneous ACK message
     }
-    #if defined(SERIAL_PORT_2) || defined(SERIAL_PORT_3) || defined(SERIAL_PORT_4)
+    #ifdef SERIAL_PORT_2
       else if (!ack_seen("ok") || ack_seen("T:") || ack_seen("T0:"))  // if a spontaneous ACK message
       {
         // pass on the spontaneous ACK message to all the supplementary serial ports (since these messages come unrequested)
@@ -1260,15 +1267,10 @@ void parseACK(void)
         }
       }
     #endif
-
-    if (avoid_terminal != true)
-    {
-      terminalCache(dmaL2Cache, dmaL2Cache_len, ack_port_index, SRC_TERMINAL_ACK);
-    }
   }
 }
 
-#if defined(SERIAL_PORT_2) || defined(SERIAL_PORT_3) || defined(SERIAL_PORT_4)
+#ifdef SERIAL_PORT_2
 
 void parseRcvGcode(void)
 {
