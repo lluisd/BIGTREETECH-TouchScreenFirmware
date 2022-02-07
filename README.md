@@ -204,7 +204,7 @@ Fonts and icons folder structure:
 
 **Step 2:** Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the`TFT*` folder and the config.ini into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
 
-<p align=center> ?? Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ?? </p>
+<p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
 **Update Process shown on TFT Screen:**
 
@@ -220,7 +220,7 @@ In case one or several parts of the update failed, an error will be shown. Follo
 
 ![Screenshot 2020-10-23 at 14 37 36](https://user-images.githubusercontent.com/54359396/97004894-002c7000-153e-11eb-9951-f493be46af3e.png)
 
-<p align=center> ?? Errors during the update can not be ignored and must be solved before using the TFT ?? </p>
+<p align=center> ⚠️ Errors during the update can not be ignored and must be solved before using the TFT ⚠️ </p>
 
 After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
@@ -264,7 +264,7 @@ See [Customisation guides](https://github.com/bigtreetech/BIGTREETECH-TouchScree
 <details><summary>View full instructions</summary>
 <ol>
 <li>Setup Visual Studio Code with PlatformIO <a href="https://github.com/bigtreetech/Document/blob/master/How%20to%20install%20VScode+Platformio.md">instructions</a></li>
-<li>Click on the PlatformIO icon (?) and then click on Open Project (?):
+<li>Click on the PlatformIO icon (①) and then click on Open Project (②):
    <img src="https://user-images.githubusercontent.com/25599056/56637513-6b258e00-669e-11e9-9fad-d0571e57499e.png"></li>
 <li>Find the BIGTREETECH  firmware source directory , then click Open:
    <img src="https://user-images.githubusercontent.com/25599056/56637532-77115000-669e-11e9-809b-f6bc25412f75.png"></li>
@@ -289,7 +289,7 @@ See [Customisation guides](https://github.com/bigtreetech/BIGTREETECH-TouchScree
 src_dir      = TFT
 boards_dir   = buildroot/boards
 default_envs = BIGTREE_TFT35_V3_0</pre></li>
-  <li>Click the check mark (?) at the bottom of VSCode or press <code>Ctrl</code>+<code>Alt</code>+<code>B</code> (Windows) / <code>Ctrl</code>+<code>Option</code>+<code>B</code> (macOS) to compile.
+  <li>Click the check mark (✓) at the bottom of VSCode or press <code>Ctrl</code>+<code>Alt</code>+<code>B</code> (Windows) / <code>Ctrl</code>+<code>Option</code>+<code>B</code> (macOS) to compile.
 
 <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
 <li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#about-tft-firmware">About TFT Firmware</a> section above to update your TFT to the latest version.</li>
