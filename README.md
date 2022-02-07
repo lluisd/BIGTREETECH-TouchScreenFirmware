@@ -22,7 +22,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Update TFT Firmware](#update-tft-firmware)
 - [Calibrate the Screen](#calibrate-the-screen)
 - [Using the Configuration file](#using-the-configuration-file)
-- [Customisation](#customisation)
+- [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
 - [Troubleshooting](#troubleshooting)
@@ -30,7 +30,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Appendix](#appendix)
   - [Integration with Octoprint](#integration-with-octoprint)
   - [Embedded Gcode Thumbnails](#embedded-gcode-thumbnails)
-  - [TFT Screen Configuration and support for RRF](#tft-screen-configuration-and-support-for-rrf)
+  - [TFT Screen Configuration and Support for RRF](#tft-screen-configuration-and-support-for-rrf)
   - [Setup of BTT TFT35 E3 V3 with MKS SGEN L Mainboards](#setup-of-btt-tft35-e3-v3-with-mks-sgen-l-mainboards)
   - [Show more statistics at the end of the print](#show-more-statistics-at-the-end-of-the-print)
 
@@ -166,10 +166,10 @@ The TFT firmware update includes up to four elements and is done in three steps:
 **Note for BTT TFT35 firmwares:** There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
 
 **Notes for MKS TFT firmwares:**
-1. Any binary file for an MKS firmware (e.g. MKS_TFT28_V3.0.27.x.bin) must be renamed to MKSTFTxx.bin (e.g. MKSTFT28.bin, MKSTFT35.bin etc...)
+1. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) must be renamed to `MKSTFTxx.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
 2. For MKS TFT35, two binary files are provided:
-   1. encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
-   2. unencrypted version: usable with a bootloader without encryption
+   1. Encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
+   2. Unencrypted version: usable with a bootloader without encryption
 
 **Element 2:** Fonts and Icons (in the `TFT**` or `MKS` folder):
 
@@ -179,7 +179,7 @@ Fonts and icons folder structure:
 - `TFT**/font`: Includes the fonts in .fon format and a readme.md
 - `TFT**/bmp`: Includes the icons in .bmp format and a readme.md
 
-For MKS TFTs, the ROOT FOLDER for fonts and icons must be renamed to "MKS".
+For MKS TFTs, the ROOT FOLDER for fonts and icons must be renamed to `MKS`.
 Fonts and icons folder structure:
 
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
@@ -257,10 +257,10 @@ To edit the **config** file follow the instruction here: [Detailed Instructions 
 
 To update the firmware configuration using **config.ini**:
 
-1. Copy your edited **config.ini** file to the root of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
-2. Insert the SD card into the TFT's SD card slot and press the reset buttion of the TFT.
-4. The TFT configuration will update from the configuration file on reboot.
-5. The **config.ini** file will be renamed to **config.ini.CUR** after updating the configuration.
+1. Copy your edited **config.ini** file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
+2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT
+4. The TFT configuration will update from the configuration file on reboot
+5. The **config.ini** file will be renamed to **config.ini.CUR** after updating the configuration
 
 ## Customization
 
