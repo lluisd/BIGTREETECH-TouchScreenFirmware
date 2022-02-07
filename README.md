@@ -47,11 +47,13 @@ Only the TFT's listed below are currently supported. Trying to install the firmw
     BTT_TFT50_V3.0
     BTT_TFT70_V3.0
 
-**MKS TFT** *Warning: BTT does not officially provide MKS TFT hardware support, MKS TFT is maintained by open source contributors, and BTT does not bear any risk of MKS TFT hardware using this firmware*
+**MKS TFT**
 
     MKS_TFT28_V3.0 and V4.0
     MKS_TFT32_V1.3 and V1.4
     MKS_TFT35_V1_0
+
+*WARNING: BTT does not officially provide MKS TFT hardware support, MKS TFT is maintained by open source contributors, and BTT does not bear any risk of MKS TFT hardware using this firmware.*
 
 ## Marlin Dependencies
 
@@ -104,8 +106,8 @@ In order the TFT firmware is able to provide all of its functionalities/features
 
 **Do the following, to be able to use the touchmode of your screen.**
 
-1. Connect the 5pin serial cable according to the manual of your mainboard.
-2. Define a serial port in Marlin, to activate the port used by the TFT.
+1. Connect the 5pin serial cable according to the manual of your mainboard
+2. Define a serial port in Marlin, to activate the port used by the TFT
 3. Make sure the same BAUDRATE is defined in Marlin and the firmware of your TFT (config.ini)
 
 In case one of the three points above is not done right, "No printer attached" will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
@@ -148,7 +150,7 @@ C: In case you have an **"E3" mainboard** which provides a **single EXP connecto
 
 ## Update TFT Firmware
 
-*Note: For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.*
+*NOTE: For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.*
 
 The TFT firmware update includes up to four elements and is done in three steps:
 
@@ -160,13 +162,13 @@ The TFT firmware update includes up to four elements and is done in three steps:
 - `V3.0`: Hardware version
 - `27`: Software version
 
-Notes for MKS TFT firmwares:
+NOTE for BTT TFT35 firmwares: There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
+
+NOTES for MKS TFT firmwares:
 1) Any binary file for an MKS firmware (e.g. MKS_TFT28_V3.0.27.x.bin) must be renamed to MKSTFTxx.bin (e.g. MKSTFT28.bin, MKSTFT35.bin etc...)
 2) For MKS TFT35, two binary files are provided:
- 1) encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
- 2) unencrypted version: usable with a bootloader without encryption
-
-Note for BTT TFT35 firmwares: There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
+  1) encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
+  2) unencrypted version: usable with a bootloader without encryption
 
 **Element 2:** Fonts and Icons (in the `TFT**` or `MKS` folder):
 
@@ -184,9 +186,9 @@ Fonts and icons folder structure:
 
 **Element 3:** The config.ini or (the renamed) config_rrf.ini file
 
-Note for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
+NOTE for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
 
-**Element 4 (optional):** One the provided **language_\*\*.ini** files from **Language Pack** folder.
+**Element 4 (optional):** One of the provided **language_\*\*.ini** files from **Language Pack** folder.
 
 ### **STEPS:**
 
@@ -231,9 +233,9 @@ Sometimes a calibration will be executed automatically after a firmware update, 
 
 ## Using the Configuration file
 
-Note for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
+NOTE for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
 
-The Firmware can be modified by changing the **config.ini** (or the renamed config_rrf.ini) file from: [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) using a simple text editor (make sure to use UTF encoding).
+The firmware can be modified by changing the **config.ini** (or the renamed config_rrf.ini) file from: [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) using a simple text editor (make sure to use UTF encoding).
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
@@ -243,7 +245,7 @@ To edit the **config** file follow the instruction here: [Detailed Instructions 
 
 ### Updating Firmware Configuration using **config.ini**:
 
-To update the Firmware configuration using **config.ini**:
+To update the firmware configuration using **config.ini**:
 
 1. Copy your edited **config.ini** file to the root of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
 
@@ -389,7 +391,7 @@ If this setting is not visible within the Prusa-Slicer you need to enable _Exper
 
 **Overview:**
 
-The most recent version of the standard bigtreetech TFT firmware has built in support for RepRapFirmware. The pre-built images have this enabled by default.
+The most recent version of the standard bigtreetech TFT firmware has built in support for RepRap firmware. The pre-built images have this enabled by default.
 
 **Loading the firmware:**
 
