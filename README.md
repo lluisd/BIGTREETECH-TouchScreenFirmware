@@ -28,7 +28,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
 - [Troubleshooting](#troubleshooting)
-  - [Firmware Update Process Failed](#firmware-update-process-failed)
+  - [Firmware Update Failed](#firmware-update-failed)
   - [Hard Reset](#hard-reset)
   - [Worst Case Scenario](#worst-case-scenario)
 - [Version History](#version-history)
@@ -342,7 +342,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
 ## Troubleshooting
 
-### Firmware Update Process Failed
+### Firmware Update Failed
 
 In case the firmware update process failed:
 
