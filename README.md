@@ -65,13 +65,13 @@ In order the TFT firmware is able to provide all of its functionalities/features
 
 **General options which MUST be activated:**
 
-`EEPROM_SETTINGS` (in Configuration.h)
-`BABYSTEPPING` (in Configuration_adv.h)
-`AUTO_REPORT_TEMPERATURES` (in Configuration_adv.h)
-`AUTO_REPORT_POSITION` (in Configuration_adv.h)
-`M115_GEOMETRY_REPORT` (in Configuration_adv.h)
-`M114_DETAIL` (in Configuration_adv.h)
-`REPORT_FAN_CHANGE` (in Configuration_adv.h)
+`EEPROM_SETTINGS` (in Configuration.h)<br>
+`BABYSTEPPING` (in Configuration_adv.h)<br>
+`AUTO_REPORT_TEMPERATURES` (in Configuration_adv.h)<br>
+`AUTO_REPORT_POSITION` (in Configuration_adv.h)<br>
+`M115_GEOMETRY_REPORT` (in Configuration_adv.h)<br>
+`M114_DETAIL` (in Configuration_adv.h)<br>
+`REPORT_FAN_CHANGE` (in Configuration_adv.h)<br>
 
 **Options to support printing from onboard SD:**
 
@@ -171,13 +171,13 @@ The TFT firmware update includes up to four elements and is done in three steps:
 - `V3.0`: Hardware version
 - `27`: Software version
 
-Notes for MKS TFT firmwares:
+*Notes for MKS TFT firmwares:*
 1) Any binary file for an MKS firmware (e.g. MKS_TFT28_V3.0.27.x.bin) must be renamed to MKSTFTxx.bin (e.g. MKSTFT28.bin, MKSTFT35.bin etc...)
 2) For MKS TFT35, two binary files are provided:
  1) encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
  2) unencrypted version: usable with a bootloader without encryption
 
-Note for BTT TFT35 firmwares: There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
+*Note for BTT TFT35 firmwares:* There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
 
 **Element 2:** Fonts and Icons (in the `TFT**` or `MKS` folder):
 
@@ -195,7 +195,7 @@ Fonts and icons folder structure:
 
 **Element 3:** The config.ini or (the renamed) config_rrf.ini file
 
-Note for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
+*Note for RepRap firmware users:* You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
 
 **Element 4 (optional):**  One the provided **language_\*\*.ini** files from **Language Pack** folder.
 
@@ -242,7 +242,7 @@ Sometimes a calibration will be executed automatically after a firmware update, 
 
 ## Using the Configuration file
 
-Note for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
+*Note for RepRap firmware users:* You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
 
 The Firmware can be modified by changing the **config.ini** (or the renamed config_rrf.ini) file from: [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) using a simple text editor (make sure to use UTF encoding).
 
@@ -388,10 +388,10 @@ Under _Printer Settings_ at the _G-code thumbnails_ settings you have to enter t
 
 Thumbnail image sizes are:
 
-* `70x70`: TFT24 / TFT28
-* `95x80`: TFT43 / TFT50
-* `95x95`: TFT35
-* `160x140`: TFT70
+- `70x70`: TFT24 / TFT28
+- `95x80`: TFT43 / TFT50
+- `95x95`: TFT35
+- `160x140`: TFT70
 
 If this setting is not visible within the Prusa-Slicer you need to enable _Expert Settings Mode_:
 ![ps-expert-settings](https://user-images.githubusercontent.com/54359396/121323041-c7e07300-c90f-11eb-9644-e12e31f7b5f9.png)
@@ -453,19 +453,23 @@ Edit the configuration.h file and enable the line that says: #define REPRAP_DISC
 
 Statistics as filament length, filament weight and filament cost can be embedded into the gCode. After the print is finished there will be an infobox that you can click and a popup will present you the printed filename (limited to the first 25 characters), the time needed for the print, the filament length used, the filament weight and its cost. In the case of multi-filament usage the statistics will show the sum of all individual data (sum of length, sum of weight, sum of cost).
 The statistic data in the gCode must have the following format (a good practice would be to include this at the beginning of the gCode):
+
 - `M118 P0 filament_data L:{12.3456}m`  L: represents the length in meters
 - `M118 P0 filemant_data W:{1.23456}g`  W: represents the weight in grams
 - `M118 P0 filament_data C:{0.1234}`    C: represents the cost without a unit
 
 The values of every filament data can be in a brackets, parentheses, apostrophes, etc. or without them, measurement units can be there or not.
 So `M118 P0 filament_data L:(12.3456)m`, `M118 P0 filament_data L:12.3456meters`, `M118 P0 filament_data L:[12.3456]` and so on are all valid formats.
+
 For multi-filament print statistics the data for each used filament should be written, they can be separated by comma, space, asterix, whatever, except ";" and ".".
 Examples for multi-filament:
+
 - `M118 P0 filament_data L:(12.3456, 8.2520974)m`
 - `M118 P0 filament_data W: 24.87652 15.568264 gramm`
 - `M118 P0 filament_data C:[1.3456], [0.56024]`
 
 The inclusion of the filament data into the gCode can be automated. In Cura all you have to do is to insert the following into the Start G-Code:
+
 - `M118 P0 filament_data L:{filament_amount}m`
 - `M118 P0 filament_data W:{filament_weight}g`
 - `M118 P0 filament_data C:{filament_cost}`
