@@ -413,7 +413,7 @@ Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Prin
 
 **NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone)
 
-### Adding Gcode Thumbnails
+### Embedded Gcode Thumbnails
 
 The TFT can display embedded gcode thumbnails in the file viewer using two different flavors: Bigtreetech-style or PrusaSlicer-style.
 
