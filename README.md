@@ -168,8 +168,8 @@ The TFT firmware update includes up to four elements and is done in three steps:
 **Notes for MKS TFT firmwares:**
 1. Any binary file for an MKS firmware (e.g. MKS_TFT28_V3.0.27.x.bin) must be renamed to MKSTFTxx.bin (e.g. MKSTFT28.bin, MKSTFT35.bin etc...)
 2. For MKS TFT35, two binary files are provided:
- 1. encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
- 2. unencrypted version: usable with a bootloader without encryption
+   1. encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
+   2. unencrypted version: usable with a bootloader without encryption
 
 **Element 2:** Fonts and Icons (in the `TFT**` or `MKS` folder):
 
@@ -193,8 +193,7 @@ Fonts and icons folder structure:
 
 ### **STEPS:**
 
-**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` or your self compiled **firmware**, plus the **`TFT*`** folder of your preferred theme along with the **config.ini** to the root of a blank SD card that is
-<8GB and formatted as FAT32:
+**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` or your self compiled **firmware**, plus the **`TFT*`** folder of your preferred theme along with the **config.ini** to the root of a blank SD card that is not greater than 8GB and formatted as FAT32:
 
 ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
@@ -383,6 +382,7 @@ Thumbnail image sizes are:
 - `160x140`: TFT70
 
 If this setting is not visible within the Prusa-Slicer you need to enable _Expert Settings Mode_:
+
 ![ps-expert-settings](https://user-images.githubusercontent.com/54359396/121323041-c7e07300-c90f-11eb-9644-e12e31f7b5f9.png)
 
 ### TFT Screen Configuration and support for RRF
