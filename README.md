@@ -116,7 +116,7 @@ Options to support dialog with host as pre requisite<br>
 2. Define a serial port in Marlin, to activate the port used by the TFT
 3. Make sure the same BAUDRATE is defined in Marlin and the firmware of your TFT (config.ini)
 
-In case one of the three points above is not done right, "No printer attached" will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
+In case one of the three points above is not done right, the message **No printer attached** will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
 
 **Do the following to be able to use the Marlin emulation mode of your screen:**
 
@@ -135,7 +135,7 @@ C: In case you have an **"E3" mainboard** which provides a **single EXP connecto
 |                    Status Screen DISABLED                    |                    Status Screen ENABLED                     |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![status screen 0](https://user-images.githubusercontent.com/54359396/103319145-09035b80-4a31-11eb-91d0-dd761a48b6f5.png) | ![Unified Material Main Screen](https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png) |
-| In config.ini define: General Settings<br/>Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Enable: 1, Disable: 0]<br/>**status_screen: 0** | In config.ini define: General Settings<br/>Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Enable: 1, Disable: 0]<br/>**status_screen: 1** |
+| In config.ini define: UI Settings<br/>Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Disable: 0, Enable: 1]<br/>**status_screen: 0** | In config.ini define: UI Settings<br/>Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Disable: 0, Enable: 1]<br/>**status_screen: 1** |
 
 ## Themes
 
@@ -162,7 +162,13 @@ The TFT firmware update includes up to four elements and is done in three steps:
 
 ### **ELEMENTS:**
 
-**Element 1:** The firmware binary (`BIGTREE_TFT*_V*.*.*.bin`). Example: `BIGTREE_TFT35_V3.0.27.bin`:
+**Element 1:** Firmware binary file (`BIGTREE_TFT*_V*.*.*.bin` or `MKSTFT*.bin`)
+
+For example, for BTT TFT35 V3:
+
+`BIGTREE_TFT35_V3.0.27.bin`
+
+where:
 
 - `BIGTREE_TFT_35`: Model
 - `V3.0`: Hardware version
@@ -176,13 +182,13 @@ The TFT firmware update includes up to four elements and is done in three steps:
    1. Encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
    2. Unencrypted version: usable with a bootloader without encryption
 
-**Element 2:** Fonts and Icons (in the `TFT**` or `MKS` folder):
+**Element 2:** Fonts and Icons (`TFT*` or `MKS` folder)
 
-For BTT TFTs, the ROOT FOLDER for fonts and icons is TFT*, where * is the size of the TFT (example: TFT24, TFT35, TFT50, etc).
+For BTT TFTs, the ROOT FOLDER for fonts and icons is `TFT*`, where `*` is the size of the TFT (e.g. `TFT24`, `TFT35`, `TFT50` etc).
 Fonts and icons folder structure:
 
-- `TFT**/font`: Includes the fonts in .fon format and a readme.md
-- `TFT**/bmp`: Includes the icons in .bmp format and a readme.md
+- `TFT*/font`: Includes the fonts in .fon format and a readme.md
+- `TFT*/bmp`: Includes the icons in .bmp format and a readme.md
 
 For MKS TFTs, the ROOT FOLDER for fonts and icons must be renamed to `MKS`.
 Fonts and icons folder structure:
@@ -190,11 +196,11 @@ Fonts and icons folder structure:
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
 - `MKS/bmp`: Includes the icons in .bmp format and a readme.md
 
-**Element 3:** The config.ini or (the renamed) config_rrf.ini file
+**Element 3:** Firmware configuration file (`config.ini`)
 
-**Notes for RepRap firmware users:** You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
+**Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini` before you upload it to the TFT.
 
-**Element 4 (optional):** One of the provided **language_\*\*.ini** files from **Language Pack** folder.
+**Element 4 (optional):** Language file (`language_*.ini` from **Language Pack** folder)
 
 ### **STEPS:**
 
@@ -383,10 +389,10 @@ or<br>
 or<br>
 `M117 Data Left <XXXX>/<YYYY>`
 
-When the trigger "print_start" is received, the TFT switches to Printing menu.
-Once on Printing menu, the "pause", "resume" and "stop" buttons on the menu will be disabled.
+When the trigger `print_start` is received, the TFT switches to **Printing** menu.
+Once on Printing menu, the **pause**, **resume** and **stop** buttons on the menu will be disabled.
 That means only Octoprint will control the print.
-Only on print end or cancel the TFT Printing menu is finalized (statistics available etc.) and unlocked (it can be closed).
+Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Printing menu is finalized (statistics available etc.) and unlocked (it can be closed).
 
 **NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone)
 
