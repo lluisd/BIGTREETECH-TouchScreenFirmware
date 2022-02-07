@@ -91,7 +91,7 @@ In order the TFT firmware is able to provide all of its functionalities/features
 
 **Options to support M600 with host & (Un)Load menu:**
 
-(Options to support dialog with host as pre requisite)
+Options to support dialog with host as pre requisite<br>
 `NOZZLE_PARK_FEATURE` (in Configuration.h)<br>
 `ADVANCED_PAUSE_FEATURE` (in Configuration_adv.h)<br>
 `PARK_HEAD_ON_PAUSE` (in Configuration_adv.h)<br>
@@ -166,10 +166,10 @@ The TFT firmware update includes up to four elements and is done in three steps:
 **Note for BTT TFT35 firmwares:** There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
 
 **Notes for MKS TFT firmwares:**
-1) Any binary file for an MKS firmware (e.g. MKS_TFT28_V3.0.27.x.bin) must be renamed to MKSTFTxx.bin (e.g. MKSTFT28.bin, MKSTFT35.bin etc...)
-2) For MKS TFT35, two binary files are provided:
-  1) encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
-  2) unencrypted version: usable with a bootloader without encryption
+1. Any binary file for an MKS firmware (e.g. MKS_TFT28_V3.0.27.x.bin) must be renamed to MKSTFTxx.bin (e.g. MKSTFT28.bin, MKSTFT35.bin etc...)
+2. For MKS TFT35, two binary files are provided:
+ 1. encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
+ 2. unencrypted version: usable with a bootloader without encryption
 
 **Element 2:** Fonts and Icons (in the `TFT**` or `MKS` folder):
 
@@ -249,11 +249,8 @@ To edit the **config** file follow the instruction here: [Detailed Instructions 
 To update the firmware configuration using **config.ini**:
 
 1. Copy your edited **config.ini** file to the root of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
-
 2. Insert the SD card into the TFT's SD card slot and press the reset buttion of the TFT.
-
 4. The TFT configuration will update from the configuration file on reboot.
-
 5. The **config.ini** file will be renamed to **config.ini.CUR** after updating the configuration.
 
 ## Customisation
@@ -431,7 +428,7 @@ The RS232 cable is connected to the RS232 connection on the touchscreen, with th
 
 ![Serial](https://user-images.githubusercontent.com/54359396/103489161-acc68000-4e12-11eb-8ee8-cb6376f3589a.png)
 
-NOTE: On the MKS mainboards there is an issue that involves at least the MKS GEN_L, MKS SGEN, and MKS SGEN_L models. The EXP1 and EXP2 connections have the socket shell installed wrong way around. The notch that indexes the cable should be facing towards the mainboard. If you get a blank screen on the TFT35 E3 V3.0 touchscreen after connecting the two EXP cables and turning the printer on, turn printer off and disconnect the 10 pin cables from either the touch screen or the mainboard and using small diagonal cutters trim the tab down to be as close to flush as you can get on both cables (and only on one end) and plug them back in with the trimmed tab now facing the mainboard.
+**NOTE:** On the MKS mainboards there is an issue that involves at least the MKS GEN_L, MKS SGEN, and MKS SGEN_L models. The EXP1 and EXP2 connections have the socket shell installed wrong way around. The notch that indexes the cable should be facing towards the mainboard. If you get a blank screen on the TFT35 E3 V3.0 touchscreen after connecting the two EXP cables and turning the printer on, turn printer off and disconnect the 10 pin cables from either the touch screen or the mainboard and using small diagonal cutters trim the tab down to be as close to flush as you can get on both cables (and only on one end) and plug them back in with the trimmed tab now facing the mainboard.
 
 ![EXP](https://user-images.githubusercontent.com/54359396/103489164-b2bc6100-4e12-11eb-9210-685e8735e040.png)
 
