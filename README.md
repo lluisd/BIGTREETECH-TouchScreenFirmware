@@ -75,41 +75,30 @@ In order the TFT firmware is able to provide all of its functionalities/features
 
 **Options to support printing from onboard SD:**
 
-`SDSUPPORT` (in Configuration.h)
-
-`LONG_FILENAME_HOST_SUPPORT` (in Configuration_adv.h)
-
-`AUTO_REPORT_SD_STATUS` (in Configuration_adv.h)
-
-`SDCARD_CONNECTION ONBOARD` (in Configuration_adv.h)
+`SDSUPPORT` (in Configuration.h)<br>
+`LONG_FILENAME_HOST_SUPPORT` (in Configuration_adv.h)<br>
+`AUTO_REPORT_SD_STATUS` (in Configuration_adv.h)<br>
+`SDCARD_CONNECTION ONBOARD` (in Configuration_adv.h)<br>
 
 **Options to support dialog with host:**
 
-`EMERGENCY_PARSER` (in Configuration_adv.h)
-
-`SERIAL_FLOAT_PRECISION 4` (in Configuration_adv.h)
-
-`HOST_ACTION_COMMANDS` (in Configuration_adv.h)
-
-`HOST_PROMPT_SUPPORT` (in Configuration_adv.h)
+`EMERGENCY_PARSER` (in Configuration_adv.h)<br>
+`SERIAL_FLOAT_PRECISION 4` (in Configuration_adv.h)<br>
+`HOST_ACTION_COMMANDS` (in Configuration_adv.h)<br>
+`HOST_PROMPT_SUPPORT` (in Configuration_adv.h)<br>
 
 **Options to support M600 with host & (Un)Load menu: (Options to support dialog with host as pre requisite)**
 
-`NOZZLE_PARK_FEATURE` (in Configuration.h)
-
-`ADVANCED_PAUSE_FEATURE` (in Configuration_adv.h)
-
-`PARK_HEAD_ON_PAUSE` (in Configuration_adv.h)
-
-`FILAMENT_LOAD_UNLOAD_GCODES` (in Configuration_adv.h)
+`NOZZLE_PARK_FEATURE` (in Configuration.h)<br>
+`ADVANCED_PAUSE_FEATURE` (in Configuration_adv.h)<br>
+`PARK_HEAD_ON_PAUSE` (in Configuration_adv.h)<br>
+`FILAMENT_LOAD_UNLOAD_GCODES` (in Configuration_adv.h)<br>
 
 **Options to fully support Bed Leveling menu:**
 
-`Z_MIN_PROBE_REPEATABILITY_TEST` (in Configuration.h)
-
-`G26_MESH_VALIDATION (in Configuration.h)` (in Configuration.h)
-
-`Z_STEPPER_AUTO_ALIGN` (in Configuration_adv.h)
+`Z_MIN_PROBE_REPEATABILITY_TEST` (in Configuration.h)<br>
+`G26_MESH_VALIDATION (in Configuration.h)` (in Configuration.h)<br>
+`Z_STEPPER_AUTO_ALIGN` (in Configuration_adv.h)<br>
 
 ## Connecting the TFT to the Mainboard
 
@@ -171,13 +160,13 @@ The TFT firmware update includes up to four elements and is done in three steps:
 - `V3.0`: Hardware version
 - `27`: Software version
 
-*Notes for MKS TFT firmwares:*
+Notes for MKS TFT firmwares:
 1) Any binary file for an MKS firmware (e.g. MKS_TFT28_V3.0.27.x.bin) must be renamed to MKSTFTxx.bin (e.g. MKSTFT28.bin, MKSTFT35.bin etc...)
 2) For MKS TFT35, two binary files are provided:
  1) encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
  2) unencrypted version: usable with a bootloader without encryption
 
-*Note for BTT TFT35 firmwares:* There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
+Note for BTT TFT35 firmwares: There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
 
 **Element 2:** Fonts and Icons (in the `TFT**` or `MKS` folder):
 
@@ -187,7 +176,7 @@ Fonts and icons folder structure:
 - `TFT**/font`: Includes the fonts in .fon format and a readme.md
 - `TFT**/bmp`: Includes the icons in .bmp format and a readme.md
 
-For MKS TFTs the ROOT FOLDER for fonts and icons must be renamed to "MKS".
+For MKS TFTs, the ROOT FOLDER for fonts and icons must be renamed to "MKS".
 Fonts and icons folder structure:
 
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
@@ -195,9 +184,9 @@ Fonts and icons folder structure:
 
 **Element 3:** The config.ini or (the renamed) config_rrf.ini file
 
-*Note for RepRap firmware users:* You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
+Note for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
 
-**Element 4 (optional):**  One the provided **language_\*\*.ini** files from **Language Pack** folder.
+**Element 4 (optional):** One the provided **language_\*\*.ini** files from **Language Pack** folder.
 
 ### **STEPS:**
 
@@ -242,7 +231,7 @@ Sometimes a calibration will be executed automatically after a firmware update, 
 
 ## Using the Configuration file
 
-*Note for RepRap firmware users:* You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
+Note for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
 
 The Firmware can be modified by changing the **config.ini** (or the renamed config_rrf.ini) file from: [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) using a simple text editor (make sure to use UTF encoding).
 
