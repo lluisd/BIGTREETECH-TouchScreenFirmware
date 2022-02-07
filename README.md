@@ -22,10 +22,15 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Update TFT Firmware](#update-tft-firmware)
 - [Calibrate the Screen](#calibrate-the-screen)
 - [Using the Configuration file](#using-the-configuration-file)
+  - [Editing the Configuration file config.ini](#editing-the-configuration-file-config.ini)
+  - [Updating Firmware Configuration with file config.ini](#updating-firmware-configuration-with-file-config.ini)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
 - [Troubleshooting](#troubleshooting)
+  - [Firmware Upload Failed](#firmware-upload-failed)
+  - [Hard Reset](#hard-reset)
+  - [Worst Case Scenario](#worst-case-scenario)
 - [Version History](#version-history)
 - [Appendix](#appendix)
   - [Integration with Octoprint](#integration-with-octoprint)
@@ -308,17 +313,36 @@ Tip: In case there is a problem compiling the TFT firmware try to restart VSC. I
 
 ## Troubleshooting
 
-**In case the upload of a new firmware failed**
+### Firmware Upload Failed
 
-First, verify that you have been using the firmware which matches your TFT. After that, try to upload the firmware, the config.ini and the TFT** folder again (like described above) using a **new** SD card - 8GB or smaller, FAT32 formatted. Some uploads worked fine after executing a low level format of the SD card and not a quick format.
+- First, verify that you have been using the firmware which matches your TFT
+- After that, try to upload the firmware, the config.ini and the TFT** folder again (like described above) using a **new** SD card - 8GB or smaller, FAT32 formatted
 
-**Hard Reset**
+Some uploads worked fine after executing a low level format of the SD card and not a quick format.
 
-To hard reset the TFT's touch screen calibration, create a blank file named "reset" with the file-extension "txt", and place it in the root folder of an SD card (the SD card capacity must be less than or equal 8GB and formatted as FAT32). Insert the SD card into the TFT's SD card reader and power cycle your printer or restet your TFT to start the reset process.
+### Hard Reset
 
-**Worst Case Scenario**
+To hard reset the TFT's touch screen calibration:
 
-In case the screen remains black or the brightness is not stable, the screen does not react after pressing a button or executes clicks by itself or does something similar - and the reset described above did not help - do the following. Remove the TFT from the enclosure and disconnect everything from the TFT, including the cable to the mainboard. Cut a USB cable you do not need anymore and connect the red and black wire to 5V and GND of the TFT. Do not use the unshielded wires directly but use a 2 pin connector instead. Power up the TFT and try to reset the TFT or to instal a new firmware like described in this document. With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Emulation (if available), even the Marlin Emulation screen will not show the interface with a proper EXP based connection.
+- Create a blank file named **reset.txt**
+- Place it in the root folder of an SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
+- Insert the SD card into the TFT's SD card reader and power cycle your printer or reset your TFT to start the reset process
+
+### Worst Case Scenario
+
+In case:
+
+- The screen remains black or the brightness is not stable
+- The screen does not react after pressing a button or executes clicks by itself or does something similar
+
+and the reset described above did not help, try the following:
+
+- Remove the TFT from the enclosure and disconnect everything from the TFT, including the cable to the mainboard
+- Cut a USB cable you do not need anymore and connect the red and black wire to 5V and GND of the TFT
+- Do not use the unshielded wires directly but use a 2 pin connector instead
+- Power up the TFT and try to reset the TFT or to instal a new firmware like described in this document
+
+With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Emulation (if available), even the Marlin Emulation screen will not show the interface with a proper EXP based connection.
 
 ## Version History
 
