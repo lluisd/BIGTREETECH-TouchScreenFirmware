@@ -116,15 +116,19 @@ In order the TFT firmware is able to provide all of its functionalities/features
 2. Define a serial port in Marlin, to activate the port used by the TFT
 3. Make sure the same BAUDRATE is defined in Marlin and the firmware of your TFT (config.ini)
 
-In case one of the three points above is not done right, the message **No printer attached** will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
+In case one of the three points above is not done right, the message:
+
+    No printer attached
+
+will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
 
 **Do the following to be able to use the Marlin emulation mode of your screen:**
 
 A: In case your TFT does **not** have an EXP connector at all (TFT28 v1 for example), you can not use the Marlin emulator mode.
 
-B: In case your mainboard provides **EXP1 and EXP2**, you have to connect 2 ribbon cables connecting EXP1 and EXP2 of the mainboard to EXP1 and EXP2 of the TFT. In the Marlin firmware of your mainboard, make sure that **ONLY** the "`REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`" is activated in Configuration.h and that all other controllers are **De**activated (especially the "`CR10_STOCKDISPLAY`").
+B: In case your mainboard provides **EXP1 and EXP2**, you have to connect 2 ribbon cables connecting EXP1 and EXP2 of the mainboard to EXP1 and EXP2 of the TFT. In the Marlin firmware of your mainboard, make sure that **ONLY** the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER` is activated in Configuration.h and that all other controllers are **De**activated (especially the `CR10_STOCKDISPLAY`).
 
-C: In case you have an **"E3" mainboard** which provides a **single EXP connector**, you have to connect 1 ribbon cable connecting EXP of the mainboard to **EXP3** of the TFT. In case your TFT does **not** provide an EXP3 connector but only two 10pin connectors (TFT24 v1.1 for example) you will need a "Y-split" cable with one 10pin connector on one side (for the mainboard) and two 10pin connectors on the other side (for the TFT). In the Marlin firmware of your mainboard, make sure that **ONLY** the "`CR10_STOCKDISPLAY`" is activated in Configuration.h and that all other controllers are **De**activated (especially the "`REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`").
+C: In case you have an **"E3" mainboard** which provides a **single EXP connector**, you have to connect 1 ribbon cable connecting EXP of the mainboard to **EXP3** of the TFT. In case your TFT does **not** provide an EXP3 connector but only two 10pin connectors (TFT24 v1.1 for example) you will need a "Y-split" cable with one 10pin connector on one side (for the mainboard) and two 10pin connectors on the other side (for the TFT). In the Marlin firmware of your mainboard, make sure that **ONLY** the `CR10_STOCKDISPLAY` is activated in Configuration.h and that all other controllers are **De**activated (especially the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`).
 
 ![Thomas White July 2021-1](https://user-images.githubusercontent.com/54359396/132397091-d596abcf-750f-422a-bb59-afafc246dc58.jpg)
 ![Thomas White July 2021-2](https://user-images.githubusercontent.com/54359396/132397098-136247da-c11e-4783-a163-4147a73094e1.jpg)
@@ -135,7 +139,7 @@ C: In case you have an **"E3" mainboard** which provides a **single EXP connecto
 |                    Status Screen DISABLED                    |                    Status Screen ENABLED                     |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![status screen 0](https://user-images.githubusercontent.com/54359396/103319145-09035b80-4a31-11eb-91d0-dd761a48b6f5.png) | ![Unified Material Main Screen](https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png) |
-| In config.ini, define:<br/># UI Settings<br/># Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Disable: 0, Enable: 1]<br/>**status_screen: 0** | In config.ini, define:<br/># UI Settings<br/># Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Disable: 0, Enable: 1]<br/>**status_screen: 1** |
+| In config.ini, define:<br/># UI Settings<br/># Status Screen<br/># Select the Main Screen flavour<br/># Options: [disable: 0, enable: 1]<br/>**status_screen: 0** | In config.ini, define:<br/># UI Settings<br/># Status Screen<br/># Select the Main Screen flavour<br/># Options: [disable: 0, enable: 1]<br/>**status_screen: 1** |
 
 ## Themes
 
@@ -174,21 +178,22 @@ where:
 - `V3.0`: Hardware version
 - `27`: Software version
 
-**Notes for BTT TFT35 firmwares:**
+**Note for BTT TFT35 firmwares:**
+
 There are currently three different kinds of firmware available:
 
 - V3.0
 - E3_V3.0
 - B1_V3.0
 
-Please make sure to use the firmware which matches your TFT screen.
+So, make sure to use the firmware which matches your TFT screen.
 
 **Notes for MKS TFT firmwares:**
 
 1. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) must be renamed to `MKSTFTxx.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
 2. For MKS TFT35, two binary files are provided:
-   1. Encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
-   2. Unencrypted version: usable with a bootloader without encryption
+   1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
+   2. Unencrypted version: Usable with a bootloader without encryption
 
 **Element 2:** Fonts and Icons (`TFT*` or `MKS` folder).
 
@@ -206,17 +211,17 @@ Fonts and icons folder structure:
 
 **Element 3:** Firmware configuration file (`config.ini`).
 
-**Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini` before you upload it to the TFT.
+**Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and to rename it to `config.ini` before you upload it to the TFT.
 
 **Element 4 (optional):** Language file (`language_*.ini` from **Language Pack** folder).
 
 ### **STEPS:**
 
-**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card that is not greater than 8GB and formatted as FAT32:
+**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` file or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` file to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
 ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
-**Optionally:** Copy one or more `language_*.ini` file(s) from [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder onto the SD card. Doing so will allow you to switch between English and the uploaded language(s), using the corresponding Language function of the TFT. We recommend to upload the minimum amount of languages, to keep the memory usage low. The language.ini file can be edited to change the text shown on the TFT:
+**Optionally:** Copy one or more `language_*.ini` file(s) from [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
 
 ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
@@ -269,22 +274,22 @@ is shown.
 
 **Note for RepRap firmware users:** You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
 
-The firmware can be modified by changing the **config.ini** (or the renamed config_rrf.ini) file from: [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) using a simple text editor (make sure to use UTF encoding).
+The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file from: [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) using a simple text editor (make sure to use UTF encoding).
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
 ### Editing the Configuration file
 
-To edit the **config.ini** file follow the instruction here: [Detailed Instructions here](config_instructions.md)
+To edit the `config.ini` file, follow the instruction here: [Detailed Instructions here](config_instructions.md)
 
 ### Updating Firmware Configuration with Configuration file
 
-To update the firmware configuration using the configuration file **config.ini**:
+To update the firmware configuration using the configuration file `config.ini`:
 
-1. Copy your edited **config.ini** file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
+1. Copy your edited `config.ini` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
 2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT
 3. The TFT configuration will update from the configuration file on reboot
-4. The **config.ini** file will be renamed to **config.ini.CUR** after updating the configuration
+4. The `config.ini` file will be renamed to `config.ini.CUR` after updating the configuration
 
 ## Customization
 
@@ -323,7 +328,9 @@ src_dir      = TFT
 boards_dir   = buildroot/boards
 default_envs = BIGTREE_TFT35_V3_0</pre></li>
 <li>Click the check mark (✓) at the bottom of VSCode or press <code>Ctrl</code>+<code>Alt</code>+<code>B</code> (Windows) / <code>Ctrl</code>+<code>Option</code>+<code>B</code> (macOS) to compile:
+
    <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
+
 <li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#about-tft-firmware">About TFT Firmware</a> section above to update your TFT to the latest version.</li>
 </details>
 
@@ -336,7 +343,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 In case the firmware update process failed:
 
 1. Verify that you have been using the firmware which matches your TFT
-2. Try to upload the firmware, the config.ini and the TFT** folder again (like described above) using a **new** SD card - 8GB or smaller, FAT32 formatted
+2. Try to upload the firmware, the config.ini and the TFT* folder again (like described above) using a **new** SD card - 8GB or smaller, FAT32 formatted
 
 **NOTE:** Some uploads worked fine after executing a low level format of the SD card and not a quick format.
 
@@ -447,7 +454,7 @@ The most recent version of the standard bigtreetech TFT firmware has built in su
 
 **Loading the firmware:**
 
-There is now an RRF config file. It needs to be renamed from **config_rrf.ini** to **config.ini** for updating the configuration of the TFT for RRF.
+There is now an RRF config file. It needs to be renamed from `config_rrf.ini` to `config.ini` for updating the configuration of the TFT for RRF.
 
 **Config.g changes:**
 
