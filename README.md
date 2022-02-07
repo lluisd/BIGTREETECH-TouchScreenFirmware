@@ -16,30 +16,18 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 ## Table of Contents
 
 - [Supported Screens](#supported-screens)
-
 - [Marlin Dependencies](#marlin-dependencies)
-
 - [Connecting the TFT to the Mainboard](#connecting-the-tft-to-the-mainboard)
-
 - [Menus and Themes](#menus)
-
 - [Update TFT Firmware](#update-tft-firmware)
-
 - [Calibrate the Screen](#calibrate-the-screen)
-
 - [Using the Configuration file](#using-the-configuration-file)
-
 - [Customisation](#customisation)
-
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
-
 - [Troubleshooting](#troubleshooting)
-
 - [Version History](#version-history)
-
 - [Appendix](#appendix)
-
   - [Integration with Octoprint](#integration-with-octoprint)
   - [Embedded Gcode Thumbnails](#embedded-gcode-thumbnails)
   - [TFT Screen Configuration and support for RRF](#tft-screen-configuration-and-support-for-rrf)
@@ -53,23 +41,16 @@ Only the TFT's listed below are currently supported. Trying to install the firmw
 **BTT TFT**
 
     BTT_TFT24_V1.1
-
     BTT_TFT28_V1.0 and V3.0
-
     BTT_TFT35_V1.0, V1.1, V1.2, V2.0, V3.0, E3_V3.0 and B1_V3.0
-
     BTT_TFT43_V3.0
-
     BTT_TFT50_V3.0
-
     BTT_TFT70_V3.0
 
 **MKS TFT** *Warning: BTT does not officially provide MKS TFT hardware support, MKS TFT is maintained by open source contributors, and BTT does not bear any risk of MKS TFT hardware using this firmware*
 
     MKS_TFT28_V3.0 and V4.0
-
     MKS_TFT32_V1.3 and V1.4
-
     MKS_TFT35_V1_0
 
 ## Marlin Dependencies
@@ -85,17 +66,11 @@ In order the TFT firmware is able to provide all of its functionalities/features
 **General options which MUST be activated:**
 
 `EEPROM_SETTINGS` (in Configuration.h)
-
 `BABYSTEPPING` (in Configuration_adv.h)
-
 `AUTO_REPORT_TEMPERATURES` (in Configuration_adv.h)
-
 `AUTO_REPORT_POSITION` (in Configuration_adv.h)
-
 `M115_GEOMETRY_REPORT` (in Configuration_adv.h)
-
 `M114_DETAIL` (in Configuration_adv.h)
-
 `REPORT_FAN_CHANGE` (in Configuration_adv.h)
 
 **Options to support printing from onboard SD:**
@@ -478,22 +453,22 @@ Edit the configuration.h file and enable the line that says: #define REPRAP_DISC
 
 Statistics as filament length, filament weight and filament cost can be embedded into the gCode. After the print is finished there will be an infobox that you can click and a popup will present you the printed filename (limited to the first 25 characters), the time needed for the print, the filament length used, the filament weight and its cost. In the case of multi-filament usage the statistics will show the sum of all individual data (sum of length, sum of weight, sum of cost).
 The statistic data in the gCode must have the following format (a good practice would be to include this at the beginning of the gCode):
-* `M118 P0 filament_data L:{12.3456}m`  L: represents the length in meters
-* `M118 P0 filemant_data W:{1.23456}g`  W: represents the weight in grams
-* `M118 P0 filament_data C:{0.1234}`    C: represents the cost without a unit
+- `M118 P0 filament_data L:{12.3456}m`  L: represents the length in meters
+- `M118 P0 filemant_data W:{1.23456}g`  W: represents the weight in grams
+- `M118 P0 filament_data C:{0.1234}`    C: represents the cost without a unit
 
 The values of every filament data can be in a brackets, parentheses, apostrophes, etc. or without them, measurement units can be there or not.
 So `M118 P0 filament_data L:(12.3456)m`, `M118 P0 filament_data L:12.3456meters`, `M118 P0 filament_data L:[12.3456]` and so on are all valid formats.
 For multi-filament print statistics the data for each used filament should be written, they can be separated by comma, space, asterix, whatever, except ";" and ".".
 Examples for multi-filament:
-* `M118 P0 filament_data L:(12.3456, 8.2520974)m`
-* `M118 P0 filament_data W: 24.87652 15.568264 gramm`
-* `M118 P0 filament_data C:[1.3456], [0.56024]`
+- `M118 P0 filament_data L:(12.3456, 8.2520974)m`
+- `M118 P0 filament_data W: 24.87652 15.568264 gramm`
+- `M118 P0 filament_data C:[1.3456], [0.56024]`
 
 The inclusion of the filament data into the gCode can be automated. In Cura all you have to do is to insert the following into the Start G-Code:
-* `M118 P0 filament_data L:{filament_amount}m`
-* `M118 P0 filament_data W:{filament_weight}g`
-* `M118 P0 filament_data C:{filament_cost}`
+- `M118 P0 filament_data L:{filament_amount}m`
+- `M118 P0 filament_data W:{filament_weight}g`
+- `M118 P0 filament_data C:{filament_cost}`
 
 In case the gCode file has been generated using the  [BTT 3D Plug-In Suit](https://github.com/bigtreetech/Bigtree3DPluginSuit), the data is automatically added.
 
