@@ -20,7 +20,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Connecting the TFT to the Mainboard](#connecting-the-tft-to-the-mainboard)
 - [Menus and Themes](#menus)
 - [TFT Firmware Installation](#tft-firmware-installation)
-- [Screen Calibration](screen-calibration)
+- [TFT Screen Calibration](tft-screen-calibration)
 - [TFT Firmware Configuration](#tft-firmware-configuration)
   - [Editing the Configuration file](#editing-the-configuration-file)
   - [Updating the TFT Firmware Configuration](#updating-the-firmware-configuration)
@@ -217,7 +217,7 @@ Fonts and icons folder structure:
 
 ### **STEPS:**
 
-**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` file or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` file to the root of a blank SD card not greater than 8GB and formatted as FAT32:
+**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
 ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
@@ -225,7 +225,7 @@ Fonts and icons folder structure:
 
 ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
-**Step 2:** Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the`TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
+**Step 2:** Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
 
 <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
@@ -251,7 +251,7 @@ After the update is done and the files are renamed, it is possible to reuse them
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
-## Screen Calibration
+## TFT Screen Calibration
 
 Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the text:
 
@@ -284,7 +284,7 @@ To edit the `config.ini` file, follow the instruction here: [Detailed Instructio
 
 ### Updating the TFT Firmware Configuration
 
-To update the firmware configuration using the configuration file `config.ini`:
+To update the firmware configuration:
 
 1. Copy your edited `config.ini` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
 2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT
