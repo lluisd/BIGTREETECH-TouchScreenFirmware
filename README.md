@@ -19,11 +19,11 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Marlin Dependencies](#marlin-dependencies)
 - [Connecting the TFT to the Mainboard](#connecting-the-tft-to-the-mainboard)
 - [Menus and Themes](#menus)
-- [Update TFT Firmware](#update-tft-firmware)
-- [Calibrate the Screen](#calibrate-the-screen)
-- [Using the Configuration file](#using-the-configuration-file)
+- [TFT Firmware Installation](#tft-firmware-installation)
+- [Screen Calibration](screen-calibration)
+- [TFT Firmware Configuration](#tft-firmware-configuration)
   - [Editing the Configuration file](#editing-the-configuration-file)
-  - [Updating Firmware Configuration with Configuration file](#updating-firmware-configuration-with-configuration-file)
+  - [Updating the TFT Firmware Configuration](#updating-the-firmware-configuration)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
@@ -158,7 +158,7 @@ C: In case you have an **"E3" mainboard** which provides a **single EXP connecto
 | ![Mainscreen-Rep Rap FW Dark](https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png) | ![Mainscreen](https://user-images.githubusercontent.com/54359396/132404369-948e7677-6d17-4a9a-ad7e-25ebc46b3fdb.png) |
 | Use firmware, icons, and fonts from the [`Copy to SD Card root directory to update - Rep Rap Firmware Dark theme`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/THEME_Rep%20Rap%20Firmware%20Dark%20theme) folder |                                                              |
 
-## Update TFT Firmware
+## TFT Firmware Installation
 
 **NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
 
@@ -251,7 +251,7 @@ After the update is done and the files are renamed, it is possible to reuse them
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
-## Calibrate the Screen
+## Screen Calibration
 
 Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the text:
 
@@ -270,7 +270,7 @@ Repeat the process in case the message:
 
 is shown.
 
-## Using the Configuration file
+## TFT Firmware Configuration
 
 **Note for RepRap firmware users:** You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
 
@@ -282,7 +282,7 @@ Once saved, it can be uploaded without the need to upload the firmware or the TF
 
 To edit the `config.ini` file, follow the instruction here: [Detailed Instructions here](config_instructions.md)
 
-### Updating Firmware Configuration with Configuration file
+### Updating the TFT Firmware Configuration
 
 To update the firmware configuration using the configuration file `config.ini`:
 
@@ -303,9 +303,13 @@ See [Customisation guides](https://github.com/bigtreetech/BIGTREETECH-TouchScree
 <ol>
 <li>Setup Visual Studio Code with PlatformIO <a href="https://github.com/bigtreetech/Document/blob/master/How%20to%20install%20VScode+Platformio.md">instructions</a></li>
 <li>Click on the PlatformIO icon (①) and then click on Open Project (②):
+
    <img src="https://user-images.githubusercontent.com/25599056/56637513-6b258e00-669e-11e9-9fad-d0571e57499e.png"></li>
+
 <li>Find the BIGTREETECH firmware source directory, then click Open:
+
    <img src="https://user-images.githubusercontent.com/25599056/56637532-77115000-669e-11e9-809b-f6bc25412f75.png"></li>
+
 <li>After opening the project, edit <a href="platformio.ini"><code>platformio.ini</code></a> and change the <code>default_envs</code> to one that matches your TFT model and version:
    <pre>;BIGTREE_TFT35_V1_0
 ;BIGTREE_TFT35_V1_1
