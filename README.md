@@ -190,7 +190,7 @@ So, make sure to use the firmware which matches your TFT screen.
 
 **Notes for MKS TFT firmwares:**
 
-1. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) must be renamed to `MKSTFTxx.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
+1. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) must be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
 2. For MKS TFT35, two binary files are provided:
    1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
    2. Unencrypted version: Usable with a bootloader without encryption
@@ -211,13 +211,13 @@ Fonts and icons folder structure:
 
 **Element 3:** Firmware configuration file (`config.ini`).
 
-**Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and to rename it to `config.ini` before you upload it to the TFT.
+**Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini` before you upload it to the TFT.
 
 **Element 4 (optional):** Language file (`language_*.ini` from **Language Pack** folder).
 
 ### **STEPS:**
 
-**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
+**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
 ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
@@ -274,7 +274,7 @@ is shown.
 
 **Note for RepRap firmware users:** You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
 
-The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file from: [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) using a simple text editor (make sure to use UTF encoding).
+The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder using a simple text editor (make sure to use UTF encoding).
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
