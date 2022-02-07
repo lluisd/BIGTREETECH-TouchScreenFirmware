@@ -22,8 +22,8 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Update TFT Firmware](#update-tft-firmware)
 - [Calibrate the Screen](#calibrate-the-screen)
 - [Using the Configuration file](#using-the-configuration-file)
-  - [Editing the Configuration file config.ini](#editing-the-configuration-file-config.ini)
-  - [Updating Firmware Configuration with file config.ini](#updating-firmware-configuration-with-file-config.ini)
+  - [Editing the Configuration file](#editing-the-configuration-file)
+  - [Updating Firmware Configuration with Configuration file](#updating-firmware-configuration-with-configuration-file)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
@@ -238,8 +238,13 @@ Sometimes a calibration will be executed automatically after a firmware update, 
 
 *Touch Screen Calibration - Please click on the red dot*
 
-To calibrate the screen press, with your finger or a stylus, the red dot in the upper left corner, then the red dot in the upper right corner and then the red dot in the lower right corner.
-When asked, press the black dot in the middle of the screen to finish the calibration.
+To calibrate the screen, with your finger or a stylus, press:
+
+- The red dot in the upper left corner
+- Then the red dot in the upper right corner
+- And then the red dot in the lower right corner
+- When asked, press the black dot in the middle of the screen to finish the calibration
+
 Repeat the process in case the message:
 
 *Adjustment failed, please try again*
@@ -254,24 +259,24 @@ The firmware can be modified by changing the **config.ini** (or the renamed conf
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
-### Editing the Configuration file config.ini
+### Editing the Configuration file
 
 To edit the **config** file follow the instruction here: [Detailed Instructions here](config_instructions.md)
 
-### Updating Firmware Configuration with file config.ini
+### Updating Firmware Configuration with Configuration file
 
-To update the firmware configuration using **config.ini**:
+To update the firmware configuration using the configuration file **config.ini**:
 
 1. Copy your edited **config.ini** file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
 2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT
-4. The TFT configuration will update from the configuration file on reboot
-5. The **config.ini** file will be renamed to **config.ini.CUR** after updating the configuration
+3. The TFT configuration will update from the configuration file on reboot
+4. The **config.ini** file will be renamed to **config.ini.CUR** after updating the configuration
 
 ## Customization
 
 ### Bootscreen and Icons
 
-See [Customisation guides](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/readme/) for detailed  information.
+See [Customisation guides](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/readme/) for detailed information.
 
 ### Firmware
 
@@ -280,9 +285,9 @@ See [Customisation guides](https://github.com/bigtreetech/BIGTREETECH-TouchScree
 <li>Setup Visual Studio Code with PlatformIO <a href="https://github.com/bigtreetech/Document/blob/master/How%20to%20install%20VScode+Platformio.md">instructions</a></li>
 <li>Click on the PlatformIO icon (①) and then click on Open Project (②):
    <img src="https://user-images.githubusercontent.com/25599056/56637513-6b258e00-669e-11e9-9fad-d0571e57499e.png"></li>
-<li>Find the BIGTREETECH  firmware source directory , then click Open:
+<li>Find the BIGTREETECH firmware source directory, then click Open:
    <img src="https://user-images.githubusercontent.com/25599056/56637532-77115000-669e-11e9-809b-f6bc25412f75.png"></li>
-  <li>After opening the project, edit <a href="platformio.ini"><code>platformio.ini</code></a> and change the <code>default_envs</code> to one that matches your TFT model and version:
+<li>After opening the project, edit <a href="platformio.ini"><code>platformio.ini</code></a> and change the <code>default_envs</code> to one that matches your TFT model and version:
    <pre>;BIGTREE_TFT35_V1_0
 ;BIGTREE_TFT35_V1_1
 ;BIGTREE_TFT35_V1_2
@@ -303,9 +308,8 @@ See [Customisation guides](https://github.com/bigtreetech/BIGTREETECH-TouchScree
 src_dir      = TFT
 boards_dir   = buildroot/boards
 default_envs = BIGTREE_TFT35_V3_0</pre></li>
-  <li>Click the check mark (✓) at the bottom of VSCode or press <code>Ctrl</code>+<code>Alt</code>+<code>B</code> (Windows) / <code>Ctrl</code>+<code>Option</code>+<code>B</code> (macOS) to compile.
-
-<img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
+<li>Click the check mark (✓) at the bottom of VSCode or press <code>Ctrl</code>+<code>Alt</code>+<code>B</code> (Windows) / <code>Ctrl</code>+<code>Option</code>+<code>B</code> (macOS) to compile.
+  <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
 <li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#about-tft-firmware">About TFT Firmware</a> section above to update your TFT to the latest version.</li>
 </details>
 
@@ -318,7 +322,7 @@ Tip: In case there is a problem compiling the TFT firmware try to restart VSC. I
 - First, verify that you have been using the firmware which matches your TFT
 - After that, try to upload the firmware, the config.ini and the TFT** folder again (like described above) using a **new** SD card - 8GB or smaller, FAT32 formatted
 
-Some uploads worked fine after executing a low level format of the SD card and not a quick format.
+**NOTE:** Some uploads worked fine after executing a low level format of the SD card and not a quick format.
 
 ### Hard Reset
 
@@ -382,7 +386,7 @@ or<br>
 When the trigger "print_start" is received, the TFT switches to Printing menu.
 Once on Printing menu, the "pause", "resume" and "stop" buttons on the menu will be disabled.
 That means only Octoprint will control the print.
-Only on print end or cancel the TFT Printing menu is finalized (statistics available etc...) and unlocked (it can be closed).
+Only on print end or cancel the TFT Printing menu is finalized (statistics available etc.) and unlocked (it can be closed).
 
 **NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone)
 
@@ -497,6 +501,6 @@ The inclusion of the filament data into the gCode can be automated. In Cura all 
 - `M118 P0 filament_data W:{filament_weight}g`
 - `M118 P0 filament_data C:{filament_cost}`
 
-In case the gCode file has been generated using the  [BTT 3D Plug-In Suit](https://github.com/bigtreetech/Bigtree3DPluginSuit), the data is automatically added.
+In case the gCode file has been generated using the [BTT 3D Plug-In Suit](https://github.com/bigtreetech/Bigtree3DPluginSuit), the data is automatically added.
 
 In case filament data is not present in the gCode, the filament length data is calculated during print. Length is calculated regardless of using the TFT USB, TFT SD or the onboard SD. Calculations are done in both absolute or relative extrusion mode. Filament data takes into account the flow rate also but with a caveat. It has to be the same flow rate during the entire time of the printing, because the end result is calculated based on the flow rate at the time the print has finished. If flow rate changes during the print the results will not be accurate anymore. TFT SD or the onboard SD. Calculations are done in both absolute or relative extrusion mode. Filament data takes into account the flow rate also but with a caveat. It has to be the same flow rate during the entire time of the printing, because the end result is calculated based on the flow rate at the time the print has finished. If flow rate changes during the print the results will not be accurate anymore.
