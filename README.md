@@ -53,7 +53,7 @@ Only the TFT's listed below are currently supported. Trying to install the firmw
     MKS_TFT32_V1.3 and V1.4
     MKS_TFT35_V1_0
 
-*WARNING: BTT does not officially provide MKS TFT hardware support, MKS TFT is maintained by open source contributors, and BTT does not bear any risk of MKS TFT hardware using this firmware.*
+**WARNING**: BTT does not officially provide MKS TFT hardware support, MKS TFT is maintained by open source contributors, and BTT does not bear any risk of MKS TFT hardware using this firmware.
 
 ## Marlin Dependencies
 
@@ -89,8 +89,9 @@ In order the TFT firmware is able to provide all of its functionalities/features
 `HOST_ACTION_COMMANDS` (in Configuration_adv.h)<br>
 `HOST_PROMPT_SUPPORT` (in Configuration_adv.h)<br>
 
-**Options to support M600 with host & (Un)Load menu: (Options to support dialog with host as pre requisite)**
+**Options to support M600 with host & (Un)Load menu:**
 
+(Options to support dialog with host as pre requisite)
 `NOZZLE_PARK_FEATURE` (in Configuration.h)<br>
 `ADVANCED_PAUSE_FEATURE` (in Configuration_adv.h)<br>
 `PARK_HEAD_ON_PAUSE` (in Configuration_adv.h)<br>
@@ -150,7 +151,7 @@ C: In case you have an **"E3" mainboard** which provides a **single EXP connecto
 
 ## Update TFT Firmware
 
-*NOTE: For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.*
+**NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
 
 The TFT firmware update includes up to four elements and is done in three steps:
 
@@ -162,9 +163,9 @@ The TFT firmware update includes up to four elements and is done in three steps:
 - `V3.0`: Hardware version
 - `27`: Software version
 
-NOTE for BTT TFT35 firmwares: There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
+**Note for BTT TFT35 firmwares:** There are currently three different kinds of firmware available: V3.0, E3_V3.0 and B1_V3.0. Please make sure to use the firmware which matches your TFT screen.
 
-NOTES for MKS TFT firmwares:
+**Notes for MKS TFT firmwares:**
 1) Any binary file for an MKS firmware (e.g. MKS_TFT28_V3.0.27.x.bin) must be renamed to MKSTFTxx.bin (e.g. MKSTFT28.bin, MKSTFT35.bin etc...)
 2) For MKS TFT35, two binary files are provided:
   1) encrypted version: usable on a stock MKS TFT35 (based on a bootloader with encryption)
@@ -186,7 +187,7 @@ Fonts and icons folder structure:
 
 **Element 3:** The config.ini or (the renamed) config_rrf.ini file
 
-NOTE for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
+**Notes for RepRap firmware users:** You have to make your changes using the config_rrf.ini file and rename it to config.ini before you upload it to the TFT.
 
 **Element 4 (optional):** One of the provided **language_\*\*.ini** files from **Language Pack** folder.
 
@@ -233,7 +234,7 @@ Sometimes a calibration will be executed automatically after a firmware update, 
 
 ## Using the Configuration file
 
-NOTE for RepRap firmware users: You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
+**Note for RepRap firmware users:** You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
 
 The firmware can be modified by changing the **config.ini** (or the renamed config_rrf.ini) file from: [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) using a simple text editor (make sure to use UTF encoding).
 
