@@ -239,7 +239,7 @@ A successful update looks like this on the screen:
 
 ![After Update](https://user-images.githubusercontent.com/54359396/94349755-dc156600-0047-11eb-9b1e-a1334bc5675f.png)
 
-In case one or several parts of the update failed, an error will be shown. Follow the information on the screen to update the missing or outdated elements.
+In case one or several parts of the update failed, an error will be shown. Follow the information on the screen to update the missing or outdated elements:
 
 ![Screenshot 2020-10-23 at 14 37 36](https://user-images.githubusercontent.com/54359396/97004894-002c7000-153e-11eb-9951-f493be46af3e.png)
 
