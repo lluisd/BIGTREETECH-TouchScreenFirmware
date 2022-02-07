@@ -22,8 +22,8 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [TFT Firmware Installation](#tft-firmware-installation)
 - [TFT Screen Calibration](#tft-screen-calibration)
 - [TFT Firmware Configuration](#tft-firmware-configuration)
-  - [Editing the Configuration file](#editing-the-configuration-file)
-  - [Updating the TFT Firmware Configuration](#updating-the-firmware-configuration)
+  - [Editing the Configuration File](#editing-the-configuration-file)
+  - [Updating the TFT Firmware Configuration](#updating-the-tft-firmware-configuration)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
@@ -197,13 +197,13 @@ So, make sure to use the firmware which matches your TFT screen.
 
 **Element 2:** Fonts and Icons (`TFT*` or `MKS` folder).
 
-For BTT TFTs, the ROOT FOLDER for fonts and icons is `TFT*`, where `*` is the size of the TFT (e.g. `TFT24`, `TFT35`, `TFT50` etc).
+For **BTT TFTs**, the ROOT FOLDER for fonts and icons is `TFT*`, where `*` is the size of the TFT (e.g. `TFT24`, `TFT35`, `TFT50` etc).
 Fonts and icons folder structure:
 
 - `TFT*/font`: Includes the fonts in .fon format and a readme.md
 - `TFT*/bmp`: Includes the icons in .bmp format and a readme.md
 
-For MKS TFTs, the ROOT FOLDER for fonts and icons must be renamed to `MKS`.
+For **MKS TFTs**, the ROOT FOLDER for fonts and icons must be renamed to `MKS`.
 Fonts and icons folder structure:
 
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
@@ -278,7 +278,7 @@ The firmware can be modified by changing the `config.ini` (or the renamed `confi
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
-### Editing the Configuration file
+### Editing the Configuration File
 
 To edit the `config.ini` file, follow the instruction here: [Detailed Instructions here](config_instructions.md)
 
@@ -295,7 +295,7 @@ To update the firmware configuration:
 
 ### Bootscreen and Icons
 
-See [Customisation guides](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/readme/) for detailed information.
+See [Customization guides](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/readme/) for detailed information.
 
 ### Firmware
 
@@ -501,7 +501,7 @@ The second workaround for this issue is to carefully pry the two shells surround
 
 **Firmware**
 
-Edit the `configuration.h` file and enable the line that says `#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`. Rebuild and deploy the Marlin firmware to your 3D Printer.
+Edit the `Configuration.h` file and enable the line that says `#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`. Rebuild and deploy the Marlin firmware to your 3D Printer.
 
 ### Show more statistics at the end of the print
 
