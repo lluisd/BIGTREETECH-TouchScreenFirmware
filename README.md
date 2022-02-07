@@ -20,7 +20,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Connecting the TFT to the Mainboard](#connecting-the-tft-to-the-mainboard)
 - [Menus and Themes](#menus)
 - [TFT Firmware Installation](#tft-firmware-installation)
-- [TFT Screen Calibration](tft-screen-calibration)
+- [TFT Screen Calibration](#tft-screen-calibration)
 - [TFT Firmware Configuration](#tft-firmware-configuration)
   - [Editing the Configuration file](#editing-the-configuration-file)
   - [Updating the TFT Firmware Configuration](#updating-the-firmware-configuration)
@@ -213,7 +213,7 @@ Fonts and icons folder structure:
 
 **Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini` before you upload it to the TFT.
 
-**Element 4 (optional):** Language file (`language_*.ini` from **Language Pack** folder).
+**Element 4 (optional):** Language file (`language_*.ini`).
 
 ### **STEPS:**
 
@@ -253,7 +253,7 @@ After the update is done and the files are renamed, it is possible to reuse them
 
 ## TFT Screen Calibration
 
-Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the text:
+Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the following text:
 
     Touch Screen Calibration - Please click on the red dot
 
@@ -335,7 +335,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
    <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
 
-<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#about-tft-firmware">About TFT Firmware</a> section above to update your TFT to the latest version.</li>
+<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#tft-firmware-installation">TFT Firmware Installation</a> section above to update your TFT to the latest version.</li>
 </details>
 
 **TIP:** In case there is a problem compiling the TFT firmware try to restart VSC. If this does not help and you are using macOS, delete the **packages** and **platforms** folder which you can find here: /Users/***username***/.platformio/.
