@@ -53,7 +53,7 @@ Only the TFT's listed below are currently supported. Trying to install the firmw
     MKS_TFT32_V1.3 and V1.4
     MKS_TFT35_V1_0
 
-**WARNING**: BTT does not officially provide MKS TFT hardware support, MKS TFT is maintained by open source contributors, and BTT does not bear any risk of MKS TFT hardware using this firmware.
+**WARNING**: BTT does not officially provide MKS TFT hardware support. MKS TFT is maintained by open source contributors and BTT does not bear any risk of MKS TFT hardware using this firmware.
 
 ## Marlin Dependencies
 
@@ -105,7 +105,7 @@ Options to support dialog with host as pre requisite<br>
 
 ## Connecting the TFT to the Mainboard
 
-**Do the following, to be able to use the touchmode of your screen.**
+**Do the following to be able to use the touchmode of your screen:**
 
 1. Connect the 5pin serial cable according to the manual of your mainboard
 2. Define a serial port in Marlin, to activate the port used by the TFT
@@ -113,7 +113,7 @@ Options to support dialog with host as pre requisite<br>
 
 In case one of the three points above is not done right, "No printer attached" will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
 
-**Do the following, to be able to use the Marlin emulation mode of your screen.**
+**Do the following to be able to use the Marlin emulation mode of your screen:**
 
 A: In case your TFT does **not** have an EXP connector at all (TFT28 v1 for example), you can not use the Marlin emulator mode.
 
@@ -229,7 +229,17 @@ Tip: Format the SD card after the firmware update in case you would like to prin
 
 ## Calibrate the Screen
 
-Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the text: Touch Screen Calibration - Please click on the red dot. To calibrate the screen press with your finger or a stylus the red dot in the upper left corner, then the red dot in the upper right corner and then  the red dot in the lower right corner. Even the screen asks you to press the red dot, press the black dot in the middle of the screen to finish the calibration. Repeat the process in case the message: "Adjustment failed, please try again" is shown.
+Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the text:
+
+*Touch Screen Calibration - Please click on the red dot*
+
+To calibrate the screen press, with your finger or a stylus, the red dot in the upper left corner, then the red dot in the upper right corner and then the red dot in the lower right corner.
+When asked, press the black dot in the middle of the screen to finish the calibration.
+Repeat the process in case the message:
+
+*Adjustment failed, please try again*
+
+is shown.
 
 ## Using the Configuration file
 
@@ -239,11 +249,11 @@ The firmware can be modified by changing the **config.ini** (or the renamed conf
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
-### Editing the configuration file:
+### Editing the Configuration file config.ini
 
 To edit the **config** file follow the instruction here: [Detailed Instructions here](config_instructions.md)
 
-### Updating Firmware Configuration using **config.ini**:
+### Updating Firmware Configuration with file config.ini
 
 To update the firmware configuration using **config.ini**:
 
@@ -252,7 +262,7 @@ To update the firmware configuration using **config.ini**:
 4. The TFT configuration will update from the configuration file on reboot.
 5. The **config.ini** file will be renamed to **config.ini.CUR** after updating the configuration.
 
-## Customisation
+## Customization
 
 ### Bootscreen and Icons
 
@@ -385,7 +395,7 @@ If this setting is not visible within the Prusa-Slicer you need to enable _Exper
 
 ![ps-expert-settings](https://user-images.githubusercontent.com/54359396/121323041-c7e07300-c90f-11eb-9644-e12e31f7b5f9.png)
 
-### TFT Screen Configuration and support for RRF
+### TFT Screen Configuration and Support for RRF
 
 **Overview:**
 
@@ -395,7 +405,7 @@ The most recent version of the standard bigtreetech TFT firmware has built in su
 
 There is now an RRF config file. It needs to be renamed from **config_rrf.ini** to **config.ini** for updating the configuration of the TFT for RRF.
 
-**Config.g Changes:**
+**Config.g changes:**
 
 Add the following line to your config.g to enable the screen: `M575 P1 S2 B57600`
 
