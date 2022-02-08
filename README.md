@@ -27,7 +27,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
     - [Firmware Binary](#firmware-binary)
     - [Fonts and Icons](#fonts-and-icons)
     - [Configuration File](#configuration-file)
-    - [Optional - Language File](#Optional---language-file)
+    - [Optional - Language Files](#optional---language-files)
   - [Configuration](#configuration)
     - [Editing the Configuration File](#editing-the-configuration-file)
   - [Installation](#installation)
@@ -261,7 +261,7 @@ The configuration file is named `config.ini`.
 
 **Note for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
 
-#### Optional - Language File
+#### Optional - Language Files
 
 Optional language files are available on [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder.
 
@@ -348,7 +348,7 @@ is shown.
 
 The touch screen calibration process can be forced in two ways:
 
-- by hard reset procedure: See [Hard Reset](#hard-reset)
+- by hard reset process: See [Hard Reset](#hard-reset)
 - by menu: The process can be started from **Menu->Settings->Screen->TSC Adjust** menu
 
 ## Configuration Update
