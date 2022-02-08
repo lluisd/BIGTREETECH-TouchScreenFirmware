@@ -33,12 +33,12 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [Installation](#installation)
 - [Screen Calibration](#screen-calibration)
 - [Configuration Update](#configuration-update)
+- [Hard Reset](#hard-reset)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
 - [Troubleshooting](#troubleshooting)
   - [Firmware Update Failed](#firmware-update-failed)
-  - [Hard Reset](#hard-reset)
   - [Worst Case Scenario](#worst-case-scenario)
 - [Version History](#version-history)
 - [Appendix](#appendix)
@@ -324,7 +324,7 @@ Remove the SD card from the TFT and restart the printer.
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
-## Screen Calibration
+## Touch Screen Calibration
 
 Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the following text:
 
@@ -350,9 +350,19 @@ Please, see [Configuration](#configuration) section for configuring `config.ini`
 To update the firmware configuration:
 
 1. Copy your edited `config.ini` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
-2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT
+2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
 3. The TFT configuration will update from the configuration file on reboot
 4. The `config.ini` file will be renamed to `config.ini.CUR` after updating the configuration
+
+## Hard Reset
+
+To hard reset the touch screen calibration and restore the TFT's default hard coded settings:
+
+1. Create a blank file named `reset.txt`
+2. Copy the `reset.txt` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
+3. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
+4. The TFT's default hard coded settings will be restored and the touch screen calibration process will start on reboot
+5. The `reset.txt` file will be renamed to `reset.txt.DONE` after the calibration process is completed
 
 ## Customization
 
@@ -413,14 +423,6 @@ In case the firmware update process failed:
 2. Try to upload the firmware, the config.ini and the TFT* folder again (like described above) using a **new** SD card - 8GB or smaller, FAT32 formatted
 
 **NOTE:** Some uploads worked fine after executing a low level format of the SD card and not a quick format.
-
-### Hard Reset
-
-To hard reset the TFT's touch screen calibration:
-
-1. Create a blank file named `reset.txt`
-2. Place it in the root folder of an SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
-3. Insert the SD card into the TFT's SD card reader and power cycle your printer or reset your TFT to start the reset process
 
 ### Worst Case Scenario
 
