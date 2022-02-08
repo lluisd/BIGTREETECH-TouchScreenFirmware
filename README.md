@@ -128,7 +128,7 @@ In order the TFT firmware is able to provide all of its functionalities/features
 
 ### Touch Mode Setup
 
-Do the following to be able to use the touchmode of your screen:
+In order to use the Touch Mode on your screen:
 
 1. Connect the 5pin serial cable according to the manual of your mainboard
 2. Define a serial port in Marlin, to activate the port used by the TFT
@@ -151,7 +151,7 @@ Refer to <a href="#configuration">Configuration</a> section for configuring `con
 
 ### Marlin Mode Setup
 
-Do the following to be able to use the Marlin emulation mode of your screen:
+In order to use the Marlin Mode (emulation mode) on your screen:
 
 A: In case your TFT does **not** have an EXP connector at all (TFT28 v1 for example), you can not use the Marlin emulator mode.
 
