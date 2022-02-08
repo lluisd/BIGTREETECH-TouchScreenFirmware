@@ -24,10 +24,10 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Menus and Themes](#menus)
 - [TFT Firmware Installation](#tft-firmware-installation)
   - [Deployment Files](#deployment-files)
-    - [Firmware Binary File](#firmware-binary-file)
-    - [Fonts and Icons](#fonts_and_icons)
-    - [Firmware Configuration File](#firmware-configuration-file)
-    - [Language File - Optional Feature](#language-file---optional-feature)
+    - [1. Firmware Binary File](#1.-firmware-binary-file)
+    - [2. Fonts and Icons](#2.-fonts_and_icons)
+    - [3. Firmware Configuration File](#3.-firmware-configuration-file)
+    - [4. (optional) Language File](#4.-(optional)-language-file)
   - [Installation Steps](#installation-steps)
     - [STEP 1:](#step_1:)
     - [STEP 2:](#step_2:)
@@ -201,19 +201,23 @@ The TFT firmware update process is based on two different stages:
 
 The following sections provide all the resources needed for the update (up to four kinds of resources).
 
-#### Firmware Binary File
+#### 1. Firmware Binary File
 
-`BIGTREE_TFT*_V*.*.*.bin` or `MKSTFT*.bin`
+Precompiled firmwares are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
-For example, for BTT TFT35 V3:
+For **BTT TFTs**, the available firmwares use the naming convention `BIGTREE_TFT*_V*.*.*.x.bin`.
 
-`BIGTREE_TFT35_V3.0.27.bin`
+For **MKS TFTs**, the available firmwares use the naming convention  `MKS_TFT*_V*.*.*.x.bin`.
+
+For example, for BTT TFT35 V3 select:
+
+`BIGTREE_TFT35_V3.0.27.x.bin`.
 
 where:
 
 - `BIGTREE_TFT35`: Model
 - `V3.0`: Hardware version
-- `27`: Software version
+- `27.x`: Software version
 
 **Note for BTT TFT35 firmwares:**
 
@@ -232,9 +236,9 @@ So, make sure to use the firmware which matches your TFT screen.
    1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
    2. Unencrypted version: Usable with a bootloader without encryption
 
-#### Fonts and Icons
+#### 2. Fonts and Icons
 
-`TFT*` or `MKS` folder
+Themes are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
 For **BTT TFTs**, the ROOT FOLDER for fonts and icons is `TFT*`, where `*` is the size of the TFT (e.g. `TFT24`, `TFT35`, `TFT50` etc).
 Fonts and icons folder structure:
@@ -248,15 +252,19 @@ Fonts and icons folder structure:
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
 - `MKS/bmp`: Includes the icons in .bmp format and a readme.md
 
-#### Firmware Configuration File
+#### 3. Firmware Configuration File
 
-`config.ini`
+Templates for configuration files are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
+
+The configuration file is named `config.ini`.
 
 **Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini` before you upload it to the TFT.
 
-#### Language File - Optional Feature
+#### 4 (optional). Language File
 
-`language_*.ini`
+Language files are available on [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder.
+
+Language files use the naming convention `language_*.ini` (e.g. `language_it.ini`).
 
 ### Installation Steps
 
