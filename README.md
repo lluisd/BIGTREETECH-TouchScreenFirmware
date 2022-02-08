@@ -147,7 +147,7 @@ On TFT firmware, the baudrate can be changed in two ways:
 - from configuratin file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200).
 - from menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu.
 
-See <a href="#tft-firmware-configuration">TFT Firmware Configuration</a> section for configuring `config.ini` file.
+Refer to <a href="#configuration">Configuration</a> section for configuring `config.ini` file.
 
 ### Marlin Mode Setup
 
@@ -343,7 +343,9 @@ Repeat the process in case the message:
 
 is shown.
 
-### Updating the TFT Firmware Configuration
+## TFT Firmware Configuration Update
+
+Refer to <a href="#configuration">Configuration</a> section for configuring `config.ini` file.
 
 To update the firmware configuration:
 
