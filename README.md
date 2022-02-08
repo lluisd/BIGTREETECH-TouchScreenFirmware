@@ -31,7 +31,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [Configuration](#configuration)
     - [Editing the Configuration File](#editing-the-configuration-file)
   - [Installation](#installation)
-- [Screen Calibration](#screen-calibration)
+- [Touch Screen Calibration](#touch-screen-calibration)
 - [Configuration Update](#configuration-update)
 - [Hard Reset](#hard-reset)
 - [Customization](#customization)
@@ -364,7 +364,7 @@ To hard reset the touch screen calibration and restore the TFT's default hard co
 4. The TFT's configuration will be reset to the TFT's default hard coded settings and the touch screen calibration process will start on reboot
 5. The `reset.txt` file will be renamed to `reset.txt.DONE` after the touch screen calibration process is completed
 
-**Note:** Unless the default hard coded settings have been properly configured (e.g. a self compiled firmware was installed), after an hard reset the TFT typically needs to be reconfigured with a proper `config.ini` file.
+**Note:** Unless the default hard coded settings have been properly configured (e.g. a self compiled firmware was installed), after an hard reset the TFT typically needs to be reconfigured with the proper `config.ini` file.
 
 ## Customization
 
