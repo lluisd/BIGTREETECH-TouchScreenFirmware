@@ -24,10 +24,10 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Menus and Themes](#menus)
 - [TFT Firmware Installation](#tft-firmware-installation)
   - [Deployment Files](#deployment-files)
-    - [1 - Firmware Binary File](#1---firmware-binary-file)
-    - [2 - Fonts and Icons](#2---fonts-and-icons)
-    - [3 - Firmware Configuration File](#3---firmware-configuration-file)
-    - [4 - Optional - Language File](#4---Optional---language-file)
+    - [Firmware Binary File](#firmware-binary-file)
+    - [Fonts and Icons](#fonts-and-icons)
+    - [Firmware Configuration File](#firmware-configuration-file)
+    - [Optional - Language File](#Optional---language-file)
   - [Configuration](#configuration)
     - [Editing the Configuration File](#editing-the-configuration-file)
   - [Installation](#installation)
@@ -201,7 +201,7 @@ The TFT firmware update process is based on three different stages:
 
 The following sections provide all the resources needed for the firmware update (up to four kinds of resources).
 
-#### 1 - Firmware Binary File
+#### Firmware Binary File
 
 Precompiled firmwares are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
@@ -236,7 +236,7 @@ So, make sure to use the firmware matching your TFT screen.
    1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
    2. Unencrypted version: Usable with a bootloader without encryption
 
-#### 2 - Fonts and Icons
+#### Fonts and Icons
 
 Themes are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
@@ -252,7 +252,7 @@ Fonts and icons folder structure:
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
 - `MKS/bmp`: Includes the icons in .bmp format and a readme.md
 
-#### 3 - Firmware Configuration File
+#### Firmware Configuration File
 
 Templates for configuration file are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
@@ -260,7 +260,7 @@ The configuration file is named `config.ini`.
 
 **Note for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
 
-#### 4 - Optional - Language File
+#### Optional - Language File
 
 Optional language files are available on [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder.
 
