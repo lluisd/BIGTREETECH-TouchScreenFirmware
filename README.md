@@ -22,7 +22,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
     - [Setting the Baudrate on the TFT Firmware](#setting-the-baudrate-on-the-TFT-firmware)
   - [Marlin Mode Setup](#marlin-mode-setup)
 - [Menus and Themes](#menus)
-- [TFT Firmware Installation](#tft-firmware-installation)
+- [Firmware Installation](#firmware-installation)
   - [Deployment Files](#deployment-files)
     - [Firmware Binary](#firmware-binary)
     - [Fonts and Icons](#fonts-and-icons)
@@ -31,8 +31,8 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [Configuration](#configuration)
     - [Editing the Configuration File](#editing-the-configuration-file)
   - [Installation](#installation)
-- [TFT Screen Calibration](#tft-screen-calibration)
-- [TFT Configuration Update](#tft-configuration-update)
+- [Screen Calibration](#screen-calibration)
+- [Configuration Update](#configuration-update)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
@@ -187,7 +187,7 @@ C: In case you have an **"E3" mainboard** which provides a **single EXP connecto
 | ![Mainscreen-Rep Rap FW Dark](https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png) | ![Mainscreen](https://user-images.githubusercontent.com/54359396/132404369-948e7677-6d17-4a9a-ad7e-25ebc46b3fdb.png) |
 | Use firmware, icons, and fonts from the [`Copy to SD Card root directory to update - Rep Rap Firmware Dark theme`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/THEME_Rep%20Rap%20Firmware%20Dark%20theme) folder |                                                              |
 
-## TFT Firmware Installation
+## Firmware Installation
 
 **NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
 
@@ -324,7 +324,7 @@ Remove the SD card from the TFT and restart the printer.
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
-## TFT Screen Calibration
+## Screen Calibration
 
 Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the following text:
 
@@ -343,7 +343,7 @@ Repeat the process in case the message:
 
 is shown.
 
-## TFT Configuration Update
+## Configuration Update
 
 Please, see [Configuration](#configuration) section for configuring `config.ini` file.
 
@@ -398,7 +398,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
    <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
 
-<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#tft-firmware-installation">TFT Firmware Installation</a> section above to update your TFT to the latest version.</li>
+<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the [Firmware Installation](#firmware-installation) section above to update your TFT to the latest version.</li>
 </details>
 
 **TIP:** In case there is a problem compiling the TFT firmware try to restart VSC. If this does not help and you are using macOS, delete the **packages** and **platforms** folders usually present under the folder `/Users/***username***/.platformio/`.
