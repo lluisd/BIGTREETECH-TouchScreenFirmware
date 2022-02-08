@@ -118,7 +118,7 @@ In order the TFT firmware is able to provide all of its functionalities/features
 
 In case one of the three points above is not done right, the message:
 
-    No printer attached
+    No printer attached!
 
 will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
 
@@ -229,7 +229,7 @@ Fonts and icons folder structure:
 
 <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
-**Update Process shown on TFT Screen:**
+**Update process shown on TFT screen:**
 
 A successful update looks like this on the screen:
 
@@ -266,7 +266,7 @@ To calibrate the screen, with your finger or a stylus, press:
 
 Repeat the process in case the message:
 
-    Adjustment failed, please try again
+    Adjustment failed, please try again.
 
 is shown.
 
