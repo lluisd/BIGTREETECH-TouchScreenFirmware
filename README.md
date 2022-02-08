@@ -122,7 +122,10 @@ In case one of the three points above is not done right, the message:
 
 will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
 
-**NOTE:** On TFT, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu.
+On TFT firmware, the baudrate can be changed in two ways:
+
+- from configuratin file: Set parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200).
+- from menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu.
 
 **Do the following to be able to use the Marlin emulation mode of your screen:**
 
