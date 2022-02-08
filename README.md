@@ -330,7 +330,7 @@ Sometimes a calibration will be executed automatically after a firmware update, 
 
     Touch Screen Calibration - Please click on the red dot
 
-To calibrate the screen, with your finger or a stylus, press:
+To calibrate the touch screen, with your finger or a stylus, press:
 
 1. the red dot in the upper left corner
 2. then the red dot in the upper right corner
@@ -351,7 +351,7 @@ To update the firmware configuration:
 
 1. Copy your edited `config.ini` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
 2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
-3. The TFT configuration will update from the configuration file on reboot
+3. The TFT's configuration will update from the configuration file on reboot
 4. The `config.ini` file will be renamed to `config.ini.CUR` after updating the configuration
 
 ## Hard Reset
@@ -361,7 +361,7 @@ To hard reset the touch screen calibration and restore the TFT's default hard co
 1. Create a blank file named `reset.txt`
 2. Copy the `reset.txt` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
 3. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
-4. The TFT's default hard coded settings will be restored and the touch screen calibration process will start on reboot
+4. The TFT's configuration will be reset to TFT's default hard coded settings and the touch screen calibration process will start on reboot
 5. The `reset.txt` file will be renamed to `reset.txt.DONE` after the calibration process is completed
 
 ## Customization
