@@ -32,6 +32,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
     - [Editing the Configuration File](#editing-the-configuration-file)
   - [Installation](#installation)
 - [Touch Screen Calibration](#touch-screen-calibration)
+  - [Forcing the Touch Screen Calibration](#forcing-the-touch-screen-calibration)
 - [Configuration Update](#configuration-update)
 - [Hard Reset](#hard-reset)
 - [Customization](#customization)
@@ -144,8 +145,8 @@ will be shown at the top of the screen. This is because the TFT can not "see" th
 
 On TFT firmware, the baudrate can be changed in two ways:
 
-- from configuration file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200)
-- from menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu
+- by configuration file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200)
+- by menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu
 
 Please, see [Configuration](#configuration) section for configuring `config.ini` file.
 
@@ -342,6 +343,13 @@ Repeat the process in case the message:
     Adjustment failed, please try again.
 
 is shown.
+
+### Forcing the Touch Screen Calibration
+
+The touch screen calibration process can be forced in two ways:
+
+- by hard reset procedure: See [Hard Reset](#hard-reset)
+- by menu: The process can be stared from **Menu->Settings->Screen->TSC Adjust** menu
 
 ## Configuration Update
 
