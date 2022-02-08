@@ -366,12 +366,12 @@ In order to update the firmware configuration:
 
 ## Hard Reset
 
+**Note:** The hard reset process is typically used as the last chance when the firmware is not properly working (e.g. in case of freezes, errors on screen etc.).
+
 The hard reset process consists in:
 
 1. resetting the TFT's configuration to the TFT's default hard coded settings
 2. starting the touch screen calibration process at startup before moving to **Main** menu
-
-**Note:** The hard reset process is typically used as the last chance when the firmware is not properly working (e.g. in case of freezes, errors on screen etc.).
 
 In order to hard reset the firmware:
 
