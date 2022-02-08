@@ -338,7 +338,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 <li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#tft-firmware-installation">TFT Firmware Installation</a> section above to update your TFT to the latest version.</li>
 </details>
 
-**TIP:** In case there is a problem compiling the TFT firmware try to restart VSC. If this does not help and you are using macOS, delete the **packages** and **platforms** folder which you can find here: /Users/***username***/.platformio/.
+**TIP:** In case there is a problem compiling the TFT firmware try to restart VSC. If this does not help and you are using macOS, delete the **packages** and **platforms** folders usually present under the folder `/Users/***username***/.platformio/`.
 
 ## Troubleshooting
 
@@ -373,7 +373,7 @@ and the reset described above did not help, try the following:
 - Do not use the unshielded wires directly but use a 2 pin connector instead
 - Power up the TFT and try to reset the TFT or to instal a new firmware like described in this document
 
-With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Emulation (if available), even the Marlin Emulation screen will not show the interface with a proper EXP based connection.
+**NOTE:** With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Emulation (if available), even the Marlin Emulation screen will not show the interface with a proper EXP based connection.
 
 ## Version History
 
@@ -413,18 +413,21 @@ or<br>
 When the trigger `print_start` is received, the TFT switches to **Printing** menu.
 Once on Printing menu, the **pause**, **resume** and **stop** buttons on the menu will be disabled.
 That means only Octoprint will control the print.
-Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Printing menu is finalized (statistics available etc.) and unlocked (it can be closed).
+Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Printing menu is finalized (statistics available etc.) and unlocked (the menu can be closed).
 
 **NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone)
 
 ### Embedded Gcode Thumbnails
 
-The TFT can display embedded gcode thumbnails in the file viewer using two different flavors: Bigtreetech-style or PrusaSlicer-style.
+The TFT can display embedded gcode thumbnails in the file viewer using two different flavors:
+
+- Bigtreetech-style
+- PrusaSlicer-style
 
 ![ps-thumbnail](https://user-images.githubusercontent.com/54359396/121322884-a4b5c380-c90f-11eb-9380-09757d57d84e.png)
 
 The first type is to store the thumbnails at a specific location in the gcode file using a dedicated Cura plugin or external post-processing script.
-The thumbnail's image data is raw encoded in a format which can be displayed on the TFT without any complex image transformations.
+The thumbnail's image data is raw encoded in a format which can be displayed on the TFT without any complex image transformation.
 Displaying these embedded thumbnails at the TFT is the fastest approach and suitable for all different BigTreeTech's TFT variants.
 Downside is that you either need a dedicated plugin, for example the [BTT 3D Plug-In Suit](https://github.com/bigtreetech/Bigtree3DPluginSuit), or you have to use the post-processing script.
 
@@ -462,13 +465,13 @@ There is now an RRF config file. It needs to be renamed from `config_rrf.ini` to
 
 **Config.g changes:**
 
-Add the following line to your config.g to enable the screen: `M575 P1 S2 B57600`
+Add the following line to your `config.g` to enable the screen: `M575 P1 S2 B57600`
 
 **Implemented features:**
 
 - Auto detect fw type + separate config.ini for easier setup
 - Temperature/movement/cooling status monitoring and control
-- Print status monitoring with mid-print tuneing/pausing
+- Print status monitoring with mid-print tuning/pausing
 - Macro support
 - Print from onboard/external SD card
 - Please see [RRF further tweaks #2278](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/issues/2278) for more information.
@@ -481,9 +484,12 @@ Add the following line to your config.g to enable the screen: `M575 P1 S2 B57600
 
 ### Setup of BTT TFT35 E3 V3 with MKS SGEN L Mainboards
 
-The following mainboards are covered by this document.
+The following mainboards are covered by this document:
 
-MKS GEN_L v1.0, MKS SGEN (LPC1769), MKS SGEN_L v1.0 (LPC1768) and MKS SGEN_L v2.0 (LPC1769)
+- MKS GEN_L v1.0
+- MKS SGEN (LPC1769)
+- MKS SGEN_L v1.0 (LPC1768)
+- MKS SGEN_L v2.0 (LPC1769)
 
 **Connections**
 
