@@ -25,9 +25,9 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [TFT Firmware Installation](#tft-firmware-installation)
   - [Deployment Files](#deployment-files)
     - [1 - Firmware Binary File](#1---firmware-binary-file)
-    - [2 - Fonts and Icons](#2---fonts_and_icons)
+    - [2 - Fonts and Icons](#2---fonts-and-icons)
     - [3 - Firmware Configuration File](#3---firmware-configuration-file)
-    - [4 - (optional) Language File](#4---(optional)-language-file)
+    - [4 - Optional - Language File](#4---Optional---language-file)
   - [Installation Steps](#installation-steps)
     - [STEP 1:](#step_1:)
     - [STEP 2:](#step_2:)
@@ -260,7 +260,7 @@ The configuration file is named `config.ini`.
 
 **Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini` before you upload it to the TFT.
 
-#### 4 - (optional) Language File
+#### 4 - Optional - Language File
 
 Language files are available on [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder.
 
