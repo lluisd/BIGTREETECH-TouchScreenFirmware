@@ -18,6 +18,9 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Supported Screens](#supported-screens)
 - [Marlin Dependencies](#marlin-dependencies)
 - [Connecting the TFT to the Mainboard](#connecting-the-tft-to-the-mainboard)
+  - [Touch Mode Setup](#touch-mode-setup)
+  - [Marlin Mode Setup](#marlin-mode-setup)
+  - [Setting the Baudrate on the TFT Firmware](#setting-the-baudrate-on-the-TFT-firmware)
 - [Menus and Themes](#menus)
 - [TFT Firmware Installation](#tft-firmware-installation)
 - [TFT Screen Calibration](#tft-screen-calibration)
@@ -110,11 +113,13 @@ In order the TFT firmware is able to provide all of its functionalities/features
 
 ## Connecting the TFT to the Mainboard
 
-**Do the following to be able to use the touchmode of your screen:**
+### Touch Mode Setup
+
+Do the following to be able to use the touchmode of your screen:
 
 1. Connect the 5pin serial cable according to the manual of your mainboard
 2. Define a serial port in Marlin, to activate the port used by the TFT
-3. Make sure the same BAUDRATE is defined in both Marlin and TFT firmwares
+3. Make sure the same BAUDRATE is defined on both the Marlin and TFT firmwares
 
 In case one of the three points above is not done right, the message:
 
@@ -122,12 +127,16 @@ In case one of the three points above is not done right, the message:
 
 will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
 
+#### Setting the Baudrate on the TFT Firmware
+
 On TFT firmware, the baudrate can be changed in two ways:
 
-- from configuratin file: Set parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200).
+- from configuratin file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200).
 - from menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu.
 
-**Do the following to be able to use the Marlin emulation mode of your screen:**
+### Marlin Mode Setup
+
+Do the following to be able to use the Marlin emulation mode of your screen:
 
 A: In case your TFT does **not** have an EXP connector at all (TFT28 v1 for example), you can not use the Marlin emulator mode.
 
