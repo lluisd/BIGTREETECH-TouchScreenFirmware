@@ -28,11 +28,11 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
     - [2 - Fonts and Icons](#2---fonts-and-icons)
     - [3 - Firmware Configuration File](#3---firmware-configuration-file)
     - [4 - Optional - Language File](#4---Optional---language-file)
-  - [Installation Steps](#installation-steps)
+  - [Configuration](#configuration)
+    - [Editing the Configuration File](#editing-the-configuration-file)
+  - [Installation](#installation)
 - [TFT Screen Calibration](#tft-screen-calibration)
-- [TFT Firmware Configuration](#tft-firmware-configuration)
-  - [Editing the Configuration File](#editing-the-configuration-file)
-  - [Updating the TFT Firmware Configuration](#updating-the-tft-firmware-configuration)
+- [Updating the TFT Firmware Configuration](#updating-the-tft-firmware-configuration)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
@@ -147,6 +147,8 @@ On TFT firmware, the baudrate can be changed in two ways:
 - from configuratin file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200).
 - from menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu.
 
+See <a href="#tft-firmware-configuration">TFT Firmware Configuration</a> section for configuring `config.ini` file.
+
 ### Marlin Mode Setup
 
 Do the following to be able to use the Marlin emulation mode of your screen:
@@ -189,14 +191,15 @@ C: In case you have an **"E3" mainboard** which provides a **single EXP connecto
 
 **NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
 
-The TFT firmware update process is based on two different stages:
+The TFT firmware update process is based on three different stages:
 
-- Deployment Files: All the resources needed for the update (up to four kinds of resources)
-- Installation Steps: All the steps needed in order to install the firmware (up to three steps)
+- Deployment Files: All the resources needed for the firmware update (up to four kinds of resources)
+- Configuration: All the changes needed on configuration file before the firmware installation
+- Installation: All the steps needed in order to install the firmware
 
 ### Deployment Files
 
-The following sections provide all the resources needed for the update (up to four kinds of resources).
+The following sections provide all the resources needed for the firmware update (up to four kinds of resources).
 
 #### 1 - Firmware Binary File
 
@@ -243,7 +246,7 @@ Fonts and icons folder structure:
 - `TFT*/font`: Includes the fonts in .fon format and a readme.md
 - `TFT*/bmp`: Includes the icons in .bmp format and a readme.md
 
-For **MKS TFTs**, the ROOT FOLDER for fonts and icons must be renamed to `MKS`.
+For **MKS TFTs**, the ROOT FOLDER for fonts and icons **MUST** be renamed to `MKS`.
 Fonts and icons folder structure:
 
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
@@ -251,21 +254,35 @@ Fonts and icons folder structure:
 
 #### 3 - Firmware Configuration File
 
-Templates for configuration files are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
+Templates for configuration file are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
 The configuration file is named `config.ini`.
 
-**Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini` before you upload it to the TFT.
+**Note for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
 
 #### 4 - Optional - Language File
 
-Language files are available on [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder.
+Optional language files are available on [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder.
 
 Language files use the naming convention `language_*.ini` (e.g. `language_it.ini`).
 
-### Installation Steps
+### Configuration
 
-The following sections provide all the steps needed in order to install the firmware (up to three steps).
+The following sections provide all the changes needed on configuration file before the firmware installation.
+
+**Note for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
+
+The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder using a simple text editor (make sure to use UTF encoding).
+
+Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
+
+#### Editing the Configuration File
+
+To edit the `config.ini` file, follow the instructions here: [Detailed Instructions here](config_instructions.md)
+
+### Installation
+
+The following steps are needed in order to install the firmware:
 
 **Step 1:**
 
@@ -325,18 +342,6 @@ Repeat the process in case the message:
     Adjustment failed, please try again.
 
 is shown.
-
-## TFT Firmware Configuration
-
-**Note for RepRap firmware users:** You have to make your changes using the config_rrf.ini file and rename it to config.ini before you copy it to the TFT.
-
-The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder using a simple text editor (make sure to use UTF encoding).
-
-Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
-
-### Editing the Configuration File
-
-To edit the `config.ini` file, follow the instruction here: [Detailed Instructions here](config_instructions.md)
 
 ### Updating the TFT Firmware Configuration
 
