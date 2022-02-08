@@ -134,20 +134,20 @@ In order to use the Touch Mode on your screen:
 2. Define a serial port in Marlin, to activate the port used by the TFT
 3. Make sure the same BAUDRATE is defined on both the Marlin and TFT firmwares
 
-In case one of the three points above is not done right, the message:
+In case one of the three points above is not properly done, the message:
 
     No printer attached!
 
-will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
+will be shown at the top of the screen. This is because the TFT can not "see" the mainboard through the serial cable.
 
 #### Setting the Baudrate on the TFT Firmware
 
 On TFT firmware, the baudrate can be changed in two ways:
 
-- from configuratin file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200).
-- from menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu.
+- from configuration file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200)
+- from menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu
 
-Refer to <a href="#configuration">Configuration</a> section for configuring `config.ini` file.
+Please, see [Configuration](configuration) section for configuring `config.ini` file.
 
 ### Marlin Mode Setup
 
@@ -231,7 +231,7 @@ So, make sure to use the firmware matching your TFT screen.
 
 **Notes for MKS TFT firmwares:**
 
-1. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) must be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
+1. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) **MUST** be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
 2. For MKS TFT35, two binary files are provided:
    1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
    2. Unencrypted version: Usable with a bootloader without encryption
@@ -345,7 +345,7 @@ is shown.
 
 ## TFT Configuration Update
 
-Refer to <a href="#configuration">Configuration</a> section for configuring `config.ini` file.
+Please, see [Configuration](configuration) section for configuring `config.ini` file.
 
 To update the firmware configuration:
 
@@ -358,7 +358,7 @@ To update the firmware configuration:
 
 ### Bootscreen and Icons
 
-See [Customization guides](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/readme/) for detailed information.
+Please, see [Customization Guides](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/readme/) section for detailed information.
 
 ### Firmware
 
@@ -409,7 +409,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
 In case the firmware update process failed:
 
-1. Verify that you have been using the firmware which matches your TFT
+1. Verify that you have been using the firmware matching your TFT
 2. Try to upload the firmware, the config.ini and the TFT* folder again (like described above) using a **new** SD card - 8GB or smaller, FAT32 formatted
 
 **NOTE:** Some uploads worked fine after executing a low level format of the SD card and not a quick format.
@@ -440,7 +440,7 @@ and the reset described above did not help, try the following:
 
 ## Version History
 
-See [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/releases) for a complete version history.
+Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/releases) section for a complete version history.
 
 ## Appendix
 
