@@ -47,7 +47,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [TFT Screen Configuration and Support for RRF](#tft-screen-configuration-and-support-for-rrf)
     - [Overview](#overview)
     - [Loading the Firmware](#loading-the-firmware)
-    - [Config.g Changes](#config.g-changes)
+    - [Configuration Changes](#configuration-changes)
     - [Implemented Features](#implemented-features)
     - [Menu System for Macros](#menu-system-for-macros)
   - [Setup of BTT TFT35 E3 V3 with MKS SGEN L Mainboards](#setup-of-btt-tft35-e3-v3-with-mks-sgen-l-mainboards)
@@ -398,7 +398,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
    <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
 
-<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the [Firmware Installation](#firmware-installation) section above to update your TFT to the latest version.</li>
+<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#firmware-installation">Firmware Installation</a> section above to update your TFT to the latest version.</li>
 </details>
 
 **TIP:** In case there is a problem compiling the TFT firmware try to restart VSC. If this does not help and you are using macOS, delete the **packages** and **platforms** folders usually present under the folder `/Users/***username***/.platformio/`.
@@ -526,7 +526,7 @@ The most recent version of the standard bigtreetech TFT firmware has built in su
 
 There is now an RRF config file. It needs to be renamed from `config_rrf.ini` to `config.ini` for updating the configuration of the TFT for RRF.
 
-#### Config.g Changes
+#### Configuration Changes
 
 Add the following line to your `config.g` to enable the screen: `M575 P1 S2 B57600`
 
