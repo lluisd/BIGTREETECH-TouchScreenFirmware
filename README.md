@@ -24,9 +24,9 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Menus and Themes](#menus)
 - [TFT Firmware Installation](#tft-firmware-installation)
   - [Deployment Files](#deployment-files)
-    - [Firmware Binary File](#firmware-binary-file)
+    - [Firmware Binary](#firmware-binary)
     - [Fonts and Icons](#fonts-and-icons)
-    - [Firmware Configuration File](#firmware-configuration-file)
+    - [Configuration File](#configuration-file)
     - [Optional - Language File](#Optional---language-file)
   - [Configuration](#configuration)
     - [Editing the Configuration File](#editing-the-configuration-file)
@@ -201,7 +201,7 @@ The TFT firmware update process is based on three different stages:
 
 The following sections provide all the resources needed for the firmware update (up to four kinds of resources).
 
-#### Firmware Binary File
+#### Firmware Binary
 
 Precompiled firmwares are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
@@ -252,7 +252,7 @@ Fonts and icons folder structure:
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
 - `MKS/bmp`: Includes the icons in .bmp format and a readme.md
 
-#### Firmware Configuration File
+#### Configuration File
 
 Templates for configuration file are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
