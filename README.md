@@ -23,6 +23,15 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [Setting the Baudrate on the TFT Firmware](#setting-the-baudrate-on-the-TFT-firmware)
 - [Menus and Themes](#menus)
 - [TFT Firmware Installation](#tft-firmware-installation)
+  - [Deployment Files](#deployment-files)
+    - [Firmware Binary File](#firmware-binary-file)
+    - [Fonts and Icons](#fonts_and_icons)
+    - [Firmware Configuration File](#firmware-configuration-file)
+    - [Language File - Optional Feature](#language-file---optional-feature)
+  - [Installation Steps](#installation-steps)
+    - [STEP 1:](#step_1:)
+    - [STEP 2:](#step_2:)
+    - [STEP 2:](#step_3:)
 - [TFT Screen Calibration](#tft-screen-calibration)
 - [TFT Firmware Configuration](#tft-firmware-configuration)
   - [Editing the Configuration File](#editing-the-configuration-file)
@@ -39,7 +48,14 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [Integration with Octoprint](#integration-with-octoprint)
   - [Embedded Gcode Thumbnails](#embedded-gcode-thumbnails)
   - [TFT Screen Configuration and Support for RRF](#tft-screen-configuration-and-support-for-rrf)
+    - [Overview](#overview)
+    - [Loading the Firmware](#loading-the-firmware)
+    - [Config.g Changes](#config.g-changes)
+    - [Implemented Features](#implemented-features)
+    - [Menu System for Macros](#menu-system-for-macros)
   - [Setup of BTT TFT35 E3 V3 with MKS SGEN L Mainboards](#setup-of-btt-tft35-e3-v3-with-mks-sgen-l-mainboards)
+    - [Connections](#connections)
+    - [Firmware](#firmware)
   - [Show more statistics at the end of the print](#show-more-statistics-at-the-end-of-the-print)
 
 ## Supported Screens
@@ -176,11 +192,18 @@ C: In case you have an **"E3" mainboard** which provides a **single EXP connecto
 
 **NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
 
-The TFT firmware update includes up to four elements and is done in three steps:
+The TFT firmware update process is based on two different stages:
 
-### **ELEMENTS:**
+- Deployment Files: All the resources needed for the update (up to four kinds of resources)
+- Installation Steps: All the steps needed in order to install the firmware (up to three steps)
 
-**Element 1:** Firmware binary file (`BIGTREE_TFT*_V*.*.*.bin` or `MKSTFT*.bin`).
+### Deployment Files
+
+The following sections provide all the resources needed for the update (up to four kinds of resources).
+
+#### Firmware Binary File
+
+`BIGTREE_TFT*_V*.*.*.bin` or `MKSTFT*.bin`
 
 For example, for BTT TFT35 V3:
 
@@ -209,7 +232,9 @@ So, make sure to use the firmware which matches your TFT screen.
    1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
    2. Unencrypted version: Usable with a bootloader without encryption
 
-**Element 2:** Fonts and Icons (`TFT*` or `MKS` folder).
+#### Fonts and Icons
+
+`TFT*` or `MKS` folder
 
 For **BTT TFTs**, the ROOT FOLDER for fonts and icons is `TFT*`, where `*` is the size of the TFT (e.g. `TFT24`, `TFT35`, `TFT50` etc).
 Fonts and icons folder structure:
@@ -223,15 +248,23 @@ Fonts and icons folder structure:
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
 - `MKS/bmp`: Includes the icons in .bmp format and a readme.md
 
-**Element 3:** Firmware configuration file (`config.ini`).
+#### Firmware Configuration File
+
+`config.ini`
 
 **Notes for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini` before you upload it to the TFT.
 
-**Element 4 (optional):** Language file (`language_*.ini`).
+#### Language File - Optional Feature
 
-### **STEPS:**
+`language_*.ini`
 
-**Step 1:** Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
+### Installation Steps
+
+The following sections provide all the steps needed in order to install the firmware (up to three steps).
+
+#### Step 1:
+
+Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
 ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
@@ -239,7 +272,9 @@ Fonts and icons folder structure:
 
 ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
-**Step 2:** Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
+#### Step 2:
+
+Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
 
 <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
@@ -261,7 +296,9 @@ In case one or several parts of the update failed, an error will be shown. Follo
 
 After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
-**Step 3:** Remove the SD card from the TFT and restart the printer.
+#### Step 3:
+
+Remove the SD card from the TFT and restart the printer.
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
@@ -469,19 +506,19 @@ If this setting is not visible within the Prusa-Slicer you need to enable _Exper
 
 ### TFT Screen Configuration and Support for RRF
 
-**Overview:**
+#### Overview
 
 The most recent version of the standard bigtreetech TFT firmware has built in support for RepRap firmware. The pre-built images have this enabled by default.
 
-**Loading the firmware:**
+#### Loading the Firmware
 
 There is now an RRF config file. It needs to be renamed from `config_rrf.ini` to `config.ini` for updating the configuration of the TFT for RRF.
 
-**Config.g changes:**
+#### Config.g Changes
 
 Add the following line to your `config.g` to enable the screen: `M575 P1 S2 B57600`
 
-**Implemented features:**
+#### Implemented Features
 
 - Auto detect fw type + separate config.ini for easier setup
 - Temperature/movement/cooling status monitoring and control
@@ -490,7 +527,7 @@ Add the following line to your `config.g` to enable the screen: `M575 P1 S2 B576
 - Print from onboard/external SD card
 - Please see [RRF further tweaks #2278](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/issues/2278) for more information.
 
-**Menu system for macros:**
+#### Menu System for Macros
 
 - Thumbnail and menu system support for onboard gcodes
 - Load/unload menu
@@ -505,7 +542,7 @@ The following mainboards are covered by this document:
 - MKS SGEN_L v1.0 (LPC1768)
 - MKS SGEN_L v2.0 (LPC1769)
 
-**Connections**
+#### Connections
 
 The TFT35 E3 V3.0 has 3 cables to connect to the mainboard. Two 10 pin ribbon cables and one 5 pin serial cable. The 2 ribbon cables connect to the EXP1 and the EXP2 connections on both the TFT35 E3 V3.0 and the MKS mainboards.
 
@@ -519,7 +556,7 @@ The RS232 cable is connected to the RS232 connection on the touchscreen, with th
 
 The second workaround for this issue is to carefully pry the two shells surrounding the pins on the mainboard upwards until they clear the pins. Do NOT use a metal tool for this, use a sturdy plastic or whalebone prying tool. Turn the shell 180 degrees and align the pins with the holes in the shells and push the shells back on with your thumb. Do not push the shell back on with something that could cause damage if it were to slip. Once the shells are installed you can use the stock (unaltered) cables as they are.
 
-**Firmware**
+#### Firmware
 
 Edit the `Configuration.h` file and enable the line that says `#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`. Rebuild and deploy the Marlin firmware to your 3D Printer.
 
