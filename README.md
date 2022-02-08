@@ -361,8 +361,10 @@ To hard reset the touch screen calibration and restore the TFT's default hard co
 1. Create a blank file named `reset.txt`
 2. Copy the `reset.txt` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
 3. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
-4. The TFT's configuration will be reset to TFT's default hard coded settings and the touch screen calibration process will start on reboot
-5. The `reset.txt` file will be renamed to `reset.txt.DONE` after the calibration process is completed
+4. The TFT's configuration will be reset to the TFT's default hard coded settings and the touch screen calibration process will start on reboot
+5. The `reset.txt` file will be renamed to `reset.txt.DONE` after the touch screen calibration process is completed
+
+**Note:** Unless the default hard coded settings have been properly configured (e.g. a self compiled firmware was installed), after an hard reset the TFT typically needs to be reconfigured with a proper `config.ini` file.
 
 ## Customization
 
