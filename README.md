@@ -32,7 +32,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
     - [Editing the Configuration File](#editing-the-configuration-file)
   - [Installation](#installation)
 - [TFT Screen Calibration](#tft-screen-calibration)
-- [Updating the TFT Firmware Configuration](#updating-the-tft-firmware-configuration)
+- [TFT Configuration Update](#tft-configuration-update)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
@@ -343,7 +343,7 @@ Repeat the process in case the message:
 
 is shown.
 
-## TFT Firmware Configuration Update
+## TFT Configuration Update
 
 Refer to <a href="#configuration">Configuration</a> section for configuring `config.ini` file.
 
