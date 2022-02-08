@@ -29,9 +29,6 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
     - [3 - Firmware Configuration File](#3---firmware-configuration-file)
     - [4 - Optional - Language File](#4---Optional---language-file)
   - [Installation Steps](#installation-steps)
-    - [STEP 1:](#step_1:)
-    - [STEP 2:](#step_2:)
-    - [STEP 2:](#step_3:)
 - [TFT Screen Calibration](#tft-screen-calibration)
 - [TFT Firmware Configuration](#tft-firmware-configuration)
   - [Editing the Configuration File](#editing-the-configuration-file)
@@ -205,13 +202,13 @@ The following sections provide all the resources needed for the update (up to fo
 
 Precompiled firmwares are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
-For **BTT TFTs**, the available firmwares use the naming convention `BIGTREE_TFT*_V*.*.*.x.bin`.
+For **BTT TFTs**, the firmwares use the naming convention `BIGTREE_TFT*_V*.*.*.x.bin`.
 
-For **MKS TFTs**, the available firmwares use the naming convention  `MKS_TFT*_V*.*.*.x.bin`.
+For **MKS TFTs**, the firmwares use the naming convention  `MKS_TFT*_V*.*.*.x.bin`.
 
 For example, for BTT TFT35 V3 select:
 
-`BIGTREE_TFT35_V3.0.27.x.bin`.
+`BIGTREE_TFT35_V3.0.27.x.bin`
 
 where:
 
@@ -227,7 +224,7 @@ There are currently three different kinds of firmware available:
 - E3_V3.0
 - B1_V3.0
 
-So, make sure to use the firmware which matches your TFT screen.
+So, make sure to use the firmware matching your TFT screen.
 
 **Notes for MKS TFT firmwares:**
 
@@ -270,7 +267,7 @@ Language files use the naming convention `language_*.ini` (e.g. `language_it.ini
 
 The following sections provide all the steps needed in order to install the firmware (up to three steps).
 
-#### Step 1:
+**Step 1:**
 
 Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
@@ -280,7 +277,7 @@ Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root direc
 
 ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
-#### Step 2:
+**Step 2:**
 
 Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
 
@@ -304,7 +301,7 @@ In case one or several parts of the update failed, an error will be shown. Follo
 
 After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
-#### Step 3:
+**Step 3:**
 
 Remove the SD card from the TFT and restart the printer.
 
