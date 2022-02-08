@@ -114,13 +114,15 @@ In order the TFT firmware is able to provide all of its functionalities/features
 
 1. Connect the 5pin serial cable according to the manual of your mainboard
 2. Define a serial port in Marlin, to activate the port used by the TFT
-3. Make sure the same BAUDRATE is defined in Marlin and the firmware of your TFT (config.ini)
+3. Make sure the same BAUDRATE is defined in both Marlin and TFT firmwares
 
 In case one of the three points above is not done right, the message:
 
     No printer attached!
 
 will be shown at the top of the screen in touchscreen mode. This is because the TFT can not "see" the mainboard through the serial cable.
+
+**NOTE:** On TFT, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu.
 
 **Do the following to be able to use the Marlin emulation mode of your screen:**
 
