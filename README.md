@@ -264,7 +264,7 @@ Language files use the naming convention `language_*.ini` (e.g. `language_it.ini
 
 ### Configuration
 
-The firmware configuration can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file using a simple text editor (make sure to use UTF encoding).
+The firmware configuration can be modified editing the `config.ini` (or the renamed `config_rrf.ini`) file using a simple text editor (make sure to use UTF encoding).
 
 A configuration can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version (see [Configuration Update](#configuration-update)).
 
