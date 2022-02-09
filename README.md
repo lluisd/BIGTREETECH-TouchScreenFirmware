@@ -344,6 +344,8 @@ The touch screen calibration process can be forced in two ways:
 
 Please, see [Configuration](#configuration) section for configuring `config.ini` file.
 
+**NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
+
 In order to update the firmware configuration:
 
 1. Copy your edited `config.ini` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
