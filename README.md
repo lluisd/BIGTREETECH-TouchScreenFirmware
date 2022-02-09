@@ -158,20 +158,6 @@ In order to use the Marlin Mode (emulation mode) on your screen:
 2. In case your mainboard provides **EXP1 and EXP2**, you have to connect 2 ribbon cables connecting EXP1 and EXP2 of the mainboard to EXP1 and EXP2 of the TFT. In the Marlin firmware of your mainboard, make sure that **ONLY** the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER` is activated in `Configuration.h` and that all other controllers are **De**activated (especially the `CR10_STOCKDISPLAY`).
 3. In case you have an **"E3" mainboard** which provides a **single EXP connector**, you have to connect 1 ribbon cable connecting EXP of the mainboard to **EXP3** of the TFT. In case your TFT does **not** provide an EXP3 connector but only two 10pin connectors (TFT24 v1.1 for example) you will need a "Y-split" cable with one 10pin connector on one side (for the mainboard) and two 10pin connectors on the other side (for the TFT). In the Marlin firmware of your mainboard, make sure that **ONLY** the `CR10_STOCKDISPLAY` is activated in `Configuration.h` and that all other controllers are **De**activated (especially the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`).
 
-<!---
-<ol>
-  <li>
-    <b>In case your TFT does **not** have an EXP connector at all (TFT28 v1 for example), you can not use the Marlin emulator mode.
-  </li>
-  <li>
-    <b>In case your mainboard provides **EXP1 and EXP2**, you have to connect 2 ribbon cables connecting EXP1 and EXP2 of the mainboard to EXP1 and EXP2 of the TFT. In the Marlin firmware of your mainboard, make sure that **ONLY** the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER` is activated in `Configuration.h` and that all other controllers are **De**activated (especially the `CR10_STOCKDISPLAY`).
-  </li>
-  <li>
-    <b>In case you have an **"E3" mainboard** which provides a **single EXP connector**, you have to connect 1 ribbon cable connecting EXP of the mainboard to **EXP3** of the TFT. In case your TFT does **not** provide an EXP3 connector but only two 10pin connectors (TFT24 v1.1 for example) you will need a "Y-split" cable with one 10pin connector on one side (for the mainboard) and two 10pin connectors on the other side (for the TFT). In the Marlin firmware of your mainboard, make sure that **ONLY** the `CR10_STOCKDISPLAY` is activated in `Configuration.h` and that all other controllers are **De**activated (especially the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`).
-  </li>
-</ol>
---->
-
 ![Thomas White July 2021-1](https://user-images.githubusercontent.com/54359396/132397091-d596abcf-750f-422a-bb59-afafc246dc58.jpg)
 ![Thomas White July 2021-2](https://user-images.githubusercontent.com/54359396/132397098-136247da-c11e-4783-a163-4147a73094e1.jpg)
 ![Thomas White July 2021-3](https://user-images.githubusercontent.com/54359396/132397106-57d8b5c5-715a-4748-8d80-60eaac76477f.jpg)
@@ -223,7 +209,7 @@ For **BTT TFTs**, the firmwares use the naming convention `BIGTREE_TFT*_V*.*.*.x
 For **MKS TFTs**:
 
 1. The firmwares use the naming convention `MKS_TFT*_V*.*.*.x.bin`
-2. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) **MUST** be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
+2. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) **MUST** be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.) in order it can be recognized and installed by the TFT
 3. For MKS TFT35, two binary files are provided:
    1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
    2. Unencrypted version: Usable with a bootloader without encryption
@@ -247,13 +233,6 @@ There are currently three different kinds of firmware available:
 - B1_V3.0
 
 So, make sure to use the firmware matching your TFT screen.
-
-**Notes for MKS TFT firmwares:**
-
-1. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) **MUST** be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
-2. For MKS TFT35, two binary files are provided:
-   1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
-   2. Unencrypted version: Usable with a bootloader without encryption
 
 #### Fonts and Icons
 
@@ -307,7 +286,7 @@ The following steps are needed in order to install the firmware:
 
 ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
-**Optionally:** Copy one or more `language_*.ini` file(s) from [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
+   **Optionally:** Copy one or more `language_*.ini` file(s) from [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
 
 ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
@@ -315,27 +294,27 @@ The following steps are needed in order to install the firmware:
 
 <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
-**Update process shown on TFT screen:**
+   **Update process shown on TFT screen:**
 
-A successful update looks like this on the screen:
+   A successful update looks like this on the screen:
 
 ![Screenshot 2020-09-26 at 22 10 04](https://user-images.githubusercontent.com/54359396/94349526-5abcd400-0045-11eb-993a-afc5b241f4d7.png)
 
-... and the name of the elements on the SD card changes to this:
+   ... and the name of the elements on the SD card changes to this:
 
 ![After Update](https://user-images.githubusercontent.com/54359396/94349755-dc156600-0047-11eb-9b1e-a1334bc5675f.png)
 
-In case one or several parts of the update failed, an error will be shown. Follow the information on the screen to update the missing or outdated elements:
+   In case one or several parts of the update failed, an error will be shown. Follow the information on the screen to update the missing or outdated elements:
 
 ![Screenshot 2020-10-23 at 14 37 36](https://user-images.githubusercontent.com/54359396/97004894-002c7000-153e-11eb-9951-f493be46af3e.png)
 
 <p align=center> ⚠️ Errors during the update can not be ignored and must be solved before using the TFT ⚠️ </p>
 
-After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
+   After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
 3. Remove the SD card from the TFT and restart the printer.
 
-**TIP:** Format the SD card after the firmware update in case you would like to print from it.
+   **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
 ## Touch Screen Calibration
 
