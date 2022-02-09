@@ -188,8 +188,6 @@ In order to use the Marlin Mode (emulation mode) on your screen:
 
 ## Firmware Installation
 
-**NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
-
 The TFT firmware update process is based on three stages:
 
 1. Deployment Files: All the resources needed for the firmware update (up to four kinds of resources)
@@ -266,9 +264,7 @@ Language files use the naming convention `language_*.ini` (e.g. `language_it.ini
 
 ### Configuration
 
-The following section provides all the changes needed on configuration file before the firmware installation.
-
-The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file using a simple text editor (make sure to use UTF encoding).
+The firmware configuration can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file using a simple text editor (make sure to use UTF encoding).
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
@@ -279,6 +275,8 @@ Once saved, it can be uploaded without the need to upload the firmware or the TF
 To edit the `config.ini` file, follow the instructions here: [Detailed Instructions](config_instructions.md)
 
 ### Installation
+
+**NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
 
 The following steps are needed in order to install the firmware:
 
