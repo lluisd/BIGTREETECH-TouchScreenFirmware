@@ -244,7 +244,7 @@ Fonts and icons folder structure:
 - `TFT*/font`: Includes the fonts in .fon format and a readme.md
 - `TFT*/bmp`: Includes the icons in .bmp format and a readme.md
 
-For **MKS TFTs**, the ROOT FOLDER for fonts and icons **MUST** be renamed to `MKS`.
+For **MKS TFTs**, the ROOT FOLDER for fonts and icons **MUST** be renamed to `MKS` in order it can be recognized and installed by the TFT.
 Fonts and icons folder structure:
 
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
