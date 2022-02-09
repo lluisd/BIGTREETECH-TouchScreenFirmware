@@ -272,7 +272,7 @@ The following section provides all the changes needed on configuration file befo
 
 **NOTE for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
 
-The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder using a simple text editor (make sure to use UTF encoding).
+The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file using a simple text editor (make sure to use UTF encoding).
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
@@ -282,7 +282,7 @@ To edit the `config.ini` file, follow the instructions here: [Detailed Instructi
 
 The following steps are needed in order to install the firmware:
 
-1. Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
+1. Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
    ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
@@ -290,7 +290,7 @@ The following steps are needed in order to install the firmware:
 
    ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
-3. Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder, the `config.ini` and the optional `language_*.ini` file(s) into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
+3. Place the SD card with `BIGTREE_TFT*_V*.*.*.bin`, `TFT*` folder, `config.ini` and the optional `language_*.ini` file(s) into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
 
    <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
