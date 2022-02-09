@@ -44,7 +44,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Version History](#version-history)
 - [Appendix](#appendix)
   - [Integration with Octoprint](#integration-with-octoprint)
-  - [Embedded Gcode Thumbnails](#embedded-gcode-thumbnails)
+  - [Adding Gcode Thumbnails](#adding-gcode-thumbnails)
   - [TFT Screen Configuration and Support for RRF](#tft-screen-configuration-and-support-for-rrf)
     - [Overview](#overview)
     - [Loading the Firmware](#loading-the-firmware)
@@ -493,7 +493,7 @@ Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Prin
 
 **NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone)
 
-### Embedded Gcode Thumbnails
+### Adding Gcode Thumbnails
 
 The TFT can display embedded gcode thumbnails in the file viewer using two different flavors:
 
