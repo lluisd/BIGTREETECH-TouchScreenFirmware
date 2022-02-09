@@ -347,7 +347,7 @@ Please, see [Configuration](#configuration) section for configuring `config.ini`
 **NOTES:**
 
 - For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card
-- The following procedure can be also applied to any combination of resources (e.g. only icons, icons + fonts, config + language etc.)
+- The following procedure can be also applied to any combination of resources (e.g. only **icons**, **icons** + **fonts**, **config** + **language** files etc.)
 
 In order to update the firmware configuration:
 
