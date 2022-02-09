@@ -154,11 +154,17 @@ Please, see [Configuration](#configuration) section for configuring `config.ini`
 
 In order to use the Marlin Mode (emulation mode) on your screen:
 
-A) In case your TFT does **not** have an EXP connector at all (TFT28 v1 for example), you can not use the Marlin emulator mode.
-
-B) In case your mainboard provides **EXP1 and EXP2**, you have to connect 2 ribbon cables connecting EXP1 and EXP2 of the mainboard to EXP1 and EXP2 of the TFT. In the Marlin firmware of your mainboard, make sure that **ONLY** the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER` is activated in `Configuration.h` and that all other controllers are **De**activated (especially the `CR10_STOCKDISPLAY`).
-
-C) In case you have an **"E3" mainboard** which provides a **single EXP connector**, you have to connect 1 ribbon cable connecting EXP of the mainboard to **EXP3** of the TFT. In case your TFT does **not** provide an EXP3 connector but only two 10pin connectors (TFT24 v1.1 for example) you will need a "Y-split" cable with one 10pin connector on one side (for the mainboard) and two 10pin connectors on the other side (for the TFT). In the Marlin firmware of your mainboard, make sure that **ONLY** the `CR10_STOCKDISPLAY` is activated in `Configuration.h` and that all other controllers are **De**activated (especially the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`).
+<ol type="A">
+  <li>
+    In case your TFT does **not** have an EXP connector at all (TFT28 v1 for example), you can not use the Marlin emulator mode.
+  </li>
+  <li>
+    In case your mainboard provides **EXP1 and EXP2**, you have to connect 2 ribbon cables connecting EXP1 and EXP2 of the mainboard to EXP1 and EXP2 of the TFT. In the Marlin firmware of your mainboard, make sure that **ONLY** the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER` is activated in `Configuration.h` and that all other controllers are **De**activated (especially the `CR10_STOCKDISPLAY`).
+  </li>
+  <li>
+    In case you have an **"E3" mainboard** which provides a **single EXP connector**, you have to connect 1 ribbon cable connecting EXP of the mainboard to **EXP3** of the TFT. In case your TFT does **not** provide an EXP3 connector but only two 10pin connectors (TFT24 v1.1 for example) you will need a "Y-split" cable with one 10pin connector on one side (for the mainboard) and two 10pin connectors on the other side (for the TFT). In the Marlin firmware of your mainboard, make sure that **ONLY** the `CR10_STOCKDISPLAY` is activated in `Configuration.h` and that all other controllers are **De**activated (especially the `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`).
+  </li>
+</ol>
 
 ![Thomas White July 2021-1](https://user-images.githubusercontent.com/54359396/132397091-d596abcf-750f-422a-bb59-afafc246dc58.jpg)
 ![Thomas White July 2021-2](https://user-images.githubusercontent.com/54359396/132397098-136247da-c11e-4783-a163-4147a73094e1.jpg)
