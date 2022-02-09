@@ -272,7 +272,7 @@ A configuration can be uploaded without the need to upload the firmware or the T
 
 **NOTE:** RepRap firmware users have to make their changes using the `config_rrf.ini` template file and renaming it to `config.ini`.
 
-To edit the `config.ini` file, follow the instructions here: [Detailed Instructions](config_instructions.md)
+To edit the `config.ini` file, follow the instructions here: [Detailed Instructions](config_instructions.md).
 
 ### Installation
 
@@ -337,8 +337,8 @@ is shown.
 
 The touch screen calibration process can be forced in two ways:
 
-- by hard reset process: See [Hard Reset](#hard-reset)
-- by menu: The process can be started from **Menu->Settings->Screen->TSC Adjust** menu
+- by hard reset: The calibration is started at the end of the hard reset process (See [Hard Reset](#hard-reset))
+- by menu: The calibration can be started from **Menu->Settings->Screen->TSC Adjust** menu
 
 ## Configuration Update
 
