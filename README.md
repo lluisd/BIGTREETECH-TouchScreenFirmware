@@ -282,11 +282,11 @@ To edit the `config.ini` file, follow the instructions here: [Detailed Instructi
 
 The following steps are needed in order to install the firmware:
 
-1. Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
+1. Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
    ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
-2. Optionally, copy one or more `language_*.ini` file(s) from [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
+2. Optionally, copy one or more `language_*.ini` file(s) onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
 
    ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
@@ -357,22 +357,23 @@ In order to update the firmware configuration:
 
 ## Hard Reset
 
-**NOTE:** The hard reset process is typically used as the last chance when the firmware is not properly working (e.g. in case of freezes, errors on screen etc.).
+**NOTES:**
+
+- The hard reset process is typically used as the last chance when the firmware is not properly working (e.g. in case of freezes, errors on screen etc.)
+- Unless the default hard coded settings have been properly configured (e.g. a self compiled firmware was installed), after an hard reset the TFT typically needs to be reconfigured with the proper `config.ini` file (see [Configuration Update](#configuration-update))
 
 The hard reset process consists in:
 
 1. resetting the TFT's configuration to the TFT's default hard coded settings
-2. starting the touch screen calibration process at startup before moving to **Main** menu
+2. starting the touch screen calibration process (see [Touch Screen Calibration](#touch-screen-calibration)) at startup before moving to **Main** menu
 
 In order to hard reset the firmware:
 
 1. Create a blank file named `reset.txt`
 2. Copy the `reset.txt` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
 3. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
-4. The TFT's configuration will be reset to the TFT's default hard coded settings and the touch screen calibration process (see [Touch Screen Calibration](#touch-screen-calibration)) will start on reboot
+4. The TFT's configuration will be reset to the TFT's default hard coded settings and the touch screen calibration process will start on reboot
 5. The `reset.txt` file will be renamed to `reset.txt.DONE` after the touch screen calibration process is completed
-
-**NOTE:** Unless the default hard coded settings have been properly configured (e.g. a self compiled firmware was installed), after an hard reset the TFT typically needs to be reconfigured with the proper `config.ini` file (see [Configuration Update](#configuration-update)).
 
 ## Customization
 
