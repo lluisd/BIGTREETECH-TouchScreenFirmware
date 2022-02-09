@@ -137,6 +137,7 @@ In order to use the Touch Mode on your screen:
 
 In case one of the three points above is not properly done, the message:
 
+<span color="red">red</span>
 `#00FF00 No printer attached!`
 
     No printer attached!
