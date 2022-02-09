@@ -284,37 +284,37 @@ The following steps are needed in order to install the firmware:
 
 1. Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
-![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
+   ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
    **Optionally:** Copy one or more `language_*.ini` file(s) from [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
 
-![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
+   ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
 2. Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
 
-<p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
+   <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
    **Update process shown on TFT screen:**
 
    A successful update looks like this on the screen:
 
-![Screenshot 2020-09-26 at 22 10 04](https://user-images.githubusercontent.com/54359396/94349526-5abcd400-0045-11eb-993a-afc5b241f4d7.png)
+   ![Screenshot 2020-09-26 at 22 10 04](https://user-images.githubusercontent.com/54359396/94349526-5abcd400-0045-11eb-993a-afc5b241f4d7.png)
 
    ... and the name of the elements on the SD card changes to this:
 
-![After Update](https://user-images.githubusercontent.com/54359396/94349755-dc156600-0047-11eb-9b1e-a1334bc5675f.png)
+   ![After Update](https://user-images.githubusercontent.com/54359396/94349755-dc156600-0047-11eb-9b1e-a1334bc5675f.png)
 
    In case one or several parts of the update failed, an error will be shown. Follow the information on the screen to update the missing or outdated elements:
 
-![Screenshot 2020-10-23 at 14 37 36](https://user-images.githubusercontent.com/54359396/97004894-002c7000-153e-11eb-9951-f493be46af3e.png)
+   ![Screenshot 2020-10-23 at 14 37 36](https://user-images.githubusercontent.com/54359396/97004894-002c7000-153e-11eb-9951-f493be46af3e.png)
 
-<p align=center> ⚠️ Errors during the update can not be ignored and must be solved before using the TFT ⚠️ </p>
+   <p align=center> ⚠️ Errors during the update can not be ignored and must be solved before using the TFT ⚠️ </p>
 
    After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
 3. Remove the SD card from the TFT and restart the printer.
 
-   **TIP:** Format the SD card after the firmware update in case you would like to print from it.
+**TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
 ## Touch Screen Calibration
 
