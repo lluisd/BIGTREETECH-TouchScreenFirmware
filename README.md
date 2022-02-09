@@ -138,7 +138,7 @@ In order to use the Touch Mode on your screen:
 In case one of the three points above is not properly done, the message:
 ```diff
     No printer attached!
-
+```
 will be shown at the top of the screen. This is because the TFT can not "see" the mainboard through the serial cable.
 
 #### Setting the Baudrate on the TFT Firmware
