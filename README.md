@@ -58,7 +58,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 
 ## Supported Screens
 
-Only the TFT's listed below are currently supported. Trying to install the firmware on a TFT which is not supported can harm the hardware.
+Only the TFTs listed below are currently supported. Trying to install the firmware on a TFT which is not supported can harm the hardware.
 
 **BTT TFT**
 
@@ -286,7 +286,7 @@ The following steps are needed in order to install the firmware:
 
    ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
-2. Optionally, copy one or more `language_*.ini` file(s) onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
+2. Optionally, copy one or more `language_*.ini` file(s) onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The `language_*.ini` file can be edited to change the text shown on the TFT:
 
    ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
