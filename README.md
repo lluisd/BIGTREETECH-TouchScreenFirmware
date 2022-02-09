@@ -190,11 +190,11 @@ In order to use the Marlin Mode (emulation mode) on your screen:
 
 **NOTE:** For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card.
 
-The TFT firmware update process is based on three different stages:
+The TFT firmware update process is based on three stages:
 
-- Deployment Files: All the resources needed for the firmware update (up to four kinds of resources)
-- Configuration: All the changes needed on configuration file before the firmware installation
-- Installation: All the steps needed in order to install the firmware
+1. Deployment Files: All the resources needed for the firmware update (up to four kinds of resources)
+2. Configuration: All the changes needed on configuration file before the firmware installation
+3. Installation: All the steps needed in order to install the firmware
 
 ### Deployment Files
 
