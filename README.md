@@ -266,7 +266,7 @@ Language files use the naming convention `language_*.ini` (e.g. `language_it.ini
 
 ### Configuration
 
-The following sections provide all the changes needed on configuration file before the firmware installation.
+The following section provides all the changes needed on configuration file before the firmware installation.
 
 #### Editing the Configuration File
 
@@ -276,7 +276,7 @@ The firmware can be modified by changing the `config.ini` (or the renamed `confi
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
 
-To edit the `config.ini` file, follow the instructions here: [Detailed Instructions here](config_instructions.md)
+To edit the `config.ini` file, follow the instructions here: [Detailed Instructions](config_instructions.md)
 
 ### Installation
 
