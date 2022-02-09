@@ -224,9 +224,9 @@ where:
 - `V3.0`: Hardware version
 - `27.x`: Software version
 
-**NOTE for BTT TFT35 firmwares:**
+**NOTE:**
 
-There are currently three different kinds of firmware available:
+For BTT TFT35, there are currently three different kinds of firmware available:
 
 - V3.0
 - E3_V3.0
@@ -256,7 +256,7 @@ Templates for configuration file are available on [`Copy to SD Card root directo
 
 The configuration file is named `config.ini`.
 
-**NOTE for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
+**NOTE:** RepRap firmware users have to make their changes using the `config_rrf.ini` template file and renaming it to `config.ini`.
 
 #### Optional - Language Files
 
@@ -274,7 +274,7 @@ Once saved, it can be uploaded without the need to upload the firmware or the TF
 
 #### Editing the Configuration File
 
-**NOTE for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
+**NOTE:** RepRap firmware users have to make their changes using the `config_rrf.ini` template file and renaming it to `config.ini`.
 
 To edit the `config.ini` file, follow the instructions here: [Detailed Instructions](config_instructions.md)
 
