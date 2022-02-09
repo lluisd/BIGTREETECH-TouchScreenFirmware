@@ -582,7 +582,7 @@ The second workaround for this issue is to carefully pry the two shells surround
 
 #### Firmware
 
-Edit the `Configuration.h` file and enable (uncomment) the line `#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`. Rebuild and deploy the Marlin firmware to your 3D Printer.
+Edit the `Configuration.h` file and enable (uncomment) `REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER`. Rebuild and deploy the Marlin firmware to your 3D Printer.
 
 ### Show more statistics at the end of the print
 
