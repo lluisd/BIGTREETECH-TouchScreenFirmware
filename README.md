@@ -220,7 +220,13 @@ Precompiled firmwares are available on [`Copy to SD Card root directory to updat
 
 For **BTT TFTs**, the firmwares use the naming convention `BIGTREE_TFT*_V*.*.*.x.bin`.
 
-For **MKS TFTs**, the firmwares use the naming convention  `MKS_TFT*_V*.*.*.x.bin`.
+For **MKS TFTs**:
+
+1. The firmwares use the naming convention `MKS_TFT*_V*.*.*.x.bin`
+2. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) **MUST** be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.)
+3. For MKS TFT35, two binary files are provided:
+   1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
+   2. Unencrypted version: Usable with a bootloader without encryption
 
 For example, for BTT TFT35 V3 select:
 
@@ -283,13 +289,13 @@ Language files use the naming convention `language_*.ini` (e.g. `language_it.ini
 
 The following sections provide all the changes needed on configuration file before the firmware installation.
 
+#### Editing the Configuration File
+
 **Note for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
 
 The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder using a simple text editor (make sure to use UTF encoding).
 
 Once saved, it can be uploaded without the need to upload the firmware or the TFT folder again, as long as the firmware and the config file are from the same version.
-
-#### Editing the Configuration File
 
 To edit the `config.ini` file, follow the instructions here: [Detailed Instructions here](config_instructions.md)
 
@@ -297,9 +303,7 @@ To edit the `config.ini` file, follow the instructions here: [Detailed Instructi
 
 The following steps are needed in order to install the firmware:
 
-**Step 1:**
-
-Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
+1. Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder or your self compiled **firmware**, plus the `TFT*` folder of your preferred theme along with the `config.ini` to the root of a blank SD card not greater than 8GB and formatted as FAT32:
 
 ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
@@ -307,9 +311,7 @@ Copy the precompiled `BIGTREE_TFT*_V*.*.*.bin` from [`Copy to SD Card root direc
 
 ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
-**Step 2:**
-
-Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
+2. Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
 
 <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
@@ -331,9 +333,7 @@ In case one or several parts of the update failed, an error will be shown. Follo
 
 After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
-**Step 3:**
-
-Remove the SD card from the TFT and restart the printer.
+3. Remove the SD card from the TFT and restart the printer.
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
