@@ -22,7 +22,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
     - [Setting the Baudrate on the TFT Firmware](#setting-the-baudrate-on-the-TFT-firmware)
   - [Marlin Mode Setup](#marlin-mode-setup)
 - [Menus and Themes](#menus)
-- [Firmware Installation](#firmware-installation)
+- [Firmware Update](#firmware-update)
   - [Deployment Files](#deployment-files)
     - [Firmware Binary](#firmware-binary)
     - [Fonts and Icons](#fonts-and-icons)
@@ -186,7 +186,7 @@ In order to use the Marlin Mode (emulation mode) on your screen:
 | ![Mainscreen-Rep Rap FW Dark](https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png) | ![Mainscreen](https://user-images.githubusercontent.com/54359396/132404369-948e7677-6d17-4a9a-ad7e-25ebc46b3fdb.png) |
 | Use firmware, icons, and fonts from the [`Copy to SD Card root directory to update - Rep Rap Firmware Dark theme`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/THEME_Rep%20Rap%20Firmware%20Dark%20theme) folder |                                                              |
 
-## Firmware Installation
+## Firmware Update
 
 The TFT firmware update process is based on three stages:
 
@@ -415,7 +415,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
   <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
 
-<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#firmware-installation">Firmware Installation</a> section above to update your TFT to the latest version.</li>
+<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#firmware-update">Firmware Update</a> section above to update your TFT to the latest version.</li>
 </ol>
 </details>
 
