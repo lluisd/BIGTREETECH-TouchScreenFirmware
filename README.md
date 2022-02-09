@@ -337,7 +337,7 @@ is shown.
 
 The touch screen calibration process can be forced in two ways:
 
-- by hard reset: The calibration is started at the end of the hard reset process (See [Hard Reset](#hard-reset))
+- by hard reset: The calibration is started at the end of the hard reset process (see [Hard Reset](#hard-reset))
 - by menu: The calibration can be started from **Menu->Settings->Screen->TSC Adjust** menu
 
 ## Configuration Update
