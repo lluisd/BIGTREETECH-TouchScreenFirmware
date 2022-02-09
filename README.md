@@ -224,7 +224,7 @@ where:
 - `V3.0`: Hardware version
 - `27.x`: Software version
 
-**Note for BTT TFT35 firmwares:**
+**NOTE for BTT TFT35 firmwares:**
 
 There are currently three different kinds of firmware available:
 
@@ -256,7 +256,7 @@ Templates for configuration file are available on [`Copy to SD Card root directo
 
 The configuration file is named `config.ini`.
 
-**Note for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
+**NOTE for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
 
 #### Optional - Language Files
 
@@ -270,7 +270,7 @@ The following sections provide all the changes needed on configuration file befo
 
 #### Editing the Configuration File
 
-**Note for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
+**NOTE for RepRap firmware users:** You have to make your changes using the `config_rrf.ini` file and rename it to `config.ini`.
 
 The firmware can be modified by changing the `config.ini` (or the renamed `config_rrf.ini`) file from [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder using a simple text editor (make sure to use UTF encoding).
 
@@ -286,11 +286,11 @@ The following steps are needed in order to install the firmware:
 
    ![Firmware](https://user-images.githubusercontent.com/54359396/100600549-b6cffd00-3301-11eb-8b57-d56b7a4422f1.jpg)
 
-   **Optionally:** Copy one or more `language_*.ini` file(s) from [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
+2. Optionally, copy one or more `language_*.ini` file(s) from [`Copy to SD Card root directory to update/Language Packs`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update/Language%20Packs) folder onto the SD card. Doing so, it will allow you to switch between English and the uploaded language(s) from the **Language** menu present in the TFT firmware. We recommend to upload the minimum amount of languages to keep the memory usage low. The language_*.ini file can be edited to change the text shown on the TFT:
 
    ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
-2. Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder and the `config.ini` into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
+3. Place the SD card with the `BIGTREE_TFT*_V*.*.*.bin`, the `TFT*` folder, the `config.ini` and the optional `language_*.ini` file(s) into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
 
    <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
@@ -312,7 +312,7 @@ The following steps are needed in order to install the firmware:
 
    After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
-3. Remove the SD card from the TFT and restart the printer.
+4. Remove the SD card from the TFT and restart the printer.
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
@@ -357,7 +357,7 @@ In order to update the firmware configuration:
 
 ## Hard Reset
 
-**Note:** The hard reset process is typically used as the last chance when the firmware is not properly working (e.g. in case of freezes, errors on screen etc.).
+**NOTE:** The hard reset process is typically used as the last chance when the firmware is not properly working (e.g. in case of freezes, errors on screen etc.).
 
 The hard reset process consists in:
 
@@ -372,7 +372,7 @@ In order to hard reset the firmware:
 4. The TFT's configuration will be reset to the TFT's default hard coded settings and the touch screen calibration process (see [Touch Screen Calibration](#touch-screen-calibration)) will start on reboot
 5. The `reset.txt` file will be renamed to `reset.txt.DONE` after the touch screen calibration process is completed
 
-**Note:** Unless the default hard coded settings have been properly configured (e.g. a self compiled firmware was installed), after an hard reset the TFT typically needs to be reconfigured with the proper `config.ini` file (see [Configuration Update](#configuration-update)).
+**NOTE:** Unless the default hard coded settings have been properly configured (e.g. a self compiled firmware was installed), after an hard reset the TFT typically needs to be reconfigured with the proper `config.ini` file (see [Configuration Update](#configuration-update)).
 
 ## Customization
 
@@ -387,14 +387,14 @@ Please, see [Customization Guides](https://github.com/bigtreetech/BIGTREETECH-To
 <li>Setup Visual Studio Code with PlatformIO <a href="https://github.com/bigtreetech/Document/blob/master/How%20to%20install%20VScode+Platformio.md">instructions</a></li>
 <li>Click on the PlatformIO icon (①) and then click on Open Project (②):
 
-   <img src="https://user-images.githubusercontent.com/25599056/56637513-6b258e00-669e-11e9-9fad-d0571e57499e.png"></li>
+  <img src="https://user-images.githubusercontent.com/25599056/56637513-6b258e00-669e-11e9-9fad-d0571e57499e.png"></li>
 
 <li>Find the BIGTREETECH firmware source directory, then click Open:
 
-   <img src="https://user-images.githubusercontent.com/25599056/56637532-77115000-669e-11e9-809b-f6bc25412f75.png"></li>
+  <img src="https://user-images.githubusercontent.com/25599056/56637532-77115000-669e-11e9-809b-f6bc25412f75.png"></li>
 
 <li>After opening the project, edit <a href="platformio.ini"><code>platformio.ini</code></a> and change the <code>default_envs</code> to one that matches your TFT model and version:
-   <pre>;BIGTREE_TFT35_V1_0
+<pre>;BIGTREE_TFT35_V1_0
 ;BIGTREE_TFT35_V1_1
 ;BIGTREE_TFT35_V1_2
 ;BIGTREE_TFT35_V2_0
@@ -416,9 +416,10 @@ boards_dir   = buildroot/boards
 default_envs = BIGTREE_TFT35_V3_0</pre></li>
 <li>Click the check mark (✓) at the bottom of VSCode or press <code>Ctrl</code>+<code>Alt</code>+<code>B</code> (Windows) / <code>Ctrl</code>+<code>Option</code>+<code>B</code> (macOS) to compile:
 
-   <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
+  <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
 
 <li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#firmware-installation">Firmware Installation</a> section above to update your TFT to the latest version.</li>
+</ol>
 </details>
 
 **TIP:** In case there is a problem compiling the TFT firmware try to restart VSC. If this does not help and you are using macOS, delete the **packages** and **platforms** folders usually present under the folder `/Users/***username***/.platformio/`.
