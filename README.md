@@ -137,7 +137,7 @@ In order to use the Touch Mode on your screen:
 
 In case one of the three points above is not properly done, the message:
 
-    ![#f03c15] No printer attached!
+    ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) No printer attached!
 
 will be shown at the top of the screen. This is because the TFT can not "see" the mainboard through the serial cable.
 
