@@ -207,7 +207,7 @@ For **BTT TFTs**, the firmwares use the naming convention `BIGTREE_TFT*_V*.*.*.x
 For **MKS TFTs**:
 
 1. The firmwares use the naming convention `MKS_TFT*_V*.*.*.x.bin`
-2. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V3.0.27.x.bin`) **MUST** be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.) in order it can be recognized and installed by the TFT
+2. Any binary file for an MKS firmware (e.g. `MKS_TFT28_V4.0.27.x.bin`) **MUST** be renamed to `MKSTFT*.bin` (e.g. `MKSTFT28.bin`, `MKSTFT35.bin` etc.) in order it can be recognized and installed by the TFT
 3. For MKS TFT35, two binary files are provided:
    1. Encrypted version: Usable on a stock MKS TFT35 (based on a bootloader with encryption)
    2. Unencrypted version: Usable with a bootloader without encryption
@@ -451,7 +451,7 @@ and the reset described above did not help, try the following:
 - Do not use the unshielded wires directly but use a 2 pin connector instead
 - Power up the TFT and try to reset the TFT or to instal a new firmware like described in this document
 
-**NOTE:** With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Emulation (if available), even the Marlin Emulation screen will not show the interface with a proper EXP based connection.
+**NOTE:** With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Mode (if available). Marlin Mode will not show any interface without a proper EXP connection (see [Marlin Mode Setup](#marlin-mode-setup)).
 
 ## Version History
 
