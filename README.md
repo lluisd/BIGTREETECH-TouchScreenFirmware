@@ -190,9 +190,9 @@ In order to use the Marlin Mode (emulation mode) on your screen:
 
 The TFT firmware update process is based on three stages:
 
-1. Deployment Files: All the resources needed for the firmware update (up to four kinds of resources)
-2. Configuration: All the changes needed on configuration file before the firmware installation
-3. Installation: All the steps needed in order to install the firmware
+1. [Deployment Files](#deployment-files): All the resources needed for the firmware update (up to four kinds of resources)
+2. [Configuration](#configuration): All the changes needed on configuration file before the firmware installation
+3. [Installation](#installation): All the steps needed in order to install the firmware
 
 ### Deployment Files
 
