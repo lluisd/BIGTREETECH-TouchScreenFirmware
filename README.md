@@ -420,7 +420,7 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
   <img src="https://user-images.githubusercontent.com/25599056/56637550-809ab800-669e-11e9-99d3-6b502e294688.png"></li>
 
-<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#firmware-update">Firmware Update</a> section above to update your TFT to the latest version.</li>
+<li>A <code>BIGTREE_TFT*_V*.*.*.bin</code> file will be generated in the <em>hidden</em> <code>.pio\build\BIGTREE_TFT*_V*_*</code> folder. Follow the update process outlined in the <a href="#firmware-update">Firmware Update</a> section above to update your TFT to the latest version</li>
 </ol>
 </details>
 
@@ -493,7 +493,7 @@ Once on Printing menu, the **pause**, **resume** and **stop** buttons on the men
 That means only Octoprint will control the print.
 Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Printing menu is finalized (statistics available etc.) and unlocked (the menu can be closed).
 
-**NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone)
+**NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone).
 
 ### Adding Gcode Thumbnails
 
@@ -543,7 +543,7 @@ There is now an RRF config file. It needs to be renamed from `config_rrf.ini` to
 
 #### Configuration Changes
 
-Add the following line to your `config.g` to enable the screen: `M575 P1 S2 B57600`
+Add the following line to your `config.g` to enable the screen: `M575 P1 S2 B57600`.
 
 #### Implemented Features
 
@@ -599,7 +599,7 @@ The statistic data in the gCode must have the following format (a good practice 
 The values of every filament data can be in a brackets, parentheses, apostrophes, etc. or without them, measurement units can be there or not.
 So `M118 P0 filament_data L:(12.3456)m`, `M118 P0 filament_data L:12.3456meters`, `M118 P0 filament_data L:[12.3456]` and so on are all valid formats.
 
-For multi-filament print statistics the data for each used filament should be written, they can be separated by comma, space, asterix, whatever, except ";" and ".".
+For multi-filament print statistics the data for each used filament should be written, they can be separated by comma, space, asterix, whatever, except `;` and `.`.
 Examples for multi-filament:
 
 - `M118 P0 filament_data L:(12.3456, 8.2520974)m`
