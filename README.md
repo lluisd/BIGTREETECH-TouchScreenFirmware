@@ -36,6 +36,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Touch Screen Calibration](#touch-screen-calibration)
   - [Forcing the Touch Screen Calibration](#forcing-the-touch-screen-calibration)
 - [Hard Reset](#hard-reset)
+  - [Resetting to Default Settings](#resetting-to-default-settings)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
@@ -310,13 +311,20 @@ The following steps are needed in order to install the firmware:
 
    After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
+4. After a successful update, the TFT will switch to one of the following menus:
+
+   - **Main** menu: The update is completed and you can use the TFT
+   - **Touch Screen Calibration** menu: A post installation process is needed before switching to Main menu
+
+   Please, see [Post Installation](#post-installation) section for completing the post installation process.
+
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
 ### Post Installation
 
 In case of major changes have been applied by the installed firmware, a post installation process consisting on touch screen calibration is automatically started.
 
-Please, see [Touch Screen Calibration](#touch-screen-calibration) for completing the process.
+Please, see [Touch Screen Calibration](#touch-screen-calibration) section for completing the process.
 
 ## Configuration Update
 
@@ -336,7 +344,7 @@ In order to update the firmware configuration:
 
 ## Touch Screen Calibration
 
-Sometimes a calibration will be executed automatically after a firmware update, showing a white screen with a red dot in the upper right corner and the following text:
+The touch screen calibration process begins showing a white screen with a red dot in the upper right corner and the following text:
 
     Touch Screen Calibration - Please click on the red dot
 
@@ -347,11 +355,9 @@ Once the process is started, to calibrate the touch screen press (with your fing
 3. then the red dot in the lower right corner
 4. and finally, the black dot in the middle of the screen to finish the calibration
 
-Repeat the process in case the message:
+Repeat the process in case the following message is shown:
 
     Adjustment failed, please try again.
-
-is shown.
 
 ### Forcing the Touch Screen Calibration
 
@@ -379,6 +385,17 @@ In order to hard reset the firmware:
 3. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
 4. The TFT's configuration will be reset to the TFT's default hard coded settings and the touch screen calibration process will start on reboot
 5. The `reset.txt` file will be renamed to `reset.txt.DONE` after the touch screen calibration process is completed
+
+### Resetting to Default Settings
+
+In case the default hard coded settings are properly configured for a TFT and the TFT's basic function such as surfing on the menus is properly working, the user could prefer/need to apply only a configuration reset (soft reset).
+
+In order to reset to default settings:
+
+- Enter on **Menu->Settings->Feature** menu
+- Select and press on **Reset default settings** item
+- Press on **Ok** button to confirm the reset
+- Leave the menu
 
 ## Customization
 
