@@ -188,7 +188,7 @@ In order to use the Marlin Mode (emulation mode) on your screen:
 
 ## Firmware Update
 
-The TFT firmware update process is based on three stages:
+The TFT firmware update process is based on the following stages:
 
 1. [Deployment Files](#deployment-files): All the resources needed for the firmware update (up to four kinds of resources)
 2. [Configuration](#configuration): All the changes needed on configuration file before the firmware installation
@@ -318,7 +318,7 @@ The following steps are needed in order to install the firmware:
 
 ### Post Installation
 
-In case of major changes have been applied by the installed firmware, a post installation process consisting on touch screen calibration is automatically started.
+In case major changes have been applied by the installed firmware, a post installation process consisting on touch screen calibration is automatically started.
 
 Please, see [Touch Screen Calibration](#touch-screen-calibration) section for completing the process.
 
