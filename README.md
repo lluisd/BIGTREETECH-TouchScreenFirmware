@@ -236,14 +236,12 @@ So, make sure to use the firmware matching your TFT screen.
 
 Themes are available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder.
 
-For **BTT TFTs**, the ROOT FOLDER for fonts and icons is `TFT*`, where `*` is the size of the TFT (e.g. `TFT24`, `TFT35`, `TFT50` etc).
-Fonts and icons folder structure:
+For **BTT TFTs**, the root folder for fonts and icons is `TFT*`, where `*` is the size of the TFT (e.g. `TFT24`, `TFT35`, `TFT50` etc). Fonts and icons folder structure:
 
 - `TFT*/font`: Includes the fonts in .fon format and a readme.md
 - `TFT*/bmp`: Includes the icons in .bmp format and a readme.md
 
-For **MKS TFTs**, the ROOT FOLDER for fonts and icons **MUST** be renamed to `MKS` in order it can be recognized and installed by the TFT.
-Fonts and icons folder structure:
+For **MKS TFTs**, the root folder for fonts and icons **MUST** be renamed to `MKS` in order it can be recognized and installed by the TFT. Fonts and icons folder structure:
 
 - `MKS/font`: Includes the fonts in .fon format and a readme.md
 - `MKS/bmp`: Includes the icons in .bmp format and a readme.md
@@ -288,7 +286,7 @@ The following steps are needed in order to install the firmware:
 
    ![Language Pack](https://user-images.githubusercontent.com/54359396/100600564-b9caed80-3301-11eb-8997-d376f05323f6.jpg)
 
-3. Place the SD card with `BIGTREE_TFT*_V*.*.*.bin`, `TFT*` folder, `config.ini` and the optional `language_*.ini` file(s) into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process.
+3. Place the SD card with `BIGTREE_TFT*_V*.*.*.bin`, `TFT*` folder, `config.ini` and the optional `language_*.ini` file(s) into the TFT's SD card reader and reset your TFT (or optionally - power cycle your printer) to start the update process:
 
    <p align=center> ⚠️ Failing to update your icons &amp; fonts will result in missing icons and/or unreadable text ⚠️ </p>
 
@@ -310,7 +308,7 @@ The following steps are needed in order to install the firmware:
 
    After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
-4. Remove the SD card from the TFT and restart the printer.
+4. Remove the SD card from the TFT and restart the printer
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
