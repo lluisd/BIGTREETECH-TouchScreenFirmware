@@ -31,9 +31,10 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [Configuration](#configuration)
     - [Editing the Configuration File](#editing-the-configuration-file)
   - [Installation](#installation)
+  - [Post Installation](#post-installation)
+- [Configuration Update](#configuration-update)
 - [Touch Screen Calibration](#touch-screen-calibration)
   - [Forcing the Touch Screen Calibration](#forcing-the-touch-screen-calibration)
-- [Configuration Update](#configuration-update)
 - [Hard Reset](#hard-reset)
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
@@ -193,6 +194,7 @@ The TFT firmware update process is based on three stages:
 1. [Deployment Files](#deployment-files): All the resources needed for the firmware update (up to four kinds of resources)
 2. [Configuration](#configuration): All the changes needed on configuration file before the firmware installation
 3. [Installation](#installation): All the steps needed in order to install the firmware
+4. [Post Installation](#post-installation): Post installation process in case of major changes applied by the installed firmware
 
 ### Deployment Files
 
@@ -308,9 +310,29 @@ The following steps are needed in order to install the firmware:
 
    After the update is done and the files are renamed, it is possible to reuse them again. To do so, change the name of the element(s) to the pre-update name and start the update process again.
 
-4. Remove the SD card from the TFT and restart the printer
-
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
+
+### Post Installation
+
+In case of major changes have been applied by the installed firmware, a post installation process consisting on touch screen calibration is automatically started.
+
+Please, see [Touch Screen Calibration](#touch-screen-calibration) for completing the process.
+
+## Configuration Update
+
+Please, see [Configuration](#configuration) section for configuring `config.ini` file.
+
+**NOTES:**
+
+- For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card
+- The following procedure can be also applied to any combination of resources (e.g. only **icons**, **icons** + **fonts**, **config** + **language** files etc.)
+
+In order to update the firmware configuration:
+
+1. Copy your edited `config.ini` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
+2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
+3. The TFT's configuration will update from the configuration file on reboot
+4. The `config.ini` file will be renamed to `config.ini.CUR` after updating the configuration
 
 ## Touch Screen Calibration
 
@@ -318,7 +340,7 @@ Sometimes a calibration will be executed automatically after a firmware update, 
 
     Touch Screen Calibration - Please click on the red dot
 
-To calibrate the touch screen, with your finger or a stylus, press:
+Once the process is started, to calibrate the touch screen press (with your finger or a stylus):
 
 1. the red dot in the upper left corner
 2. then the red dot in the upper right corner
@@ -337,22 +359,6 @@ The touch screen calibration process can be forced in two ways:
 
 - by hard reset: The calibration is started at the end of the hard reset process (see [Hard Reset](#hard-reset))
 - by menu: The calibration can be started from **Menu->Settings->Screen->TSC Adjust** menu
-
-## Configuration Update
-
-Please, see [Configuration](#configuration) section for configuring `config.ini` file.
-
-**NOTES:**
-
-- For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card
-- The following procedure can be also applied to any combination of resources (e.g. only **icons**, **icons** + **fonts**, **config** + **language** files etc.)
-
-In order to update the firmware configuration:
-
-1. Copy your edited `config.ini` file to the root of the SD card. The SD card capacity should be less than or equal to 8GB and formatted as FAT32
-2. Insert the SD card into the TFT's SD card slot and press the reset button of the TFT (or power cycle your printer)
-3. The TFT's configuration will update from the configuration file on reboot
-4. The `config.ini` file will be renamed to `config.ini.CUR` after updating the configuration
 
 ## Hard Reset
 
