@@ -147,10 +147,8 @@ will be shown at the top of the screen. This is because the TFT can not "see" th
 
 On TFT firmware, the baudrate can be changed in two ways:
 
-- by configuration file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200)
 - by menu: After the firmware is installed, the baudrate can be changed from **Menu->Settings->Connection->S. Ports** menu
-
-Please, see [Configuration](#configuration) section for configuring `config.ini` file.
+- by configuration file: Set the parameter `serial_port` in `config.ini` file with the proper baudrate (e.g. `serial_port:P1:6` for baudrate 115200). Please, see [Configuration](#configuration) section for configuring `config.ini` file
 
 ### Marlin Mode Setup
 
@@ -314,9 +312,7 @@ The following steps are needed in order to install the firmware:
 4. After a successful update, the TFT will switch to one of the following menus:
 
    - **Main** menu: The update is completed and you can use the TFT
-   - **Touch Screen Calibration** menu: A post installation process is needed before switching to Main menu
-
-   Please, see [Post Installation](#post-installation) section for completing the post installation process.
+   - **Touch Screen Calibration** menu: A post installation process is needed before switching to Main menu. Please, see [Post Installation](#post-installation) section for completing the post installation process
 
 **TIP:** Format the SD card after the firmware update in case you would like to print from it.
 
@@ -363,8 +359,8 @@ Repeat the process in case the following message is shown:
 
 The touch screen calibration process can be forced in two ways:
 
-- by hard reset: The calibration is started at the end of the hard reset process (see [Hard Reset](#hard-reset))
 - by menu: The calibration can be started from **Menu->Settings->Screen->TSC Adjust** menu
+- by hard reset: The calibration is started at the end of the hard reset process (see [Hard Reset](#hard-reset))
 
 ## Hard Reset
 
