@@ -384,7 +384,7 @@ In order to hard reset the firmware:
 
 ### Resetting to Default Settings
 
-In case the default hard coded settings are properly configured for a TFT and the TFT's basic function such as surfing on the menus is properly working, the user could prefer/need to apply only a configuration reset (soft reset).
+When the default hard coded settings are properly configured for a TFT and the TFT's basic function such as surfing on the menus is working, in case of issues the user can opt to apply only a configuration reset (soft reset) instead of an hard reset.
 
 In order to reset to default settings:
 
