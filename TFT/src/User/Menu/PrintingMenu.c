@@ -516,7 +516,7 @@ void stopConfirm(void)
   CLOSE_MENU();
 }
 
-void printInfoPopup(void)
+void printSummaryPopup(void)
 {
   uint8_t hour = infoPrintSummary.time / 3600;
   uint8_t min = infoPrintSummary.time % 3600 / 60;
@@ -600,8 +600,7 @@ void menuPrinting(void)
     printingItems.items[KEY_ICON_7] = itemIsPrinting[2];  // Back
   }
 
-  // hide filename extension if filename extension feature is disabled
-  printingItems.title.address = hideFilenameExtension(infoFile.fileIndex);
+  printingItems.title.address = getFilename(infoFile.fileIndex);  // get short or long filename
 
   menuDrawPage(&printingItems);
   printingDrawPage();
@@ -737,7 +736,7 @@ void menuPrinting(void)
 
       #ifdef PORTRAIT_MODE
         if (lastPrinting == false)
-          printInfoPopup();
+          printSummaryPopup();
       #endif
 
       return;  // It will restart this interface if directly return this function without modify the value of infoMenu
@@ -834,7 +833,7 @@ void menuPrinting(void)
         break;
 
       case PS_KEY_INFOBOX:
-        printInfoPopup();
+        printSummaryPopup();
         break;
 
       default:
