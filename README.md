@@ -443,9 +443,9 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
 ### Vertical Screen Orientation - Portrait Mode
 
-All the precompiled firmwares on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder support the standard (horizontal) screen orientation.
+All the precompiled firmwares available on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder are compiled to support the standard (horizontal) screen orientation.
 
-In case the TFT needs to be placed with a vertical orientation (e.g. 90°), the firmware needs to be compiled with the portrait mode support:
+In case the TFT needs to be placed with a vertical orientation (e.g. 90°), the firmware needs to be compiled with the portrait mode support following the procedure below:
 
 - Start VSC
 - Open `platformio.ini`
