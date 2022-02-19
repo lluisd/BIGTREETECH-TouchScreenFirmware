@@ -40,6 +40,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Customization](#customization)
   - [Bootscreen and Icons](#bootscreen-and-icons)
   - [Firmware](#firmware)
+  - [Portrait Mode Screen Orientation](#portrait-mode-screen-orientation)
 - [Troubleshooting](#troubleshooting)
   - [Firmware Update Failed](#firmware-update-failed)
   - [Worst Case Scenario](#worst-case-scenario)
@@ -442,14 +443,16 @@ default_envs = BIGTREE_TFT35_V3_0</pre></li>
 
 ### Portrait Mode Screen Orientation
 
-All the precompiled firmwares on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder support the standard screen orientation.
+All the precompiled firmwares on [`Copy to SD Card root directory to update`](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master/Copy%20to%20SD%20Card%20root%20directory%20to%20update) folder support the standard (horizontal) screen orientation.
 
 In case the TFT needs to be placed with a vertical orientation (e.g. 90°), the firmware needs to be compiled with the portrait mode support:
 
-- Start VSCode
+- Start VSC
 - Open `platformio.ini`
 - Uncomment (remove the leading `;` character) the following line:
+
   `;  -DPORTRAIT_MODE="_portrait"  ; uncomment here to enable Portrait Mode .bin firmware generation`
+
 - Compile the firmware
 - The binary file named `BIGTREE_TFT*_V*.*.*.x_portrait.bin` is created (see the presence of the **_portrait** suffix)
 - Rename the binary file to the standard name `BIGTREE_TFT*_V*.*.*.x.bin`
