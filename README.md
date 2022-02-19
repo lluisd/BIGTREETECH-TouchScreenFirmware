@@ -98,11 +98,11 @@ Main branch: **Master**
 
 Firmware source: https://github.com/MarlinFirmware/Marlin/releases
 
-Minimum Marlin firmware version: 2.0.8.1
+Minimum Marlin firmware version: **2.0.8.1**
 
-Distribution date: 2021-05-15
+Distribution date: **2021-05-15**
 
-In order the TFT firmware is able to provide all of its functionalities/features, the following options must be enabled in Marlin firmware.
+</br>In order the TFT firmware is able to provide all of its functionalities/features, the following options must be enabled in Marlin firmware.
 
 **General options which MUST be activated:**
 
