@@ -86,8 +86,7 @@ Only the TFTs listed below are currently supported. Trying to install the firmwa
 Firmware source: https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware
 
 Main branch: **Master**
-
-
+</br>
 In the **Master** branch you will find:
 
 - The most recent resources such as precompiled firmwares, themes, configuration and language files
@@ -102,7 +101,6 @@ Firmware source: https://github.com/MarlinFirmware/Marlin/releases
 Minimum Marlin firmware version: 2.0.8.1
 
 Distribution date: 2021-05-15
-
 
 In order the TFT firmware is able to provide all of its functionalities/features, the following options must be enabled in Marlin firmware.
 
