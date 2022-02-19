@@ -89,10 +89,10 @@ Main branch: **Master**
 
 </br>In the **Master** branch you will find:
 
-- The most recent resources such as precompiled firmwares, themes, configuration and language files
 - The most recent source code updates
+- The most recent resources such as precompiled firmwares, themes, configuration and language files
 
-**IMPORTANT NOTE:** The **Master** branch is currently the **ONLY** branch in the project to be used. The other currently existing **develop** and **release-xx.27** branches are outdated and **MUST NOT** be used.
+**IMPORTANT NOTE:** The **Master** branch is currently the **ONLY** branch in the project to be used. The other currently existing branches **develop** and **release-xx.27** are outdated and **MUST NOT** be used.
 
 ## Marlin Dependencies
 
@@ -182,7 +182,7 @@ In order to use the Marlin Mode (emulation mode) on your screen:
 |                    Status Screen DISABLED                    |                    Status Screen ENABLED                     |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![status screen 0](https://user-images.githubusercontent.com/54359396/103319145-09035b80-4a31-11eb-91d0-dd761a48b6f5.png) | ![Unified Material Main Screen](https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png) |
-| In config.ini, define:<br/># UI Settings<br/># Status Screen<br/># Select the Main Screen flavour<br/># Options: [disable: 0, enable: 1]<br/>**status_screen: 0** | In config.ini, define:<br/># UI Settings<br/># Status Screen<br/># Select the Main Screen flavour<br/># Options: [disable: 0, enable: 1]<br/>**status_screen: 1** |
+| If **status_screen:0** is not defined in **config.ini**, define:<br/># UI Settings<br/># Status Screen<br/># Select the Main Screen flavour<br/># Options: [disable: 0, enable: 1]<br/>**status_screen:0** | If **status_screen:1** is not defined in **config.ini**, define:<br/># UI Settings<br/># Status Screen<br/># Select the Main Screen flavour<br/># Options: [disable: 0, enable: 1]<br/>**status_screen:1** |
 
 ## Themes
 
