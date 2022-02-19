@@ -86,8 +86,8 @@ Only the TFTs listed below are currently supported. Trying to install the firmwa
 Firmware source: https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware
 
 Main branch: **Master**
-</br>
-In the **Master** branch you will find:
+
+</br>In the **Master** branch you will find:
 
 - The most recent resources such as precompiled firmwares, themes, configuration and language files
 - The most recent source code updates
