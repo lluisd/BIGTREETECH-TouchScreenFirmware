@@ -449,10 +449,8 @@ In case the TFT needs to be placed with a vertical orientation (e.g. 90°), the 
 
 - Start VSC
 - Open `platformio.ini`
-- Uncomment (remove the leading `;` character) the following line:
-
+- Uncomment (remove the leading `;` character) the following line:</br>
   `;  -DPORTRAIT_MODE="_portrait"  ; uncomment here to enable Portrait Mode .bin firmware generation`
-
 - Compile the firmware
 - The binary file named `BIGTREE_TFT*_V*.*.*.x_portrait.bin` is created (see the presence of the **_portrait** suffix)
 - Rename the binary file to the standard name `BIGTREE_TFT*_V*.*.*.x.bin`
