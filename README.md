@@ -16,7 +16,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 ## Table of Contents
 
 - [Supported Screens](#supported-screens)
-- [BTT Screen Software Repository](#btt-screen-software-repository)
+- [Software Repository](#software-repository)
 - [Marlin Dependencies](#marlin-dependencies)
 - [Connecting the TFT to the Mainboard](#connecting-the-tft-to-the-mainboard)
   - [Touch Mode Setup](#touch-mode-setup)
@@ -81,7 +81,7 @@ Only the TFTs listed below are currently supported. Trying to install the firmwa
 
 **WARNING:** BTT does not officially provide MKS TFT hardware support. MKS TFT is maintained by open source contributors and BTT does not bear any risk of MKS TFT hardware using this firmware.
 
-## BTT Screen Software Repository
+## Software Repository
 
 Firmware source: https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware
 
@@ -92,7 +92,7 @@ In the **Master** branch you will find:
 - The most recent resources such as precompiled firmwares, themes, configuration and language files
 - The most recent source code updates
 
-**IMPORTANT NOTE:** The **Master** branch is currently the only branch in the project to be used. The other currently existing **develop** and **release-xx.27** branches are outdated and **MUST NOT** be used.
+**IMPORTANT NOTE:** The **Master** branch is currently the **ONLY** branch in the project to be used. The other currently existing **develop** and **release-xx.27** branches are outdated and **MUST NOT** be used.
 
 ## Marlin Dependencies
 
