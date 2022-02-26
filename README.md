@@ -514,12 +514,12 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
   **onboard SD:**<br>
   `M21`
 
-**Release media device:**
+- **Release media device:**
 
   **onboard SD:**<br>
   `M22`
 
-**List files:**
+- **List files:**
 
   **onboard SD:**<br>
   `M20`
@@ -530,7 +530,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
   **TFT USB:**<br>
   `M20 U:<folder path>`
 
-**Select file:**
+- **Select file:**
 
   **onboard SD:**<br>
   `M23 <file path>`
@@ -541,12 +541,12 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
   **TFT USB:**<br>
   `M23 U:<file path>`
 
-**Start / Resume print:**
+- **Start / Resume print:**
 
   **onboard SD, TFT SD and TFT USB:**<br>
   `M24`
 
-**Pause print:**
+- **Pause print:**
 
   **onboard SD, TFT SD and TFT USB:**<br>
   `M25`
