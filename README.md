@@ -509,17 +509,17 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 
 Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be controlled by the remote host (TFT or mainboard). The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
-**init media device:**
+**Init media device:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M21`
 
-**release media device:**
+**Release media device:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M22`
 
-**list files:**
+**List files:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M20`
@@ -530,7 +530,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 &emsp;**TFT USB:**<br>
 &emsp;`M20 U:<folder path>`
 
-**select file:**
+**Select file:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M23 <file path>`
@@ -541,27 +541,27 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 &emsp;**TFT USB:**<br>
 &emsp;`M23 U:<file path>`
 
-**start/resume print:**
+**Start/resume print:**
 
 &emsp;**onboard SD, TFT SD and TFT USB:**<br>
 &emsp;`M24`
 
-**pause print:**
+**Pause print:**
 
 &emsp;**onboard SD, TFT SD and TFT USB:**<br>
 &emsp;`M25`
 
-**pause print and park head:**
+**Pause print and park head:**
 
 &emsp;**onboard SD, TFT SD and TFT USB:**<br>
 &emsp;`M125`
 
-**abort print:**
+**Abort print:**
 
 &emsp;**onboard SD, TFT SD and TFT USB:**<br>
 &emsp;`M524`
 
-**report print status:**
+**Report print status:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M27 [C] [S<seconds>]`
@@ -569,17 +569,17 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 &emsp;**TFT SD and TFT USB:**<br>
 &emsp;`M27 [C]`
 
-**start file write:**
+**Start file write:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M28 [B1] <file path>`
 
-**stop file write:**
+**Stop file write:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M29`
 
-**delete file:**
+**Delete file:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M30 <file path>`
@@ -590,7 +590,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 &emsp;**TFT USB:**<br>
 &emsp;`M30 U:<file path>`
 
-**firmware info:**
+**Firmware info:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M115`
