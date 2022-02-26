@@ -599,7 +599,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 &emsp;`M115 TFT`
 
 **NOTES:**
-- TFT's media devices (SD card and USB disk, if any) does not need to be initialized/released
+- TFT's media devices, if any, does not need to be initialized/released
 - When present, the gcode's options (e.g. "M27 C") have the same meaning like in Marlin fw
 
 ### Integration with Octoprint
