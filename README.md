@@ -551,7 +551,46 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 &emsp;**onboard SD, TFT SD and TFT USB:**<br>
 &emsp;`M25`
 
-**NOTE:** TFT's media devices (SD card and USB disk, if any) does not need to be initialized/released.
+**pause print and park head:**
+
+&emsp;**onboard SD, TFT SD and TFT USB:**<br>
+&emsp;`M125`
+
+**abort print:**
+
+&emsp;**onboard SD, TFT SD and TFT USB:**<br>
+&emsp;`M524`
+
+**report print status:**
+
+&emsp;**onboard SD:**<br>
+&emsp;`M27 [C] [S<seconds>]`
+
+&emsp;**TFT SD and TFT USB:**<br>
+&emsp;`M27 [C]`
+
+**delete file:**
+
+&emsp;**onboard SD:**<br>
+&emsp;`M30 <file path>`
+
+&emsp;**TFT SD:**<br>
+&emsp;`M30 SD:<file path> (e.g. "M30 SD:cap.gcode", "M30 SD:/test/cap2.gcode")`
+
+&emsp;**TFT USB:**<br>
+&emsp;`M30 U:<file path>`
+
+**firmware info:**
+
+&emsp;**onboard SD:**<br>
+&emsp;`M115`
+
+&emsp;**TFT SD and TFT USB:**<br>
+&emsp;`M115 TFT`
+
+**NOTES:**
+- TFT's media devices (SD card and USB disk, if any) does not need to be initialized/released
+- When present, the gcode's options (e.g. "M27 C") have the same meaning like in Marlin fw
 
 ### Integration with Octoprint
 
