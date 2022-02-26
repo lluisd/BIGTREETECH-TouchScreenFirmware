@@ -511,7 +511,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 
 **Init media device:**
 
-__**onboard SD:**<br>
+&emsp;**onboard SD:**<br>
   `M21`
 
 - **Release media device:**
