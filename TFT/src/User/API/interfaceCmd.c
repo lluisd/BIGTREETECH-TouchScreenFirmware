@@ -383,7 +383,7 @@ void sendQueueCmd(void)
                   infoFile.source = TFT_USB_DISK;  // set source first
 
                 // example: "SD:/test"
-                strncpy(infoFile.title, &cmd_ptr[4], MAX_PATH_LEN);  // then set title (used as base path by scanPrintFiles)
+                strncpy(infoFile.title, &cmd_ptr[cmd_index + 4], MAX_PATH_LEN);  // then set title (used as base path by scanPrintFiles)
 
                 // strip out any trailing checksum that might be in the string
                 for (int i = 0; i < MAX_PATH_LEN && infoFile.title[i] != '\0' ; i++)
@@ -431,8 +431,8 @@ void sendQueueCmd(void)
                   infoFile.source = TFT_USB_DISK;  // set source first
 
                 // example: "SD:/test/cap.gcode"
-                resetInfoFile();                                     // then reset infoFile (source is restored)
-                strncpy(infoFile.title, &cmd_ptr[4], MAX_PATH_LEN);  // set title as last
+                resetInfoFile();                                                 // then reset infoFile (source is restored)
+                strncpy(infoFile.title, &cmd_ptr[cmd_index + 4], MAX_PATH_LEN);  // set title as last
 
                 // strip out any trailing checksum that might be in the string
                 for (int i = 0; i < MAX_PATH_LEN && infoFile.title[i] != '\0' ; i++)
@@ -479,7 +479,7 @@ void sendQueueCmd(void)
               // NOTE: If the file was selected (with M23) from onboard SD, infoFile.source will be set to BOARD_SD_REMOTE
               //       by the printRemoteStart function called in parseAck.c during M23 ACK parsing
 
-              if ((infoFile.source == TFT_USB_DISK) || (infoFile.source == TFT_SD))  // if a file was selected from TFT with M23
+              if (infoFile.source < BOARD_SD)  // if a file was selected from TFT with M23
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause()
