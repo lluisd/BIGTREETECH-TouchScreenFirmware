@@ -509,75 +509,75 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 
 Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be controlled by the remote host (TFT or mainboard). The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
-**Init media device:**
+**init media device:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M21`
 
-**Release media device:**
+**release media device:**
 
 &emsp;**onboard SD:**<br>
 &emsp;`M22`
 
-- **List files:**
+**list files:**
 
-  **onboard SD:**<br>
-  `M20`
+&emsp;**onboard SD:**<br>
+&emsp;`M20`
 
-  **TFT SD:**<br>
-  `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`
+&emsp;**TFT SD:**<br>
+&emsp;`M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`
 
-  **TFT USB:**<br>
-  `M20 U:<folder path>`
+&emsp;**TFT USB:**<br>
+&emsp;`M20 U:<folder path>`
 
-- **Select file:**
+**select file:**
 
-  **onboard SD:**<br>
-  `M23 <file path>`
+&emsp;**onboard SD:**<br>
+&emsp;`M23 <file path>`
 
-  **TFT SD:**<br>
-  `M23 SD:<file path> (e.g. "M23 SD:cap.gcode", "M23 SD:/test/cap2.gcode")`
+&emsp;**TFT SD:**<br>
+&emsp;`M23 SD:<file path> (e.g. "M23 SD:cap.gcode", "M23 SD:/test/cap2.gcode")`
 
-  **TFT USB:**<br>
-  `M23 U:<file path>`
+&emsp;**TFT USB:**<br>
+&emsp;`M23 U:<file path>`
 
-- **Start / Resume print:**
+**start/resume print:**
 
-  **onboard SD, TFT SD and TFT USB:**<br>
-  `M24`
+&emsp;**onboard SD, TFT SD and TFT USB:**<br>
+&emsp;`M24`
 
-- **Pause print:**
+**pause print:**
 
-  **onboard SD, TFT SD and TFT USB:**<br>
-  `M25`
+&emsp;**onboard SD, TFT SD and TFT USB:**<br>
+&emsp;`M25`
 
-**NOTE:** TFT's media devices (SD card and USB disk, if any) does not need to be initialized / released.
+**NOTE:** TFT's media devices (SD card and USB disk, if any) does not need to be initialized/released.
 
 ### Integration with Octoprint
 
 Octoprint can optionally trigger some actions to the TFT sending specific gcodes. The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
-**Start:**<br>
+**start:**<br>
 `M118 A1 P0 action:print_start`
 
-**End:**<br>
+**end:**<br>
 `M118 A1 P0 action:print_end`
 
-**Cancel:**<br>
+**cancel:**<br>
 `M118 A1 P0 action:cancel`
 
-**Pause:**<br>
+**pause:**<br>
 `M118 A1 P0 action:pause`
 
-**Resume:**<br>
+**resume:**<br>
 `M118 A1 P0 action:resume`
 
-**Time remaining progress:**<br>
+**time remaining progress:**<br>
 `M118 A1 P0 action:notification Time Left <XX>h<YY>m<ZZ>s (e.g. 02h04m06s)`<br>
 or<br>
 `M117 Time Left <XX>h<YY>m<ZZ>s`
 
-**File data progress:**<br>
+**file data progress:**<br>
 `M118 A1 P0 action:notification Data Left <XXXX>/<YYYY> (e.g. 123/12345)`<br>
 or<br>
 `M117 Data Left <XXXX>/<YYYY>`
