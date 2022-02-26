@@ -525,7 +525,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
   `M20`
 
   **TFT SD:**<br>
-  `M20 SD:<folder path>`
+  `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`
 
   **TFT USB:**<br>
   `M20 U:<folder path>`
@@ -536,7 +536,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
   `M23 <file path>`
 
   **TFT SD:**<br>
-  `M23 SD:<file path>`
+  `M23 SD:<file path> (e.g. "M23 SD:cap.gcode", "M23 SD:/test/cap2.gcode")`
 
   **TFT USB:**<br>
   `M23 U:<file path>`
@@ -557,27 +557,27 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 
 Octoprint can optionally trigger some actions to the TFT sending specific gcodes. The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
-**start:**<br>
+**Start:**<br>
 `M118 A1 P0 action:print_start`
 
-**end:**<br>
+**End:**<br>
 `M118 A1 P0 action:print_end`
 
-**cancel:**<br>
+**Cancel:**<br>
 `M118 A1 P0 action:cancel`
 
-**pause:**<br>
+**Pause:**<br>
 `M118 A1 P0 action:pause`
 
-**resume:**<br>
+**Resume:**<br>
 `M118 A1 P0 action:resume`
 
-**time remaining progress:**<br>
+**Time remaining progress:**<br>
 `M118 A1 P0 action:notification Time Left <XX>h<YY>m<ZZ>s (e.g. 02h04m06s)`<br>
 or<br>
 `M117 Time Left <XX>h<YY>m<ZZ>s`
 
-**file data progress:**<br>
+**File data progress:**<br>
 `M118 A1 P0 action:notification Data Left <XXXX>/<YYYY> (e.g. 123/12345)`<br>
 or<br>
 `M117 Data Left <XXXX>/<YYYY>`
