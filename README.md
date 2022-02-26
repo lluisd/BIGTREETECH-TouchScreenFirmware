@@ -512,12 +512,12 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 **Init media device:**
 
 &emsp;**onboard SD:**<br>
-  `M21`
+&emsp;`M21`
 
-- **Release media device:**
+**Release media device:**
 
-  **onboard SD:**<br>
-  `M22`
+&emsp;**onboard SD:**<br>
+&emsp;`M22`
 
 - **List files:**
 
