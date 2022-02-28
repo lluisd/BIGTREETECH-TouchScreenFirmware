@@ -309,7 +309,7 @@ void hostActionCommands(void)
   }
   else if (ack_seen(":print_start"))  // print started from remote host (e.g. USB, Octoprint etc...)
   {
-    printRemoteStart(NULL);
+    startRemotePrint(NULL);  // start print and open Printing menu
   }
   else if (ack_seen(":print_end"))  // print ended from remote host (e.g. USB, Octoprint etc...)
   {
@@ -670,7 +670,7 @@ void parseACK(void)
         memcpy(file_name, dmaL2Cache + start_index, path_len);
         file_name[path_len] = '\0';
 
-        printRemoteStart(file_name);
+        startRemotePrint(file_name);  // start print and open Printing menu
       }
       // parse and store M27
       else if (infoMachineSettings.onboardSD == ENABLED &&

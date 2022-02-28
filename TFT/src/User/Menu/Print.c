@@ -119,12 +119,6 @@ void gocdeListDraw(LISTITEM * item, uint16_t index, uint8_t itemPos)
   }
 }
 
-// start print
-void startPrint(void)
-{
-  OPEN_MENU(menuBeforePrinting);
-}
-
 // open selected file/folder
 bool printPageItemSelected(uint16_t index)
 {
@@ -382,7 +376,7 @@ void menuPrint(void)
   while (MENU_IS(menuPrint))
   {
     key_num = menuKeyGetValue();
-  
+
     switch (key_num)
     {
       case KEY_ICON_0:
@@ -426,7 +420,7 @@ void menuPrint(void)
         {
           list_mode = true;  // force list mode in onboard SD card
           infoFile.source = BOARD_SD;
-          OPEN_MENU(menuPrintFromSource);  // TODO: fix here, onboard SD card PLR feature
+          OPEN_MENU(menuPrintFromSource);
           goto selectEnd;
         }
         break;
@@ -443,7 +437,7 @@ void menuPrint(void)
       default:
         break;
     }
-  
+
     loopProcess();
   }
 
