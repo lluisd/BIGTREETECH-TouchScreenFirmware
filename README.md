@@ -510,8 +510,8 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be controlled by the remote host (TFT or mainboard). The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
 |                               | **TFT SD**                                                                                     | **TFT USB**           | **onboard SD**         |
-| **ACTION**                    | **GCODE**                                                                                      | **GCODE**             | **GCODE**              |
 | :---------------------------- | :--------------------------------------------------------------------------------------------- | :-------------------- | :--------------------- |
+| :---: **ACTION**                    | **GCODE**                                                                                      | **GCODE**             | **GCODE**              |
 | **Init media device**         |                                                                                                |                       | `M21`                  |
 | **Release media device**      |                                                                                                |                       | `M22`                  |
 | **List files**                | `M20 SD:<folder path>`<br/><br/>`examples:`<br/>`M20 SD:`<br/>`M20 SD:/test`                   | `M20 U:<folder path>` | `M20`                  |
