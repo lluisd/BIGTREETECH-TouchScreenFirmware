@@ -155,7 +155,7 @@ In order to use the Touch Mode on your screen:
 
 In case one of the three points above is not properly done, the message:
 
-> No printer attached!
+    No printer attached!
 
 will be shown at the top of the screen. This is because the TFT can not "see" the mainboard through the serial cable.
 
@@ -183,7 +183,7 @@ In order to use the Marlin Mode (emulation mode) on your screen:
 |                    Status Screen DISABLED                    |                    Status Screen ENABLED                     |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![status screen 0](https://user-images.githubusercontent.com/54359396/103319145-09035b80-4a31-11eb-91d0-dd761a48b6f5.png) | ![Unified Material Main Screen](https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png) |
-| If **status_screen:0** is not defined in **config.ini**, define:<br/># UI Settings<br/># Status Screen<br/># Select the Main Screen flavour<br/># Options: [disable: 0, enable: 1]<br/>**status_screen:0** | If **status_screen:1** is not defined in **config.ini**, define:<br/># UI Settings<br/># Status Screen<br/># Select the Main Screen flavour<br/># Options: [disable: 0, enable: 1]<br/>**status_screen:1** |
+| If **status_screen:0** is not defined in **config.ini**, define:<br># UI Settings<br># Status Screen<br># Select the Main Screen flavour<br># Options: [disable: 0, enable: 1]<br>**status_screen:0** | If **status_screen:1** is not defined in **config.ini**, define:<br># UI Settings<br># Status Screen<br># Select the Main Screen flavour<br># Options: [disable: 0, enable: 1]<br>**status_screen:1** |
 
 ## Themes
 
@@ -355,7 +355,7 @@ In order to update the firmware configuration:
 
 The touch screen calibration process begins showing a white screen with a red dot in the upper right corner and the following text:
 
-> Touch Screen Calibration - Please click on the red dot
+    Touch Screen Calibration - Please click on the red dot
 
 Once the process is started, to calibrate the touch screen press (with your finger or a stylus):
 
@@ -366,7 +366,7 @@ Once the process is started, to calibrate the touch screen press (with your fing
 
 Repeat the process in case the following message is shown:
 
-> Adjustment failed, please try again.
+    Adjustment failed, please try again.
 
 ### Forcing the Touch Screen Calibration
 
@@ -509,112 +509,22 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 
 Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be controlled by the remote host (TFT or mainboard). The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
-|                               | **TFT SD**                                                                                     | **TFT USB**           | **onboard SD**         |
-| :---------------------------- | :--------------------------------------------------------------------------------------------- | :-------------------- | :--------------------- |
-| **ACTION**                    | **GCODE**                                                                                      | **GCODE**             | **GCODE**              |
-| **Init media device**         |                                                                                                |                       | `M21`                  |
-| **Release media device**      |                                                                                                |                       | `M22`                  |
-| **List files**                | `M20 SD:<folder path>`<br/><br/>`examples:`<br/>`M20 SD:`<br/>`M20 SD:/test`                   | `M20 U:<folder path>` | `M20`                  |
-| **Select file**               | `M23 SD:<file path>`<br/><br/>`examples:`<br/>`M23 SD:cap.gcode`<br/>`M23 SD:/test/cap2.gcode` | `M23 U:<file path>`   | `M23 <file path>`      |
-| **Start/resume print**        | `M24`                                                                                          | `M24`                 | `M24`                  |
-| **Pause print**               | `M25`                                                                                          | `M25`                 | `M25`                  |
-| **Pause print and park head** | `M125`                                                                                         | `M125`                | `M125`                 |
-| **Abort print**               | `M524`                                                                                         | `M524`                | `M524`                 |
-| **Report print status**       | `M27 [C]`                                                                                      | `M27 [C]`             | `M27 [C] [S<seconds>]` |
-| **Start file write**          |                                                                                                |                       | `M28 [B1] <file path>` |
-| **Stop file write**           |                                                                                                |                       | `M29`                  |
-| **Delete file**               | `M30 SD:<file path>`<br/><br/>`examples:`<br/>`M30 SD:cap.gcode`<br/>`M30 SD:/test/cap2.gcode` | `M30 U:<file path>`   | `M30 <file path>`      |
-| **Firmware info**             | `M115 TFT`                                                                                     | `M115 TFT`            | `M115`                 |
-
-
-**Init media device:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M21`
-
-**Release media device:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M22`
-
-**List files:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M20`
-
-&emsp;**TFT SD:**<br>
-&emsp;`M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`
-
-&emsp;**TFT USB:**<br>
-&emsp;`M20 U:<folder path>`
-
-**Select file:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M23 <file path>`
-
-&emsp;**TFT SD:**<br>
-&emsp;`M23 SD:<file path> (e.g. "M23 SD:cap.gcode", "M23 SD:/test/cap2.gcode")`
-
-&emsp;**TFT USB:**<br>
-&emsp;`M23 U:<file path>`
-
-**Start/resume print:**
-
-&emsp;**onboard SD, TFT SD and TFT USB:**<br>
-&emsp;`M24`
-
-**Pause print:**
-
-&emsp;**onboard SD, TFT SD and TFT USB:**<br>
-&emsp;`M25`
-
-**Pause print and park head:**
-
-&emsp;**onboard SD, TFT SD and TFT USB:**<br>
-&emsp;`M125`
-
-**Abort print:**
-
-&emsp;**onboard SD, TFT SD and TFT USB:**<br>
-&emsp;`M524`
-
-**Report print status:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M27 [C] [S<seconds>]`
-
-&emsp;**TFT SD and TFT USB:**<br>
-&emsp;`M27 [C]`
-
-**Start file write:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M28 [B1] <file path>`
-
-**Stop file write:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M29`
-
-**Delete file:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M30 <file path>`
-
-&emsp;**TFT SD:**<br>
-&emsp;`M30 SD:<file path> (e.g. "M30 SD:cap.gcode", "M30 SD:/test/cap2.gcode")`
-
-&emsp;**TFT USB:**<br>
-&emsp;`M30 U:<file path>`
-
-**Firmware info:**
-
-&emsp;**onboard SD:**<br>
-&emsp;`M115`
-
-&emsp;**TFT SD and TFT USB:**<br>
-&emsp;`M115 TFT`
+|                               | **TFT SD**                                                                                 | **TFT USB**           | **onboard SD**         |
+| :---------------------------- | :----------------------------------------------------------------------------------------- | :-------------------- | :--------------------- |
+| **ACTION**                    | **G-CODE**                                                                                 | **G-CODE**            | **G-CODE**             |
+| **init media device**         |                                                                                            |                       | `M21`                  |
+| **release media device**      |                                                                                            |                       | `M22`                  |
+| **list files**                | `M20 SD:<folder path>`<br><br>examples:<br>`M20 SD:`<br>`M20 SD:/test`                   | `M20 U:<folder path>` | `M20`                  |
+| **select file**               | `M23 SD:<file path>`<br><br>examples:<br>`M23 SD:cap.gcode`<br>`M23 SD:/test/cap2.gcode` | `M23 U:<file path>`   | `M23 <file path>`      |
+| **start/resume print**        | `M24`                                                                                      | `M24`                 | `M24`                  |
+| **pause print**               | `M25`                                                                                      | `M25`                 | `M25`                  |
+| **pause print and park head** | `M125`                                                                                     | `M125`                | `M125`                 |
+| **abort print**               | `M524`                                                                                     | `M524`                | `M524`                 |
+| **report print status**       | `M27 [C]`                                                                                  | `M27 [C]`             | `M27 [C] [S<seconds>]` |
+| **start file write**          |                                                                                            |                       | `M28 [B1] <file path>` |
+| **stop file write**           |                                                                                            |                       | `M29`                  |
+| **delete file**               | `M30 SD:<file path>`<br><br>examples:<br>`M30 SD:cap.gcode`<br>`M30 SD:/test/cap2.gcode` | `M30 U:<file path>`   | `M30 <file path>`      |
+| **firmware info**             | `M115 TFT`                                                                                 | `M115 TFT`            | `M115`                 |
 
 **NOTES:**
 - TFT's media devices, if any, does not need to be initialized/released
@@ -624,30 +534,15 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 
 Octoprint can optionally trigger some actions to the TFT sending specific gcodes. The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
-**start:**<br>
-`M118 A1 P0 action:print_start`
-
-**end:**<br>
-`M118 A1 P0 action:print_end`
-
-**cancel:**<br>
-`M118 A1 P0 action:cancel`
-
-**pause:**<br>
-`M118 A1 P0 action:pause`
-
-**resume:**<br>
-`M118 A1 P0 action:resume`
-
-**time remaining progress:**<br>
-`M118 A1 P0 action:notification Time Left <XX>h<YY>m<ZZ>s (e.g. 02h04m06s)`<br>
-or<br>
-`M117 Time Left <XX>h<YY>m<ZZ>s`
-
-**file data progress:**<br>
-`M118 A1 P0 action:notification Data Left <XXXX>/<YYYY> (e.g. 123/12345)`<br>
-or<br>
-`M117 Data Left <XXXX>/<YYYY>`
+| **ACTION**                  | **G-CODE**                                                                                                                                                                            |
+| :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **start**                   | `M118 A1 P0 action:print_start`                                                                                                                                                       |
+| **end**                     | `M118 A1 P0 action:print_end`                                                                                                                                                         |
+| **cancel**                  | `M118 A1 P0 action:cancel`                                                                                                                                                            |
+| **pause**                   | `M118 A1 P0 action:pause`                                                                                                                                                             |
+| **resume**                  | `M118 A1 P0 action:resume`                                                                                                                                                            |
+| **time remaining progress** | `M118 A1 P0 action:notification Time Left <XX>h<YY>m<ZZ>s`<br><br>or<br><br>`M117 Time Left <XX>h<YY>m<ZZ>s`<br><br>examples:<br>`M118 A1 P0 action:notification Time Left 02h04m06s` |
+| **file data progress**      | `M118 A1 P0 action:notification Data Left <XXXX>/<YYYY>`<br><br>or<br><br>`M117 Data Left <XXXX>/<YYYY>`<br><br>examples:<br>`M118 A1 P0 action:notification Data Left 123/12345`     |
 
 When the trigger `print_start` is received, the TFT switches to **Printing** menu.
 Once on Printing menu, the **pause**, **resume** and **stop** buttons on the menu will be disabled.
