@@ -49,7 +49,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Appendix](#appendix)
   - [Remote Host Printing](#remote-host-printing)
   - [Integration with Octoprint](#integration-with-octoprint)
-  - [Adding G-code Thumbnails](#adding-g---code-thumbnails)
+  - [Adding Gcode Thumbnails](#adding-gcode-thumbnails)
   - [TFT Screen Configuration and Support for RRF](#tft-screen-configuration-and-support-for-rrf)
     - [Overview](#overview)
     - [Loading the Firmware](#loading-the-firmware)
@@ -534,15 +534,15 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 
 Octoprint can optionally trigger some actions to the TFT sending specific G-codes. The following actions and the related triggering G-codes are currently supported by the TFT fw:
 
-| **ACTION**                  | **G-CODE**                                                                                                                                                                                |
-| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **start**                   | `M118 A1 P0 action:print_start`                                                                                                                                                           |
-| **end**                     | `M118 A1 P0 action:print_end`                                                                                                                                                             |
-| **cancel**                  | `M118 A1 P0 action:cancel`                                                                                                                                                                |
-| **pause**                   | `M118 A1 P0 action:pause`                                                                                                                                                                 |
-| **resume**                  | `M118 A1 P0 action:resume`                                                                                                                                                                |
-| **time remaining progress** | `M118 A1 P0 action:notification Time Left <XX>h<YY>m<ZZ>s`<br><br>or<br><br>`M117 Time Left <XX>h<YY>m<ZZ>s`<br><br>Examples:<br><br>`M118 A1 P0 action:notification Time Left 02h04m06s` |
-| **file data progress**      | `M118 A1 P0 action:notification Data Left <XXXX>/<YYYY>`<br><br>or<br><br>`M117 Data Left <XXXX>/<YYYY>`<br><br>Examples:<br><br>`M118 A1 P0 action:notification Data Left 123/12345`     |
+| **ACTION**                  | **G-CODE**                                                                                                                                                                                                                  |
+| :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **start**                   | `M118 A1 P0 action:print_start`                                                                                                                                                                                             |
+| **end**                     | `M118 A1 P0 action:print_end`                                                                                                                                                                                               |
+| **cancel**                  | `M118 A1 P0 action:cancel`                                                                                                                                                                                                  |
+| **pause**                   | `M118 A1 P0 action:pause`                                                                                                                                                                                                   |
+| **resume**                  | `M118 A1 P0 action:resume`                                                                                                                                                                                                  |
+| **time remaining progress** | `M118 A1 P0 action:notification Time Left <XX>h<YY>m<ZZ>s`<br><br>or<br><br>`M117 Time Left <XX>h<YY>m<ZZ>s`<br><br>Examples:<br><br>`M118 A1 P0 action:notification Time Left 02h04m06s`<br><br>`M117 Time Left 02h04m06s` |
+| **file data progress**      | `M118 A1 P0 action:notification Data Left <XXXX>/<YYYY>`<br><br>or<br><br>`M117 Data Left <XXXX>/<YYYY>`<br><br>Examples:<br><br>`M118 A1 P0 action:notification Data Left 123/12345`<br><br>`M117 Data Left 123/12345`     |
 
 When the trigger `print_start` is received, the TFT switches to **Printing** menu.
 Once on Printing menu, the **pause**, **resume** and **stop** buttons on the menu will be disabled.
@@ -551,7 +551,7 @@ Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Prin
 
 **NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone).
 
-### Adding G-code Thumbnails
+### Adding Gcode Thumbnails
 
 The TFT can display embedded G-code thumbnails in the file viewer using two different flavors:
 
