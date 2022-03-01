@@ -507,7 +507,7 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 
 ### Printing from Host
 
-Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be handled by the remote host (TFT or mainboard). The following actions and the related triggering G-codes are currently supported by the TFT fw:
+Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be handled by the host (TFT or mainboard). The following actions and the related triggering G-codes are currently supported by the TFT fw:
 
 |                               | **TFT SD CARD**                                                                              | **TFT USB DISK**      | **onboard SD**         |
 | :---------------------------- | :------------------------------------------------------------------------------------------- | :-------------------- | :--------------------- |
