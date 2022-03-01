@@ -509,13 +509,13 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 
 Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be controlled by the remote host (TFT or mainboard). The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
-|                               |  **GCODE**                                                                      | GCODE                 | GCODE                  |
+|                               |  **GCODE**                                                                      | **GCODE**             | **GCODE**              |
 | :---------------------------: | :-----------------------------------------------------------------------------: | :-------------------: | :--------------------: |
 | **ACTION**                    | **TFT SD:**                                                                     | **TFT USB:**          | **onboard SD:**        |
 | **Init media device**         |                                                                                 |                       | `M21`                  |
 | **Release media device**      |                                                                                 |                       | `M22`                  |
-| **List files**                | `M20 SD:<folder path><br>e.g. "M20 SD:"<br>"M20 SD:/test")`                     | `M20 U:<folder path>` | `M20`                  |
-| **Select file**               | `M23 SD:<file path><br>e.g. "M23 SD:cap.gcode"<br>"M23 SD:/test/cap2.gcode")`   | `M23 U:<file path>`   | `M23 <file path>`      |
+| **List files**                | `M20 SD:<folder path><br/>e.g. "M20 SD:"<br/>"M20 SD:/test")`                   | `M20 U:<folder path>` | `M20`                  |
+| **Select file**               | `M23 SD:<file path><br/>e.g. "M23 SD:cap.gcode"<br/>"M23 SD:/test/cap2.gcode")` | `M23 U:<file path>`   | `M23 <file path>`      |
 | **Start/resume print**        | `M24`                                                                           | `M24`                 | `M24`                  |
 | **Pause print**               | `M25`                                                                           | `M25`                 | `M25`                  |
 | **Pause print and park head** | `M125`                                                                          | `M125`                | `M125`                 |
