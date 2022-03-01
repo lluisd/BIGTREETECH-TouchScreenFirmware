@@ -497,7 +497,8 @@ and the reset described above did not help, try the following:
 - Do not use the unshielded wires directly but use a 2 pin connector instead
 - Power up the TFT and try to reset the TFT or to instal a new firmware like described in this document
 
-**NOTE:** With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Mode (if available). Marlin Mode will not show any interface without a proper EXP connection (see [Marlin Mode Setup](#marlin-mode-setup)).
+**NOTE:** With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Mode (if available).
+Marlin Mode will not show any interface without a proper EXP connection (see [Marlin Mode Setup](#marlin-mode-setup)).
 
 ## Version History
 
