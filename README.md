@@ -528,7 +528,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 
 **NOTES:**
 - TFT's media devices, if any, does not need to be initialized/released
-- When present, the G-code's options (e.g. "M27 C") have the same meaning like in Marlin fw
+- When present, the G-code's options (e.g. `M27 C`) have the same meaning like in Marlin fw
 
 ### Printing from Remote Host
 
