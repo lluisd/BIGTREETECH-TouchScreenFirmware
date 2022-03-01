@@ -48,7 +48,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
 - [Version History](#version-history)
 - [Appendix](#appendix)
   - [Remote Host Printing](#remote-host-printing)
-  - [Integration with Octoprint](#integration-with-octoprint)
+  - [Printing from Octoprint](#printing-from-octoprint)
   - [Adding Gcode Thumbnails](#adding-gcode-thumbnails)
   - [TFT Screen Configuration and Support for RRF](#tft-screen-configuration-and-support-for-rrf)
     - [Overview](#overview)
@@ -530,9 +530,9 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 - TFT's media devices, if any, does not need to be initialized/released
 - When present, the G-code's options (e.g. "M27 C") have the same meaning like in Marlin fw
 
-### Integration with Octoprint
+### Printing from Octoprint
 
-Octoprint can optionally trigger some actions to the TFT sending specific G-codes. The following actions and the related triggering G-codes are currently supported by the TFT fw:
+Octoprint, Pronterface etc, connected to a TFT's or mainboard's serial port, can host a print (print handled by the host) and optionally can trigger some actions to the TFT sending specific G-codes. The following actions and the related triggering G-codes are currently supported by the TFT fw:
 
 | **ACTION**                  | **G-CODE**                                                                                                                                                                                                              |
 | :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
