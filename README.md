@@ -341,8 +341,7 @@ Please, see [Configuration](#configuration) section for configuring `config.ini`
 
 **NOTES:**
 
-- For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card.
-  However, the firmware can only be updated using an SD card
+- For devices with USB flash drive support, it is possible to update the **icons**, **fonts**, **config** and the **language** files from a USB flash drive in the same way it is done through an SD card. However, the firmware can only be updated using an SD card
 - The following procedure can be also applied to any combination of resources (e.g. only **icons**, **icons** + **fonts**, **config** + **language** files etc.)
 
 In order to update the firmware configuration:
@@ -498,8 +497,7 @@ and the reset described above did not help, try the following:
 - Do not use the unshielded wires directly but use a 2 pin connector instead
 - Power up the TFT and try to reset the TFT or to instal a new firmware like described in this document
 
-**NOTE:** With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Mode (if available).
-Marlin Mode will not show any interface without a proper EXP connection (see [Marlin Mode Setup](#marlin-mode-setup)).
+**NOTE:** With only power supplied, you should be able to navigate through the menus using the touchscreen and even to switch to Marlin Mode (if available). Marlin Mode will not show any interface without a proper EXP connection (see [Marlin Mode Setup](#marlin-mode-setup)).
 
 ## Version History
 
