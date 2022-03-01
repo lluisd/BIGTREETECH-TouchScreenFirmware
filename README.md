@@ -509,22 +509,23 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 
 Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be controlled by the remote host (TFT or mainboard). The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
-|                               | **TFT SD**                                                                                | **TFT USB**           | **onboard SD**         |
-| :---------------------------- | :---------------------------------------------------------------------------------------- | :-------------------- | :--------------------- |
-| **ACTION**                    | **GCODE**                                                                                 | **GCODE**             | **GCODE**              |
-| **Init media device**         |                                                                                           |                       | `M21`                  |
-| **Release media device**      |                                                                                           |                       | `M22`                  |
-| **List files**                | `M20 SD:<folder path>`<br/>`examples:`<br/>`M20 SD:`<br/>`M20 SD:/test`                   | `M20 U:<folder path>` | `M20`                  |
-| **Select file**               | `M23 SD:<file path>`<br/>`examples:`<br/>`M23 SD:cap.gcode`<br/>`M23 SD:/test/cap2.gcode` | `M23 U:<file path>`   | `M23 <file path>`      |
-| **Start/resume print**        | `M24`                                                                                     | `M24`                 | `M24`                  |
-| **Pause print**               | `M25`                                                                                     | `M25`                 | `M25`                  |
-| **Pause print and park head** | `M125`                                                                                    | `M125`                | `M125`                 |
-| **Abort print**               | `M524`                                                                                    | `M524`                | `M524`                 |
-| **Report print status**       | `M27 [C]`                                                                                 | `M27 [C]`             | `M27 [C] [S<seconds>]` |
-| **Start file write**          |                                                                                           |                       | `M28 [B1] <file path>` |
-| **Stop file write**           |                                                                                           |                       | `M29`                  |
-| **Delete file**               | `M30 SD:<file path>`<br/>`examples:`<br/>`M30 SD:cap.gcode`<br/>`M30 SD:/test/cap2.gcode` | `M30 U:<file path>`   | `M30 <file path>`      |
-| **Firmware info**             | `M115 TFT`                                                                                | `M115 TFT`            | `M115`                 |
+|                               | **TFT SD**                                                                                     | **TFT USB**           | **onboard SD**         |
+| :---------------------------: | :--------------------------------------------------------------------------------------------: | :-------------------: | :--------------------: |
+| **ACTION**                    | **GCODE**                                                                                      | **GCODE**             | **GCODE**              |
+| :---------------------------- | :--------------------------------------------------------------------------------------------- | :-------------------- | :--------------------- |
+| **Init media device**         |                                                                                                |                       | `M21`                  |
+| **Release media device**      |                                                                                                |                       | `M22`                  |
+| **List files**                | `M20 SD:<folder path>`<br/><br/>`examples:`<br/>`M20 SD:`<br/>`M20 SD:/test`                   | `M20 U:<folder path>` | `M20`                  |
+| **Select file**               | `M23 SD:<file path>`<br/><br/>`examples:`<br/>`M23 SD:cap.gcode`<br/>`M23 SD:/test/cap2.gcode` | `M23 U:<file path>`   | `M23 <file path>`      |
+| **Start/resume print**        | `M24`                                                                                          | `M24`                 | `M24`                  |
+| **Pause print**               | `M25`                                                                                          | `M25`                 | `M25`                  |
+| **Pause print and park head** | `M125`                                                                                         | `M125`                | `M125`                 |
+| **Abort print**               | `M524`                                                                                         | `M524`                | `M524`                 |
+| **Report print status**       | `M27 [C]`                                                                                      | `M27 [C]`             | `M27 [C] [S<seconds>]` |
+| **Start file write**          |                                                                                                |                       | `M28 [B1] <file path>` |
+| **Stop file write**           |                                                                                                |                       | `M29`                  |
+| **Delete file**               | `M30 SD:<file path>`<br/><br/>`examples:`<br/>`M30 SD:cap.gcode`<br/>`M30 SD:/test/cap2.gcode` | `M30 U:<file path>`   | `M30 <file path>`      |
+| **Firmware info**             | `M115 TFT`                                                                                     | `M115 TFT`            | `M115`                 |
 
 
 **Init media device:**
