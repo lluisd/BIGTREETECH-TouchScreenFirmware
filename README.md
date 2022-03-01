@@ -546,7 +546,7 @@ Octoprint, Pronterface etc, connected to a TFT's or mainboard's serial port, can
 
 When the trigger `print_start` is received, the TFT switches to **Printing** menu.
 Once on Printing menu, the **pause**, **resume** and **stop** buttons on the menu will be disabled.
-That means only Octoprint will control the print.
+That means, only the remote host will control the print.
 Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Printing menu is finalized (statistics available etc.) and unlocked (the menu can be closed).
 
 **NOTE:** A new plugin on Octoprint implementing the above protocol should be the preferable way (available to everyone).
