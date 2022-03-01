@@ -47,7 +47,7 @@ Important information related to BigTreeTech's TFT touchscreen 3D printer contro
   - [Worst Case Scenario](#worst-case-scenario)
 - [Version History](#version-history)
 - [Appendix](#appendix)
-  - [Printing on Remote Host](#printing-on-remote-host)
+  - [Printing from Host](#printing-from-host)
   - [Printing from Remote Host](#printing-from-remote-host)
   - [Adding Gcode Thumbnails](#adding-gcode-thumbnails)
   - [TFT Screen Configuration and Support for RRF](#tft-screen-configuration-and-support-for-rrf)
@@ -505,7 +505,7 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 
 ## Appendix
 
-### Printing on Remote Host
+### Printing from Host
 
 Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be handled by the remote host (TFT or mainboard). The following actions and the related triggering G-codes are currently supported by the TFT fw:
 
