@@ -509,6 +509,26 @@ Please, see [BIGTREETECH-TouchScreenFirmware/releases](https://github.com/bigtre
 
 Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both the TFT's and mainboard's media devices and start a print that will be controlled by the remote host (TFT or mainboard). The following actions and the related triggering gcodes are currently supported by the TFT fw:
 
+
+|                                                 |                      **TFT SD:**                |                      **TFT USB:**               | **onboard SD:**                                 |
+| :---------------------------------------------: | :---------------------------------------------: | :---------------------------------------------: | :---------------------------------------------: |
+|                     ACTION                      |                      GCODE                      |                      GCODE                      |                      GCODE                      |
+| :---------------------------------------------: | :---------------------------------------------: | :---------------------------------------------: | :---------------------------------------------: |
+| **Init media device:**                          |                                                                            |                         | `M21`                                           |
+| **Release media device:**                       |                                                                            |                         | `M22`                                           |
+| **List files:**                                 | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | `M20 U:<folder path>`   | `M20`                                           |
+| **Select file:**                                | `M23 SD:<file path> (e.g. "M23 SD:cap.gcode", "M23 SD:/test/cap2.gcode")`  | `M23 U:<file path>`     | `M23 <file path>`                               |
+| **Start/resume print:**                         | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+| **Pause print:**                                | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+| **Pause print and park head:**                  | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+| **Abort print:**                                | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+| **Report print status:**                        | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+| **Start file write:**                           | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+| **Stop file write:**                            | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+| **Delete file:**                                | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+| **Firmware info:**                              | `M20 SD:<folder path> (e.g. "M20 SD:", "M20 SD:/test")`                    | M20 U:<folder path>`    | `M20`                                           |
+
+
 **Init media device:**
 
 &emsp;**onboard SD:**<br>
