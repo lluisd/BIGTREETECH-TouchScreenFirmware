@@ -155,7 +155,7 @@ In order to use the Touch Mode on your screen:
 
 In case one of the three points above is not properly done, the message:
 
-    No printer attached!
+> No printer attached!
 
 will be shown at the top of the screen. This is because the TFT can not "see" the mainboard through the serial cable.
 
@@ -355,7 +355,7 @@ In order to update the firmware configuration:
 
 The touch screen calibration process begins showing a white screen with a red dot in the upper right corner and the following text:
 
-    Touch Screen Calibration - Please click on the red dot
+> Touch Screen Calibration - Please click on the red dot
 
 Once the process is started, to calibrate the touch screen press (with your finger or a stylus):
 
@@ -366,7 +366,7 @@ Once the process is started, to calibrate the touch screen press (with your fing
 
 Repeat the process in case the following message is shown:
 
-    Adjustment failed, please try again.
+> Adjustment failed, please try again.
 
 ### Forcing the Touch Screen Calibration
 
@@ -511,7 +511,7 @@ Octoprint, Pronterface etc, connected to a TFT's serial port, can browse both th
 
 |                               | **TFT SD**                                                                                     | **TFT USB**           | **onboard SD**         |
 | :---------------------------- | :--------------------------------------------------------------------------------------------- | :-------------------- | :--------------------- |
-| :---: **ACTION**                    | **GCODE**                                                                                      | **GCODE**             | **GCODE**              |
+| **ACTION**                    | **GCODE**                                                                                      | **GCODE**             | **GCODE**              |
 | **Init media device**         |                                                                                                |                       | `M21`                  |
 | **Release media device**      |                                                                                                |                       | `M22`                  |
 | **List files**                | `M20 SD:<folder path>`<br/><br/>`examples:`<br/>`M20 SD:`<br/>`M20 SD:/test`                   | `M20 U:<folder path>` | `M20`                  |
