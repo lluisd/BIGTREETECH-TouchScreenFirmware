@@ -220,6 +220,7 @@ bool Get_NewestGcode(const TCHAR* path)
         continue;
 
       date = (finfo.fdate << 16) | finfo.ftime;
+
       resetInfoFile();
 
       if (len + strlen(finfo.fname) + 2 > MAX_PATH_LEN)

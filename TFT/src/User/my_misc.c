@@ -138,18 +138,31 @@ double stringToDouble(char *str, char **endptr)
   return val * sign;
 }
 
+// strip out any leading " ", ":" or "/" character that might be in the string
+const char *stripHead(const char *str)
+{
+  // example: " :/test/cap2.gcode" -> "test/cap2.gcode"
+
+  for (; *str != '\0'; str++)
+  {
+    if (*str != ' ' && *str != ':' && *str != '/')
+      break;
+  }
+
+  return str;
+}
+
 // strip out any trailing checksum that might be in the string
 void stripChecksum(char *str)
 {
-  // example:
-  // "str" = "SD:/test/cap2.gcode*36"
+  // example: "/test/cap2.gcode*36" -> "/test/cap2.gcode"
 
-  // "SD:/test/cap2.gcode*36" -> "SD:/test/cap2.gcode"
   for (; *str != '\0'; str++)
   {
     if (*str == '*' || *str == '\n' || *str == '\r')
     {
       *str = '\0';
+
       break;
     }
   }

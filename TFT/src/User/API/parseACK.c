@@ -446,7 +446,7 @@ void parseACK(void)
       requestCommandInfo.inJson = false;
     }
 
-    // onboard SD Gcode command response
+    // onboard SD gcode command response
 
     if (requestCommandInfo.inWaitResponse)
     {
@@ -510,7 +510,7 @@ void parseACK(void)
       requestCommandInfo.inJson = false;
       goto parse_end;
     }
-    // onboard SD Gcode command response end
+    // onboard SD gcode command response end
 
     if (!requestCommandInfo.inWaitResponse && !requestCommandInfo.inResponse && infoMachineSettings.firmwareType == FW_REPRAPFW)
     {
@@ -658,7 +658,7 @@ void parseACK(void)
         hasFilamentData = true;
       }
       // parse and store M23, select SD file
-      else if (infoMachineSettings.onboardSD == ENABLED && ack_seen("File opened: "))
+      else if (infoMachineSettings.onboardSD == ENABLED && ack_seen("File opened:"))
       {
         char file_name[MAX_PATH_LEN];
         char * end_string = " Size:";  // File opened: 1A29A~1.GCO Size: 6974
