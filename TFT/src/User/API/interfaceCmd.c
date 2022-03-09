@@ -351,6 +351,9 @@ bool initRemoteTFT()
   else
     return false;
 
+  // present just to make the code robust. It should never be used printing from remote TFT media
+  infoFile.boardSource = BOARD_SD;
+
   CMD path;  // temporary working buffer (cmd_ptr buffer must always remain unchanged)
 
   // cmd_index was set by cmd_starts_with function
@@ -423,7 +426,7 @@ void writeRemoteTFT()
   // "cmd_ptr" = "N2 G29*56\n"
   // "cmd_ptr" = "N3 M29*66\n"
 
-  // if M29, stop writing mode
+  // if M29, stop writing mode. cmd_index (used by cmd_value function) was set by sendQueueCmd function
   if (cmd_ptr[cmd_base_index] == 'M' && cmd_value() == 29)  // e.g. "N3 M29*66\n" -> "M29*66\n"
   {
     f_close(&file);
