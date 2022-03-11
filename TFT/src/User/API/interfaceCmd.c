@@ -463,17 +463,24 @@ void sendQueueCmd(void)
 
   bool avoid_terminal = false;
   bool fromTFT = getCmd();  // retrieve leading gcode in the queue and check if it is originated by TFT or other hosts
+  char * strPtr = cmd_ptr;  // cmd_ptr was set by getCmd function
 
-  // skip initial spaces
-  cmd_base_index = stripHead(cmd_ptr) - cmd_ptr;                   // e.g. "  N1   G28*46\n" -> "N1   G28*46\n"
+  // skip leading spaces
+  while (*strPtr == ' ') strPtr++;           // e.g. "  N1   G28*46\n" -> "N1   G28*46\n"
 
-  // skip line number from stored gcode for internal parsing purpose
-  if (cmd_ptr[cmd_base_index] == 'N')                              // e.g. "N1   G28*46\n"
-    cmd_base_index = strcspn(&cmd_ptr[cmd_base_index], " ") + 1;   // e.g. "N1   G28*46\n" -> "  G28*46\n"
+  // skip N[-0-9] (line number) if included in the command line
+  if (*strPtr == 'N' && NUMERIC(strPtr[1]))  // e.g. "N1   G28*46\n" -> "G28*46\n"
+  {
+    strPtr += 2;                             // skip N[-0-9]
+    while (NUMERIC(*strPtr)) ++strPtr;       // skip [0-9]*
+    while (*strPtr == ' ')   ++strPtr;       // skip [ ]*
+  }
 
-  // set index to gcode character and gcode value
-  cmd_base_index = stripHead(cmd_ptr + cmd_base_index) - cmd_ptr;  // e.g. "  G28*46\n" -> "G28*46\n"
-  cmd_index = cmd_base_index + 1;                                  // e.g. "G28*46\n" -> "28*46\n"
+  // set cmd_base_index with index of gcode command
+  cmd_base_index = strPtr - cmd_ptr;         // e.g. "  N1   G28*46\n" -> "G28*46\n"
+
+  // set cmd_index with index of gcode value
+  cmd_index = cmd_base_index + 1;            // e.g. "G28*46\n" -> "28*46\n"
 
   if (writing_mode != NO_WRITING)  // if writing mode (previously triggered by M28)
   {
