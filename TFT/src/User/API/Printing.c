@@ -247,9 +247,7 @@ void shutdownLoop(void)
   }
 
   if (tempIsLower)
-  {
     shutdown();
-  }
 }
 
 void shutdownStart(void)
@@ -326,9 +324,7 @@ void updatePrintUsedFilament(void)
   float E_pos = ((infoFile.source >= BOARD_MEDIA) ? coordinateGetAxisActual(E_AXIS) : coordinateGetAxisTarget(E_AXIS));
 
   if ((E_pos + MAX_RETRACT_LIMIT) < last_E_pos)  // Check whether E position reset (G92 E0)
-  {
     last_E_pos = 0;
-  }
 
   infoPrintSummary.length += (E_pos - last_E_pos) / 1000;
   last_E_pos = E_pos;
@@ -376,7 +372,8 @@ bool printRemoteStart(const char * filename)
   infoHost.printing = true;  // always set (even if printing from onboard media)
 
   // if printing from TFT media or onboard media, exit (printStart function was called just before)
-  if (infoPrinting.printing && infoFile.source <= BOARD_MEDIA) return false;
+  if (infoPrinting.printing && infoFile.source <= BOARD_MEDIA)
+    return false;
 
   // always clean infoPrinting first and then set the needed attributes
   memset(&infoPrinting, 0, sizeof(PRINTING));
@@ -462,9 +459,7 @@ bool printStart(void)
   infoPrinting.printing = true;
 
   if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_START_PRINT))
-  {
     sendPrintCodes(0);
-  }
 
   if (infoFile.source == BOARD_MEDIA)
   {
@@ -492,9 +487,7 @@ void printEnd(void)
     case TFT_USB_DISK:
     case TFT_SD:
       if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_END_PRINT))
-      {
         sendPrintCodes(1);
-      }
 
       break;
   }
@@ -503,9 +496,7 @@ void printEnd(void)
   printComplete();
 
   if (infoSettings.auto_shutdown)  // auto shutdown after print
-  {
     shutdownStart();
-  }
 }
 
 void printAbort(void)
@@ -543,9 +534,7 @@ void printAbort(void)
       else  // if RepRap
       {
         if (!infoPrinting.pause)
-        {
           request_M25();  // must pause the print before cancel it
-        }
 
         request_M0();  // M524 is not supportet in RepRap firmware
       }
@@ -568,9 +557,7 @@ void printAbort(void)
   }
 
   if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_CANCEL_PRINT))
-  {
     sendPrintCodes(2);
-  }
 
   printComplete();
   clearInfoPrint();  // finally clear infoPrinting and exit from dir
@@ -602,6 +589,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
         request_M25();   // pause
       else
         request_M24(0);  // resume
+
       break;
 
     case TFT_USB_DISK:
@@ -712,7 +700,12 @@ bool isRemoteHostPrinting(void)
 
 void setPrintAbort(void)
 {
-  if (!infoPrinting.printing) return;
+  // in case of printing from Marlin Mode (infoPrinting.printing set to "false"), always force to "false"
+  if (!infoPrinting.printing)
+  {
+    infoHost.printing = false;
+    return;
+  }
 
   BUZZER_PLAY(SOUND_ERROR);
   printComplete();
@@ -731,8 +724,9 @@ void setPrintPause(bool updateHost, PAUSE_TYPE pauseType)
     infoPrinting.pauseType = pauseType;
   }
 
+  // in case of forcing update or printing from Marlin Mode (infoPrinting.printing set to "false") or
   // in case of printing from remote host or infoSettings.m27_active set to "false", always force to "false"
-  if (updateHost || ((infoPrinting.printing && infoFile.source == REMOTE_HOST) || !infoSettings.m27_active))
+  if ((updateHost || !infoPrinting.printing) || (infoFile.source == REMOTE_HOST || !infoSettings.m27_active))
     infoHost.printing = false;
 }
 
@@ -746,8 +740,9 @@ void setPrintResume(bool updateHost)
   // no need to check it is printing when setting the value to "false"
   infoPrinting.pause = false;
 
-  // in case of printing from remote host or infoSettings.m27_active set to "false", always force to "true"
-  if (updateHost || ((infoPrinting.printing && infoFile.source == REMOTE_HOST) || !infoSettings.m27_active))
+  // in case of forcing update or printing from Marlin Mode (infoPrinting.printing set to "false") or
+  // in case of printing from remote host or infoSettings.m27_active set to "false", always force to "false"
+  if ((updateHost || !infoPrinting.printing) || (infoFile.source == REMOTE_HOST || !infoSettings.m27_active))
     infoHost.printing = true;
 }
 
