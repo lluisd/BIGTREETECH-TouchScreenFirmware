@@ -16,6 +16,8 @@
     #define STRING_PERSISTENT_INFO        "Temp. toujours affichées"
     #define STRING_TERMINAL_ACK           "Afficher ACK sur Terminal"
     #define STRING_SERIAL_ALWAYS_ON       "Serial toujours actif"
+    #define STRING_SHOW_BOOTSCREEN        "Show Bootscreen"
+    #define STRING_ALERT_HEATERS_ON       "Alert that heaters are still on" 
     #define STRING_MARLIN_FULLSCREEN      "Mode Marlin plein écran"
     #define STRING_MARLIN_SHOW_TITLE      "Titre en Mode Marlin"
     #define STRING_MARLIN_TYPE            "Type du Mode Marlin"
@@ -59,6 +61,7 @@
     #define STRING_STEALTH_CHOP           "StealthChop TMC"
     #define STRING_DELTA_CONFIGURATION    "Réglages Delta"
     #define STRING_DELTA_TOWER_ANGLE      "Corrections d'angle des tours"
+    #define STRING_DELTA_DIAGONAL_ROD     "Ajustements Diagonal Rod"
     #define STRING_DELTA_ENDSTOP          "Ajustements Endstop"
     #define STRING_PROBE_OFFSET           "Décalage palpeur"
     #define STRING_LIN_ADVANCE            "Linear Advance"
@@ -171,10 +174,10 @@
     #define STRING_READ_USB_DISK_ERROR    "Erreur de lecture de la clé USB !"
     #define STRING_USB_DISK_INSERTED      "Clé USB insérée !"
     #define STRING_USB_DISK_REMOVED       "Clé USB retirée !"
-    #define STRING_USB_DISK_NOT_DETECTED  "Aucune clé USB détectée."
-    #define STRING_ONBOARDSD              "Port CM"
+    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
+    #define STRING_ONBOARDSD              "SD interne"
     #define STRING_ONBOARDUSB             "USB interne"
-    #define STRING_READ_ONBOARDSD_ERROR   "Erreur de lecture du port de la carte mère !"
+    #define STRING_READ_ONBOARDSD_ERROR   "Erreur de lecture de la media interne !"
     #define STRING_FILAMENT_RUNOUT        "Fin de Filament !"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -190,6 +193,8 @@
     #define STRING_DEPLOY                 "Déployer"
     #define STRING_STOW                   "Rentrer"
     #define STRING_REPEAT                 "Répéter"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Buse"

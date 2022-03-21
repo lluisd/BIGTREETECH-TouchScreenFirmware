@@ -59,13 +59,6 @@ struct HOST_ACTION
   uint8_t button;           // number of buttons
 } hostAction;
 
-//void setIgnoreEcho(ECHO_ID msgId, bool state)
-//{
-//  static uint8_t forceIgnore[ECHO_ID_COUNT] = {0};
-//
-//  forceIgnore[msgId] = state;
-//}
-
 void setHostDialog(bool isHostDialog)
 {
   hostDialog = isHostDialog;
@@ -435,11 +428,12 @@ void parseACK(void)
       }
       else if (infoMachineSettings.firmwareType == FW_NOT_DETECTED)  // if never connected to the printer since boot
       {
-        storeCmd("M503\n");  // query detailed printer capabilities
-        storeCmd("M92\n");   // steps/mm of extruder is an important parameter for Smart filament runout
-                             // avoid can't getting this parameter due to disabled M503 in Marlin
-        storeCmd("M211\n");  // retrieve the software endstops state
-        storeCmd("M115\n");  // as last command to identify the FW type!
+        storeCmd("M503\n");    // query detailed printer capabilities
+        storeCmd("M92\n");     // steps/mm of extruder is an important parameter for Smart filament runout
+                               // avoid can't getting this parameter due to disabled M503 in Marlin
+        storeCmd("M211\n");    // retrieve the software endstops state
+        storeCmd("M115\n");    // as last command to identify the FW type!
+        storeCmd("M401 H\n");  // check the state of BLTouch HighSpeed mode
       }
 
       infoHost.connected = true;
@@ -966,6 +960,9 @@ void parseACK(void)
         if (ack_seen("S")) setParameter(P_DELTA_CONFIGURATION, 1, ack_value());
         if (ack_seen("R")) setParameter(P_DELTA_CONFIGURATION, 2, ack_value());
         if (ack_seen("L")) setParameter(P_DELTA_CONFIGURATION, 3, ack_value());
+        if (ack_seen("A")) setParameter(P_DELTA_DIAGONAL_ROD, AXIS_INDEX_X, ack_value());
+        if (ack_seen("B")) setParameter(P_DELTA_DIAGONAL_ROD, AXIS_INDEX_Y, ack_value());
+        if (ack_seen("C")) setParameter(P_DELTA_DIAGONAL_ROD, AXIS_INDEX_Z, ack_value());
         if (ack_seen("X")) setParameter(P_DELTA_TOWER_ANGLE, AXIS_INDEX_X, ack_value());
         if (ack_seen("Y")) setParameter(P_DELTA_TOWER_ANGLE, AXIS_INDEX_Y, ack_value());
         if (ack_seen("Z")) setParameter(P_DELTA_TOWER_ANGLE, AXIS_INDEX_Z, ack_value());
