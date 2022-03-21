@@ -14,19 +14,19 @@ bool isPrintModelIcon(void)
 }
 
 // get FS's ID of current source
-TCHAR * getCurFileSource(void)
+TCHAR * getSourceFS(void)
 {
   switch (infoFile.source)
   {
     case TFT_SD:
       return SD_ROOT_DIR;
 
-    case TFT_USB_DISK:
-      return USBDISK_ROOT_DIR;
+    case TFT_USB:
+      return USB_ROOT_DIR;
 
-    case BOARD_MEDIA:
-    case BOARD_MEDIA_REMOTE:
-      return infoMachineSettings.firmwareType == FW_REPRAPFW ? "gcodes" : "bMD:";
+    case ONBOARD_MEDIA:
+    case ONBOARD_MEDIA_REMOTE:
+      return infoMachineSettings.firmwareType == FW_REPRAPFW ? "gcodes" : "oMD:";
 
     case REMOTE_HOST:
       return "Remote printing...";
@@ -44,11 +44,11 @@ bool mountFS(void)
     case TFT_SD:
       return mountSDCard();
 
-    case TFT_USB_DISK:
+    case TFT_USB:
       return mountUSBDisk();
 
-    case BOARD_MEDIA:
-      if (infoHost.printing)
+    case ONBOARD_MEDIA:
+      if (isHostPrinting())
         return true;  // no mount while printing
       else
         return mountGcodeSDCard();
@@ -64,10 +64,10 @@ bool scanPrintFiles(void)
   switch (infoFile.source)
   {
     case TFT_SD:
-    case TFT_USB_DISK:
+    case TFT_USB:
       return scanPrintFilesFatFs();
 
-    case BOARD_MEDIA:
+    case ONBOARD_MEDIA:
       return scanPrintFilesGcodeFs();
 
     default:
@@ -86,9 +86,10 @@ void clearInfoFile(void)
     infoFile.folder[i] = NULL;
 
     if (infoFile.longFolder[i] != NULL)  // long folder name is optional so we need to check its presence
+    {
       free(infoFile.longFolder[i]);
-
-    infoFile.longFolder[i] = NULL;
+      infoFile.longFolder[i] = NULL;
+    }
   }
 
   for (i = 0; i < infoFile.fileCount; i++)
@@ -97,9 +98,10 @@ void clearInfoFile(void)
     infoFile.file[i] = NULL;
 
     if (infoFile.longFile[i] != NULL)  // long filename is optional so we need to check its presence
+    {
       free(infoFile.longFile[i]);
-
-    infoFile.longFile[i] = NULL;
+      infoFile.longFile[i] = NULL;
+    }
   }
 
   infoFile.folderCount = 0;
@@ -110,14 +112,14 @@ void clearInfoFile(void)
 void resetInfoFile(void)
 {
   FS_SOURCE source = infoFile.source;
-  ONBOARD_SOURCE onboardSource = infoFile.boardSource;
+  ONBOARD_SOURCE onboardSource = infoFile.onboardSource;
 
   clearInfoFile();
   memset(&infoFile, 0, sizeof(infoFile));
 
   infoFile.source = source;
-  infoFile.boardSource =  onboardSource;
-  strcpy(infoFile.title, getCurFileSource());
+  infoFile.onboardSource = onboardSource;
+  strcpy(infoFile.path, getSourceFS());
 }
 
 // skip path information, if any
@@ -129,47 +131,47 @@ char * getPathTail(void)
   // "SD:cap.gcode" -> "cap.gcode"
   // "Remote printing..." -> ""
 
-  char * strPtr = strrchr(infoFile.title, '/');  // remove path information, if any
+  char * strPtr = strrchr(infoFile.path, '/');  // remove path information, if any
 
   if (strPtr == NULL)  // if "/" not found, it can be a filename on the root folder
   {
-    strPtr = strchr(infoFile.title, ':');  // remove source FS information, if any
+    strPtr = strchr(infoFile.path, ':');  // remove source FS information, if any
 
     if (strPtr == NULL)  // if ":" not found, a remote host is handling a print
-      return (infoFile.title + strlen(infoFile.title));  // return an empty string
+      return (infoFile.path + strlen(infoFile.path));  // return an empty string
   }
 
   return ++strPtr;  // return path after "/" or ":"
 }
 
 // check and open folder
-bool EnterDir(const char * nextdir)
+bool enterFolder(const char * path)
 {
-  if (strlen(infoFile.title) + strlen(nextdir) + 2 > MAX_PATH_LEN)  // "+ 2": space for "/" and terminating null character
+  if (strlen(infoFile.path) + strlen(path) + 2 > MAX_PATH_LEN)  // "+ 2": space for "/" and terminating null character
     return false;
 
-  strcat(infoFile.title, "/");
-  strcat(infoFile.title, nextdir);
+  strcat(infoFile.path, "/");
+  strcat(infoFile.path, path);
 
   return true;
 }
 
 // close folder
-void ExitDir(void)
+void exitFolder(void)
 {
-  int i = strlen(infoFile.title);
+  int i = strlen(infoFile.path);
 
-  for (; i > 0 && infoFile.title[i] != '/'; i--)
+  for (; i > 0 && infoFile.path[i] != '/'; i--)
   {
   }
 
-  infoFile.title[i] = '\0';
+  infoFile.path[i] = '\0';
 }
 
 // check if current folder is root
-bool IsRootDir(void)
+bool isRootFolder(void)
 {
-  return !strchr(infoFile.title, '/');
+  return !strchr(infoFile.path, '/');
 }
 
 // check if filename provides a supported filename extension
@@ -183,6 +185,7 @@ char * isSupportedFile(const char * filename)
   return extPos;
 }
 
+// return the long folder name if exists, otherwise the short one
 char * getFoldername(uint8_t index)
 {
   if (infoFile.longFolder[index] != NULL)
@@ -191,6 +194,7 @@ char * getFoldername(uint8_t index)
     return infoFile.folder[index];
 }
 
+// return the long file name if exists, otherwise the short one
 char * getFilename(uint8_t index)
 {
   if (infoFile.longFile[index] != NULL)
@@ -226,6 +230,9 @@ char * restoreExtension(char * filename)
   return filename;
 }
 
+// hide the extension of the file name and return a pointer to that file name
+// (the long one if exists, otherwise the short one).
+// The hide of the extension is not temporary so do not forget to restore it afterwards!
 char * hideFilenameExtension(uint8_t index)
 {
   char * filename = hideExtension(infoFile.file[index]);
@@ -236,6 +243,8 @@ char * hideFilenameExtension(uint8_t index)
   return filename;
 }
 
+// restore the extension of the file name and return a pointer to that file name
+// (the long one if exists, otherwise the short one)
 char * restoreFilenameExtension(uint8_t index)
 {
   char * filename = restoreExtension(infoFile.file[index]);
@@ -250,7 +259,7 @@ char * restoreFilenameExtension(uint8_t index)
 char * getPrintFilename(void)
 {
   // if restoring a print after a power failure or printing from remote host, remote onboard media or remote TFT media (with M23 - M24),
-  // no filename is available in infoFile. Only infoFile.source and infoFile.title have been set
+  // no filename is available in infoFile. Only infoFile.source and infoFile.path have been set
   //
   if (infoFile.fileCount == 0)  // if no filename is available in infoFile
     return getPathTail();       // skip path information
@@ -266,16 +275,16 @@ bool getPrintTitle(char * buf, uint8_t len)
   char * strPtr = getPrintFilename();
 
   // "+ 2": space for terminating null character and the flag for filename extension check
-  if (strlen(getCurFileSource()) + strlen(strPtr) + 2 > len)
+  if (strlen(getSourceFS()) + strlen(strPtr) + 2 > len)
   {
     *buf = '\0';  // set buffer to empty string
 
     return false;
   }
 
-  strncpy(buf, getCurFileSource(), len);  // set source and set the flag for filename extension check
-  strcat(buf, strPtr);                    // append filename
-  hideExtension(buf);                     // hide filename extension if filename extension feature is disabled
+  strncpy(buf, getSourceFS(), len);  // set source and set the flag for filename extension check
+  strcat(buf, strPtr);               // append filename
+  hideExtension(buf);                // hide filename extension if filename extension feature is disabled
 
   return true;
 }
@@ -299,8 +308,8 @@ void loopVolumeSource(void)
   {
     if (volumeSrcStatus[i] != (*volumeInserted[i])())
     {
-      const int16_t labelSDStates[FF_VOLUMES][2] = {{LABEL_TFTSD_REMOVED, LABEL_TFTSD_INSERTED},
-                                                    {LABEL_USB_DISK_REMOVED, LABEL_USB_DISK_INSERTED}};
+      const int16_t labelSDStates[FF_VOLUMES][2] = {{LABEL_TFT_SD_REMOVED, LABEL_TFT_SD_INSERTED},
+                                                    {LABEL_TFT_USB_REMOVED, LABEL_TFT_USB_INSERTED}};
 
       volumeSrcStatus[i] = (*volumeInserted[i])();
       volumeReminderMessage(labelSDStates[i][volumeSrcStatus[i]], STATUS_NORMAL);
