@@ -32,7 +32,7 @@ void menuBLTouch(void)
   BLT_HS_MODE hsModeOld = HS_DISABLED;  // just to force icon 5 update in case HS Mode is supported
 
   if (infoMachineSettings.firmwareType == FW_MARLIN)
-    storeCmd("M401 H\n");  // get the BLTouch HS Mode state (bltHSmode will be updated in parseACK())
+    storeCmd("M401 H\n");  // get BLTouch HS Mode state (bltHSmode will be updated in parseACK())
 
   menuDrawPage(&BLTouchItems);
 
@@ -64,7 +64,7 @@ void menuBLTouch(void)
 
       case KEY_ICON_5:
         if (bltHSmode != HS_DISABLED)
-          storeCmd("M401 S%u\n", HS_ON - bltHSmode);  // set the BLTouch HS Mode state (bltHSmode will be updated in parseACK())
+          storeCmd("M401 S%u\n", HS_ON - bltHSmode);  // switch BLTouch HS Mode state (bltHSmode will be updated in parseACK())
         break;
 
       case KEY_ICON_7:
