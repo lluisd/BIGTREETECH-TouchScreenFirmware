@@ -1270,10 +1270,10 @@
 #define QUICK_EEPROM_BUTTON  // Default: uncommented (enabled)
 
 /**
- * Toast Notification Duration (in MilliSeconds)
+ * Toast Notification Duration (in seconds)
  * Set the duration for displaying toast notification on top of the screen.
  */
-#define TOAST_DURATION (3 * 1000)  // in ms. Default: 3 * 1000
+#define TOAST_DURATION 3  // in sec. Default: 3
 
 /**
  * Keyboard On Left Side (Mesh Editor, LED Color Custom)
