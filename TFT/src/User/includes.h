@@ -152,7 +152,7 @@
 #include "UnifiedMove.h"
 #include "ZOffset.h"
 
-#define MAX_MENU_DEPTH 10       // max sub menu depth
+#define MAX_MENU_DEPTH 10        // max sub menu depth
 typedef void (* FP_MENU)(void);
 
 typedef struct
