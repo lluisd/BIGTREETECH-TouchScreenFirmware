@@ -34,7 +34,7 @@ void menuBLTouch(void)
   if (infoMachineSettings.firmwareType == FW_MARLIN)
   {
     mustStoreCmd("M401 H\n");       // get BLTouch HS Mode state (bltHSmode will be updated in parseACK())
-    mustStoreCmd(SERVO_GCODE, 90);  // if "M401 H" is not supported, the probe will be deployed so it needs to be stowed back
+    mustStoreCmd(SERVO_GCODE, 90);  // if "M401 H" is not supported the probe will be deployed so it needs to be stowed back
   }
 
   menuDrawPage(&BLTouchItems);
