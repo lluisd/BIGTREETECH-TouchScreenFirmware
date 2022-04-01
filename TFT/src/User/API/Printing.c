@@ -448,7 +448,7 @@ bool printStart(void)
 
   if (infoFile.source == FS_ONBOARD_MEDIA)
   {
-    infoHost.status = HOST_STATUS_PRINTING;
+    infoHost.status = HOST_STATUS_RESUMING;      // wait until setPrintResume() is called (by M24 or M27) to notify the print was started
     request_M24(0);                              // start print from onboard media
     request_M27(infoSettings.m27_refresh_time);  // use gcode M27 in case of a print running from onboard media
   }
@@ -510,8 +510,6 @@ void printAbort(void)
 
     case FS_ONBOARD_MEDIA:
     case FS_ONBOARD_MEDIA_REMOTE:
-      //infoHost.status = HOST_STATUS_IDLE;  // Not so fast! Let Marlin tell that it's done!
-
       // several M108 are sent to Marlin because consecutive blocking operations
       // such as heating bed, extruder may defer processing of M524
       breakAndContinue();
@@ -531,15 +529,12 @@ void printAbort(void)
         request_M0();  // M524 is not supported in RepRap firmware
       }
 
-      if (isHostPrinting())
-      {
-        setDialogText(LABEL_SCREEN_INFO, LABEL_BUSY, LABEL_NULL, LABEL_NULL);
-        showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
+      setDialogText(LABEL_SCREEN_INFO, LABEL_BUSY, LABEL_NULL, LABEL_NULL);
+      showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
 
-        infoHost.status = HOST_STATUS_STOPPING;
+      infoHost.status = HOST_STATUS_STOPPING;  // wait until setPrintPause() is called (by M524, M25 or M27) to notify the print was aborted
 
-        loopProcessToCondition(&isHostPrinting);  // wait for the printer to settle down
-      }
+      loopProcessToCondition(&isHostPrinting);
 
       break;
 
