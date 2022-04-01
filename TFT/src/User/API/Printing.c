@@ -448,7 +448,10 @@ bool printStart(void)
 
   if (infoFile.source == FS_ONBOARD_MEDIA)
   {
-    infoHost.status = HOST_STATUS_RESUMING;      // wait until setPrintResume() is called (by M24 or M27) to notify the print was started
+    // let setPrintResume() (that will be called in parseAck.c by parsing ACK message for M24 or M27)
+    // notify the print as started (infoHost.status set to "HOST_STATUS_PRINTING")
+    infoHost.status = HOST_STATUS_RESUMING;
+
     request_M24(0);                              // start print from onboard media
     request_M27(infoSettings.m27_refresh_time);  // use gcode M27 in case of a print running from onboard media
   }
@@ -532,8 +535,11 @@ void printAbort(void)
       setDialogText(LABEL_SCREEN_INFO, LABEL_BUSY, LABEL_NULL, LABEL_NULL);
       showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
 
-      infoHost.status = HOST_STATUS_STOPPING;  // wait until setPrintPause() is called (by M524, M25 or M27) to notify the print was aborted
+      // let setPrintPause() (that will be called in parseAck.c by parsing ACK message for M524, M25 or M27)
+      // notify the print as aborted/completed (infoHost.status set to "HOST_STATUS_IDLE") instead of paused
+      infoHost.status = HOST_STATUS_STOPPING;
 
+      // wait until infoHost.status is set to "HOST_STATUS_IDLE" by setPrintPause()
       loopProcessToCondition(&isHostPrinting);
 
       break;
@@ -706,7 +712,9 @@ void setPrintAbort(void)
 
 void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 {
-  // in case print was aborted or completed or printAbort() is aborting the print, nothing to do
+  // in case print was completed or printAbort() is aborting the print,
+  // nothing to do (infoHost.status must be set to "HOST_STATUS_IDLE"
+  // in case it is "HOST_STATUS_STOPPING" just to finalize the print abort)
   if (infoHost.status <= HOST_STATUS_STOPPING)
   {
     infoHost.status = HOST_STATUS_IDLE;  // wakeup printAbort() if waiting for print completion
@@ -730,7 +738,8 @@ void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 
 void setPrintResume(HOST_STATUS hostStatus)
 {
-  // in case print was aborted or completed or printAbort() is aborting the print, nothing to do
+  // in case print was completed or printAbort() is aborting the print,
+  // nothing to do (infoHost.status must never be changed)
   if (infoHost.status <= HOST_STATUS_STOPPING)
     return;
 
