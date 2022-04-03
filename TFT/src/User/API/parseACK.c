@@ -656,7 +656,7 @@ void parseACK(void)
         //       request_M23_M36() that will be managed in parseAck() by the block "onboard media gcode command response"
 
         // parse file name.
-        // Format: "File opened: <file name> Size: <YYYY>" (e.g. File opened: 1A29A~1.GCO Size: 6974)
+        // Format: "File opened: <file name> Size: <YYYY>" (e.g. "File opened: 1A29A~1.GCO Size: 6974")
         //
         char file_name[MAX_PATH_LEN];
         char * end_string = " Size:";
@@ -684,7 +684,7 @@ void parseACK(void)
         setPrintResume(HOST_STATUS_PRINTING);
 
         // parse file data progress.
-        // Format: "SD printing byte <XXXX>/<YYYY>" (e.g. SD printing byte 123/12345)
+        // Format: "SD printing byte <XXXX>/<YYYY>" (e.g. "SD printing byte 123/12345")
         //
         setPrintProgress(ack_value(), ack_second_value());
       }
