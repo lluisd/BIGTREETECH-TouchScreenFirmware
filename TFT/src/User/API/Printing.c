@@ -6,7 +6,6 @@ typedef struct
   FIL        file;
   uint32_t   size;                // gcode file total size
   uint32_t   cur;                 // gcode file printed size
-  uint32_t   offset;              // size of non-printing gcodes (calculated dynamically)
   uint32_t   expectedTime;        // expected print duration in sec
   uint32_t   time;                // current elapsed time in sec
   uint32_t   remainingTime;       // current remaining time in sec (if set with M73 or M117)
@@ -173,11 +172,11 @@ bool updatePrintProgress(void)
 
   if (!infoPrinting.progressFromSlicer)  // avoid to update progress if it is controlled by slicer
   {
-    // in case not printing or a wrong size was set, we consider progress as 100%
-    if (infoPrinting.size == 0)  // avoid a division for 0 (a crash) and set progress to 100%
+    // in case of not printing, a wrong size was set or current position at the end of file, we consider progress as 100%
+    if (infoPrinting.size <= infoPrinting.cur)
       infoPrinting.progress = 100;
     else
-      infoPrinting.progress = MIN((uint64_t)((infoPrinting.cur - infoPrinting.offset) * 100 / (infoPrinting.size - infoPrinting.offset)), 100);
+      infoPrinting.progress = (uint64_t)(infoPrinting.cur) * 100 / infoPrinting.size;
   }
 
   if (infoPrinting.progress != prevProgress)
@@ -712,9 +711,9 @@ void setPrintAbort(void)
 
 void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 {
-  // in case print was completed or printAbort() is aborting the print,
-  // nothing to do (infoHost.status must be set to "HOST_STATUS_IDLE"
-  // in case it is "HOST_STATUS_STOPPING" just to finalize the print abort)
+  // in case host is not printing, print was completed or printAbort() is aborting the print,
+  // nothing to do (infoHost.status must be set to "HOST_STATUS_IDLE" in case it is
+  // "HOST_STATUS_STOPPING" just to finalize the print abort)
   if (infoHost.status <= HOST_STATUS_STOPPING)
   {
     infoHost.status = HOST_STATUS_IDLE;  // wakeup printAbort() if waiting for print completion
@@ -738,7 +737,7 @@ void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 
 void setPrintResume(HOST_STATUS hostStatus)
 {
-  // in case print was completed or printAbort() is aborting the print,
+  // in case host is not printing, print was completed or printAbort() is aborting the print,
   // nothing to do (infoHost.status must never be changed)
   if (infoHost.status <= HOST_STATUS_STOPPING)
     return;
@@ -847,8 +846,6 @@ void loopPrintFromTFT(void)
             comment_parsing = false;
         }
       }
-
-      infoPrinting.offset++;  // count non-gcode size
     }
   }
 

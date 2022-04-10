@@ -134,7 +134,7 @@ static void setLayerNumberTxt(char * layer_number_txt)
 }
 
 // initialize printing info before opening Printing menu
-void initMenuPrinting(void)
+static inline void initMenuPrinting(void)
 {
   getPrintTitle(title, MAX_TITLE_LEN);  // get print title according to print originator (remote or local to TFT)
   clearInfoFile();                      // as last, clear and free memory for file list
@@ -398,14 +398,12 @@ static inline void reDrawProgress(uint8_t prevProgress)
   uint8_t nextProgress = getPrintProgress();
 
   if (nextProgress > prevProgress)
-  { // we need speed, do not draw anything if progress isn't increased (it cannot decrease)
     reDrawProgressBar(prevProgress, nextProgress, PB_FILL, PB_STRIPE_ELAPSED);
+  else  // if regress, swap indexes and colors
+    reDrawProgressBar(nextProgress, prevProgress, PB_BCKG, PB_STRIPE_REMAINING);
 
-    if (progDisplayType != ELAPSED_REMAINING)
-    {
-      reDrawPrintingValue(ICON_POS_TIM, LIVE_INFO_TOP_ROW);
-    }
-  }
+  if (progDisplayType != ELAPSED_REMAINING)
+    reDrawPrintingValue(ICON_POS_TIM, LIVE_INFO_TOP_ROW);
 }
 
 static inline void drawLiveInfo(void)
@@ -573,7 +571,7 @@ void menuPrinting(void)
     }
 
     // check printing progress
-    if (getPrintSize() != 0)
+    if (oldProgress < 100 || lastPrinting == true)
     {
       // check print time change
       if (time != getPrintTime())
@@ -594,16 +592,6 @@ void menuPrinting(void)
       if (updatePrintProgress())
       {
         RAPID_SERIAL_LOOP();  // perform backend printing loop before drawing to avoid printer idling
-        reDrawProgress(oldProgress);
-        oldProgress = getPrintProgress();
-      }
-    }
-    else
-    {
-      if (getPrintProgress() != 100)
-      {
-        reDrawPrintingValue(ICON_POS_TIM, LIVE_INFO_BOTTOM_ROW);
-        updatePrintProgress();
         reDrawProgress(oldProgress);
         oldProgress = getPrintProgress();
       }
