@@ -288,15 +288,21 @@ void hostActionCommands(void)
   {
     uint16_t index = ack_index;  // save the current index for further usage
 
-    if (ack_seen("Data Left"))  // parsing printing data left
-    {
-      // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
-      setPrintProgress(ack_value(), ack_second_value());
-    }
-    else if (ack_seen("Time Left"))  // parsing printing time left
+    if (ack_seen("Time Left"))  // parsing printing time left
     {
       // format: Time Left <XX>h<YY>m<ZZ>s (e.g. Time Left 02h04m06s)
       parsePrintRemainingTime((char *)dmaL2Cache + ack_index);
+    }
+    else if (ack_seen("Layer Left"))  // parsing printing layer left
+    {
+      // format: Layer Left <XXXX>/<YYYY> (e.g. Layer Left 51/940)
+      setPrintLayerNumber(ack_value());
+      setPrintLayerCount(ack_second_value());
+    }
+    else if (ack_seen("Data Left"))  // parsing printing data left
+    {
+      // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
+      setPrintProgress(ack_value(), ack_second_value());
     }
     else
     {

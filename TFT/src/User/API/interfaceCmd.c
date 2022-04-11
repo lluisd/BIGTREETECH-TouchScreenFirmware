@@ -913,15 +913,21 @@ void sendQueueCmd(void)
           break;
 
         case 117:  // M117
-          if (cmd_seen_from(cmd_base_index, "Data Left"))  // parsing printing data left
-          {
-            // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
-            setPrintProgress(cmd_value(), cmd_second_value());
-          }
-          else if (cmd_seen_from(cmd_base_index, "Time Left"))  // parsing printing time left
+          if (cmd_seen_from(cmd_base_index, "Time Left"))  // parsing printing time left
           {
             // format: Time Left <XX>h<YY>m<ZZ>s (e.g. Time Left 02h04m06s)
             parsePrintRemainingTime(&cmd_ptr[cmd_index]);  // cmd_index was set by cmd_seen_from function
+          }
+          else if (cmd_seen_from(cmd_base_index, "Layer Left"))  // parsing printing layer left
+          {
+            // format: Layer Left <XXXX>/<YYYY> (e.g. Layer Left 51/940)
+            setPrintLayerNumber(cmd_value());
+            setPrintLayerCount(cmd_second_value());
+          }
+          else if (cmd_seen_from(cmd_base_index, "Data Left"))  // parsing printing data left
+          {
+            // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
+            setPrintProgress(cmd_value(), cmd_second_value());
           }
           else
           {
