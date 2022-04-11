@@ -176,7 +176,7 @@ bool updatePrintProgress(void)
     if (infoPrinting.size <= infoPrinting.cur)
       infoPrinting.progress = 100;
     else
-      infoPrinting.progress = (uint64_t)(infoPrinting.cur) * 100 / infoPrinting.size;
+      infoPrinting.progress = ((float)(infoPrinting.cur) / infoPrinting.size) * 100;
   }
 
   if (infoPrinting.progress != prevProgress)
