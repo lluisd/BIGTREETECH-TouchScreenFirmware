@@ -559,7 +559,9 @@ Once on Printing menu, the **pause**, **resume** and **stop** buttons on the men
 That means, only the remote host will control the print.
 Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Printing menu is finalized (statistics available etc.) and unlocked (the menu can be closed).
 
-**NOTE:** A new plugin on OctoPrint implementing the above protocol should be the preferable way (available to everyone).
+**NOTES:**
+- A new plugin on OctoPrint implementing the above protocol should be the preferable way (available to everyone)
+- With the exception of TFT70, the maximum number of displayable layer count is 999 (there's no space to display layer number and count if the layer count is above 999)
 
 ### Adding Gcode Thumbnails
 
