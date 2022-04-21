@@ -52,7 +52,7 @@ void resumeAndContinue(void);
 void setPrintExpectedTime(uint32_t expectedTime);
 uint32_t getPrintExpectedTime(void);
 
-void setPrintTime(uint32_t elapsedTime);
+void updatePrintTime(uint32_t osTime);
 uint32_t getPrintTime(void);
 
 void setPrintRemainingTime(int32_t remainingTime);  // used for M73 Rxx and M117 Time Left xx
@@ -109,6 +109,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType);
 
 bool isPrinting(void);
 bool isPaused(void);
+bool isAborted(void);
 bool isTFTPrinting(void);
 bool isHostPrinting(void);
 bool isRemoteHostPrinting(void);

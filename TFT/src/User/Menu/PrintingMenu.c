@@ -169,6 +169,7 @@ void startPrint(void)
     // in case the calling function is menuPrintFromSource,
     // remove the filename from path to allow the files scanning from its folder avoiding a scanning error message
     exitFolder();
+
     return;
   }
 
@@ -392,7 +393,7 @@ static void reDrawProgress(uint8_t oldProgress)
 
   if (newProgress > oldProgress)
     reDrawProgressBar(oldProgress, newProgress, PB_FILL, PB_STRIPE_ELAPSED);
-  else  // if regress, swap indexes and colors
+  else  // if it's a regression, swap indexes and colors
     reDrawProgressBar(newProgress, oldProgress, PB_BCKG, PB_STRIPE_REMAINING);
 
   if (progDisplayType != ELAPSED_REMAINING)
@@ -427,18 +428,12 @@ static inline void drawPrintInfo(void)
                           rect_of_keySS[KEY_INFOBOX].y0 + STATUS_MSG_ICON_YOFFSET,
                           rect_of_keySS[KEY_INFOBOX].x1 - STATUS_MSG_TITLE_XOFFSET,
                           rect_of_keySS[KEY_INFOBOX].y1 - STATUS_MSG_ICON_YOFFSET,
-                          (uint8_t *)textSelect(LABEL_PRINT_FINISHED));
+                          (uint8_t *)textSelect((isAborted() == true) ? LABEL_PROCESS_ABORTED : LABEL_PRINT_FINISHED));
 
   GUI_SetColor(INFOMSG_FONT_COLOR);
   GUI_SetBkColor(INFOMSG_BG_COLOR);
   GUI_DispStringInPrect(&msgRect, LABEL_CLICK_FOR_MORE);
   GUI_RestoreColorDefault();
-}
-
-static void stopConfirm(void)
-{
-  printAbort();
-  CLOSE_MENU();
 }
 
 void printSummaryPopup(void)
@@ -448,7 +443,12 @@ void printSummaryPopup(void)
 
   timeToString(showInfo, (char *)textSelect(LABEL_PRINT_TIME), infoPrintSummary.time);
 
-  if (infoPrintSummary.length + infoPrintSummary.weight + infoPrintSummary.cost == 0)  // all equals 0
+  if (isAborted() == true)
+  {
+    sprintf(tempstr, "\n\n%s", (char *)textSelect(LABEL_PROCESS_ABORTED));
+    strcat(showInfo, tempstr);
+  }
+  else if (infoPrintSummary.length + infoPrintSummary.weight + infoPrintSummary.cost == 0)  // all equals 0
   {
     strcat(showInfo, (char *)textSelect(LABEL_NO_FILAMENT_STATS));
   }
@@ -515,7 +515,7 @@ void menuPrinting(void)
     printingItems.items[KEY_ICON_4] = itemIsPause[lastPause];
     printingItems.items[KEY_ICON_5].icon = (infoFile.source < FS_ONBOARD_MEDIA && isPrintModelIcon()) ? ICON_PREVIEW : ICON_BABYSTEP;
   }
-  else  // returned to this menu after a print was done (ex: after a popup)
+  else  // returned to this menu after print was done or aborted
   {
     printingItems.items[KEY_ICON_4] = itemIsPrinting[1];  // Main Screen
     printingItems.items[KEY_ICON_5] = itemIsPrinting[0];  // Background
@@ -561,26 +561,22 @@ void menuPrinting(void)
       reDrawPrintingValue(ICON_POS_FAN, LIVE_INFO_BOTTOM_ROW);
     }
 
-    // check printing progress
-    if (oldProgress < 100 || lastPrinting == true)
+    // check print time change
+    if (time != getPrintTime())
     {
-      // check print time change
-      if (time != getPrintTime())
-      {
-        time = getPrintTime();
+      time = getPrintTime();
 
-        if (progDisplayType == ELAPSED_REMAINING)
-          reDrawPrintingValue(ICON_POS_TIM, LIVE_INFO_TOP_ROW | LIVE_INFO_BOTTOM_ROW);
-        else
-          reDrawPrintingValue(ICON_POS_TIM, LIVE_INFO_BOTTOM_ROW);
-      }
+      if (progDisplayType == ELAPSED_REMAINING)
+        reDrawPrintingValue(ICON_POS_TIM, LIVE_INFO_TOP_ROW | LIVE_INFO_BOTTOM_ROW);
+      else
+        reDrawPrintingValue(ICON_POS_TIM, LIVE_INFO_BOTTOM_ROW);
+    }
 
-      // check print progress percentage change
-      if (oldProgress != updatePrintProgress())
-      {
-        reDrawProgress(oldProgress);
-        oldProgress = getPrintProgress();
-      }
+    // check print progress percentage change
+    if (oldProgress != updatePrintProgress())
+    {
+      reDrawProgress(oldProgress);
+      oldProgress = getPrintProgress();
     }
 
     // Z_AXIS coordinate
@@ -701,8 +697,6 @@ void menuPrinting(void)
         }
         else
         { // Main button
-          clearInfoPrint();
-          clearInfoFile();
           infoMenu.cur = 0;
         }
         break;
@@ -717,7 +711,7 @@ void menuPrinting(void)
 
       case PS_KEY_9:
         if (lastPrinting == true)  // if printing
-        {
+        { // Stop button
           if (isRemoteHostPrinting())
           {
             addToast(DIALOG_TYPE_ERROR, (char *)textSelect(LABEL_BUSY));
@@ -725,12 +719,15 @@ void menuPrinting(void)
           else
           {
             setDialogText(LABEL_WARNING, LABEL_STOP_PRINT, LABEL_CONFIRM, LABEL_CANCEL);
-            showDialog(DIALOG_TYPE_ALERT, stopConfirm, NULL, NULL);
+            showDialog(DIALOG_TYPE_ALERT, printAbort, NULL, NULL);
           }
         }
         else
-        {
-          clearInfoPrint();
+        { // Back button
+          // in case the print was started from menuPrintFromSource menu,
+          // remove the filename from path to allow the files scanning from its folder avoiding a scanning error message
+          exitFolder();
+
           CLOSE_MENU();
         }
         break;

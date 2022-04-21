@@ -9,13 +9,14 @@ typedef struct
   uint32_t   expectedTime;        // expected print duration in sec
   uint32_t   time;                // current elapsed time in sec
   uint32_t   remainingTime;       // current remaining time in sec (if set with M73 or M117)
-  uint16_t   layerNumber;
-  uint16_t   layerCount;
-  uint8_t    progress;
+  uint16_t   layerNumber;         // current printing layer number
+  uint16_t   layerCount;          // total number of layers
+  uint8_t    progress;            // printing progress in percentage (0% - 100%)
   bool       progressFromSlicer;  // 1: progress controlled by Slicer (if set with M73)
   bool       runout;              // 1: runout in printing, 0: idle
   bool       printing;            // 1: means printing, 0: means idle
-  bool       pause;               // 1: means paused
+  bool       paused;              // 1: means paused
+  bool       aborted;             // 1: means aborted
   PAUSE_TYPE pauseType;           // pause type trigged by different sources and gcodes like M0 & M600
 } PRINTING;
 
@@ -78,15 +79,15 @@ uint32_t getPrintExpectedTime(void)
   return infoPrinting.expectedTime;
 }
 
-void setPrintTime(uint32_t elapsedTime)
+void updatePrintTime(uint32_t osTime)
 {
-  if (elapsedTime % 1000 == 0)
+  if (osTime % 1000 == 0)
   {
-    if (infoPrinting.printing && !infoPrinting.pause)
+    if (infoPrinting.printing)
     {
       infoPrinting.time++;
 
-      if (infoPrinting.remainingTime > 0  && !heatHasWaiting())
+      if (infoPrinting.remainingTime > 0 && !infoPrinting.paused && !heatHasWaiting())
         infoPrinting.remainingTime--;
     }
   }
@@ -304,13 +305,13 @@ void updatePrintUsedFilament(void)
 void clearInfoPrint(void)
 {
   memset(&infoPrinting, 0, sizeof(PRINTING));
-  exitFolder();
 }
 
 void printComplete(void)
 {
   infoPrinting.cur = infoPrinting.size;  // always update the print progress to 100% even if the print terminated
-  infoPrinting.printing = infoPrinting.pause = false;
+  infoPrinting.progress = 100;           // set progress to 100% in case progress is controlled by slicer
+  infoPrinting.printing = infoPrinting.paused = false;
   setPrintRemainingTime(0);
   preparePrintSummary();  // update print summary. infoPrinting is used
 
@@ -350,7 +351,7 @@ bool printRemoteStart(const char * filename)
     return false;
 
   // always clean infoPrinting first and then set the needed attributes
-  memset(&infoPrinting, 0, sizeof(PRINTING));
+  clearInfoPrint();
 
   // we assume infoPrinting is clean, so we need to set only the needed attributes
   infoPrinting.size = 1;  // .size must be different than .cur to avoid 100% progress on TFT
@@ -381,7 +382,7 @@ bool printRemoteStart(const char * filename)
 bool printStart(void)
 {
   // always clean infoPrinting first and then set the needed attributes
-  memset(&infoPrinting, 0, sizeof(PRINTING));
+  clearInfoPrint();
 
   switch (infoFile.source)
   {
@@ -515,7 +516,7 @@ void printAbort(void)
       }
       else  // if RepRap
       {
-        if (!infoPrinting.pause)
+        if (!infoPrinting.paused)
           request_M25();  // must pause the print before cancel it
 
         request_M0();  // M524 is not supported in RepRap firmware
@@ -542,7 +543,7 @@ void printAbort(void)
     sendPrintCodes(2);
 
   printComplete();
-  clearInfoPrint();  // finally clear infoPrinting and move to current folder (instead of file)
+  infoPrinting.aborted = true;
 
   loopDetected = false;
 }
@@ -555,7 +556,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
 
   if (loopDetected) return false;
   if (!infoPrinting.printing) return false;
-  if (infoPrinting.pause == isPause) return false;
+  if (infoPrinting.paused == isPause) return false;
 
   loopDetected = true;
 
@@ -654,7 +655,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
       return true;
   }
 
-  infoPrinting.pause = isPause;  // update pause status after pause/resume procedure
+  infoPrinting.paused = isPause;  // update pause status after pause/resume procedure
   loopDetected = false;
 
   return true;
@@ -667,7 +668,12 @@ bool isPrinting(void)
 
 bool isPaused(void)
 {
-  return infoPrinting.pause;
+  return infoPrinting.paused;
+}
+
+bool isAborted(void)
+{
+  return infoPrinting.aborted;
 }
 
 bool isTFTPrinting(void)
@@ -697,13 +703,14 @@ void setPrintAbort(void)
 
   BUZZER_PLAY(SOUND_ERROR);
   printComplete();
+  infoPrinting.aborted = true;
 }
 
 void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 {
   if (infoPrinting.printing)
   {
-    infoPrinting.pause = true;
+    infoPrinting.paused = true;
     infoPrinting.pauseType = pauseType;
   }
 
@@ -728,7 +735,7 @@ void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 void setPrintResume(HOST_STATUS hostStatus)
 {
   // no need to check it is printing when setting the value to "false"
-  infoPrinting.pause = false;
+  infoPrinting.paused = false;
 
   // in case host is not printing, print was completed or printAbort() is aborting the print,
   // nothing to do (infoHost.status must never be changed)
@@ -749,7 +756,7 @@ void loopPrintFromTFT(void)
 {
   if (!infoPrinting.printing) return;
   if (infoFile.source >= FS_ONBOARD_MEDIA) return;  // if not printing from TFT media
-  if (heatHasWaiting() || isNotEmptyCmdQueue() || infoPrinting.pause) return;
+  if (heatHasWaiting() || isNotEmptyCmdQueue() || infoPrinting.paused) return;
   if (moveCacheToCmd() == true) return;
 
   powerFailedCache(infoPrinting.file.fptr);  // update Power-loss Recovery file
