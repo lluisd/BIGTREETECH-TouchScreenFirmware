@@ -32,7 +32,7 @@ Thanks!
     - [TFT Firmware Configuration](#TFT-Firmware-Configuration)
   - [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
   - [TFT Firmware Hints](#TFT-Firmware-Hints)
-  - [TFT Firmware Rollback](TFT-Firmware-Rollback)
+  - [TFT Firmware Rollback](#TFT-Firmware-Rollback)
 - [History of Changes](#History-of-Changes)
   - [TFT Firmware Changes](#TFT-Firmware-Changes)
   - [Marlin Firmware Changes](#Marlin-Firmware-Changes)
@@ -53,9 +53,9 @@ https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
 
 ### Useful Links for Printer Calibration and Tuning
 
-https://3dprintbeginner.com/artillery-sidewinder-x1-calibration-guide/
-https://3dprintbeginner.com/sidewinder-x1-firmware/
-https://3dprintbeginner.com/sidewinder-x1-auto-bed-leveling-stock-sensor/
+- https://3dprintbeginner.com/artillery-sidewinder-x1-calibration-guide/
+- https://3dprintbeginner.com/sidewinder-x1-firmware/
+- https://3dprintbeginner.com/sidewinder-x1-auto-bed-leveling-stock-sensor/
 
 ## Marlin Firmware Variants
 
@@ -269,10 +269,10 @@ In order to rollback:
 ### TFT Firmware Changes
 
 - 1.27.x Patch 9, May 09 2022
-  - BUG FIXES:
+  - **BUG FIXES:**
     - Fixed bug on wrong filament runout detection at print start
     - Fixed many other bugs
-  - IMPROVEMENTS / NEW FEATURES:
+  - **IMPROVEMENTS / NEW FEATURES:**
     - Improved GUI performance
     - Improved many other features
     - Some cleanup
