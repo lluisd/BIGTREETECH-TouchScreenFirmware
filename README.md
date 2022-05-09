@@ -52,10 +52,10 @@ https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
 
 Four different Marlin FW variants are available:
 
-- **Standard**: standard version (no BLTouch, no bed leveling support)
-- **MBL**: standard version + MBL suppport (Manual Mesh Bed Leveling)
-- **BLTouch Waggster Mod**: it supports BLTouch connected to LED cable (Waggster method). LED on printer is no more available
-- **BLTouch Standard**: it supports BLTouch connected to Marlin mainboard. LED on printer is still available and usable. See pictures in the zip file for cabling and connection guide. I used an FDD cable and crimped the connectors by myself. However, it is suggested (it requires less time) to use the 2 meters (1.5 meters is too short) optional cable sold for BLTouch
+- **Standard**: Standard version (no BLTouch, no bed leveling support)
+- **MBL**: Standard version + MBL suppport (Manual Mesh Bed Leveling)
+- **BLTouch Waggster Mod**: It supports BLTouch connected to LED cable (Waggster method). LED on printer is no more available
+- **BLTouch Standard**: It supports BLTouch connected to Marlin mainboard. LED on printer is still available and usable. See pictures in the zip file for cabling and connection guide. I used an FDD cable and crimped the connectors by myself. However, it is suggested (it requires less time) to use the 2 meters (1.5 meters is too short) optional cable sold for BLTouch
 
 ### BLToutch Support and Probe Offset Setup
 
@@ -73,8 +73,8 @@ The download page provides two BLTouch supports requiring the following probe of
 ### Marlin Firmware Compatibility
 
 All the 4 Marlin FW variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin FW provided here.
-The 4 Marlin FW variations can be easily adapted to Genius printer but it needs to recompile the FW (e.g. with MS vscode).
 
+The 4 Marlin FW variants can be easily adapted to Genius printer but it needs to recompile the FW (e.g. with MS vscode).
 To use the Marlin FW on Genius or to change some settings for Sidewinder X1:
 
 1. Install **MS Visual Studio Code** compiler on your PC / laptop
