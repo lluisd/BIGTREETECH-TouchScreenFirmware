@@ -2,7 +2,7 @@
 
 A porting of BIGTREETECH TFT firmware on MKS TFT28 used on Artillery Sidewinder X1, X2 and Genius printers.
 This porting is based on lastest release of BIGTREETECH TFT firmware found on https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware/tree/master.
-It was arranged according to Artillery Sidewinder X1 / X2 / Genius hardware (e.g. onboard modules etc...).
+It was arranged according to Artillery Sidewinder X1 / X2 / Genius hardware.
 Furthermore, bug fixes, rearrangement of menus, improvements and additions were applied.
 If you like it or if you want to contribute to further improvements on that firmware, please consider the possibility to donate to:
 
@@ -59,7 +59,7 @@ https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
 
 ## Marlin Firmware Variants
 
-Four different Marlin FW variants are available:
+Four different Marlin fw variants are available:
 
 - **Standard**: Standard version (no BLTouch, no bed leveling support)
 - **MBL**: Standard version + MBL suppport (Manual Mesh Bed Leveling)
@@ -68,7 +68,7 @@ Four different Marlin FW variants are available:
 
 ### BLToutch Support and Probe Offset Setup
 
-Both the **BLTouch Standard** and **BLTouch Waggster Mod** FW variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change the **probe offset** value listed on TFT menu:
+Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change the **probe offset** value listed on TFT menu:
 
     Menu->Settings->Machine->Parameter
 
@@ -81,32 +81,32 @@ The download page provides two BLTouch supports requiring the following probe of
 
 ### Marlin Firmware Compatibility
 
-All the 4 Marlin FW variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin FW provided here.
+All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
 
-The 4 Marlin FW variants can be easily adapted to Genius printer but it needs to recompile the FW (e.g. with MS vscode).
-To use the Marlin FW on Genius:
+The 4 Marlin fw variants can be easily adapted to Genius printer but it needs to recompile the fw (e.g. with MS vscode).
+To use the Marlin fw on Genius:
 
 1. Install **MS Visual Studio Code** compiler on your PC / laptop
 2. Install the extension **PlatformIO IDE** 2.3.2 or above on vscode
-3. Open the FW source project with vscode:
+3. Open the fw source project with vscode:
    1. Set the following parameters in source file `Marlin-2.0.x\Marlin\Configuration.h` with the build volume of the Genius:
       `X_BED_SIZE 220`
       `Y_BED_SIZE 220`
       `Z_MAX_POS 250`
-   2. Recompile the FW (to compile, simply press at the same time the keys `CTRL-ALT-B`)
-4. Flash on the printer the created FW file `Marlin-2.0.x\.pio\build\mega2560\firmware.hex`
+   2. Recompile the fw (to compile, simply press at the same time the keys `CTRL-ALT-B`)
+4. Flash on the printer the created fw file `Marlin-2.0.x\.pio\build\mega2560\firmware.hex`
 
 ### TFT Firmware Compatibility
 
-The TFT FW is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT FW is required.
+The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT fw is required.
 
-To use the TFT FW on Genius:
+To use the TFT fw on Genius:
 
 1. Set the following parameter in TFT's configuration file `config.ini` with the build volume of the Genius:
    `size_max:X220 Y220 Z250`
 2. Load on TFT the updated configuration file `config.ini`
 
-In case you are using your own Marlin FW, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
+In case you are using your own Marlin fw, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
 
 **General options which MUST be activated:**
 
@@ -152,7 +152,7 @@ The serial bus with the main board **MKS GEN L v1.0** is shared between TFT and 
 
     Line Number is Not Last Line Number +1 Last Line 1686
 
-In order to avoid the problem, when printing with OctoPrint / Pronterface etc... put the TFT in **Listening Mode** pressing on the button:
+In order to avoid the problem, when printing with OctoPrint etc. put the TFT in **Listening Mode** pressing on the button:
 
     Menu->Settings->Connection->ON
 
@@ -204,11 +204,11 @@ In order to flash Marlin firmware, follow the steps below in the same order they
 6. Once Marlin firmware is flashed, disconnect the application from the printer and restart the printer (switching off and on or pressing on the TFT's reset button if you have a Sidewinder X1 v4)
 
 **IMPORTANT NOTE:**
-Always reset the EEPROM after installing a new Marlin FW.
+Always reset the EEPROM after installing a new Marlin fw.
 EEPROM reset means also the following setups have to be performed again and saved on EEPROM:
 
 1. PID, from **Menu->Settings->Machine->Tuning->PID** menu
-2. Probe Offset (only for BLTouch Marlin FW versions), from **Menu->Movement->Bed Level->P Offset** menu
+2. Probe Offset (only for BLTouch Marlin fw versions), from **Menu->Movement->Bed Level->P Offset** menu
 3. bed leveling process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
 
 ### TFT Firmware Update
@@ -240,16 +240,16 @@ To update the firmware configuration:
 
 ### TFT Firmware Reset - Recalibration
 
-Sometimes, after a TFT FW installation, the FW can need a reset / recalibration in order to properly boot up. In order to reset / recalibrate the TFT:
+Sometimes, after a TFT fw installation, the fw can need a reset / recalibration in order to properly boot up. In order to reset / recalibrate the TFT:
 
 1. Create an empty file named reset.txt
 2. Copy the reset.txt file to the root of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
 3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a v4 or above printer revision) or switching off-on the printer.
-4. The TFT will start the recalibration process. Simply follow and complete the process. After completion, the TFT FW should be properly booted up
+4. The TFT will start the recalibration process. Simply follow and complete the process. After completion, the TFT fw should be properly booted up
 
 ### TFT Firmware Hints
 
-- Sometimes, after a TFT FW installation, the FW can need a reset / recalibration in order to properly boot up, as reported on section [TFT Firmware Reset / Recalibration](#TFT-Firmware-Reset-/-Recalibration)
+- Sometimes, after a TFT fw installation, the fw can need a reset / recalibration in order to properly boot up, as reported on section [TFT Firmware Reset / Recalibration](#TFT-Firmware-Reset-/-Recalibration)
 - If the text "No printer attached!" is displayed on top of the display it means you need to change the "UART speed" setting. By default it is set to 250000. Change it from the menu "settings", wait few seconds in order to check that with the selected UART speed the error message disappears. Once the message disappears it means the TFT firmware is now connected to the printer and you can use it
 
 ### TFT Firmware Rollback
@@ -279,7 +279,7 @@ In order to rollback:
 
 - 1.27.x Patch 8, January 04 2022
   - Added Event LED feature: A new param "event_led" was added in "config.ini" (and also available on Feature menu) to enable Event LED feature. If enabled and when printing from TFT SD / TFT U Disk, during heating the TFT periodically sets the printer's (neopixel) LED color and TFT's knob LED color, if any, according to the current nozzle and bed temperatures.
-  - Configurable suppression (hide) for common gcode file extension: new param "filename_extension" added in config.ini. If set to 0 (false), any file extension starting with ".g" or ".G" (e.g. ".g", ".gco", ".gcode" etc...) will be hidden in both List Mode / Icon Mode menu. That setting can also be changed from Screen->UI menu
+  - Configurable suppression (hide) for common gcode file extension: new param "filename_extension" added in config.ini. If set to 0 (false), any file extension starting with ".g" or ".G" (e.g. ".g", ".gco", ".gcode" etc.) will be hidden in both List Mode / Icon Mode menu. That setting can also be changed from Screen->UI menu
   - Fixed incorrect sort order of files on USB/SD: The order of files shown on the display does not match the "Newest First" file order.
   - Fixed missing thumbnails while browsing icon list
   - Minor bug fixes and optimization
@@ -316,7 +316,7 @@ In order to rollback:
 
 - 1.27.x Patch 4, September 9 2021
   - Configurable serial ports:
-  - Added new param "serial_port" (it replaces "multi_serials") in config.ini allowing to set also the baudrate for each port. Each port can be configured with the proper baudrate (e.g. 125000 for Marlin, 500000 for ESP etc...)
+  - Added new param "serial_port" (it replaces "multi_serials") in config.ini allowing to set also the baudrate for each port. Each port can be configured with the proper baudrate (e.g. 125000 for Marlin, 500000 for ESP etc.)
   - Added "S ports" menu under "Connection" menu allowing to set each port at runtime. It allows to disable/change baudrate for each port when needed (e.g. when a device is plugged in the serial port)
   - Configurable feature "Emulated M109 / M190": New param "emulated_m109_m190" added in config.ini to enable/disable M109/M190 emulated with M104/M140. Set "emulated_m109_m190" to "0" to use M109/M190 and EVENT_LEDS
   - Added feature "Emulated M109 / M190" in Feature menu allowing to switch to M109/M190 <-> M104/M140 at runtime (no need to use config.ini)
@@ -329,7 +329,7 @@ In order to rollback:
   - Fixed minor bugs
 
 - 1.27.x Patch 2, July 05 2021
-  - Added touch buttons on Printing menu for heat, fan, time etc... menus
+  - Added touch buttons on Printing menu for heat, fan, time etc. menus
   - Fixed different bugs
 
 - 1.27.x Patch 1, June 02 2021
@@ -338,7 +338,7 @@ In order to rollback:
   - Fixed some freeze conditions in LoadUnload and Extrude menus
 
 - 1.27.x, May 17 2021
-  - A lot of work was done (bug fixes and new features) to release the first stable and complete TFT FW. Finally the 1.27.x version is available:
+  - A lot of work was done (bug fixes and new features) to release the first stable and complete TFT fw. Finally the 1.27.x version is available:
   - Official first stable version 1.27.x
   - Add file sorting option for TFT SD card and USB drive
   - Load/Unload/Extrude/Retract rework and bugfixes
@@ -360,7 +360,7 @@ In order to rollback:
 - 1.0.26.1 Patch 8.8, December 05 2020
   - Fixed bug "flow/speed reset to 10% during a print". Now even in case you still continue to get an error message on screen, the flow/speed is no more reset to 10%
   - Fixed bug "false filament runout detection". Now the bug, often present at the beginning of the print, should be fixed. This should also allow to reduce the value for "fil_noise_threshold" in config.ini to lower values (e.g. 100ms)
-  - Added new filament (un)load menu. It needs M701, M702 enabled on Marlin FW
+  - Added new filament (un)load menu. It needs M701, M702 enabled on Marlin fw
   - Minor fixes
 
 - 1.0.26.1 Patch 8.7, November 14 2020
@@ -369,26 +369,26 @@ In order to rollback:
 
 - 1.0.26.1 Patch 8.6, October 31 2020
   - Improved Mesh Editor
-  - Added languages pack. By default only english language is present in the FW. All the other desired languages can be loaded simply providing their .ini file in the root directory during the FW update. The language to use in the FW is then selectable form the usual Screen->Language menu
+  - Added languages pack. By default only english language is present in the fw. All the other desired languages can be loaded simply providing their .ini file in the root directory during the fw update. The language to use in the fw is then selectable form the usual Screen->Language menu
   - Fixed some bugs causing wrong error messages
   - Improved Terminal menu. Now it supports page navigation
   - minor fixes
 
 - 1.0.26.1 Patch 8.5, October 04 2020
-  - Added MBL (Mesh Bed Leveling) menu to perform MBL (it requires MBL enabled in Marlin FW)
+  - Added MBL (Mesh Bed Leveling) menu to perform MBL (it requires MBL enabled in Marlin fw)
   - Added Mesh Editor and Mesh Tuner menus providing a visual mesh grid (gradient colors are configurable in config.ini) and a fine tune tool for mesh editing. The Mesh Editor supports:
     1. MBL
     2. UBL
     3. ABL Bilinear
   - Added notifications history menu. Open it by clicking on the screen top area (title bar). That feature was made by BTT
-  - Added precompiled Marlin FW MBL version
+  - Added precompiled Marlin fw MBL version
 
 - 1.0.26.1 Patch 8.4, August 30 2020
-  - FW preconfigured to support Marlin mode. A long press on the center of the display will display the Touch mode vs Marlin mode switching menu
+  - fw preconfigured to support Marlin mode. A long press on the center of the display will display the Touch mode vs Marlin mode switching menu
   - Added real M600 support when printing from external onboard SD card (an SD card reader mounted on the main board)
   - Added a detailed PDF document reporting:
     1. how to enable Marlin mode on Sidewinder X1 v4 / Genius printers
-    2. how to enable M600 support on Marlin FW
+    2. how to enable M600 support on Marlin fw
 
 - 1.0.26.1 Patch 8.3, August 23 2020
   - fixed a bug causing a freeze when trying to load and print a file with long file name
@@ -419,7 +419,7 @@ In order to rollback:
     3. PID autotune: menu allowing to handle the entire PID process for bed + nozzles. A dialog box will popup the result of the process (success, fail, timeout)
     4. LevelingEdgeDistance: it allows to set the "level_edge" parameter. Thus to set the bed edge distance of the four leveling points
   - New features:
-    1. added new UBL autoleveling menu (UBL must be enabled in Marlin FW)
+    1. added new UBL autoleveling menu (UBL must be enabled in Marlin fw)
     2. added new "notification" popup type. A notification popup is displayed for few seconds (by default set to 1.5 seconds, configurable in Configuration.h). No user interaction is needed
     3. added a configurable popup type and buzzer type for the "known" echo messages (registered in parseACK.c).
        Available popup types are:
@@ -438,7 +438,7 @@ In order to rollback:
   - Fixes:
     1. general cleanup (converted tabs to spaces + correct indentation) on different files
     2. restored slovenian language in config.ini file (it was removed by mistake in the last BTT merge)
-    3. changed some label names (e.g. ABL_start) whose values have a "general" meaning (e.g. "start", "down" etc...) in order the label names can be reused in more than one context and/or menus.
+    3. changed some label names (e.g. ABL_start) whose values have a "general" meaning (e.g. "start", "down" etc.) in order the label names can be reused in more than one context and/or menus.
     4. fixed some wrong settings for MKS TFT + added correct SPI slave code to allow integration with SKR 1.3 main board
 
 - 1.0.26.1 Patch 7, July 23 2020
@@ -461,7 +461,7 @@ In order to rollback:
 - 1.0.26.1 Patch 4, June 24 2020:
   - Fixed minor bugs
   - Added TPU preheat button
-  - improved UI (big fonts for values, dialog boxes etc...)
+  - improved UI (big fonts for values, dialog boxes etc.)
 
 - 1.0.26.1 Patch 3, May 26 2020:
   - Fixed minor bugs
@@ -469,7 +469,7 @@ In order to rollback:
 - 1.0.26.1 Patch 2, May 26 2020:
   - Fixed filament runout sensor bug (now enabled by default in the provided config.ini file)
   - Fixed rotate UI button on sreen menu (previously, the screen was not rotated of 180� by pressing on rotate button)
-  - Minor fixes (some language translations, some Celsius degree symbols etc...)
+  - Minor fixes (some language translations, some Celsius degree symbols etc.)
 
 - 1.0.26.1 Patch, May 22 2020:
   - Fixed all bugs on 1.0.26.1
@@ -507,10 +507,10 @@ In order to rollback:
 - 2.0.8.1 version, May 15 2021
   - Fixed some bugs (from me and BTT) on M600 support in case no Marlin LCD (as for stock ASWX1) is present. That bugs didn't allow M600 working on stock ASWX1. M600 was fully working only if Marlin mode was enabled (see my PDF doc)
   - Many others bug fixes
-  - For MBL and standard Marlin FW versions, now homing is performed on X0 Y0 instead of the centre of the bed
+  - For MBL and standard Marlin fw versions, now homing is performed on X0 Y0 instead of the centre of the bed
 
-- Marlin FW bugfix version, March 21 2021
-  - It should fix many bugs present on Marlin FW 2.0.7.2 (e.g. temperature not reached)
+- Marlin fw bugfix version, March 21 2021
+  - It should fix many bugs present on Marlin fw 2.0.7.2 (e.g. temperature not reached)
   - For MBL and, standard version, fixed the bug applying the XY probe offset during home and probing (offsets are now set to 0, 0)
   - For MBL, Waggster and standard BLTouch version, probing margin and inset set to 10mm to allow to probe also the last row and column
 
@@ -524,8 +524,8 @@ In order to rollback:
   - Enabled G26 (Mesh Validation Pattern tool)
 
 - 2.0.6.1, August 30 2020
-  - FW preconfigured to support Marlin mode. In order to enable Marlin mode it is required only to uncomment #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER on the Configuration.h file
-  - FW preconfigured to support M600 when printing from external onboard SD card (an SD card reader mounted on the main board)
+  - fw preconfigured to support Marlin mode. In order to enable Marlin mode it is required only to uncomment #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER on the Configuration.h file
+  - fw preconfigured to support M600 when printing from external onboard SD card (an SD card reader mounted on the main board)
 
 - 2.0.5.4, July 23 2020
   - First version
@@ -543,8 +543,8 @@ In order to rollback:
   - custom gcodes
   - default speeds
   - colours
-  - etc...
-- MBL (Mesh Bed Leveling) menu to perform MBL (it requires MBL enabled in Marlin FW)
+  - etc.
+- MBL (Mesh Bed Leveling) menu to perform MBL (it requires MBL enabled in Marlin fw)
 - Mesh Editor and Mesh Tuner menus providing a visual mesh grid (gradient colors are configurable in config.ini) and a fine tune tool for mesh editing. The Mesh Editor supports:
   1. MBL
   2. UBL
@@ -565,19 +565,19 @@ In order to rollback:
 - Manual bed leveling menu:
   - added 5th leveling point: a center point is added
   - added XY Offset menu: it allows to set the edge distance of the four leveling points. An unlock button is also provided to unlock the X and Y axis (it allows to freely move the hotend along the bed)
-- Auto bed leveling menu: it requires that feature is also enabled in Marlin firwmare (e.g. Waggster FW)
+- Auto bed leveling menu: it requires that feature is also enabled in Marlin firwmare (e.g. Waggster fw)
 - Improved Z Offset menu. Now nozzle is moved every time z offset is changed so, using a paper, it is possible to evaluate the proper z offset
 - BabyStep menu: available during printing
 - Preheat menu: PLA, PETG and ABS buttons available. they can be applied to bed, nozzle or both. A button to cool down the selected heatear was also added
 - Gcode menu: you can type any gcode command towards Marlin firmware. If an output is provided by the underliying Marlin firmware it will be shown on the display
-- Custom gcode menu: load EEPROM (M501), reset to stock Marlin firmware (M502), Save on EEPROM (M500), disable steppers etc... are provided. It requires EEPROM is also enabled in Marlin firwmare (e.g. Waggster,  Robscar FW)
-- Machine menu: it allows to see and modify settings such as steps-per-unit, max feed rate, max acceleration, Z probe etc...
-- Feature menu: it allows to customize printer feature such as runot filament (on, off, smart), auto shut down after print (it requires it is enabled on Marlin firmware), file menu view (icon or list view mode) etc...
+- Custom gcode menu: load EEPROM (M501), reset to stock Marlin firmware (M502), Save on EEPROM (M500), disable steppers etc. are provided. It requires EEPROM is also enabled in Marlin firwmare (e.g. Waggster,  Robscar fw)
+- Machine menu: it allows to see and modify settings such as steps-per-unit, max feed rate, max acceleration, Z probe etc.
+- Feature menu: it allows to customize printer feature such as runot filament (on, off, smart), auto shut down after print (it requires it is enabled on Marlin firmware), file menu view (icon or list view mode) etc.
 - more...
 
 ### Marlin Firmware Main Features
 
-For all the Marlin FW variants, the following changes are provided:
+For all the Marlin fw variants, the following changes are provided:
 - hotend and bed PID calibrated to 200�C and 60�C respectively. However PID values strongly depend on the environment and the current ambient temperature, so always perform PID calibration (from TFT menu) in order to have the proper values on your environment
 - decreased values for DEFAULT_MAX_FEEDRATE compared to default values provided by Artillery
 - increased values for DEFAULT_ACCELERATION compared to default values provided by Artillery
@@ -602,7 +602,7 @@ Profile for PLA filament. Change the following parameters value according to you
 - Extruder tab
   - Extrusion Width Manual: typically 0,40 or 0,50
 - Layer tab
-  - Primary Layer Height: typically 0,10, 0,15, 0,20 etc...
+  - Primary Layer Height: typically 0,10, 0,15, 0,20 etc.
   - Top Solid Layers: depending on Primary Layer Height. E.g. with a 0,15 height, set to 10 to have a 1,5 mm solid layer
   Bottom Solid Layers: depending on Primary Layer Height. E.g. with a 0,15 height, set to 10 to have a 1,5 mm solid layer
   Outline/Perimeters Shells: depending on Extrusion Width. E.g. with a 0,50 width, set to 3 to have a 1,5 mm perimeters shells
@@ -615,6 +615,6 @@ Profile for PLA filament. Change the following parameters value according to you
   - Primary Extruder: set according to the needs of the object to print. Typical values for PLA filament are in range 180-210�C. Increase first layer temp to have a better stick on the bed
   - Heated Bed: set according to the needs of the object to print. Typical values for PLA filament are in range 50-80�C. Increase first layer temp to have a better stick on the bed
 - Speeds tab
-  - Default Printing Speed: typically 40, 60, 80, 100 etc...
+  - Default Printing Speed: typically 40, 60, 80, 100 etc.
 
 The profile is configured for the Sidewinder X1 build volume. However, the profile works also on the Genius printer. On G-Code tab, simply set the "Build volume" parameters with the proper build volume
