@@ -17,8 +17,9 @@ Thanks!
 - [Source Code Links](#Source-Code-Links)
 - [Marlin Firmware Variants](#Marlin-Firmware-Variants)
   - [BLToutch Support and Probe Offset Setup](#BLToutch-Support-and-Probe-Offset-Setup)
-- [Compatibility with Sidewinder X1 / X2 / Genius Printers](#Compatibility-with-Sidewinder-X1-/-X2-/-Genius-Printers)
-- [TFT Firmware Compatibility](#TFT-Firmware-Compatibility)
+- [Firmware Compatibility](#Firmware-Compatibility)
+  - [Marlin Firmware Compatibility](#Marlin-Firmware-Compatibility)
+  - [TFT Firmware Compatibility](#TFT-Firmware-Compatibility)
 - [Integration with OctoPrint / Pronterface](#Integration-with-OctoPrint-/-Pronterface)
   - [OctoPrint Triggering Commands](#OctoPrint Triggering Commands)
 - [Marlin Firmware Update](#Marlin-Firmware-Update)
@@ -58,43 +59,45 @@ Four different Marlin FW variants are available:
 
 ### BLToutch Support and Probe Offset Setup
 
-Both the **BLTouch Standard** and **BLTouch Waggster Mod** FW variants are configured for the BLTouch support linked in the download page requiring probe offset {28, -33, 0}. In case a different support is used by the user, it is simply needed to change the "probe offset" value listed on TFT menu **Menu->Settings->Machine->Parameter**.
+Both the **BLTouch Standard** and **BLTouch Waggster Mod** FW variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change the **probe offset** value listed on TFT menu:
+
+    Menu->Settings->Machine->Parameter
 
 The download page provides two BLTouch supports requiring the following probe offset:
 
-- (28, 33, 0) (new support used since Marlin fw 2.0.9.2)
-- (33, -33, 0) (old support used until Marlin fw 2.0.9.1)
+- `{28, -33, 0}`: New support used since Marlin fw 2.0.9.2
+- `{33, -33, 0}`: Old support used until Marlin fw 2.0.9.1
 
-## Compatibility with Sidewinder X1 / X2 / Genius Printers
+## Firmware Compatibility
 
 ### Marlin Firmware Compatibility
 
-All the 4 Marlin FW variants reported on [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin FW provided here.
+All the 4 Marlin FW variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin FW provided here.
 The 4 Marlin FW variations can be easily adapted to Genius printer but it needs to recompile the FW (e.g. with MS vscode).
 
-To use my Marlin FW on Genius or to change some settings for Sidewinder X1:
+To use the Marlin FW on Genius or to change some settings for Sidewinder X1:
 
-- install MS vscode compiler on PC / laptop
-- install the extension PlatformIO IDE 2.3.2 or above on vscode
-- open the FW source project with vscode:
-  - set the following parameters in source file `Marlin-2.0.x\Marlin\Configuration.h` with the build volume of the Genius:
-    - X_BED_SIZE 220
-    - Y_BED_SIZE 220
-    - Z_MAX_POS 250
-  - recompile the FW (to compile, simply press at the same time the keys CTRL-ALT-B)
-- flash on the printer the created FW file `Marlin-2.0.x\\.pio\build\mega2560\firmware.hex`
+1. Install **MS Visual Studio Code** compiler on your PC / laptop
+2. Install the extension PlatformIO IDE 2.3.2 or above on vscode
+3. Open the FW source project with vscode:
+   1. Set the following parameters in source file `Marlin-2.0.x\Marlin\Configuration.h` with the build volume of the Genius:
+      - `X_BED_SIZE 220`
+      - `Y_BED_SIZE 220`
+      - `Z_MAX_POS 250`
+   2. Recompile the FW (to compile, simply press at the same time the keys `CTRL-ALT-B`)
+4. Flash on the printer the created FW file `Marlin-2.0.x\\.pio\build\mega2560\firmware.hex`
 
 ### TFT Firmware Compatibility
 
-The TFT FW provided here is ready to be flashed on both Sidewinder X1, Sidewinder X2 and Genius printers. So, no need to recompile the TFT FW.
+The TFT FW is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT FW is required.
 
 To use the TFT FW on Genius:
 
-- set the following parameter in TFT's configuration file `config.ini` with the build volume of the Genius:
+1. Set the following parameter in TFT's configuration file `config.ini` with the build volume of the Genius:
   - `size_max:X220 Y220 Z250`
-- load on the TFT the updated file `config.ini`
+2. Load on the TFT the updated file `config.ini`
 
-</br>In case you are using your own Marlin FW, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
+In case you are using your own Marlin FW, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
 
 **General options which MUST be activated:**
 
@@ -142,7 +145,7 @@ The serial bus with the main board (MKS GEN L v1.0) is shared between TFT and Oc
 
 In order to avoid the problem, when printing with OctoPrint / Pronterface etc... put the TFT in **Listening Mode** pressing on the button:
 
-    Menu =>Settings=>Connection=>ON
+    Menu->Settings->Connection->ON
 
 **NOTES:**
 
@@ -437,7 +440,7 @@ That feature is useful for example to temporary suppress any kind of error or ec
  * Fixed minor bugs
 * 1.0.26.1 Patch 2, May 26 2020:
  * Fixed filament runout sensor bug (now enabled by default in the provided config.ini file)
- * Fixed rotate UI button on sreen menu (previously, the screen was not rotated of 180° by pressing on rotate button)
+ * Fixed rotate UI button on sreen menu (previously, the screen was not rotated of 180ï¿½ by pressing on rotate button)
  * Minor fixes (some language translations, some Celsius degree symbols etc...)
 * 1.0.26.1 Patch, May 22 2020:
  * Fixed all bugs on 1.0.26.1 
@@ -535,7 +538,7 @@ That feature is useful for example to temporary suppress any kind of error or ec
 ### Marlin Main Features
 
 For all the Marlin FW variants, the following changes are provided:
-* hotend and bed PID calibrated to 200°C and 60°C respectively. However PID values strongly depend on the environment and the current ambient temperature, so always perform PID calibration (from TFT menu) in order to have the proper values on your environment
+* hotend and bed PID calibrated to 200ï¿½C and 60ï¿½C respectively. However PID values strongly depend on the environment and the current ambient temperature, so always perform PID calibration (from TFT menu) in order to have the proper values on your environment
 * decreased values for DEFAULT_MAX_FEEDRATE compared to default values provided by Artillery
 * increased values for DEFAULT_ACCELERATION compared to default values provided by Artillery
 * disabled "Junction Deviation" (enabled "Classic Jerk")
@@ -569,8 +572,8 @@ Outline/Perimeters Shells: depending on Extrusion Width. E.g. with a 0,50 width,
 * Infill tab
  * Interior Fill Percentage: set according to the needs of the object to print
 * Temperature tab
- * Primary Extruder: set according to the needs of the object to print. Typical values for PLA filament are in range 180-210°C. Increase first layer temp to have a better stick on the bed
- * Heated Bed: set according to the needs of the object to print. Typical values for PLA filament are in range 50-80°C. Increase first layer temp to have a better stick on the bed
+ * Primary Extruder: set according to the needs of the object to print. Typical values for PLA filament are in range 180-210ï¿½C. Increase first layer temp to have a better stick on the bed
+ * Heated Bed: set according to the needs of the object to print. Typical values for PLA filament are in range 50-80ï¿½C. Increase first layer temp to have a better stick on the bed
 * Speeds tab
  * Default Printing Speed: typically 40, 60, 80, 100 etc...
 
