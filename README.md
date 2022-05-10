@@ -237,7 +237,7 @@ To update the TFT firmware configuration:
 1. Edit the settings in `config.ini`. See the comments on the file to properly set each setting
 2. Copy the `config.ini` file to the root folder of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
 3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off and on the printer
-4. The TFT will load the configuraiton from `config.ini` file and store it on internal SPI flash. That means the configuration will be loaded from SPI flash on all the next printer reboots (no need to provide the configuration file on the SD card unless you make changes on `config.ini` file and want to load the new configuration)
+4. The TFT will load the configuration from `config.ini` file and store it on internal SPI flash. That means the configuration will be loaded from SPI flash on all the next printer reboots (no need to provide the configuration file on the SD card unless you make changes on `config.ini` file and want to load the new configuration)
 
 ### TFT Firmware Reset - Recalibration
 
