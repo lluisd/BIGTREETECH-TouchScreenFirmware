@@ -209,7 +209,6 @@ In order to flash Marlin firmware, follow the steps below in the same order they
 
 **IMPORTANT NOTE:**
 Always reset the EEPROM after installing a new Marlin firmware.
-
 EEPROM reset means also that the following setups have to be performed again and saved to EEPROM:
 
 1. Reset EEPROM, from **Menu->Settings->Machine->EEPROM->Reset** button
