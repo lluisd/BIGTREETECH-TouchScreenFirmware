@@ -280,9 +280,11 @@ In order to rollback:
 ### TFT Firmware Changes
 
 - 1.27.x Patch 9, May 09 2022
+
   **BUG FIXES:**
   - Fixed bug on wrong filament runout detection at print start
   - Fixed many other bugs
+
   **IMPROVEMENTS / NEW FEATURES:**
   - Improved GUI performance
   - Improved many other features
