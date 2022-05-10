@@ -69,6 +69,7 @@ Four different Marlin fw variants are available:
 ### BLToutch Support and Probe Offset Setup
 
 Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change and save to EEPROM the value for the **Probe Offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
+
 The download page provides two BLTouch supports requiring the following probe offset:
 
 - `{28, -33, 0}`: New support used since Marlin fw 2.0.9.2
@@ -80,6 +81,7 @@ The download page provides two BLTouch supports requiring the following probe of
 
 All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
 The 4 Marlin fw variants can be easily adapted to Genius printer but it needs to recompile the fw (e.g. with MS vscode).
+
 To use the Marlin fw on Genius:
 
 1. Install **MS Visual Studio Code** compiler on your PC / laptop
@@ -99,6 +101,7 @@ To use the Marlin fw on Genius:
 ### TFT Firmware Compatibility
 
 The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT fw is required.
+
 To use the TFT fw on Genius:
 
 1. Set the following parameter in TFT's configuration file `config.ini` with the build volume of the Genius:
@@ -187,12 +190,14 @@ Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Prin
 ### Marlin Firmware Update
 
 On Sidewinder X1 and Genius printers, the mainboard's USB port used to connect the printer to a PC (e.g. to OctoPrint) is wired to a serial bus. This bus is also shared by both TFT and mainboard. The sharing of the serial bus does not allow to easily flash Marlin firmware due to collisions in the bus.
+
 Two possible solutions were normally adopted to allow Marlin firmware updates:
 
 1. Physical disconnection of the TFT serial cable so the serial bus is no more shared with the TFT. This solution requires to remove the cover under the chassis and possibly to loose any warrenty
 2. Use a script under Linux OS trying to lock the serial bus to the TFT
 
 This TFT firmware provides a third, and easy to use, solution for flashing Marlin firmware.
+
 In order to flash Marlin firmware, follow the steps below in the same order they are reported:
 
 1. Switch on the printer from the main power button (on the back of the printer)
@@ -204,6 +209,7 @@ In order to flash Marlin firmware, follow the steps below in the same order they
 
 **IMPORTANT NOTE:**
 Always reset the EEPROM after installing a new Marlin firmware.
+
 EEPROM reset means also that the following setups have to be performed again and saved to EEPROM:
 
 1. Reset EEPROM, from **Menu->Settings->Machine->EEPROM->Reset** button
@@ -242,6 +248,7 @@ To update the TFT firmware configuration:
 ### TFT Firmware Reset - Recalibration
 
 Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up.
+
 In order to reset / recalibrate the TFT:
 
 1. Create an empty file named `reset.txt`
@@ -260,6 +267,7 @@ is displayed on top of the display it means you need to change the value for the
 ### TFT Firmware Rollback
 
 In case you have issues with this custom firmware or you don't like it, you can rollback to the firmware previously installed in your printer.
+
 In order to rollback:
 
 1. Download the stock Artillery TFT firmware (from https://artillery3d.com) or any other custom TFT firmware you had previously installed in your printer
