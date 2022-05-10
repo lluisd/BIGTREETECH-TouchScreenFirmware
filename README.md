@@ -250,8 +250,8 @@ Sometimes, after a TFT firmware installation, the firmware can need a reset / re
 
 ### TFT Firmware Hints
 
-- Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up, as reported on section [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
-- If the text:
+Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up, as reported on section [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
+If the text:
 
     No printer attached!
 
