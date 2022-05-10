@@ -19,7 +19,7 @@ Thanks!
   - [TFT Firmware](#TFT-Firmware)
 - [Useful Links for Printer Calibration and Tuning](#Useful-Links-for-Printer-Calibration-and-Tuning)
 - [Marlin Firmware Variants](#Marlin-Firmware-Variants)
-  - [BLToutch Support and Probe Offset Setup](#BLToutch-Support-and-Probe-Offset-Setup)
+  - [BLTouch Support and Probe Offset Setup](#BLTouch-Support-and-Probe-Offset-Setup)
 - [Firmware Compatibility](#Firmware-Compatibility)
   - [Marlin Firmware Compatibility](#Marlin-Firmware-Compatibility)
   - [TFT Firmware Compatibility](#TFT-Firmware-Compatibility)
@@ -41,7 +41,7 @@ Thanks!
   - [Marlin Firmware Main Features](#Marlin-Firmware-Main-Features)
   - [Simplify3D Profile Features](#Simplify3D-Profile-Features)
 
-## Source Code Links
+## Source Code Links <a name="Source-Code-Links"></a>
 
 ### Marlin Firmware
 
@@ -66,7 +66,7 @@ Four different Marlin fw variants are available:
 - **BLTouch Waggster Mod**: It supports BLTouch connected to LED cable (Waggster method). LED on printer is no more available
 - **BLTouch Standard**: It supports BLTouch connected to Marlin mainboard. LED on printer is still available and usable. See pictures for cabling and connection guide in the zip file provided in the download page. I used an FDD cable and crimped the connectors by myself. However, it is suggested (it requires less time) to use the 2 meters (1.5 meters is too short) optional cable sold for BLTouch
 
-### BLToutch Support and Probe Offset Setup
+### BLTouch Support and Probe Offset Setup
 
 Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change and save to EEPROM the value for the **Probe Offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
 
