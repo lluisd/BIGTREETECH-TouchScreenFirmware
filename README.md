@@ -280,13 +280,13 @@ In order to rollback:
 ### TFT Firmware Changes
 
 - 1.27.x Patch 9, May 09 2022
-  - **BUG FIXES:**
-    - Fixed bug on wrong filament runout detection at print start
-    - Fixed many other bugs
-  - **IMPROVEMENTS / NEW FEATURES:**
-    - Improved GUI performance
-    - Improved many other features
-    - Some cleanup
+  **BUG FIXES:**
+  - Fixed bug on wrong filament runout detection at print start
+  - Fixed many other bugs
+  **IMPROVEMENTS / NEW FEATURES:**
+  - Improved GUI performance
+  - Improved many other features
+  - Some cleanup
 
 - 1.27.x Patch 8, January 04 2022
   - Added Event LED feature: A new param "event_led" was added in "config.ini" (and also available on Feature menu) to enable Event LED feature. If enabled and when printing from TFT SD / TFT U Disk, during heating the TFT periodically sets the printer's (neopixel) LED color and TFT's knob LED color, if any, according to the current nozzle and bed temperatures.
