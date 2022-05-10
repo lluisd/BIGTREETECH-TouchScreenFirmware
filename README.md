@@ -31,7 +31,7 @@ Thanks!
     - [TFT Firmware Installation](#TFT-Firmware-Installation)
     - [TFT Firmware Configuration](#TFT-Firmware-Configuration)
   - [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
-  - [TFT Firmware Hints](#TFT-Firmware-Hints)
+  - [TFT Firmware Not Attached](#TFT-Firmware-Not-Attached)
   - [TFT Firmware Rollback](#TFT-Firmware-Rollback)
 - [History of Changes](#History-of-Changes)
   - [TFT Firmware Changes](#TFT-Firmware-Changes)
@@ -248,14 +248,13 @@ Sometimes, after a TFT firmware installation, the firmware can need a reset / re
 3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off and on the printer
 4. The TFT will start the recalibration process. Simply follow and complete the process. After completion, the TFT firmware should be properly booted up
 
-### TFT Firmware Hints
+### TFT Firmware Not Attached
 
-Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up, as reported on section [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
 If the text:
 
     No printer attached!
 
-  is displayed on top of the display it means you need to change the value for the **UART speed** setting. By default it is set to **250000**. Change it from **Menu->Settings->Machine->Parameter** menu, wait few seconds in order to check that with the selected UART speed the error message disappears. Once the message disappears it means the TFT firmware is now connected to the printer and you can use it.
+is displayed on top of the display it means you need to change the value for the **UART speed** setting. By default it is set to **250000**. Change it from **Menu->Settings->Machine->Parameter** menu, wait few seconds in order to check that with the selected UART speed the error message disappears. Once the message disappears it means the TFT firmware is now connected to the printer and you can use it.
 
 ### TFT Firmware Rollback
 
