@@ -68,8 +68,7 @@ Four different Marlin fw variants are available:
 
 ### BLToutch Support and Probe Offset Setup
 
-Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change and save on EEPROM the value for the **Probe Offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
-
+Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change and save to EEPROM the value for the **Probe Offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
 The download page provides two BLTouch supports requiring the following probe offset:
 
 - `{28, -33, 0}`: New support used since Marlin fw 2.0.9.2
@@ -80,9 +79,7 @@ The download page provides two BLTouch supports requiring the following probe of
 ### Marlin Firmware Compatibility
 
 All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
-
 The 4 Marlin fw variants can be easily adapted to Genius printer but it needs to recompile the fw (e.g. with MS vscode).
-
 To use the Marlin fw on Genius:
 
 1. Install **MS Visual Studio Code** compiler on your PC / laptop
@@ -90,9 +87,11 @@ To use the Marlin fw on Genius:
 3. Open the fw source project reported on section [Marlin Firmware](#Marlin-Firmware) with vscode:
 
    1. Set the following settings in source file `Marlin-2.0.x\Marlin\Configuration.h` with the build volume of the Genius:
+
       - `X_BED_SIZE 220`
       - `Y_BED_SIZE 220`
       - `Z_MAX_POS 250`
+
    2. Recompile the fw (to compile, simply press the keys `CTRL-ALT-B` at the same time)
 
 4. Flash on the printer the created fw file `Marlin-2.0.x\.pio\build\mega2560\firmware.hex`
@@ -100,11 +99,12 @@ To use the Marlin fw on Genius:
 ### TFT Firmware Compatibility
 
 The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT fw is required.
-
 To use the TFT fw on Genius:
 
 1. Set the following parameter in TFT's configuration file `config.ini` with the build volume of the Genius:
+
    - `size_max:X220 Y220 Z250`
+
 2. Load on TFT the updated configuration file `config.ini`
 
 In case you are using your own Marlin fw, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
@@ -153,7 +153,7 @@ The serial bus with the mainboard **MKS GEN L v1.0** is shared between TFT and O
 
     Line Number is Not Last Line Number +1 Last Line 1686
 
-In order to avoid the problem, when printing with OctoPrint etc. put the TFT in **Listening Mode** pressing on TFT button **Menu->Settings->Connection->ON**
+In order to avoid the problem, when printing with OctoPrint etc. put the TFT in **Listening Mode** pressing on TFT button **Menu->Settings->Connection->ON**.
 
 **NOTES:**
 
@@ -241,7 +241,8 @@ To update the TFT firmware configuration:
 
 ### TFT Firmware Reset - Recalibration
 
-Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up. In order to reset / recalibrate the TFT:
+Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up.
+In order to reset / recalibrate the TFT:
 
 1. Create an empty file named `reset.txt`
 2. Copy the `reset.txt` file to the root folder of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
@@ -259,7 +260,6 @@ is displayed on top of the display it means you need to change the value for the
 ### TFT Firmware Rollback
 
 In case you have issues with this custom firmware or you don't like it, you can rollback to the firmware previously installed in your printer.
-
 In order to rollback:
 
 1. Download the stock Artillery TFT firmware (from https://artillery3d.com) or any other custom TFT firmware you had previously installed in your printer
