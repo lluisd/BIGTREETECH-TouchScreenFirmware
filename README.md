@@ -219,7 +219,7 @@ EEPROM reset means also that the following setups have to be performed again and
 In order to install the TFT firmware:
 
 1. Download the firmware
-2. Unzip the archive and copy the contents to the SD Card. The folder `TFT28` and file `MKSTFT28.bin` must be on the root directory of the SD card
+2. Unzip the archive and copy the contents to the SD Card. The folder `TFT28` and file `MKSTFT28.bin` must be on the root folder of the SD card
 3. Plug in the SD card into the printer
 4. Turn on the printer and wait for the firmware to finish flashing
 5. In case calibration procedure is started, touch the calibration points on the screen
@@ -228,14 +228,14 @@ In order to install the TFT firmware:
 
 **IMPORTANT NOTE:**
 Always install all the content provided in the zip file. That means, copy in the SD card the `.bin` + `config.ini` + `TFT28` folder with its files.
-In addition (optional) also the desired `language_xx.ini` file can be provided in the root directory of the SD card. All the language files are found in the `Language_Packs` folder.
+In addition (optional) also the desired `language_xx.ini` file can be provided in the root folder of the SD card. All the language files are found in the `Language_Packs` folder.
 
 #### TFT Firmware Configuration
 
 To update the TFT firmware configuration:
 
 1. Edit the settings in `config.ini`. See the comments on the file to properly set each setting
-2. Copy the `config.ini` file to the root of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
+2. Copy the `config.ini` file to the root folder of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
 3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off and on the printer
 4. The TFT will load the configuraiton from `config.ini` file and store it on internal SPI flash. That means the configuration will be loaded from SPI flash on all the next printer reboots (no need to provide the configuration file on the SD card unless you make changes on `config.ini` file and want to load the new configuration)
 
@@ -244,7 +244,7 @@ To update the TFT firmware configuration:
 Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up. In order to reset / recalibrate the TFT:
 
 1. Create an empty file named `reset.txt`
-2. Copy the `reset.txt` file to the root of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
+2. Copy the `reset.txt` file to the root folder of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
 3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off and on the printer
 4. The TFT will start the recalibration process. Simply follow and complete the process. After completion, the TFT firmware should be properly booted up
 
@@ -263,7 +263,7 @@ In case you have issues with this custom firmware or you don't like it, you can 
 In order to rollback:
 
 1. Download the stock Artillery TFT firmware (from https://artillery3d.com) or any other custom TFT firmware you had previously installed in your printer
-2. Unzip the archive and copy the contents to the SD Card. The contents must be on the root directory of the SD card
+2. Unzip the archive and copy the contents to the SD Card. The contents must be on the root folder of the SD card
 3. Plug in the SD card into the printer
 4. Turn on the printer and wait for the firmware to finish flashing
 5. Restart the printer
