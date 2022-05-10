@@ -68,9 +68,7 @@ Four different Marlin fw variants are available:
 
 ### BLToutch Support and Probe Offset Setup
 
-Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change the value for the **probe offset** setting listed on TFT menu:
-
-    Menu->Settings->Machine->Parameter
+Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change the value for the **probe offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
 
 The download page provides two BLTouch supports requiring the following probe offset:
 
@@ -196,7 +194,7 @@ Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Prin
 On Sidewinder X1 and Genius printers, the mainboard's USB port used to connect the printer to a PC (e.g. to OctoPrint) is wired to a serial bus. This bus is also shared by both TFT and mainboard. The sharing of the serial bus does not allow to easily flash Marlin firmware due to collisions in the bus.
 Two possible solutions were normally adopted to allow Marlin firmware updates:
 
-1. Physical disonnection of the TFT serial cable so the serial bus is no more shared with the TFT. This solution requires to remove the cover under the chassis and possibly to loose any warrenty
+1. Physical disconnection of the TFT serial cable so the serial bus is no more shared with the TFT. This solution requires to remove the cover under the chassis and possibly to loose any warrenty
 2. Use a script under Linux OS trying to lock the serial bus to the TFT
 
 This TFT firmware provides a third, and easy to use, solution for flashing Marlin firmware.
@@ -210,26 +208,28 @@ In order to flash Marlin firmware, follow the steps below in the same order they
 6. Once Marlin firmware is flashed, disconnect the application from the printer and restart the printer (switching off and on or pressing on the TFT's reset button if you have a Sidewinder X1 v4)
 
 **IMPORTANT NOTE:**
-Always reset the EEPROM after installing a new Marlin fw.
-EEPROM reset means also the following setups have to be performed again and saved on EEPROM:
+Always reset the EEPROM after installing a new Marlin firmware.
+EEPROM reset means also that the following setups have to be performed again and saved on EEPROM:
 
-1. PID, from **Menu->Settings->Machine->Tuning->PID** menu
-2. Probe Offset (only for BLTouch Marlin fw versions), from **Menu->Movement->Bed Level->P Offset** menu
-3. Bed leveling process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
+1. Reset EEPROM, from **Menu->Settings->Machine->EEPROM->Reset** button
+2. PID, from **Menu->Settings->Machine->Tuning->PID** menu
+3. Probe Offset (only for BLTouch Marlin firmware versions), from **Menu->Movement->Bed Level->P Offset** menu
+4. Bed leveling process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
+5. Save on EEPROM, from **Menu->Settings->Machine->EEPROM->Save** button
 
 ### TFT Firmware Update
 
 #### TFT Firmware Installation
 
-In order to install this custom firmware:
+In order to install the TFT firmware:
 
-1. Download this custom firmware
+1. Download the firmware
 2. Unzip the archive and copy the contents to the SD Card. The folder `TFT28` and file `MKSTFT28.bin` must be on the root directory of the SD card
-3) Plug in the SD card into the printer
-4) Turn on the printer and wait for the firmware to finish flashing
-5) In case calibration procedure is started, touch the calibration points on the screen
-6) Restart the printer
-7) Proceed with the configuration as reported on section [TFT Firmware Configuration](#TFT-Firmware-Configuration)
+3. Plug in the SD card into the printer
+4. Turn on the printer and wait for the firmware to finish flashing
+5. In case calibration procedure is started, touch the calibration points on the screen
+6. Restart the printer
+7. Proceed with the configuration as reported on section [TFT Firmware Configuration](#TFT-Firmware-Configuration)
 
 **IMPORTANT NOTE:**
 Always install all the content provided in the zip file. That means, copy in the SD card the `.bin` + `config.ini` + `TFT28` folder with its files.
@@ -237,25 +237,25 @@ In addition (optional) also the desired `language_xx.ini` file can be provided i
 
 #### TFT Firmware Configuration
 
-To update the firmware configuration:
+To update the TFT firmware configuration:
 
 1. Edit the settings in `config.ini`. See the comments on the file to properly set each setting
 2. Copy the `config.ini` file to the root of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
-3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off/on the printer
+3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off and on the printer
 4. The TFT will load the configuraiton from `config.ini` file and store it on internal SPI flash. That means the configuration will be loaded from SPI flash on all the next printer reboots (no need to provide the configuration file on the SD card unless you make changes on `config.ini` file and want to load the new configuration)
 
 ### TFT Firmware Reset - Recalibration
 
-Sometimes, after a TFT fw installation, the fw can need a reset / recalibration in order to properly boot up. In order to reset / recalibrate the TFT:
+Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up. In order to reset / recalibrate the TFT:
 
 1. Create an empty file named `reset.txt`
 2. Copy the `reset.txt` file to the root of the SD card. (The SD card capacity should be less than or equal to 8GB and formatted as FAT32)
-3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off/on the printer
-4. The TFT will start the recalibration process. Simply follow and complete the process. After completion, the TFT fw should be properly booted up
+3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off and on the printer
+4. The TFT will start the recalibration process. Simply follow and complete the process. After completion, the TFT firmware should be properly booted up
 
 ### TFT Firmware Hints
 
-- Sometimes, after a TFT fw installation, the fw can need a reset / recalibration in order to properly boot up, as reported on section [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
+- Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up, as reported on section [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
 - If the text
 
     No printer attached!
