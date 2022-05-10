@@ -254,7 +254,7 @@ If the text:
 
     No printer attached!
 
-is displayed on top of the display it means you need to change the value for the **UART speed** setting. By default it is set to **250000**. Change it from TFT menu **Menu->Settings->Machine->Parameter**, wait few seconds in order to check that with the selected UART speed the error message disappears. Once the message disappears it means that the TFT firmware is now connected to the printer and you can use it.
+is displayed on top of the display it means you need to change the value for the **UART speed** setting. By default it is set to **250000**. Change it from TFT menu **Menu->Settings->Connection->S. Ports**, wait few seconds in order to check that with the selected UART speed the error message disappears. Once the message disappears it means that the TFT firmware is now connected to the printer and you can use it.
 
 ### TFT Firmware Rollback
 
