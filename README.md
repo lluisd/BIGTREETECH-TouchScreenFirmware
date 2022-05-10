@@ -87,13 +87,10 @@ To use the Marlin fw on Genius:
 1. Install **MS Visual Studio Code** compiler on your PC / laptop
 2. Install the extension **PlatformIO IDE 2.3.2** or above on vscode
 3. Open the fw source project reported on section [Marlin Firmware](#Marlin-Firmware) with vscode:
-
    1. Set the following settings in source file `Marlin-2.0.x\Marlin\Configuration.h` with the build volume of the Genius:
-
       - `X_BED_SIZE 220`
       - `Y_BED_SIZE 220`
       - `Z_MAX_POS 250`
-
    2. Recompile the fw (to compile, simply press the keys `CTRL-ALT-B` at the same time)
 
 4. Flash on the printer the created fw file `Marlin-2.0.x\.pio\build\mega2560\firmware.hex`
@@ -105,9 +102,7 @@ The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers
 To use the TFT fw on Genius:
 
 1. Set the following parameter in TFT's configuration file `config.ini` with the build volume of the Genius:
-
    - `size_max:X220 Y220 Z250`
-
 2. Load on TFT the updated configuration file `config.ini`
 
 In case you are using your own Marlin fw, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
