@@ -68,7 +68,7 @@ Four different Marlin fw variants are available:
 
 ### BLToutch Support and Probe Offset Setup
 
-Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change the value for the **probe offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
+Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change and save on EEPROM the value for the **Probe Offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
 
 The download page provides two BLTouch supports requiring the following probe offset:
 
@@ -82,6 +82,7 @@ The download page provides two BLTouch supports requiring the following probe of
 All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
 
 The 4 Marlin fw variants can be easily adapted to Genius printer but it needs to recompile the fw (e.g. with MS vscode).
+
 To use the Marlin fw on Genius:
 
 1. Install **MS Visual Studio Code** compiler on your PC / laptop
@@ -89,11 +90,9 @@ To use the Marlin fw on Genius:
 3. Open the fw source project reported on section [Marlin Firmware](#Marlin-Firmware) with vscode:
 
    1. Set the following settings in source file `Marlin-2.0.x\Marlin\Configuration.h` with the build volume of the Genius:
-
-      X_BED_SIZE 220
-      Y_BED_SIZE 220
-      Z_MAX_POS 250
-
+      - `X_BED_SIZE 220`
+      - `Y_BED_SIZE 220`
+      - `Z_MAX_POS 250`
    2. Recompile the fw (to compile, simply press the keys `CTRL-ALT-B` at the same time)
 
 4. Flash on the printer the created fw file `Marlin-2.0.x\.pio\build\mega2560\firmware.hex`
@@ -105,9 +104,7 @@ The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers
 To use the TFT fw on Genius:
 
 1. Set the following parameter in TFT's configuration file `config.ini` with the build volume of the Genius:
-
-    size_max:X220 Y220 Z250
-
+   - `size_max:X220 Y220 Z250`
 2. Load on TFT the updated configuration file `config.ini`
 
 In case you are using your own Marlin fw, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
@@ -156,9 +153,7 @@ The serial bus with the mainboard **MKS GEN L v1.0** is shared between TFT and O
 
     Line Number is Not Last Line Number +1 Last Line 1686
 
-In order to avoid the problem, when printing with OctoPrint etc. put the TFT in **Listening Mode** pressing on button:
-
-    Menu->Settings->Connection->ON
+In order to avoid the problem, when printing with OctoPrint etc. put the TFT in **Listening Mode** pressing on TFT button **Menu->Settings->Connection->ON**
 
 **NOTES:**
 
@@ -209,13 +204,13 @@ In order to flash Marlin firmware, follow the steps below in the same order they
 
 **IMPORTANT NOTE:**
 Always reset the EEPROM after installing a new Marlin firmware.
-EEPROM reset means also that the following setups have to be performed again and saved on EEPROM:
+EEPROM reset means also that the following setups have to be performed again and saved to EEPROM:
 
 1. Reset EEPROM, from **Menu->Settings->Machine->EEPROM->Reset** button
 2. PID, from **Menu->Settings->Machine->Tuning->PID** menu
 3. Probe Offset (only for BLTouch Marlin firmware versions), from **Menu->Movement->Bed Level->P Offset** menu
 4. Bed leveling process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
-5. Save on EEPROM, from **Menu->Settings->Machine->EEPROM->Save** button
+5. Save to EEPROM, from **Menu->Settings->Machine->EEPROM->Save** button
 
 ### TFT Firmware Update
 
@@ -256,11 +251,11 @@ Sometimes, after a TFT firmware installation, the firmware can need a reset / re
 ### TFT Firmware Hints
 
 - Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up, as reported on section [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
-- If the text
+- If the text:
 
     No printer attached!
 
-  is displayed on top of the display it means you need to change the value for the **UART speed** setting. By default it is set to **250000**. Change it from `Menu->Settings->Machine->Parameter` menu, wait few seconds in order to check that with the selected UART speed the error message disappears. Once the message disappears it means the TFT firmware is now connected to the printer and you can use it.
+  is displayed on top of the display it means you need to change the value for the **UART speed** setting. By default it is set to **250000**. Change it from **Menu->Settings->Machine->Parameter** menu, wait few seconds in order to check that with the selected UART speed the error message disappears. Once the message disappears it means the TFT firmware is now connected to the printer and you can use it.
 
 ### TFT Firmware Rollback
 
