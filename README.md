@@ -41,23 +41,28 @@ Thanks!
   - [Marlin Firmware Main Features](#Marlin-Firmware-Main-Features)
   - [Simplify3D Profile Features](#Simplify3D-Profile-Features)
 
-## Source Code Links <a name="Source-Code-Links"></a>
+<a name="Source-Code-Links"/>
+## Source Code Links
 
-### Marlin Firmware <a name="Marlin-Firmware"></a>
+<a name="Marlin-Firmware"/>
+### Marlin Firmware
 
 - https://github.com/digant73/Marlin/tags
 
-### TFT Firmware <a name="TFT-Firmware"></a>
+<a name="TFT-Firmware"/>
+### TFT Firmware
 
 - https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
 
-### Useful Links for Printer Calibration and Tuning <a name="Useful-Links-for-Printer-Calibration-and-Tuning"></a>
+<a name="Useful-Links-for-Printer-Calibration-and-Tuning"/>
+### Useful Links for Printer Calibration and Tuning
 
 - https://3dprintbeginner.com/artillery-sidewinder-x1-calibration-guide/
 - https://3dprintbeginner.com/sidewinder-x1-firmware/
 - https://3dprintbeginner.com/sidewinder-x1-auto-bed-leveling-stock-sensor/
 
-## Marlin Firmware Variants <a name="Marlin-Firmware-Variants"></a>
+<a name="Marlin-Firmware-Variants"/>
+## Marlin Firmware Variants
 
 Four different Marlin fw variants are available:
 
@@ -66,7 +71,8 @@ Four different Marlin fw variants are available:
 - **BLTouch Waggster Mod**: It supports BLTouch connected to LED cable (Waggster method). LED on printer is no more available
 - **BLTouch Standard**: It supports BLTouch connected to Marlin mainboard. LED on printer is still available and usable. See pictures for cabling and connection guide in the zip file provided in the download page. I used an FDD cable and crimped the connectors by myself. However, it is suggested (it requires less time) to use the 2 meters (1.5 meters is too short) optional cable sold for BLTouch
 
-### BLTouch Support and Probe Offset Setup <a name="BLTouch-Support-and-Probe-Offset-Setup"></a>
+<a name="BLTouch-Support-and-Probe-Offset-Setup"/>
+### BLTouch Support and Probe Offset Setup
 
 Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change and save to EEPROM the value for the **Probe Offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
 
@@ -75,9 +81,11 @@ The download page provides two BLTouch supports requiring the following probe of
 - `{28, -33, 0}`: New support used since Marlin fw 2.0.9.2
 - `{33, -33, 0}`: Old support used until Marlin fw 2.0.9.1
 
-## Firmware Compatibility <a name="Firmware-Compatibility"></a>
+<a name="Firmware-Compatibility"/>
+## Firmware Compatibility
 
-### Marlin Firmware Compatibility <a name="Marlin-Firmware-Compatibility"></a>
+<a name="Marlin-Firmware-Compatibility"/>
+### Marlin Firmware Compatibility
 
 All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
 
@@ -99,7 +107,8 @@ To use the Marlin fw on Genius:
 
 4. Flash on the printer the created fw file `Marlin-2.0.x\.pio\build\mega2560\firmware.hex`
 
-### TFT Firmware Compatibility <a name="TFT-Firmware-Compatibility"></a>
+<a name="TFT-Firmware-Compatibility"/>
+### TFT Firmware Compatibility
 
 The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT fw is required.
 
@@ -151,7 +160,8 @@ In case you are using your own Marlin fw, to use all the features and functional
 `G26_MESH_VALIDATION` (in Configuration.h)<br>
 `Z_STEPPER_AUTO_ALIGN` (in Configuration_adv.h)<br>
 
-## Integration with OctoPrint <a name="Integration-with-OctoPrint"></a>
+<a name="Integration-with-OctoPrint"/>
+## Integration with OctoPrint
 
 The serial bus with the mainboard **MKS GEN L v1.0** is shared between TFT and OctoPrint / ESP3D / Pronterface etc. This means that printing from OctoPrint causes Marlin to receive gcodes from OctoPrint and TFT at the same time (there are collisions). This will let Marlin reply with error messages, that will be displayed on both OctoPrint and TFT display, such as:
 
@@ -164,7 +174,8 @@ In order to avoid the problem, when printing with OctoPrint etc. put the TFT in 
 - This limitation is not due to bugs on the TFT firmware but it's an hardware limitation on MKS GEN L v1.0 mainboard
 - Listening Mode state is stored on FLASH allowing to restore the mode at TFT startup. This allows to power on/off the printer remotely and to control the printer via USB without the need of any touch (from the user) on the display to engage the mode
 
-### OctoPrint Triggering Commands <a name="OctoPrint-Triggering-Commands"></a>
+<a name="OctoPrint-Triggering-Commands"/>
+### OctoPrint Triggering Commands
 
 After the TFT is set to Listening Mode (see section [Integration with OctoPrint](#Integration-with-OctoPrint)), OctoPrint, ESP3D, Pronterface etc, connected to a TFT's or mainboard's serial port, can host a print (print handled by the host) and optionally can trigger some actions to the TFT sending specific G-codes. The following actions and the related triggering G-codes are currently supported by the TFT fw:
 
@@ -186,9 +197,11 @@ Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Prin
 
 **NOTES:** A new plugin on OctoPrint implementing the above protocol should be the preferable way (available to everyone).
 
-## Firmware Update <a name="Firmware-Update"></a>
+<a name="Firmware-Update"/>
+## Firmware Update
 
-### Marlin Firmware Update <a name="Marlin-Firmware-Update"></a>
+<a name="Marlin-Firmware-Update"/>
+### Marlin Firmware Update
 
 On Sidewinder X1 and Genius printers, the mainboard's USB port used to connect the printer to a PC (e.g. to OctoPrint) is wired to a serial bus. This bus is also shared by both TFT and mainboard. The sharing of the serial bus does not allow to easily flash Marlin firmware due to collisions in the bus.
 
@@ -218,9 +231,11 @@ EEPROM reset means also that the following setups have to be performed again and
 4. Bed leveling process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
 5. Save to EEPROM, from **Menu->Settings->Machine->EEPROM->Save** button
 
-### TFT Firmware Update <a name="TFT-Firmware-Update"></a>
+<a name="TFT-Firmware-Update"/>
+### TFT Firmware Update
 
-#### TFT Firmware Installation <a name="TFT-Firmware-Installation"></a>
+<a name="TFT-Firmware-Installation"/>
+#### TFT Firmware Installation
 
 In order to install the TFT firmware:
 
@@ -236,7 +251,8 @@ In order to install the TFT firmware:
 Always install all the content provided in the zip file. That means, copy in the SD card the `.bin` + `config.ini` + `TFT28` folder with its files.
 In addition (optional) also the desired `language_xx.ini` file can be provided in the root folder of the SD card. All the language files are found in the `Language_Packs` folder.
 
-#### TFT Firmware Configuration <a name="TFT-Firmware-Configuration"></a>
+<a name="TFT-Firmware-Configuration"/>
+#### TFT Firmware Configuration
 
 To update the TFT firmware configuration:
 
@@ -245,7 +261,8 @@ To update the TFT firmware configuration:
 3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off and on the printer
 4. The TFT will load the configuration from `config.ini` file and store it on internal SPI flash. That means the configuration will be loaded from SPI flash on all the next printer reboots (no need to provide the configuration file on the SD card unless you make changes on `config.ini` file and want to load the new configuration)
 
-### TFT Firmware Reset - Recalibration <a name="TFT-Firmware-Reset---Recalibration"></a>
+<a name="TFT-Firmware-Reset---Recalibration"/>
+### TFT Firmware Reset - Recalibration
 
 Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up.
 
@@ -256,7 +273,8 @@ In order to reset / recalibrate the TFT:
 3. Insert the SD card in the TFT's SD card slot and restart the TFT by pressing the reset button (if you have a Sidewinder X1 v4 or above printer revision) or switching off and on the printer
 4. The TFT will start the recalibration process. Simply follow and complete the process. After completion, the TFT firmware should be properly booted up
 
-### TFT Firmware Not Attached <a name="TFT-Firmware-Not-Attached"></a>
+<a name="TFT-Firmware-Not-Attached"/>
+### TFT Firmware Not Attached
 
 If the text:
 
@@ -264,7 +282,8 @@ If the text:
 
 is displayed on top of the display it means you need to change the value for the **UART speed** setting. By default it is set to **250000**. Change it from TFT menu **Menu->Settings->Connection->S. Ports**, wait few seconds in order to check that with the selected UART speed the error message disappears. Once the message disappears it means that the TFT firmware is now connected to the printer and you can use it.
 
-### TFT Firmware Rollback <a name="TFT-Firmware-Rollback"></a>
+<a name="TFT-Firmware-Rollback"/>
+### TFT Firmware Rollback
 
 In case you have issues with this custom firmware or you don't like it, you can rollback to the firmware previously installed in your printer.
 
@@ -276,9 +295,11 @@ In order to rollback:
 4. Turn on the printer and wait for the firmware to finish flashing
 5. Restart the printer
 
-## History of Changes <a name="History-of-Changes"></a>
+<a name="History-of-Changes"/>
+## History of Changes
 
-### TFT Firmware Changes <a name="TFT-Firmware-Changes"></a>
+<a name="TFT-Firmware-Changes"/>
+### TFT Firmware Changes
 
 - 1.27.x Patch 9, May 09 2022
 
@@ -507,7 +528,8 @@ In order to rollback:
 - 1.0.26, April 17 2020:
   - First fully stable version
 
-### Marlin Firmware Changes <a name="Marlin-Firmware-Changes"></a>
+<a name="Marlin-Firmware-Changes"/>
+### Marlin Firmware Changes
 
 - 2.0.9.2 version, October 05 2021
   - Update to new official Marlin 2.0.9.2
@@ -546,9 +568,11 @@ In order to rollback:
   - Based on official Marlin firmware last released on 2020 July 20
   - Source code available
 
-## List of Main Features <a name="List-of-Main-Features"></a>
+<a name="List-of-Main-Features"/>
+## List of Main Features
 
-### TFT Firmware Main Features <a name="TFT-Firmware-Main-Features"></a>
+<a name="TFT-Firmware-Main-Features"/>
+### TFT Firmware Main Features
 
 - config.ini: a configuration file to set all the settings and features of the TFT firmware such as:
   - build volume (e.g. 300x300x400 for Sidewinder X1 or 220x220x250 for Genius printer)
@@ -589,7 +613,8 @@ In order to rollback:
 - Feature menu: it allows to customize printer feature such as runot filament (on, off, smart), auto shut down after print (it requires it is enabled on Marlin firmware), file menu view (icon or list view mode) etc.
 - more...
 
-### Marlin Firmware Main Features <a name="Marlin-Firmware-Main-Features"></a>
+<a name="Marlin-Firmware-Main-Features"/>
+### Marlin Firmware Main Features
 
 For all the Marlin fw variants, the following changes are provided:
 - hotend and bed PID calibrated to 200�C and 60�C respectively. However PID values strongly depend on the environment and the current ambient temperature, so always perform PID calibration (from TFT menu) in order to have the proper values on your environment
@@ -610,7 +635,8 @@ Both the above disabled two parameters provide better results on Sidewinder X1 a
 - enabled "Babystep ZProbe Offset" to combine M851 Z and Babystepping
 - enabled "Linear Advance" with K factor set to 0.13 (LIN_ADVANCE_K)
 
-### Simplify3D Profile Features <a name="Simplify3D-Profile-Features"></a>
+<a name="Simplify3D-Profile-Features"/>
+### Simplify3D Profile Features
 
 Profile for PLA filament. Change the following parameters value according to your needs:
 - Extruder tab
