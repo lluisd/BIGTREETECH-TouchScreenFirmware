@@ -41,7 +41,7 @@ Thanks!
   - [Marlin Firmware Main Features](#Marlin-Firmware-Main-Features)
   - [Simplify3D Profile Features](#Simplify3D-Profile-Features)
 
-<a name="Source-Code-Links"/>
+<a name="Source-Code-Links"></a>
 ## Source Code Links
 
 <a name="Marlin-Firmware"/>
