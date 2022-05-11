@@ -80,6 +80,7 @@ The download page provides two BLTouch supports requiring the following probe of
 ### Marlin Firmware Compatibility <a name="Marlin-Firmware-Compatibility"></a>
 
 All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
+
 The 4 Marlin fw variants can be easily adapted to Genius printer but it needs to recompile the fw (e.g. with MS vscode).
 
 To use the Marlin fw on Genius:
