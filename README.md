@@ -126,7 +126,7 @@ To use the Marlin fw on Genius:
 
 ### TFT Firmware Compatibility
 
-The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT fw is required.
+The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT fw is required. Only one change in configuration file is required for Genius (e.g. print volume).
 
 <a name="TFT-Firmware-for-Genius"></a>
 
