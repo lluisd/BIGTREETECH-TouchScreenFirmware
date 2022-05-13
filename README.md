@@ -332,9 +332,9 @@ In order to flash Marlin firmware, follow the steps below in the same order they
 After a new Marlin firmware is installed (see section [Marlin Firmware Installation](#Marlin-Firmware-Installation)), EEPROM must always be reset and the following setups have to be performed again and saved to EEPROM after completion:
 
 1. Reset EEPROM, from **Menu->Settings->Machine->EEPROM->Reset** button
-2. Perform PID process, from **Menu->Settings->Machine->Tuning->PID** menu
-3. Perform Probe Offset process (only for BLTouch Marlin firmware versions), from **Menu->Movement->Bed Level->P Offset** menu
-4. Perform Bed Leveling process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
+2. Perform **PID** process, from **Menu->Settings->Machine->Tuning->PID** menu
+3. Perform **Probe Offset** process (only for BLTouch Marlin firmware versions), from **Menu->Movement->Bed Level->P Offset** menu
+4. Perform **Bed Leveling** process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
 5. Save to EEPROM, from **Menu->Settings->Machine->EEPROM->Save** button
 
 <a name="History-of-Changes"></a>
