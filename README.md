@@ -18,8 +18,9 @@ Thanks!
    - [TFT Firmware](#TFT-Firmware)
    - [Marlin Firmware](#Marlin-Firmware)
 2. [Useful Links for Printer Calibration and Tuning](#Useful-Links-for-Printer-Calibration-and-Tuning)
-3. [Marlin Firmware Variants](#Marlin-Firmware-Variants)
-   - [BLTouch Support and Probe Offset Setup](#BLTouch-Support-and-Probe-Offset-Setup)
+3. [Firmware Variants](#Firmware-Variants)
+   - [Marlin Firmware Variants](#Marlin-Firmware-Variants)
+     - [BLTouch Support and Probe Offset Setup](#BLTouch-Support-and-Probe-Offset-Setup)
 4. [Firmware Compatibility](#Firmware-Compatibility)
    - [TFT Firmware Compatibility](#TFT-Firmware-Compatibility)
      - [TFT Firmware for Genius](#TFT-Firmware-for-Genius)
@@ -70,9 +71,13 @@ Thanks!
 - https://3dprintbeginner.com/sidewinder-x1-firmware/
 - https://3dprintbeginner.com/sidewinder-x1-auto-bed-leveling-stock-sensor/
 
+<a name="Firmware-Variants"></a>
+
+## Firmware Variants
+
 <a name="Marlin-Firmware-Variants"></a>
 
-## Marlin Firmware Variants
+### Marlin Firmware Variants
 
 Four different Marlin fw variants are available:
 
@@ -83,7 +88,7 @@ Four different Marlin fw variants are available:
 
 <a name="BLTouch-Support-and-Probe-Offset-Setup"></a>
 
-### BLTouch Support and Probe Offset Setup
+#### BLTouch Support and Probe Offset Setup
 
 Both the **BLTouch Standard** and **BLTouch Waggster Mod** fw variants are configured for the BLTouch support linked in the download page requiring probe offset `{28, -33, 0}`. In case a different support is used by the user, it is simply needed to change and save to EEPROM the value for the **Probe Offset** setting listed on TFT menu **Menu->Settings->Machine->Parameter**.
 
