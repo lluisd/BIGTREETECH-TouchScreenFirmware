@@ -29,14 +29,15 @@ Thanks!
 5. [Integration with OctoPrint](#Integration-with-OctoPrint)
    - [OctoPrint Triggering Commands](#OctoPrint-Triggering-Commands)
 6. [Firmware Update](#Firmware-Update)
-   - [Marlin Firmware Update](#Marlin-Firmware-Update)
-     - [Marlin Firmware Installation](#Marlin-Firmware-Installation)
    - [TFT Firmware Update](#TFT-Firmware-Update)
      - [TFT Firmware Installation](#TFT-Firmware-Installation)
      - [TFT Firmware Configuration](#TFT-Firmware-Configuration)
      - [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
      - [TFT Firmware Not Attached](#TFT-Firmware-Not-Attached)
      - [TFT Firmware Rollback](#TFT-Firmware-Rollback)
+   - [Marlin Firmware Update](#Marlin-Firmware-Update)
+     - [Marlin Firmware Installation](#Marlin-Firmware-Installation)
+     - [Marlin Firmware Configuration](#Marlin-Firmware-Configuration)
 7. [History of Changes](#History-of-Changes)
    - [TFT Firmware Changes](#TFT-Firmware-Changes)
    - [Marlin Firmware Changes](#Marlin-Firmware-Changes)
@@ -228,42 +229,6 @@ Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Prin
 
 ## Firmware Update
 
-<a name="Marlin-Firmware-Update"></a>
-
-### Marlin Firmware Update
-
-<a name="Marlin-Firmware-Installation"></a>
-
-#### Marlin Firmware Installation
-
-On Sidewinder X1 and Genius printers, the mainboard's USB port used to connect the printer to a PC (e.g. to OctoPrint) is wired to a serial bus. This bus is also shared by both TFT and mainboard. The sharing of the serial bus does not allow to easily flash Marlin firmware due to collisions in the bus.
-
-Two possible solutions were normally adopted to allow Marlin firmware updates:
-
-1. Physical disconnection of the TFT serial cable so the serial bus is no more shared with the TFT. This solution requires to remove the cover under the chassis and possibly to loose any warrenty
-2. Use a script under Linux OS trying to lock the serial bus to the TFT
-
-This TFT firmware provides a third, and easy to use, solution for flashing Marlin firmware.
-
-In order to flash Marlin firmware, follow the steps below in the same order they are reported:
-
-1. Switch on the printer from the main power button (on the back of the printer)
-2. From the TFT, press on button **Menu->Settings->Connection->Disconnect**. A black background with a text asking to touch the screen to connect again the TFT is prompted. **DO NOT** press on the display, so the TFT will continue to be disconnected from the serial bus
-3. From the PC, open the application you usually use for flashing Marlin firmware (e.g. PrusaSlicer)
-4. Plug a USB cable from the PC to the mainboard's USB port and connect the application to the printer
-5. Follow the instructions provided by your application to flash Marlin firmware
-6. Once Marlin firmware is flashed, disconnect the application from the printer and restart the printer (switching off and on or pressing on the TFT's reset button if you have a Sidewinder X1 v4)
-
-**IMPORTANT NOTE:**
-Always reset the EEPROM after installing a new Marlin firmware.
-EEPROM reset means also that the following setups have to be performed again and saved to EEPROM:
-
-1. Reset EEPROM, from **Menu->Settings->Machine->EEPROM->Reset** button
-2. PID, from **Menu->Settings->Machine->Tuning->PID** menu
-3. Probe Offset (only for BLTouch Marlin firmware versions), from **Menu->Movement->Bed Level->P Offset** menu
-4. Bed leveling process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
-5. Save to EEPROM, from **Menu->Settings->Machine->EEPROM->Save** button
-
 <a name="TFT-Firmware-Update"></a>
 
 ### TFT Firmware Update
@@ -333,6 +298,44 @@ In order to rollback:
 3. Plug in the SD card into the printer
 4. Turn on the printer and wait for the firmware to finish flashing
 5. Restart the printer
+
+<a name="Marlin-Firmware-Update"></a>
+
+### Marlin Firmware Update
+
+<a name="Marlin-Firmware-Installation"></a>
+
+#### Marlin Firmware Installation
+
+On Sidewinder X1 and Genius printers, the mainboard's USB port used to connect the printer to a PC (e.g. to OctoPrint) is wired to a serial bus. This bus is also shared by both TFT and mainboard. The sharing of the serial bus does not allow to easily flash Marlin firmware due to collisions in the bus.
+
+Two possible solutions were normally adopted to allow Marlin firmware updates:
+
+1. Physical disconnection of the TFT serial cable so the serial bus is no more shared with the TFT. This solution requires to remove the cover under the chassis and possibly to loose any warrenty
+2. Use a script under Linux OS trying to lock the serial bus to the TFT
+
+This TFT firmware provides a third, and easy to use, solution for flashing Marlin firmware.
+
+In order to flash Marlin firmware, follow the steps below in the same order they are reported:
+
+1. Switch on the printer from the main power button (on the back of the printer)
+2. From the TFT, press on button **Menu->Settings->Connection->Disconnect**. A black background with a text asking to touch the screen to connect again the TFT is prompted. **DO NOT** press on the display, so the TFT will continue to be disconnected from the serial bus
+3. From the PC, open the application you usually use for flashing Marlin firmware (e.g. PrusaSlicer)
+4. Plug a USB cable from the PC to the mainboard's USB port and connect the application to the printer
+5. Follow the instructions provided by your application to flash Marlin firmware
+6. Once Marlin firmware is flashed, disconnect the application from the printer and restart the printer (switching off and on or pressing on the TFT's reset button if you have a Sidewinder X1 v4)
+
+<a name="Marlin-Firmware-Configuration"></a>
+
+#### Marlin Firmware Configuration
+
+After a new Marlin firmware is installed (see section [Marlin Firmware Installation](#Marlin-Firmware-Installation)), EEPROM must always be reset and the following setups have to be performed again and saved to EEPROM after completion:
+
+1. Reset EEPROM, from **Menu->Settings->Machine->EEPROM->Reset** button
+2. PID, from **Menu->Settings->Machine->Tuning->PID** menu
+3. Probe Offset (only for BLTouch Marlin firmware versions), from **Menu->Movement->Bed Level->P Offset** menu
+4. Bed leveling process, from **Menu->Movement->Bed Level->UBL** (or MBL) menu
+5. Save to EEPROM, from **Menu->Settings->Machine->EEPROM->Save** button
 
 <a name="History-of-Changes"></a>
 
