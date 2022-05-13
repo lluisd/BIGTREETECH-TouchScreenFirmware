@@ -15,17 +15,17 @@ Thanks!
 ## Table of Contents
 
 1. [Source Code Links](#Source-Code-Links)
-   - [Marlin Firmware](#Marlin-Firmware)
    - [TFT Firmware](#TFT-Firmware)
+   - [Marlin Firmware](#Marlin-Firmware)
 2. [Useful Links for Printer Calibration and Tuning](#Useful-Links-for-Printer-Calibration-and-Tuning)
 3. [Marlin Firmware Variants](#Marlin-Firmware-Variants)
    - [BLTouch Support and Probe Offset Setup](#BLTouch-Support-and-Probe-Offset-Setup)
 4. [Firmware Compatibility](#Firmware-Compatibility)
-   - [Marlin Firmware Compatibility](#Marlin-Firmware-Compatibility)
-     - [Marlin Firmware for Genius](#Marlin-Firmware-for-Genius)
    - [TFT Firmware Compatibility](#TFT-Firmware-Compatibility)
      - [TFT Firmware for Genius](#TFT-Firmware-for-Genius)
      - [Marlin Firmware Dependencies](#Marlin-Firmware-Dependencies)
+   - [Marlin Firmware Compatibility](#Marlin-Firmware-Compatibility)
+     - [Marlin Firmware for Genius](#Marlin-Firmware-for-Genius)
 5. [Integration with OctoPrint](#Integration-with-OctoPrint)
    - [OctoPrint Triggering Commands](#OctoPrint-Triggering-Commands)
 6. [Firmware Update](#Firmware-Update)
@@ -50,17 +50,17 @@ Thanks!
 
 ## Source Code Links
 
-<a name="Marlin-Firmware"></a>
-
-### Marlin Firmware
-
-- https://github.com/digant73/Marlin/tags
-
 <a name="TFT-Firmware"></a>
 
 ### TFT Firmware
 
 - https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
+
+<a name="Marlin-Firmware"></a>
+
+### Marlin Firmware
+
+- https://github.com/digant73/Marlin/tags
 
 <a name="Useful-Links-for-Printer-Calibration-and-Tuning"></a>
 
@@ -95,34 +95,6 @@ The download page provides two BLTouch supports requiring the following probe of
 <a name="Firmware-Compatibility"></a>
 
 ## Firmware Compatibility
-
-<a name="Marlin-Firmware-Compatibility"></a>
-
-### Marlin Firmware Compatibility
-
-All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
-
-<a name="Marlin-Firmware-for-Genius"></a>
-
-#### Marlin Firmware for Genius
-
-The 4 Marlin fw variants can be easily adapted to Genius printer but it needs to recompile the fw (e.g. with MS vscode).
-
-To use the Marlin fw on Genius:
-
-1. Install **MS Visual Studio Code** compiler on your PC / laptop
-2. Install the extension **PlatformIO IDE 2.3.2** or above on vscode
-3. Open the fw source project reported on section [Marlin Firmware](#Marlin-Firmware) with vscode:
-
-   1. Set the following settings in source file `Marlin-2.0.x\Marlin\Configuration.h` with the build volume of the Genius:
-
-      - `X_BED_SIZE 220`
-      - `Y_BED_SIZE 220`
-      - `Z_MAX_POS 250`
-
-   2. Recompile the fw (to compile, simply press the keys `CTRL-ALT-B` at the same time)
-
-4. Flash on the printer the created fw file `Marlin-2.0.x\.pio\build\mega2560\firmware.hex`
 
 <a name="TFT-Firmware-Compatibility"></a>
 
@@ -185,6 +157,34 @@ In case you are using your own Marlin fw, to use all the features and functional
 `Z_MIN_PROBE_REPEATABILITY_TEST` (in Configuration.h)<br>
 `G26_MESH_VALIDATION` (in Configuration.h)<br>
 `Z_STEPPER_AUTO_ALIGN` (in Configuration_adv.h)<br>
+
+<a name="Marlin-Firmware-Compatibility"></a>
+
+### Marlin Firmware Compatibility
+
+All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
+
+<a name="Marlin-Firmware-for-Genius"></a>
+
+#### Marlin Firmware for Genius
+
+The 4 Marlin fw variants can be easily adapted to Genius printer but it needs to recompile the fw (e.g. with MS vscode).
+
+To use the Marlin fw on Genius:
+
+1. Install **MS Visual Studio Code** compiler on your PC / laptop
+2. Install the extension **PlatformIO IDE 2.3.2** or above on vscode
+3. Open the fw source project reported on section [Marlin Firmware](#Marlin-Firmware) with vscode:
+
+   1. Set the following settings in source file `Marlin-2.0.x\Marlin\Configuration.h` with the build volume of the Genius:
+
+      - `X_BED_SIZE 220`
+      - `Y_BED_SIZE 220`
+      - `Z_MAX_POS 250`
+
+   2. Recompile the fw (to compile, simply press the keys `CTRL-ALT-B` at the same time)
+
+4. Flash on the printer the created fw file `Marlin-2.0.x\.pio\build\mega2560\firmware.hex`
 
 <a name="Integration-with-OctoPrint"></a>
 
