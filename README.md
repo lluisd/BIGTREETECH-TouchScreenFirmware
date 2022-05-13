@@ -14,22 +14,22 @@ Thanks!
 
 ## Table of Contents
 
-1. [Source Code Links](#Source-Code-Links)
-   - [TFT Firmware](#TFT-Firmware)
-   - [Marlin Firmware](#Marlin-Firmware)
-2. [Useful Links for Printer Calibration and Tuning](#Useful-Links-for-Printer-Calibration-and-Tuning)
-3. [Firmware Variants](#Firmware-Variants)
+1. [Useful Links for Printer Calibration and Tuning](#Useful-Links-for-Printer-Calibration-and-Tuning)
+2. [Firmware Variants](#Firmware-Variants)
+   - [TFT Firmware Variants](#TFT-Firmware-Variants)
+     - [TFT Firmware Source Code Links](#TFT-Firmware-Source-Code-Links)
    - [Marlin Firmware Variants](#Marlin-Firmware-Variants)
+     - [Marlin Firmware Source Code Links](#Marlin-Firmware-Source-Code-Links)
      - [BLTouch Support and Probe Offset Setup](#BLTouch-Support-and-Probe-Offset-Setup)
-4. [Firmware Compatibility](#Firmware-Compatibility)
+3. [Firmware Compatibility](#Firmware-Compatibility)
    - [TFT Firmware Compatibility](#TFT-Firmware-Compatibility)
      - [TFT Firmware for Genius](#TFT-Firmware-for-Genius)
      - [Marlin Firmware Dependencies](#Marlin-Firmware-Dependencies)
    - [Marlin Firmware Compatibility](#Marlin-Firmware-Compatibility)
      - [Marlin Firmware for Genius](#Marlin-Firmware-for-Genius)
-5. [Integration with OctoPrint](#Integration-with-OctoPrint)
+4. [Integration with OctoPrint](#Integration-with-OctoPrint)
    - [OctoPrint Triggering Commands](#OctoPrint-Triggering-Commands)
-6. [Firmware Update](#Firmware-Update)
+5. [Firmware Update](#Firmware-Update)
    - [TFT Firmware Update](#TFT-Firmware-Update)
      - [TFT Firmware Installation](#TFT-Firmware-Installation)
      - [TFT Firmware Configuration](#TFT-Firmware-Configuration)
@@ -39,29 +39,13 @@ Thanks!
    - [Marlin Firmware Update](#Marlin-Firmware-Update)
      - [Marlin Firmware Installation](#Marlin-Firmware-Installation)
      - [Marlin Firmware Configuration](#Marlin-Firmware-Configuration)
-7. [History of Changes](#History-of-Changes)
+6. [History of Changes](#History-of-Changes)
    - [TFT Firmware Changes](#TFT-Firmware-Changes)
    - [Marlin Firmware Changes](#Marlin-Firmware-Changes)
-8. [List of Main Features](#List-of-Main-Features)
+7. [List of Main Features](#List-of-Main-Features)
    - [TFT Firmware Main Features](#TFT-Firmware-Main-Features)
    - [Marlin Firmware Main Features](#Marlin-Firmware-Main-Features)
    - [Simplify3D Profile Features](#Simplify3D-Profile-Features)
-
-<a name="Source-Code-Links"></a>
-
-## Source Code Links
-
-<a name="TFT-Firmware"></a>
-
-### TFT Firmware
-
-- https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
-
-<a name="Marlin-Firmware"></a>
-
-### Marlin Firmware
-
-- https://github.com/digant73/Marlin/tags
 
 <a name="Useful-Links-for-Printer-Calibration-and-Tuning"></a>
 
@@ -75,6 +59,16 @@ Thanks!
 
 ## Firmware Variants
 
+<a name="TFT-Firmware-Variants"></a>
+
+### TFT Firmware Variants
+
+<a name="TFT-Firmware-Source-Code-Links"></a>
+
+#### TFT Firmware Source Code Links
+
+- https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
+
 <a name="Marlin-Firmware-Variants"></a>
 
 ### Marlin Firmware Variants
@@ -85,6 +79,12 @@ Four different Marlin fw variants are available:
 - **MBL**: Standard version + MBL suppport (Manual Mesh Bed Leveling)
 - **BLTouch Waggster Mod**: It supports BLTouch connected to LED cable (Waggster method). LED on printer is no more available
 - **BLTouch Standard**: It supports BLTouch connected to Marlin mainboard. LED on printer is still available and usable. See pictures for cabling and connection guide in the zip file provided in the download page. I used an FDD cable and crimped the connectors by myself. However, it is suggested (it requires less time) to use the 2 meters (1.5 meters is too short) optional cable sold for BLTouch
+
+<a name="Marlin-Firmware-Source-Code-Links"></a>
+
+#### Marlin Firmware Source Code Links
+
+- https://github.com/digant73/Marlin/tags
 
 <a name="BLTouch-Support-and-Probe-Offset-Setup"></a>
 
