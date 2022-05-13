@@ -22,7 +22,10 @@ Thanks!
   - [BLTouch Support and Probe Offset Setup](#BLTouch-Support-and-Probe-Offset-Setup)
 - [Firmware Compatibility](#Firmware-Compatibility)
   - [Marlin Firmware Compatibility](#Marlin-Firmware-Compatibility)
+    - [Marlin Firmware for Genius](#Marlin-Firmware-for-Genius)
   - [TFT Firmware Compatibility](#TFT-Firmware-Compatibility)
+    - [TFT Firmware for Genius](#TFT-Firmware-for-Genius)
+    - [Marlin Firmware Dependencies](#Marlin-Firmware-Dependencies)
 - [Integration with OctoPrint](#Integration-with-OctoPrint)
   - [OctoPrint Triggering Commands](#OctoPrint-Triggering-Commands)
 - [Firmware Update](#Firmware-Update)
@@ -97,6 +100,10 @@ The download page provides two BLTouch supports requiring the following probe of
 
 All the 4 Marlin fw variants reported on section [Marlin Firmware Variants](#Marlin-Firmware-Variants) are ready to be flashed on Sidewinder X1 printer. Small changes are required for Genius (e.g. print volume). While Sidewinder X2 has a totally different mainboard and it's not compatible at all with the Marlin fw provided here.
 
+<a name="Marlin-Firmware-for-Genius"></a>
+
+#### Marlin Firmware for Genius
+
 The 4 Marlin fw variants can be easily adapted to Genius printer but it needs to recompile the fw (e.g. with MS vscode).
 
 To use the Marlin fw on Genius:
@@ -121,6 +128,10 @@ To use the Marlin fw on Genius:
 
 The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT fw is required.
 
+<a name="TFT-Firmware-for-Genius"></a>
+
+#### TFT Firmware for Genius
+
 To use the TFT fw on Genius:
 
 1. Set the following parameter in TFT's configuration file `config.ini` with the build volume of the Genius:
@@ -128,6 +139,10 @@ To use the TFT fw on Genius:
    - `size_max:X220 Y220 Z250`
 
 2. Load on TFT the updated configuration file `config.ini`
+
+<a name="Marlin-Firmware-Dependencies"></a>
+
+#### Marlin Firmware Dependencies
 
 In case you are using your own Marlin fw, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
 
