@@ -30,12 +30,13 @@ Thanks!
    - [OctoPrint Triggering Commands](#OctoPrint-Triggering-Commands)
 6. [Firmware Update](#Firmware-Update)
    - [Marlin Firmware Update](#Marlin-Firmware-Update)
+     - [Marlin Firmware Installation](#Marlin-Firmware-Installation)
    - [TFT Firmware Update](#TFT-Firmware-Update)
      - [TFT Firmware Installation](#TFT-Firmware-Installation)
      - [TFT Firmware Configuration](#TFT-Firmware-Configuration)
-   - [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
-   - [TFT Firmware Not Attached](#TFT-Firmware-Not-Attached)
-   - [TFT Firmware Rollback](#TFT-Firmware-Rollback)
+     - [TFT Firmware Reset - Recalibration](#TFT-Firmware-Reset---Recalibration)
+     - [TFT Firmware Not Attached](#TFT-Firmware-Not-Attached)
+     - [TFT Firmware Rollback](#TFT-Firmware-Rollback)
 7. [History of Changes](#History-of-Changes)
    - [TFT Firmware Changes](#TFT-Firmware-Changes)
    - [Marlin Firmware Changes](#Marlin-Firmware-Changes)
@@ -231,6 +232,10 @@ Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Prin
 
 ### Marlin Firmware Update
 
+<a name="Marlin-Firmware-Installation"></a>
+
+#### Marlin Firmware Installation
+
 On Sidewinder X1 and Genius printers, the mainboard's USB port used to connect the printer to a PC (e.g. to OctoPrint) is wired to a serial bus. This bus is also shared by both TFT and mainboard. The sharing of the serial bus does not allow to easily flash Marlin firmware due to collisions in the bus.
 
 Two possible solutions were normally adopted to allow Marlin firmware updates:
@@ -294,7 +299,7 @@ To update the TFT firmware configuration:
 
 <a name="TFT-Firmware-Reset---Recalibration"></a>
 
-### TFT Firmware Reset - Recalibration
+#### TFT Firmware Reset - Recalibration
 
 Sometimes, after a TFT firmware installation, the firmware can need a reset / recalibration in order to properly boot up.
 
@@ -307,7 +312,7 @@ In order to reset / recalibrate the TFT:
 
 <a name="TFT-Firmware-Not-Attached"></a>
 
-### TFT Firmware Not Attached
+#### TFT Firmware Not Attached
 
 If the text:
 
@@ -317,7 +322,7 @@ is displayed on top of the display it means you need to change the value for the
 
 <a name="TFT-Firmware-Rollback"></a>
 
-### TFT Firmware Rollback
+#### TFT Firmware Rollback
 
 In case you have issues with this custom firmware or you don't like it, you can rollback to the firmware previously installed in your printer.
 
