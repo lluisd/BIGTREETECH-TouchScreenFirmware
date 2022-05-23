@@ -350,6 +350,11 @@ After a new Marlin firmware is installed (see section [Marlin Firmware Installat
 
 ### TFT Firmware Changes
 
+- 1.27.x Patch 9.1, May 23 2022
+
+  **BUG FIXES:**
+  - Fixed missing display of probe values in LevelCorner menu when start button was used: In case the start button was used, only the value for the last point was properly displayed (for the first three points, values were not updated)
+
 - 1.27.x Patch 9, May 09 2022
 
   **BUG FIXES:**
