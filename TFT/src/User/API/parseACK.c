@@ -867,6 +867,23 @@ void parseACK(void)
         if (ack_seen("Y: ")) y = ack_value();
         if (ack_seen("Z: ")) levelingSetProbedPoint(x, y, ack_value());  // save probed Z value
       }
+      #if DELTA_PROBE_TYPE != 0
+        // parse and store Delta calibration settings
+        else if (ack_seen("Calibration OK"))
+        {
+          BUZZER_PLAY(SOUND_SUCCESS);
+
+          if (infoMachineSettings.EEPROM == 1)
+          {
+            setDialogText(LABEL_DELTA_CONFIGURATION, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL);
+            showDialog(DIALOG_TYPE_SUCCESS, saveEepromSettings, NULL, NULL);
+          }
+          else
+          {
+            popupReminder(DIALOG_TYPE_SUCCESS, LABEL_DELTA_CONFIGURATION, LABEL_PROCESS_COMPLETED);
+          }
+        }
+      #endif
 
       //----------------------------------------
       // Parameter / M503 / M115 parsed responses
