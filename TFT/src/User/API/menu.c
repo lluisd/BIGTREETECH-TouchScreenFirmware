@@ -942,17 +942,16 @@ void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, bool redrawIcon)
   {
     if (liveicon->enabled[i] == true)
     {
-      uint8_t textWidth = GUI_StrPixelWidth(liveicon->lines[i].text);
       GUI_POINT loc;
 
       switch (liveicon->lines[i].h_align)
       {
         case CENTER:
-          loc.x = liveicon->lines[i].pos.x - textWidth / 2;
+          loc.x = liveicon->lines[i].pos.x - GUI_StrPixelWidth(liveicon->lines[i].text) / 2;
           break;
 
         case RIGHT:
-          loc.x = liveicon->lines[i].pos.x - textWidth;
+          loc.x = liveicon->lines[i].pos.x - GUI_StrPixelWidth(liveicon->lines[i].text);
           break;
 
         default:

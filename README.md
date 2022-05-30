@@ -148,6 +148,7 @@ In case you are using your own Marlin fw, to use all the features and functional
 `SERIAL_FLOAT_PRECISION 4` (in Configuration_adv.h)<br>
 `HOST_ACTION_COMMANDS` (in Configuration_adv.h)<br>
 `HOST_PROMPT_SUPPORT` (in Configuration_adv.h)<br>
+`HOST_STATUS_NOTIFICATIONS` (in Configuration_adv.h)<br>
 
 **Options to support M600 with host & (Un)Load menu:**
 
