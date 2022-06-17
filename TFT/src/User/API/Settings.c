@@ -256,7 +256,7 @@ void setupMachine(FW_TYPE fwType)
   }
 
   if (infoMachineSettings.leveling != BL_DISABLED && infoMachineSettings.EEPROM == 1 && infoSettings.auto_load_leveling == 1)
-    storeCmd("M420 S1\n");
+    mustStoreCmd("M420 S1\n");
 
   mustStoreCmd("M503 S0\n");
   mustStoreCmd("G90\n");  // set to absolute positioning
