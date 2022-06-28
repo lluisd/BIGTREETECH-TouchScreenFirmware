@@ -22,12 +22,12 @@ typedef struct
 } PRINTING;
 
 PRINTING infoPrinting = {0};
-PRINT_SUMMARY infoPrintSummary = {.name[0] = '\0', 0, 0, 0, 0};
+PRINT_SUMMARY infoPrintSummary = {.name[0] = '\0', 0, 0, 0, 0, false};
 
-static bool updateM27_waiting = false;
+static bool updateM27Waiting = false;
 static bool extrusionDuringPause = false;  // flag for extrusion during Print -> Pause
-static float last_E_pos;
-bool filamentRunoutAlarm;
+static bool filamentRunoutAlarm = false;
+static float lastEPos = 0;                 // used only to update stats in infoPrintSummary
 
 void setExtrusionDuringPause(bool extruded)
 {
@@ -261,9 +261,8 @@ void shutdownStart(void)
 
 void initPrintSummary(void)
 {
-  last_E_pos = coordinateGetAxis(E_AXIS);
-  infoPrintSummary = (PRINT_SUMMARY){.name[0] = '\0', 0, 0, 0, 0};
-  hasFilamentData = false;
+  lastEPos = coordinateGetAxis(E_AXIS);
+  infoPrintSummary = (PRINT_SUMMARY){.name[0] = '\0', 0, 0, 0, 0, false};
 
   // save print filename (short or long filename)
   sprintf(infoPrintSummary.name, "%." STRINGIFY(SUMMARY_NAME_LEN) "s", getPrintFilename());
@@ -309,18 +308,18 @@ void sendPrintCodes(uint8_t index)
 
 void printSetUpdateWaiting(bool isWaiting)
 {
-  updateM27_waiting = isWaiting;
+  updateM27Waiting = isWaiting;
 }
 
 void updatePrintUsedFilament(void)
 {
-  float E_pos = coordinateGetAxis(E_AXIS);
+  float ePos = coordinateGetAxis(E_AXIS);
 
-  if ((E_pos + MAX_RETRACT_LIMIT) < last_E_pos)  // Check whether E position reset (G92 E0)
-    last_E_pos = 0;
+  if ((ePos + MAX_RETRACT_LIMIT) < lastEPos)  // check whether E position reset (G92 E0)
+    lastEPos = 0;
 
-  infoPrintSummary.length += (E_pos - last_E_pos) / 1000;
-  last_E_pos = E_pos;
+  infoPrintSummary.length += (ePos - lastEPos) / 1000;
+  lastEPos = ePos;
 }
 
 void clearInfoPrint(void)
@@ -902,7 +901,7 @@ void loopPrintFromOnboard(void)
 
   do
   { // WAIT FOR M27
-    if (updateM27_waiting == true)
+    if (updateM27Waiting == true)
     {
       nextCheckPrintTime = OS_GetTimeMs() + update_M27_time;
       break;
@@ -915,6 +914,6 @@ void loopPrintFromOnboard(void)
       break;
 
     nextCheckPrintTime = OS_GetTimeMs() + update_M27_time;
-    updateM27_waiting = true;
+    updateM27Waiting = true;
   } while (0);
 }

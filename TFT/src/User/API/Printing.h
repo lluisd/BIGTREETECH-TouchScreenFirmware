@@ -42,6 +42,7 @@ typedef struct
   float length;
   float weight;
   float cost;
+  bool hasFilamentData;
 } PRINT_SUMMARY;
 
 extern PRINT_SUMMARY infoPrintSummary;

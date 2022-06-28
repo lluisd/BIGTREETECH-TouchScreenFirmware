@@ -666,7 +666,7 @@ void parseACK(void)
         else if (ack_seen("W:")) ack_values_sum(&infoPrintSummary.weight);
         else if (ack_seen("C:")) ack_values_sum(&infoPrintSummary.cost);
 
-        hasFilamentData = true;
+        infoPrintSummary.hasFilamentData = true;
       }
       // parse and store M23, select SD file
       else if (infoMachineSettings.onboardSD == ENABLED && ack_seen("File opened:"))
