@@ -437,8 +437,8 @@ static inline void drawPrintInfo(void)
 
 void printSummaryPopup(void)
 {
-  char showInfo[150];
-  char tempstr[30];
+  char showInfo[300];
+  char tempstr[60];
 
   timeToString(showInfo, (char *)textSelect(LABEL_PRINT_TIME), infoPrintSummary.time);
 
