@@ -306,7 +306,7 @@ void loopCheckHeater(void)
     heatSetUpdateSeconds(TEMPERATURE_QUERY_SLOW_SECONDS);
   }
 
-  // Query heaters if they reached the target temperature (only if not prining)
+  // Query heaters if they reached the target temperature (only if not printing)
   for (uint8_t i = 0; (i < MAX_HEATER_COUNT) && (!isPrinting()); i++)
   {
     if (heater.T[i].status != SETTLED && inRange(heater.T[i].current, heater.T[i].target, TEMPERATURE_RANGE))
