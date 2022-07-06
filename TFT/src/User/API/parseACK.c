@@ -798,7 +798,7 @@ void parseACK(void)
       {
         pidUpdateStatus(PID_FAILED);
       }
-      // parse M306 tuning end message (interrupted or finished)
+      // parse M306, model predictive temperature control tuning end message (interrupted or finished)
       else if (ack_seen("MPC Autotune"))
       {
         if (ack_continue_seen("finished"))
