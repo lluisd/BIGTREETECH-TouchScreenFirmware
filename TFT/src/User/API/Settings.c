@@ -246,7 +246,6 @@ void setupMachine(FW_TYPE fwType)
     #endif
 
     mustStoreCmd("M552\n");  // query network state, populate IP if the screen boots up after RRF
-    return;
   }
   else if (infoMachineSettings.firmwareType == FW_SMOOTHIEWARE)  // Smoothieware does not report detailed M115 capabilities
   { // set only the values that differ from the ones initialized in initMachineSettings() function
