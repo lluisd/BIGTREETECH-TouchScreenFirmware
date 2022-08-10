@@ -123,9 +123,16 @@ To use the TFT fw on Genius:
 
 #### Marlin Firmware Dependencies
 
-In case you are using your own Marlin fw, to use all the features and functionalities supported by the TFT, the following options must be enabled in Marlin firmware.
+Minimum Marlin firmware version: **2.1.1**
 
-**General options which MUST be activated:**
+Distribution date: **2022-08-06**
+
+Firmware source: https://github.com/MarlinFirmware/Marlin/releases
+
+</br>To use all the features and functionalities supported by the TFT,
+the following options must be enabled in Marlin firmware.
+
+**General options which MUST be always activated:**
 
 `EEPROM_SETTINGS` (in Configuration.h)<br>
 `BABYSTEPPING` (in Configuration_adv.h)<br>
@@ -152,7 +159,7 @@ In case you are using your own Marlin fw, to use all the features and functional
 
 **Options to support M600 with host & (Un)Load menu:**
 
-`Options to support dialog with host` as pre requisite<br>
+`Options to support dialog with host` (as pre requisite)<br>
 `NOZZLE_PARK_FEATURE` (in Configuration.h)<br>
 `ADVANCED_PAUSE_FEATURE` (in Configuration_adv.h)<br>
 `PARK_HEAD_ON_PAUSE` (in Configuration_adv.h)<br>
