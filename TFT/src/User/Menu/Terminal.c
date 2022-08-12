@@ -1,7 +1,7 @@
 #include "Terminal.h"
 #include "includes.h"
 
-#define MAX_GCODE_COUNT       5
+#define MAX_GCODE_COUNT       3
 #define MAX_PAGE_COUNT        20
 #define MAX_TERMINAL_BUF_SIZE (NOBEYOND(600, RAM_SIZE * 45, 4800))
 
