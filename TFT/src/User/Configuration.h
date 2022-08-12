@@ -1311,7 +1311,7 @@
  * Terminal Keyboard / Numpad Theme
  * Uncomment to enable Material theme for keyboard and Numpad.
  */
-//#define KEYBOARD_MATERIAL_THEME  // Default: uncommented (enabled)
+#define KEYBOARD_MATERIAL_THEME  // Default: uncommented (enabled)
 
 /**
  * Terminal Keyboard / Numpad Color Layout
