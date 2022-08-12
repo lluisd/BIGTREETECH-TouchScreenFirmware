@@ -108,12 +108,12 @@ const GUI_RECT textBoxRect = {             0 + TEXTBOX_INSET, (COMMAND_START_ROW
 // keyboard rectangles
 const GUI_RECT editorKeyRect[KEY_COUNT] = {
   // row text box + send button
-  {0 * CTRL_WIDTH + TEXTBOX_INSET,       (COMMAND_START_ROW + 0) * CTRL_HEIGHT + TEXTBOX_INSET,
-                   1 * CTRL_WIDTH,       (COMMAND_START_ROW + 1) * CTRL_HEIGHT - TEXTBOX_INSET},             // Prev gcode (top row)
+  {      0 * CTRL_WIDTH + TEXTBOX_INSET, (COMMAND_START_ROW + 0) * CTRL_HEIGHT + TEXTBOX_INSET,
+                         1 * CTRL_WIDTH, (COMMAND_START_ROW + 1) * CTRL_HEIGHT - TEXTBOX_INSET},             // Prev gcode (top row)
   {1 * CTRL_WIDTH + (TEXTBOX_INSET / 2), (COMMAND_START_ROW + 0) * CTRL_HEIGHT + TEXTBOX_INSET,
    2 * CTRL_WIDTH - (TEXTBOX_INSET / 2), (COMMAND_START_ROW + 1) * CTRL_HEIGHT - TEXTBOX_INSET},             // Next gcode (top row)
-  {                2 * CTRL_WIDTH,       (COMMAND_START_ROW + 0) * CTRL_HEIGHT + TEXTBOX_INSET,
-   3 * CTRL_WIDTH - TEXTBOX_INSET,       (COMMAND_START_ROW + 1) * CTRL_HEIGHT - TEXTBOX_INSET},             // Clear gcode (top row)
+  {                      2 * CTRL_WIDTH, (COMMAND_START_ROW + 0) * CTRL_HEIGHT + TEXTBOX_INSET,
+         3 * CTRL_WIDTH - TEXTBOX_INSET, (COMMAND_START_ROW + 1) * CTRL_HEIGHT - TEXTBOX_INSET},             // Clear gcode (top row)
   {3 * CTRL_WIDTH, COMMAND_START_ROW * CTRL_HEIGHT, 4 * CTRL_WIDTH, (COMMAND_START_ROW + 1) * CTRL_HEIGHT},  // Send (top row)
 
   // row control bar
