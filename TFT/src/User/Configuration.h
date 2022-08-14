@@ -791,7 +791,15 @@
 /**
  * Power Loss Recovery Mode
  * Enable power loss recovery.
- * Disable to reduce the loss of TFT SD card or TFT USB disk.
+ * If enabled, a recovery file named "Printing.sys", created in the same media (e.g. TFT SD card) of the file
+ * that is being printed, containing the current print status is updated during the print and deleted on print
+ * completion. In case of a power failure, the recovery file is used to restore the print from the outage point.
+ * After a power failure, a popup message asking to restore the failed print is prompted when browsing the media
+ * containing the recovery file.
+ *
+ * NOTE: Disable it in case issues such as the loss of media (e.g. read error messages from TFT SD card) during
+ *       the print are experienced.
+ *
  *   Options: [disable: 0, enable: 1]
  */
 #define PL_RECOVERY 1  // Default: 1
