@@ -107,6 +107,8 @@ The download page provides two BLTouch supports requiring the following probe of
 
 The TFT fw is ready to be flashed on both Sidewinder X1 / X2 and Genius printers. So, no need to recompile the TFT fw is required. Only one change in configuration file is required for Genius (e.g. print volume).
 
+**NOTE:** Latest Sidewinder X2 are equipped with a TFT based on GD32F305 chipset. The TFT fw provided here is **NOT** compatible with that chipset yet.
+
 <a name="TFT-Firmware-for-Genius"></a>
 
 #### TFT Firmware for Genius
