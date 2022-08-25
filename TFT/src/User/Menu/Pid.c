@@ -198,14 +198,14 @@ void menuPid(void)
 
             menuDrawItem(&pidItems.items[key_num], key_num);
             temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], false);
-            break;
-
-          case KEY_ICON_5:
-            degreeSteps_index = (degreeSteps_index + 1) % ITEM_DEGREE_NUM;
-            pidItems.items[key_num] = itemDegreeSteps[degreeSteps_index];
-
-            menuDrawItem(&pidItems.items[key_num], key_num);
           }
+          break;
+
+        case KEY_ICON_5:
+          degreeSteps_index = (degreeSteps_index + 1) % ITEM_DEGREE_NUM;
+          pidItems.items[key_num] = itemDegreeSteps[degreeSteps_index];
+
+          menuDrawItem(&pidItems.items[key_num], key_num);
           break;
 
         case KEY_ICON_6:
