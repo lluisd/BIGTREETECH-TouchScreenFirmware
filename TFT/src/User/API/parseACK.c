@@ -382,20 +382,18 @@ void hostActionCommands(void)
     switch (hostAction.button)
     {
       case 0:
-        setDialogText((uint8_t *)"Message", (uint8_t *)hostAction.prompt_begin, LABEL_CONFIRM, LABEL_NULL);
-        showDialog(DIALOG_TYPE_ALERT, setRunoutAlarmFalse, NULL, NULL);
+        popupDialog(DIALOG_TYPE_ALERT, (uint8_t *)"Message", (uint8_t *)hostAction.prompt_begin,
+                    LABEL_CONFIRM, LABEL_NULL, setRunoutAlarmFalse, NULL, NULL);
         break;
 
       case 1:
-        setDialogText((uint8_t *)"Action command", (uint8_t *)hostAction.prompt_begin,
-                      (uint8_t *)hostAction.prompt_button[0], LABEL_NULL);
-        showDialog(DIALOG_TYPE_ALERT, breakAndContinue, NULL, NULL);
+        popupDialog(DIALOG_TYPE_ALERT, (uint8_t *)"Action command", (uint8_t *)hostAction.prompt_begin,
+                    (uint8_t *)hostAction.prompt_button[0], LABEL_NULL, breakAndContinue, NULL, NULL);
         break;
 
       case 2:
-        setDialogText((uint8_t *)"Action command", (uint8_t *)hostAction.prompt_begin,
-                      (uint8_t *)hostAction.prompt_button[0], (uint8_t *)hostAction.prompt_button[1]);
-        showDialog(DIALOG_TYPE_ALERT, resumeAndPurge, resumeAndContinue, NULL);
+        popupDialog(DIALOG_TYPE_ALERT, (uint8_t *)"Action command", (uint8_t *)hostAction.prompt_begin,
+                    (uint8_t *)hostAction.prompt_button[0], (uint8_t *)hostAction.prompt_button[1], resumeAndPurge, resumeAndContinue, NULL);
         break;
     }
   }
@@ -413,7 +411,11 @@ void parseACK(void)
 
     bool avoid_terminal = false;
 
-    if (infoHost.connected == false)  // not connected to printer
+    //----------------------------------------
+    // TFT to printer connection handling
+    //----------------------------------------
+
+    if (infoHost.connected == false)
     {
       // parse error information even though not connected to printer
       if (ack_seen(magic_error)) ackPopupInfo(magic_error);
@@ -454,7 +456,10 @@ void parseACK(void)
       requestCommandInfo.inJson = false;
     }
 
-    // onboard media gcode command response start
+    //----------------------------------------
+    // Onboard media response handling
+    //----------------------------------------
+
     if (requestCommandInfo.inWaitResponse)
     {
       if (ack_seen(requestCommandInfo.startMagic))
@@ -522,7 +527,10 @@ void parseACK(void)
       requestCommandInfo.inJson = false;
       goto parse_end;
     }
-    // onboard media gcode command response end
+
+    //----------------------------------------
+    // RepRap response handling
+    //----------------------------------------
 
     if (!requestCommandInfo.inWaitResponse && !requestCommandInfo.inResponse && infoMachineSettings.firmwareType == FW_REPRAPFW)
     {
@@ -539,6 +547,11 @@ void parseACK(void)
 
       infoHost.wait = false;
     }
+
+    //----------------------------------------
+    // "ok" response handling
+    //----------------------------------------
+
     else if (ack_cmp("ok\n"))
     {
       infoHost.wait = false;
@@ -647,8 +660,8 @@ void parseACK(void)
       // parse pause message
       else if (!infoMachineSettings.promptSupport && ack_seen("paused for user"))
       {
-        setDialogText((uint8_t *)"Printer is Paused", (uint8_t *)"Paused for user\ncontinue?", LABEL_CONFIRM, LABEL_NULL);
-        showDialog(DIALOG_TYPE_QUESTION, breakAndContinue, NULL, NULL);
+        popupDialog(DIALOG_TYPE_QUESTION, (uint8_t *)"Printer is Paused", (uint8_t *)"Paused for user\ncontinue?",
+                    LABEL_CONFIRM, LABEL_NULL, breakAndContinue, NULL, NULL);
       }
       // parse host action commands. Required "HOST_ACTION_COMMANDS" and other settings in Marlin
       else if (ack_seen("//action:"))
@@ -685,30 +698,38 @@ void parseACK(void)
 
         startRemotePrint(file_name);  // start print and open Printing menu
       }
-      // parse and store M27
-      else if (infoMachineSettings.onboardSD == ENABLED &&
-               infoFile.source >= FS_ONBOARD_MEDIA && infoFile.source <= FS_ONBOARD_MEDIA_REMOTE &&
-               ack_seen("Not SD printing"))  // if printing from (remote) onboard media
+      // parse and store M27 or M24 (if printing from (remote) onboard media)
+      else if (infoMachineSettings.onboardSD == ENABLED && WITHIN(infoFile.source, FS_ONBOARD_MEDIA, FS_ONBOARD_MEDIA_REMOTE))
       {
-        setPrintPause(HOST_STATUS_PAUSED, PAUSE_EXTERNAL);
-      }
-      else if (infoMachineSettings.onboardSD == ENABLED &&
-               infoFile.source >= FS_ONBOARD_MEDIA && infoFile.source <= FS_ONBOARD_MEDIA_REMOTE &&
-               ack_seen("SD printing byte"))  // if printing from (remote) onboard media
-      {
-        setPrintResume(HOST_STATUS_PRINTING);
+        // parse and store M27
+        if (ack_seen("SD printing"))  // received "SD printing byte" or "Not SD printing"
+        {
+          if (infoHost.status == HOST_STATUS_RESUMING)
+            setPrintResume(HOST_STATUS_PRINTING);
 
-        // parse file data progress.
-        // Format: "SD printing byte <XXXX>/<YYYY>" (e.g. "SD printing byte 123/12345")
-        //
-        setPrintProgressData(ack_value(), ack_second_value());
-      }
-      // parse and store M24, printing from (remote) onboard media completed
-      else if (infoMachineSettings.onboardSD == ENABLED &&
-               infoFile.source >= FS_ONBOARD_MEDIA && infoFile.source <= FS_ONBOARD_MEDIA_REMOTE &&
-               ack_seen("Done printing file"))  // if printing from (remote) onboard media
-      {
-        printEnd();
+          if (infoHost.status == HOST_STATUS_PAUSING)
+            setPrintPause(HOST_STATUS_PAUSED, PAUSE_EXTERNAL);
+
+          if (infoHost.status == HOST_STATUS_PRINTING)
+          {
+            if (ack_continue_seen("byte"))  // received "SD printing byte"
+            {
+              // parse file data progress.
+              // Format: "SD printing byte <XXXX>/<YYYY>" (e.g. "SD printing byte 123/12345")
+              //
+              setPrintProgressData(ack_value(), ack_second_value());
+            }
+            else  // received "Not SD printing"
+            {
+              setPrintAbort();
+            }
+          }
+        }
+        // parse and store M24, printing from (remote) onboard media completed
+        else if (ack_seen("Done printing file"))  // if printing from (remote) onboard media
+        {
+          printEnd();
+        }
       }
 
       //----------------------------------------
@@ -744,8 +765,7 @@ void parseACK(void)
         if (ack_seen("Max: ")) sprintf(&tmpMsg[strlen(tmpMsg)], "\nMax: %0.5f", ack_value());
         if (ack_seen("Range: ")) sprintf(&tmpMsg[strlen(tmpMsg)], "\nRange: %0.5f", ack_value());
 
-        setDialogText((uint8_t *)"Repeatability Test", (uint8_t *)tmpMsg, LABEL_CONFIRM, LABEL_NULL);
-        showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
+        popupReminder(DIALOG_TYPE_INFO, (uint8_t *)"Repeatability Test", (uint8_t *)tmpMsg);
       }
       // parse M48, standard deviation
       else if (ack_seen("Standard Deviation: "))
@@ -760,8 +780,7 @@ void parseACK(void)
           levelingSetProbedPoint(-1, -1, ack_value());  // save probed Z value
           sprintf(tmpMsg, "%s\nStandard Deviation: %0.5f", (char *)getDialogMsgStr(), ack_value());
 
-          setDialogText((uint8_t *)"Repeatability Test", (uint8_t *)tmpMsg, LABEL_CONFIRM, LABEL_NULL);
-          showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
+          popupReminder(DIALOG_TYPE_INFO, (uint8_t *)"Repeatability Test", (uint8_t *)tmpMsg);
         }
       }
       // parse and store M211 or M503, software endstops state (e.g. from Probe Offset, MBL, Mesh Editor menus)
@@ -879,8 +898,8 @@ void parseACK(void)
 
           if (infoMachineSettings.EEPROM == 1)
           {
-            setDialogText(LABEL_DELTA_CONFIGURATION, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL);
-            showDialog(DIALOG_TYPE_SUCCESS, saveEepromSettings, NULL, NULL);
+            popupDialog(DIALOG_TYPE_SUCCESS, LABEL_DELTA_CONFIGURATION, LABEL_EEPROM_SAVE_INFO,
+                        LABEL_CONFIRM, LABEL_CANCEL, saveEepromSettings, NULL, NULL);
           }
           else
           {
