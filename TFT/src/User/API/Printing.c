@@ -548,7 +548,7 @@ void printAbort(void)
 
       popupSplash(DIALOG_TYPE_INFO, LABEL_SCREEN_INFO, LABEL_BUSY);
 
-      // wait until infoHost.status is set to "HOST_STATUS_IDLE" by setPrintPause()
+      // wait until infoHost.status is set to "HOST_STATUS_IDLE" by printEnd() in parseAck.c
       loopProcessToCondition(&isHostPrinting);
 
       break;
