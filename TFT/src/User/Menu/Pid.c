@@ -146,7 +146,7 @@ void menuPid(void)
   pidItems.items[KEY_ICON_5] = itemDegreeSteps[degreeSteps_index];
 
   menuDrawPage(&pidItems);
-  temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], false);
+  temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], true);
 
   while (MENU_IS(menuPid))
   {
@@ -162,7 +162,7 @@ void menuPid(void)
             pidHeaterTarget[curTool_index] =
               NOBEYOND(0, pidHeaterTarget[curTool_index] - degreeSteps[degreeSteps_index], infoSettings.max_temp[curTool_index]);
 
-          temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], true);
+          temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], false);
           break;
 
         case KEY_INFOBOX:
@@ -172,7 +172,7 @@ void menuPid(void)
           if (val != pidHeaterTarget[curTool_index])  // if value is different than target, change it
             pidHeaterTarget[curTool_index] = val;
 
-          temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], false);
+          temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], true);
           break;
         }
 
@@ -182,7 +182,7 @@ void menuPid(void)
             pidHeaterTarget[curTool_index] =
               NOBEYOND(0, pidHeaterTarget[curTool_index] + degreeSteps[degreeSteps_index], infoSettings.max_temp[curTool_index]);
 
-          temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], true);
+          temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], false);
           break;
 
         case KEY_ICON_4:
@@ -196,7 +196,7 @@ void menuPid(void)
             pidItems.items[key_num] = itemTool[curTool_index];
 
             menuDrawItem(&pidItems.items[key_num], key_num);
-            temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], false);
+            temperatureReDraw(curTool_index, &pidHeaterTarget[curTool_index], true);
           }
           break;
 
