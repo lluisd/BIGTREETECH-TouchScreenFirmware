@@ -67,7 +67,7 @@ void ablStart(void)
 
     case BL_UBL:  // if Unified Bed Leveling
       storeCmd("G29 P1\n");
-      // Run this multiple times since it only fills some missing points, not all.
+      // run this multiple times since it only fills some missing points, not all
       storeCmd("G29 P3\n");
       storeCmd("G29 P3\n");
       storeCmd("G29 P3\n");
@@ -131,6 +131,7 @@ void menuUBLSaveLoad(void)
   while (MENU_IS(menuUBLSaveLoad))
   {
     key_num = menuKeyGetValue();
+
     switch (key_num)
     {
       case KEY_ICON_0:
@@ -152,6 +153,7 @@ void menuUBLSaveLoad(void)
         else
         {
           ublSlotSaved = false;
+
           CLOSE_MENU();
         }
         break;
@@ -167,11 +169,13 @@ void menuUBLSaveLoad(void)
 void menuUBLSave(void)
 {
   ublIsSaving = true;
+
   OPEN_MENU(menuUBLSaveLoad);
 }
 
 void menuUBLLoad(void)
 {
   ublIsSaving = false;
+
   OPEN_MENU(menuUBLSaveLoad);
 }
