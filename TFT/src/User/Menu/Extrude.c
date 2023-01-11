@@ -52,7 +52,7 @@ void menuExtrude(void)
 
   extruderReDraw(curExtruder_index, extrAmount, true);
 
-  if (eAxisBackup.relative == false) // set extruder to relative
+  if (eAxisBackup.relative == false)  // set extruder to relative
     mustStoreCmd("M83\n");
 
   heatSetUpdateSeconds(TEMPERATURE_QUERY_FAST_SECONDS);

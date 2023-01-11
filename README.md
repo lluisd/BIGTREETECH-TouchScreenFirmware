@@ -28,7 +28,7 @@ Thanks!
    - [Marlin Firmware Compatibility](#Marlin-Firmware-Compatibility)
      - [Marlin Firmware for Genius](#Marlin-Firmware-for-Genius)
 4. [Integration with OctoPrint](#Integration-with-OctoPrint)
-   - [OctoPrint Triggering Commands](#OctoPrint-Triggering-Commands)
+   - [Printing from Remote Host](#Printing-from-Remote-Host)
 5. [Firmware Update](#Firmware-Update)
    - [TFT Firmware Update](#TFT-Firmware-Update)
      - [TFT Firmware Installation](#TFT-Firmware-Installation)
@@ -214,11 +214,12 @@ In order to avoid the problem, when printing with OctoPrint etc. put the TFT in 
 - This limitation is not due to bugs on the TFT firmware but it's an hardware limitation on MKS GEN L v1.0 mainboard
 - Listening Mode state is stored on FLASH allowing to restore the mode at TFT startup. This allows to power on/off the printer remotely and to control the printer via USB without the need of any touch (from the user) on the display to engage the mode
 
-<a name="OctoPrint-Triggering-Commands"></a>
+<a name="Printing-from-Remote-Host"></a>
 
-### OctoPrint Triggering Commands
+### Printing from Remote Host
 
-After the TFT is set to Listening Mode (see section [Integration with OctoPrint](#Integration-with-OctoPrint)), OctoPrint, ESP3D, Pronterface etc, connected to a TFT's or mainboard's serial port, can host a print (print handled by the host) and optionally can trigger some actions to the TFT sending specific G-codes. The following actions and the related triggering G-codes are currently supported by the TFT fw:
+After the TFT is set to Listening Mode (see section [Integration with OctoPrint](#Integration-with-OctoPrint)),
+OctoPrint, ESP3D, Pronterface etc, connected to a TFT's or mainboard's serial port, can host a print (print handled by the host) and optionally can trigger some actions to the TFT sending specific G-codes. The following actions and the related triggering G-codes are currently supported by the TFT fw:
 
 | **ACTION**                  | **G-CODE**                                                                                                                                                                                                  |
 | :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -236,7 +237,8 @@ Once on Printing menu, the **pause**, **resume** and **stop** buttons on the men
 That means, only the remote host will control the print.
 Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Printing menu is finalized (statistics available etc.) and unlocked (the menu can be closed).
 
-**NOTES:** A new plugin on OctoPrint implementing the above protocol should be the preferable way (available to everyone).
+**NOTES:**
+- A new plugin on OctoPrint implementing the above protocol should be the preferable way (available to everyone)
 
 <a name="Firmware-Update"></a>
 
