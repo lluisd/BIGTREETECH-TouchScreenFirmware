@@ -177,7 +177,7 @@
     #define STRING_TFT_USB_READ_ERROR     "USB stick հիշողության սարքը չկա"
     #define STRING_ONBOARD_SD             "Onboard SD"
     #define STRING_ONBOARD_USB            "OnboardUSB"
-    #define STRING_ONBOARD_SD_READ_ERROR  "Onboard SD հիշողության սարքը չկա"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Onboard հիշողության սարքը չկա"
     #define STRING_FILAMENT_RUNOUT        "Filament runout!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
