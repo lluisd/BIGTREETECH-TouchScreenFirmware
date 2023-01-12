@@ -67,7 +67,7 @@ Thanks!
 
 #### TFT Firmware Source Code Links
 
-- https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
+- https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/releases
 
 <a name="Marlin-Firmware-Variants"></a>
 
@@ -84,7 +84,7 @@ Four different Marlin fw variants are available:
 
 #### Marlin Firmware Source Code Links
 
-- https://github.com/digant73/Marlin/tags
+- https://github.com/digant73/Marlin/releases
 
 <a name="BLTouch-Support-and-Probe-Offset-Setup"></a>
 
