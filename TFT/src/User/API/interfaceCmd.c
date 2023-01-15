@@ -608,14 +608,10 @@ void sendQueueCmd(void)
                 Serial_Puts(cmd_port, "ok\n");
                 sendCmd(true, avoid_terminal);
 
-                if (!isPrinting())  // if not printing, start a new print
-                {
-                  startPrint();  // start print and open Printing menu
-                }
-                else  // if printing, resume the print, in case it is paused, or continue to print
-                {
-                  printPause(false, PAUSE_NORMAL);
-                }
+                if (!isPrinting())                  // if not printing
+                  startPrint();                     // start a new print and open Printing menu
+                else                                // if printing
+                  printPause(false, PAUSE_NORMAL);  // resume the print, in case it is paused, or continue to print
 
                 return;
               }
@@ -634,10 +630,11 @@ void sendQueueCmd(void)
                 Serial_Puts(cmd_port, "ok\n");
                 sendCmd(true, avoid_terminal);
 
-                if (cmd_value() != 524)  // if M25 or M125
+                if (cmd_value() != 524)            // if M25 or M125
                   printPause(true, PAUSE_NORMAL);
-                else  // if M524
+                else                               // if M524
                   printAbort();
+
                 return;
               }
             }
@@ -825,7 +822,8 @@ void sendQueueCmd(void)
             }
             else  // if M155
             {
-              if (cmd_seen('S')) heatSyncUpdateSeconds(cmd_value());
+              if (cmd_seen('S'))
+                heatSyncUpdateSeconds(cmd_value());
             }
           }
           break;
@@ -947,6 +945,8 @@ void sendQueueCmd(void)
         {
           PARAMETER_NAME param = P_STEPS_PER_MM;  // default value
 
+          // using consecutive "if" instead of "if else if" on the following two lines just to reduce code
+          // instead of optimizing performance (code typically not executed during a print)
           if (cmd_value() == 201) param = P_MAX_ACCELERATION;
           if (cmd_value() == 203) param = P_MAX_FEED_RATE;
 
@@ -980,6 +980,8 @@ void sendQueueCmd(void)
         {
           PARAMETER_NAME param = P_HOME_OFFSET;  // default value
 
+          // using consecutive "if" instead of "if else if" on the following two lines just to reduce code
+          // instead of optimizing performance (code typically not executed during a print)
           if (cmd_value() == 218) param = P_HOTEND_OFFSET;
           if (cmd_value() == 851) param = P_PROBE_OFFSET;
 
@@ -1014,11 +1016,13 @@ void sendQueueCmd(void)
           break;
 
         case 220:  // M220
-          if (cmd_seen('S')) speedSetCurPercent(0, cmd_value());
+          if (cmd_seen('S'))
+            speedSetCurPercent(0, cmd_value());
           break;
 
         case 221:  // M221
-          if (cmd_seen('S')) speedSetCurPercent(1, cmd_value());
+          if (cmd_seen('S'))
+            speedSetCurPercent(1, cmd_value());
           break;
 
         #ifdef BUZZER_PIN
@@ -1060,8 +1064,11 @@ void sendQueueCmd(void)
           break;
 
         case 355:  // M355
-          if (cmd_seen('S')) caseLightSetState(cmd_value() > 0);
-          if (cmd_seen('P')) caseLightSetBrightness(cmd_value());
+          if (cmd_seen('S'))
+            caseLightSetState(cmd_value() > 0);
+
+          if (cmd_seen('P'))
+            caseLightSetBrightness(cmd_value());
           break;
 
         case 376:  // M376 (Reprap FW)
@@ -1149,8 +1156,11 @@ void sendQueueCmd(void)
         }
 
         case 710:  // M710 controller fan
-          if (cmd_seen('S')) fanSetCurSpeed(MAX_COOLING_FAN_COUNT, cmd_value());
-          if (cmd_seen('I')) fanSetCurSpeed(MAX_COOLING_FAN_COUNT + 1, cmd_value());
+          if (cmd_seen('S'))
+            fanSetCurSpeed(MAX_COOLING_FAN_COUNT, cmd_value());
+
+          if (cmd_seen('I'))
+            fanSetCurSpeed(MAX_COOLING_FAN_COUNT + 1, cmd_value());
           break;
 
         case 900:  // M900 linear advance factor
@@ -1168,6 +1178,8 @@ void sendQueueCmd(void)
         {
           PARAMETER_NAME param = P_CURRENT;  // default value
 
+          // using consecutive "if" instead of "if else if" on the following two lines just to reduce code
+          // instead of optimizing performance (code typically not executed during a print)
           if (cmd_value() == 913) param = P_HYBRID_THRESHOLD;
           if (cmd_value() == 914) param = P_BUMPSENSITIVITY;
 
@@ -1216,10 +1228,12 @@ void sendQueueCmd(void)
         {
           for (AXIS i = X_AXIS; i < TOTAL_AXIS; i++)
           {
-            if (cmd_seen(axis_id[i])) coordinateSetAxisTarget(i, cmd_float());
+            if (cmd_seen(axis_id[i]))
+              coordinateSetAxisTarget(i, cmd_float());
           }
 
-          if (cmd_seen('F')) coordinateSetFeedRate(cmd_value());
+          if (cmd_seen('F'))
+            coordinateSetFeedRate(cmd_value());
           break;
         }
 
