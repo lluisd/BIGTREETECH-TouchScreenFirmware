@@ -58,19 +58,19 @@ void clearQueueAndRunoutAlarm(void)
 void breakAndContinue(void)
 {
   clearQueueAndRunoutAlarm();
-  Serial_Puts(SERIAL_PORT, "M108\n");
+  FORWARD_MSG(PORT_1, "M108\n");
 }
 
 void resumeAndPurge(void)
 {
   clearQueueAndRunoutAlarm();
-  Serial_Puts(SERIAL_PORT, "M876 S0\n");
+  FORWARD_MSG(PORT_1, "M876 S0\n");
 }
 
 void resumeAndContinue(void)
 {
   clearQueueAndRunoutAlarm();
-  Serial_Puts(SERIAL_PORT, "M876 S1\n");
+  FORWARD_MSG(PORT_1, "M876 S1\n");
 }
 
 void abortAndTerminate(void)
@@ -79,7 +79,7 @@ void abortAndTerminate(void)
 
   if (infoMachineSettings.firmwareType != FW_REPRAPFW)
   {
-    Serial_Puts(SERIAL_PORT, "M524\n");
+    FORWARD_MSG(PORT_1, "M524\n");
   }
   else  // if RepRap
   {
@@ -558,7 +558,7 @@ void printAbort(void)
 
       // force the transmission of M524 (gcode sent directly bypassing the command queue) to abort the
       // print followed by the reception of the "ok" ACK (enabling again the use of the command queue).
-      // Finally, forward the print cancel notification allowing the invokation of setPrintAbort() in
+      // Finally, forward the print cancel action allowing the invokation of setPrintAbort() in
       // parseAck.c to finalize the print (e.g. stats) followed by the execution of the post print
       // cancel tasks provided at the end of this function
       abortAndTerminate();
@@ -570,8 +570,11 @@ void printAbort(void)
       loopProcessToCondition(&isHostPrinting);
       break;
 
-    case FS_REMOTE_HOST:  // nothing to do
-      loopDetected = false;
+    case FS_REMOTE_HOST:
+      // forward a print cancel notification to the remote host asking to cancel the print
+      mustStoreCmd("M118 P0 A1 action:notification remote cancel\n");
+
+      loopDetected = false;  // finally, remove lock and exit
       return;
   }
 
@@ -688,15 +691,19 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
 
       break;
 
-    case FS_REMOTE_HOST:  // nothing to do
-      loopDetected = false;
+    case FS_REMOTE_HOST:
+      if (isPause)  // if print pause, forward a print pause notification to the remote host asking to pause the print
+        mustStoreCmd("M118 P0 A1 action:notification remote pause\n");
+      else          // if print resume, forward a print resume notification to the remote host asking to resume the print
+        mustStoreCmd("M118 P0 A1 action:notification remote resume\n");
+
+      loopDetected = false;  // finally, remove lock and exit
       return true;
   }
 
   infoPrinting.paused = isPause;  // update pause status after pause/resume procedure
 
   loopDetected = false;  // finally, remove lock and exit
-
   return true;
 }
 
