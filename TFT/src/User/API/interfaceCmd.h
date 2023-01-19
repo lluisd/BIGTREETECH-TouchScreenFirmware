@@ -9,7 +9,7 @@ extern "C" {
 #include <stdint.h>
 #include "SerialConnection.h"
 
-#define CMD_MAX_SIZE 100
+#define CMD_MAX_SIZE 100  // including ending character '\0'
 
 typedef char CMD[CMD_MAX_SIZE];
 
