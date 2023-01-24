@@ -658,7 +658,8 @@ void parseACK(void)
     else if (infoMachineSettings.onboardSD == ENABLED && ack_starts_with("File opened:"))
     {
       // NOTE: this block is not reached in case of printing from onboard media because printStart() will call
-      //       request_M23_M36() that will be managed in parseAck() by the block "onboard media gcode command response"
+      //       request_M23_M36() that will be managed in parseAck() by the block "Onboard media response handling"
+      //       provided at the beginning of this funtion
 
       // parse file name.
       // Format: "File opened: <file name> Size: <YYYY>" (e.g. "File opened: 1A29A~1.GCO Size: 6974")
