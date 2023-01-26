@@ -1212,7 +1212,7 @@ void parseACK(void)
       {
         infoMachineSettings.babyStepping = ack_value();
       }
-      else if (ack_continue_seen("BUILD_PERCENT:"))  // M73 support. Required "LCD_SET_PROGRESS_MANUALLY" in Marlin
+      else if (ack_continue_seen("BUILD_PERCENT:"))  // M73 support. Required "SET_PROGRESS_MANUALLY" in Marlin
       {
         infoMachineSettings.buildPercent = ack_value();
       }
