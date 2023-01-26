@@ -791,7 +791,7 @@ void sendQueueCmd(void)
 
           if (cmd_seen('R'))
           {
-            setPrintRemainingTime((cmd_value() * 60));
+            setPrintRemainingTime(cmd_value() * 60);
             setTimeFromSlicer(true);  // disable parsing remaning time from gcode comments
 
             if (getPrintProgressSource() < PROG_TIME && infoSettings.prog_source == 1)
