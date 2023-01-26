@@ -246,18 +246,18 @@ void hostActionCommands(void)
 
     if (ack_continue_seen("Time Left"))  // parsing printing time left
     {
-      // format: Time Left <XX>h<YY>m<ZZ>s (e.g. Time Left 02h04m06s)
+      // format: "Time Left <XX>h<YY>m<ZZ>s" (e.g. "Time Left 02h04m06s")
       parsePrintRemainingTime((char *)ack_cache + ack_index);
     }
     else if (ack_continue_seen("Layer Left"))  // parsing printing layer left
     {
-      // format: Layer Left <XXXX>/<YYYY> (e.g. Layer Left 51/940)
+      // format: "Layer Left <XXXX>/<YYYY>" (e.g. "Layer Left 51/940")
       setPrintLayerNumber(ack_value());
       setPrintLayerCount(ack_second_value());
     }
     else if (ack_continue_seen("Data Left"))  // parsing printing data left
     {
-      // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
+      // format: "Data Left <XXXX>/<YYYY>" (e.g. "Data Left 123/12345")
       setPrintProgressData(ack_value(), ack_second_value());
     }
     else
@@ -678,15 +678,19 @@ void parseACK(void)
     }
     // parse and store M24 or M27, if printing from (remote) onboard media
     else if (infoMachineSettings.onboardSD == ENABLED && WITHIN(infoFile.source, FS_ONBOARD_MEDIA, FS_ONBOARD_MEDIA_REMOTE) &&
-             (ack_starts_with("Done printing file") || ack_seen("SD printing")))
+             (ack_starts_with("Done printing file") || ack_seen("SD printing") || ack_seen("M73")))
     {
+      // NOTES FOR "M73" PARSING:
+      // - ack_starts_with() not used due to " M73" (initial space probably present by mistake) is currently provided by Marlin
+      // - Required "SET_PROGRESS_MANUALLY" and "M73_REPORT" settings in Marlin
+
       // parse and store M24, received "Done printing file" (printing from (remote) onboard media completed)
       if (ack_starts_with("Done"))
       {
         printEnd();
       }
       // parse and store M27, received "SD printing byte" or "Not SD printing"
-      else
+      else if (ack_seen("SD"))
       {
         if (infoHost.status == HOST_STATUS_RESUMING)
           setPrintResume(HOST_STATUS_PRINTING);
@@ -706,6 +710,27 @@ void parseACK(void)
           {
             setPrintAbort();
           }
+        }
+      }
+      // parse and store M73
+      else
+      {
+        // parse progress percentage and remaining time.
+        // Format: "M73 Progress: <XX>%; Time left: <YY>m;" (e.g. "M73 Progress: 40%; Time left: 2m;")
+
+        if (ack_seen("Progress:"))
+        {
+          setPrintProgressSource(PROG_SLICER);
+          setPrintProgressPercentage(ack_value());
+        }
+
+        if (ack_seen("Time left:"))
+        {
+          setPrintRemainingTime(ack_value() * 60);
+          setTimeFromSlicer(true);  // disable parsing remaning time from gcode comments
+
+          if (getPrintProgressSource() < PROG_TIME && infoSettings.prog_source == 1)
+            setPrintProgressSource(PROG_TIME);
         }
       }
     }
