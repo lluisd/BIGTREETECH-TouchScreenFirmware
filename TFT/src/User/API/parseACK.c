@@ -676,13 +676,11 @@ void parseACK(void)
 
       startRemotePrint(file_name);  // start print and open Printing menu
     }
-    // parse and store M24 or M27, if printing from (remote) onboard media
+    // parse and store M24, M27 and M73, if printing from (remote) onboard media
     else if (infoMachineSettings.onboardSD == ENABLED && WITHIN(infoFile.source, FS_ONBOARD_MEDIA, FS_ONBOARD_MEDIA_REMOTE) &&
-             (ack_starts_with("Done printing file") || ack_seen("SD printing") || ack_seen("M73")))
+             (ack_starts_with("Done printing file") || ack_seen("SD printing") || ack_starts_with("echo: M73")))
     {
-      // NOTES FOR "M73" PARSING:
-      // - ack_starts_with() not used due to " M73" (initial space probably present by mistake) is currently provided by Marlin
-      // - Required "SET_PROGRESS_MANUALLY" and "M73_REPORT" settings in Marlin
+      // NOTE FOR "M73": Required "SET_PROGRESS_MANUALLY" and "M73_REPORT" settings in Marlin
 
       // parse and store M24, received "Done printing file" (printing from (remote) onboard media completed)
       if (ack_starts_with("Done"))
