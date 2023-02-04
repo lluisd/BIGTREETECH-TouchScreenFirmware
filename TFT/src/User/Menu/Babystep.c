@@ -3,9 +3,9 @@
 
 static uint8_t moveLenSteps_index = 0;
 
-void babyReDraw(float babystep, float z_offset, bool force_z_offset, bool skip_header)
+void babyReDraw(float babystep, float z_offset, bool force_z_offset, bool drawHeader)
 {
-  if (!skip_header)
+  if (drawHeader)
   {
     GUI_DispString(exhibitRect.x0, exhibitRect.y0, LABEL_BABYSTEP);
 
@@ -125,7 +125,7 @@ void menuBabystep(void)
   babyStepItems.items[KEY_ICON_5] = itemMoveLen[moveLenSteps_index];
 
   menuDrawPage(&babyStepItems);
-  babyReDraw(now_babystep, now_z_offset, force_z_offset, false);
+  babyReDraw(now_babystep, now_z_offset, force_z_offset, true);
 
   while (MENU_IS(menuBabystep))
   {
@@ -153,8 +153,7 @@ void menuBabystep(void)
         {
           orig_z_offset = offsetSetValue(new_z_offset);  // set new Z offset. Required if current Z offset is not changed applying babystep changes (e.g. no BABYSTEP_ZPROBE_OFFSET is set in Marlin FW)
 
-          setDialogText(babyStepItems.title.index, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL);
-          showDialog(DIALOG_TYPE_QUESTION, saveEepromSettings, NULL, NULL);
+          popupDialog(DIALOG_TYPE_QUESTION, babyStepItems.title.index, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL, saveEepromSettings, NULL, NULL);
         }
         break;
 
@@ -213,7 +212,7 @@ void menuBabystep(void)
       }
 
       now_babystep = babystep;
-      babyReDraw(now_babystep, new_z_offset, force_z_offset, true);
+      babyReDraw(now_babystep, new_z_offset, force_z_offset, false);
     }
 
     loopProcess();

@@ -28,7 +28,7 @@ Thanks!
    - [Marlin Firmware Compatibility](#Marlin-Firmware-Compatibility)
      - [Marlin Firmware for Genius](#Marlin-Firmware-for-Genius)
 4. [Integration with OctoPrint](#Integration-with-OctoPrint)
-   - [OctoPrint Triggering Commands](#OctoPrint-Triggering-Commands)
+   - [Printing from Remote Host](#Printing-from-Remote-Host)
 5. [Firmware Update](#Firmware-Update)
    - [TFT Firmware Update](#TFT-Firmware-Update)
      - [TFT Firmware Installation](#TFT-Firmware-Installation)
@@ -67,7 +67,7 @@ Thanks!
 
 #### TFT Firmware Source Code Links
 
-- https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/tags
+- https://github.com/digant73/BIGTREETECH-TouchScreenFirmware/releases
 
 <a name="Marlin-Firmware-Variants"></a>
 
@@ -84,7 +84,7 @@ Four different Marlin fw variants are available:
 
 #### Marlin Firmware Source Code Links
 
-- https://github.com/digant73/Marlin/tags
+- https://github.com/digant73/Marlin/releases
 
 <a name="BLTouch-Support-and-Probe-Offset-Setup"></a>
 
@@ -138,6 +138,7 @@ the following options must be enabled in Marlin firmware.
 `BABYSTEPPING` (in Configuration_adv.h)<br>
 `AUTO_REPORT_TEMPERATURES` (in Configuration_adv.h)<br>
 `AUTO_REPORT_POSITION` (in Configuration_adv.h)<br>
+`EXTENDED_CAPABILITIES_REPORT` (in Configuration_adv.h)<br>
 `M115_GEOMETRY_REPORT` (in Configuration_adv.h)<br>
 `M114_DETAIL` (in Configuration_adv.h)<br>
 `REPORT_FAN_CHANGE` (in Configuration_adv.h)<br>
@@ -156,6 +157,12 @@ the following options must be enabled in Marlin firmware.
 `HOST_ACTION_COMMANDS` (in Configuration_adv.h)<br>
 `HOST_PROMPT_SUPPORT` (in Configuration_adv.h)<br>
 `HOST_STATUS_NOTIFICATIONS` (in Configuration_adv.h)<br>
+
+**Options to support M73 with host:**
+
+`Options to support dialog with host` (as pre requisite)<br>
+`SET_PROGRESS_MANUALLY` (in Configuration_adv.h)<br>
+`M73_REPORT` (in Configuration_adv.h)<br>
 
 **Options to support M600 with host & (Un)Load menu:**
 
@@ -214,29 +221,38 @@ In order to avoid the problem, when printing with OctoPrint etc. put the TFT in 
 - This limitation is not due to bugs on the TFT firmware but it's an hardware limitation on MKS GEN L v1.0 mainboard
 - Listening Mode state is stored on FLASH allowing to restore the mode at TFT startup. This allows to power on/off the printer remotely and to control the printer via USB without the need of any touch (from the user) on the display to engage the mode
 
-<a name="OctoPrint-Triggering-Commands"></a>
+<a name="Printing-from-Remote-Host"></a>
 
-### OctoPrint Triggering Commands
+### Printing from Remote Host
 
-After the TFT is set to Listening Mode (see section [Integration with OctoPrint](#Integration-with-OctoPrint)), OctoPrint, ESP3D, Pronterface etc, connected to a TFT's or mainboard's serial port, can host a print (print handled by the host) and optionally can trigger some actions to the TFT sending specific G-codes. The following actions and the related triggering G-codes are currently supported by the TFT fw:
+After the TFT is set to Listening Mode (see section [Integration with OctoPrint](#Integration-with-OctoPrint)),
+OctoPrint, ESP3D, Pronterface etc, connected to a TFT's or mainboard's serial port, can host a print (print handled by the host) and optionally can trigger some actions to the TFT sending specific G-codes. The following actions and the related triggering G-codes are currently supported by the TFT fw:
 
 | **ACTION**                  | **G-CODE**                                                                                                                                                                                                  |
 | :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **start**                   | `M118 A1 P0 action:print_start`                                                                                                                                                                             |
-| **end**                     | `M118 A1 P0 action:print_end`                                                                                                                                                                               |
-| **cancel**                  | `M118 A1 P0 action:cancel`                                                                                                                                                                                  |
-| **pause**                   | `M118 A1 P0 action:pause`                                                                                                                                                                                   |
-| **resume**                  | `M118 A1 P0 action:resume`                                                                                                                                                                                  |
-| **remaining time progress** | `M118 A1 P0 action:notification Time Left <XX>h<YY>m<ZZ>s`<br>or<br>`M117 Time Left <XX>h<YY>m<ZZ>s`<br><br>Examples:<br>`M118 A1 P0 action:notification Time Left 02h04m06s`<br>`M117 Time Left 02h04m06s` |
-| **print layer progress**    | `M118 A1 P0 action:notification Layer Left <XXXX>/<YYYY>`<br>or<br>`M117 Layer Left <XXXX>/<YYYY>`<br><br>Examples:<br>`M118 A1 P0 action:notification Layer Left 51/940`<br>`M117 Layer Left 51/940`       |
-| **file data progress**      | `M118 A1 P0 action:notification Data Left <XXXX>/<YYYY>`<br>or<br>`M117 Data Left <XXXX>/<YYYY>`<br><br>Examples:<br>`M118 A1 P0 action:notification Data Left 123/12345`<br>`M117 Data Left 123/12345`     |
+| **start**                   | `M118 P0 A1 action:print_start`                                                                                                                                                                             |
+| **end**                     | `M118 P0 A1 action:print_end`                                                                                                                                                                               |
+| **cancel**                  | `M118 P0 A1 action:cancel`                                                                                                                                                                                  |
+| **pause**                   | `M118 P0 A1 action:pause`                                                                                                                                                                                   |
+| **resume**                  | `M118 P0 A1 action:resume`                                                                                                                                                                                  |
+| **remaining time progress** | `M118 P0 A1 action:notification Time Left <XX>h<YY>m<ZZ>s`<br>or<br>`M117 Time Left <XX>h<YY>m<ZZ>s`<br><br>Examples:<br>`M118 P0 A1 action:notification Time Left 02h04m06s`<br>`M117 Time Left 02h04m06s` |
+| **print layer progress**    | `M118 P0 A1 action:notification Layer Left <XXXX>/<YYYY>`<br>or<br>`M117 Layer Left <XXXX>/<YYYY>`<br><br>Examples:<br>`M118 P0 A1 action:notification Layer Left 51/940`<br>`M117 Layer Left 51/940`       |
+| **file data progress**      | `M118 P0 A1 action:notification Data Left <XXXX>/<YYYY>`<br>or<br>`M117 Data Left <XXXX>/<YYYY>`<br><br>Examples:<br>`M118 P0 A1 action:notification Data Left 123/12345`<br>`M117 Data Left 123/12345`     |
 
 When the trigger `print_start` is received, the TFT switches to **Printing** menu.
-Once on Printing menu, the **pause**, **resume** and **stop** buttons on the menu will be disabled.
-That means, only the remote host will control the print.
-Only on print end or cancel (with triggers `print_end` or `cancel`) the TFT Printing menu is finalized (statistics available etc.) and unlocked (the menu can be closed).
+When the trigger `print_end` or `cancel` is received, the TFT Printing menu is finalized (statistics available etc.).
+When on Printing menu, pressing on the **pause**, **resume** and **stop** buttons will trigger to the remote host the following notifications, respectively:
 
-**NOTES:** A new plugin on OctoPrint implementing the above protocol should be the preferable way (available to everyone).
+| **NOTIFICATION**            | **ACK MESSAGE**                       |
+| :-------------------------- | :------------------------------------ |
+| **pause**                   | `//action:notification remote pause`  |
+| **resume**                  | `//action:notification remote resume` |
+| **cancel**                  | `//action:notification remote cancel` |
+
+The remote host must properly handle the received notifications. For example, if `//action:notification remote pause` is received then the remote host must effectively pause the print and send `M118 P0 A1 action:pause` in order to trigger the pause action to the TFT.
+
+**NOTES:**
+- A new plugin on OctoPrint implementing the above protocol should be the preferable way (available to everyone)
 
 <a name="Firmware-Update"></a>
 
@@ -357,6 +373,8 @@ After a new Marlin firmware is installed (see section [Marlin Firmware Installat
 <a name="TFT-Firmware-Changes"></a>
 
 ### TFT Firmware Changes
+
+- 1.27.x Patch 9.3, January 12 2023
 
 - 1.27.x Patch 9.2, August 10 2022
 
@@ -595,6 +613,8 @@ After a new Marlin firmware is installed (see section [Marlin Firmware Installat
 <a name="Marlin-Firmware-Changes"></a>
 
 ### Marlin Firmware Changes
+
+- 2.1.2, January 12 2023
 
 - 2.1.1, August 10 2022
 

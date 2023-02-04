@@ -172,9 +172,8 @@ void menuShowParameter(void)
     {
       case KEY_BACK:
         if (memcmp(&now, &infoParameters, sizeof(PARAMETERS)))
-        {
           parametersChanged = true;
-        }
+
         CLOSE_MENU();
         break;
 
@@ -185,7 +184,7 @@ void menuShowParameter(void)
         if (elementIndex < getElementCount(curParameter))
         {
           VAL_TYPE val_type = getParameterValType(curParameter, elementIndex);
-          bool negative_val = val_type % 2;  // accept negative values only for val_types with negetive
+          bool negative_val = GET_BIT(val_type, 0);  // accept negative values only for val_types with negetive
           float val = getParameter(curParameter, elementIndex);
 
           if (val_type == VAL_TYPE_FLOAT || val_type == VAL_TYPE_NEG_FLOAT)
@@ -209,6 +208,7 @@ void menuShowParameter(void)
       if (oldval[i] != newVal)
       {
         oldval[i] = newVal;
+
         listViewRefreshItem(i);
       }
     }
@@ -266,9 +266,9 @@ void menuParameterSettings(void)
       case KEY_BACK:
         if (parametersChanged && infoMachineSettings.EEPROM == 1)
         {
-          setDialogText(title.index, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL);
-          showDialog(DIALOG_TYPE_QUESTION, saveEepromSettings, NULL, NULL);
           parametersChanged = false;
+
+          popupDialog(DIALOG_TYPE_QUESTION, title.index, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL, saveEepromSettings, NULL, NULL);
         }
         else
         {
@@ -283,9 +283,11 @@ void menuParameterSettings(void)
         if (curIndex < enabledParameterCount)
         {
           curParameter = getEnabledParameter(curIndex);
+
           if (curParameter < PARAMETERS_COUNT)
           {
             mustStoreCmd("M503 S0\n");
+
             OPEN_MENU(menuShowParameter);
           }
           break;
@@ -294,23 +296,22 @@ void menuParameterSettings(void)
         else if (infoMachineSettings.EEPROM == 1 && curIndex < totalItems)
         {
           uint8_t curIndex_e = (curIndex - enabledParameterCount);
+
           if (curIndex_e == P_SAVE_SETTINGS)
           {
-            setDialogText(title.index, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL);
-            showDialog(DIALOG_TYPE_ALERT, saveEepromSettings, NULL, NULL);
             parametersChanged = false;
+
+            popupDialog(DIALOG_TYPE_ALERT, title.index, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL, saveEepromSettings, NULL, NULL);
             break;
           }
           else if (curIndex_e == P_RESET_SETTINGS)
           {
-            setDialogText(LABEL_SETTINGS_RESET, LABEL_SETTINGS_RESET_INFO, LABEL_CONFIRM, LABEL_CANCEL);
-            showDialog(DIALOG_TYPE_ALERT, resetEepromSettings, NULL, NULL);
+            popupDialog(DIALOG_TYPE_ALERT, LABEL_SETTINGS_RESET, LABEL_SETTINGS_RESET_INFO, LABEL_CONFIRM, LABEL_CANCEL, resetEepromSettings, NULL, NULL);
             break;
           }
           else if (curIndex_e == P_RESTORE_SETTINGS)
           {
-            setDialogText(LABEL_SETTINGS_RESTORE, LABEL_EEPROM_RESTORE_INFO, LABEL_CONFIRM, LABEL_CANCEL);
-            showDialog(DIALOG_TYPE_ALERT, restoreEepromSettings, NULL, NULL);
+            popupDialog(DIALOG_TYPE_ALERT, LABEL_SETTINGS_RESTORE, LABEL_EEPROM_RESTORE_INFO, LABEL_CONFIRM, LABEL_CANCEL, restoreEepromSettings, NULL, NULL);
             break;
           }
         }

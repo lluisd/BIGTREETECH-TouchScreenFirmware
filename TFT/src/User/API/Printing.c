@@ -49,25 +49,45 @@ bool getRunoutAlarm(void)
   return filamentRunoutAlarm;
 }
 
+void clearQueueAndRunoutAlarm(void)
+{
+  clearCmdQueue();
+  setRunoutAlarmFalse();
+}
+
 void breakAndContinue(void)
 {
-  setRunoutAlarmFalse();
-  clearCmdQueue();
-  Serial_Puts(SERIAL_PORT, "M108\n");
+  clearQueueAndRunoutAlarm();
+  Serial_Forward(PORT_1, "M108\n");
 }
 
 void resumeAndPurge(void)
 {
-  setRunoutAlarmFalse();
-  clearCmdQueue();
-  Serial_Puts(SERIAL_PORT, "M876 S0\n");
+  clearQueueAndRunoutAlarm();
+  Serial_Forward(PORT_1, "M876 S0\n");
 }
 
 void resumeAndContinue(void)
 {
-  setRunoutAlarmFalse();
-  clearCmdQueue();
-  Serial_Puts(SERIAL_PORT, "M876 S1\n");
+  clearQueueAndRunoutAlarm();
+  Serial_Forward(PORT_1, "M876 S1\n");
+}
+
+void abortAndTerminate(void)
+{
+  clearQueueAndRunoutAlarm();
+
+  if (infoMachineSettings.firmwareType != FW_REPRAPFW)
+  {
+    Serial_Forward(PORT_1, "M524\n");
+  }
+  else  // if RepRap
+  {
+    if (!infoPrinting.paused)
+      request_M25();  // must pause the print before cancelling it
+
+    request_M0();  // M524 is not supported in RepRap firmware
+  }
 }
 
 void setPrintExpectedTime(uint32_t expectedTime)
@@ -255,8 +275,7 @@ void shutdownStart(void)
     mustStoreCmd(fanCmd[i], infoSettings.fan_max[i]);
   }
 
-  setDialogText(LABEL_SHUT_DOWN, (uint8_t *)tempstr, LABEL_FORCE_SHUT_DOWN, LABEL_CANCEL);
-  showDialog(DIALOG_TYPE_INFO, shutdown, NULL, shutdownLoop);
+  popupDialog(DIALOG_TYPE_INFO, LABEL_SHUT_DOWN, (uint8_t *)tempstr, LABEL_FORCE_SHUT_DOWN, LABEL_CANCEL, shutdown, NULL, shutdownLoop);
 }
 
 void initPrintSummary(void)
@@ -401,6 +420,8 @@ bool printRemoteStart(const char * filename)
 
 bool printStart(void)
 {
+  bool printRestore = false;
+
   // always clean infoPrinting first and then set the needed attributes
   clearInfoPrint();
 
@@ -433,7 +454,10 @@ bool printStart(void)
         powerFailedInitData();
 
         if (powerFailedCreate(infoFile.path))    // if PLR feature is enabled, open a new PLR file
+        {
+          printRestore = true;
           powerFailedlSeek(&infoPrinting.file);  // seek on PLR file
+        }
       }
 
       break;
@@ -453,7 +477,8 @@ bool printStart(void)
   // we assume infoPrinting is clean, so we need to set only the needed attributes
   infoPrinting.printing = true;
 
-  if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_START_PRINT))
+  // execute pre print start tasks
+  if (!printRestore && GET_BIT(infoSettings.send_gcodes, SEND_GCODES_START_PRINT))  // PLR continue printing, CAN NOT use start gcode
     sendPrintCodes(0);
 
   if (infoFile.source == FS_ONBOARD_MEDIA)
@@ -486,6 +511,7 @@ void printEnd(void)
     case FS_TFT_SD:
     case FS_TFT_USB:
     case FS_ONBOARD_MEDIA:
+      // execute post print end tasks
       if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_END_PRINT))
         sendPrintCodes(1);
 
@@ -518,7 +544,7 @@ void printAbort(void)
   {
     case FS_TFT_SD:
     case FS_TFT_USB:
-      clearCmdQueue();
+      clearQueueAndRunoutAlarm();
       break;
 
     case FS_ONBOARD_MEDIA:
@@ -530,42 +556,37 @@ void printAbort(void)
       breakAndContinue();
       breakAndContinue();
 
-      if (infoMachineSettings.firmwareType != FW_REPRAPFW)
-      {
-        request_M524();
-      }
-      else  // if RepRap
-      {
-        if (!infoPrinting.paused)
-          request_M25();  // must pause the print before cancel it
+      // force the transmission of M524 (gcode sent directly bypassing the command queue) to abort the
+      // print followed by the reception of the "ok" ACK (enabling again the use of the command queue).
+      // Finally, forward the print cancel action allowing the invokation of setPrintAbort() in
+      // parseAck.c to finalize the print (e.g. stats) followed by the execution of the post print
+      // cancel tasks provided at the end of this function
+      abortAndTerminate();
+      mustStoreCmd("M118 P0 A1 action:cancel\n");
 
-        request_M0();  // M524 is not supported in RepRap firmware
-      }
+      popupSplash(DIALOG_TYPE_INFO, LABEL_SCREEN_INFO, LABEL_BUSY);
 
-      setDialogText(LABEL_SCREEN_INFO, LABEL_BUSY, LABEL_NULL, LABEL_NULL);
-      showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
-
-      // let setPrintPause() (that will be called in parseAck.c by parsing ACK message for M524, M25 or M27)
-      // notify the print as aborted/completed (infoHost.status set to "HOST_STATUS_IDLE") instead of paused
-      infoHost.status = HOST_STATUS_STOPPING;
-
-      // wait until infoHost.status is set to "HOST_STATUS_IDLE" by setPrintPause()
+      // wait until infoHost.status is set to "HOST_STATUS_IDLE" by setPrintAbort() in parseAck.c
       loopProcessToCondition(&isHostPrinting);
-
       break;
 
-    case FS_REMOTE_HOST:  // nothing to do
-      loopDetected = false;
+    case FS_REMOTE_HOST:
+      // forward a print cancel notification to the remote host asking to cancel the print
+      mustStoreCmd("M118 P0 A1 action:notification remote cancel\n");
+
+      loopDetected = false;  // finally, remove lock and exit
       return;
   }
 
+  infoPrinting.aborted = true;  // update abort status after abort procedure
+
+  // execute post print cancel tasks
   if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_CANCEL_PRINT))
     sendPrintCodes(2);
 
   printComplete();
-  infoPrinting.aborted = true;
 
-  loopDetected = false;
+  loopDetected = false;  // finally, remove lock and exit
 }
 
 bool printPause(bool isPause, PAUSE_TYPE pauseType)
@@ -597,7 +618,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
         {
           popupReminder(DIALOG_TYPE_ALERT, LABEL_PAUSE, LABEL_PAUSE);
         }
-        else if (pauseType == PAUSE_NORMAL)  // send command only if the pause originated from TFT
+        else if (pauseType == PAUSE_NORMAL)  // send command only for pause originated from TFT
         {
           coordinateGetAll(&tmp);
 
@@ -630,7 +651,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
         {
           breakAndContinue();  // clear the queue and send a break and continue
         }
-        else if (pauseType == PAUSE_NORMAL)  // send command only if the pause originated from TFT
+        else if (pauseType == PAUSE_NORMAL)  // send command only for pause originated from TFT
         {
           if (isCoorRelative == true)    mustStoreCmd("G90\n");
           if (isExtrudeRelative == true) mustStoreCmd("M82\n");
@@ -670,14 +691,19 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
 
       break;
 
-    case FS_REMOTE_HOST:  // nothing to do
-      loopDetected = false;
+    case FS_REMOTE_HOST:
+      if (isPause)  // if print pause, forward a print pause notification to the remote host asking to pause the print
+        mustStoreCmd("M118 P0 A1 action:notification remote pause\n");
+      else          // if print resume, forward a print resume notification to the remote host asking to resume the print
+        mustStoreCmd("M118 P0 A1 action:notification remote resume\n");
+
+      loopDetected = false;  // finally, remove lock and exit
       return true;
   }
 
   infoPrinting.paused = isPause;  // update pause status after pause/resume procedure
-  loopDetected = false;
 
+  loopDetected = false;  // finally, remove lock and exit
   return true;
 }
 
@@ -721,9 +747,10 @@ void setPrintAbort(void)
     return;
   }
 
+  infoPrinting.aborted = true;
+
   BUZZER_PLAY(SOUND_ERROR);
   printComplete();
-  infoPrinting.aborted = true;
 }
 
 void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
@@ -732,15 +759,6 @@ void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
   {
     infoPrinting.paused = true;
     infoPrinting.pauseType = pauseType;
-  }
-
-  // in case host is not printing, print was completed or printAbort() is aborting the print,
-  // nothing to do (infoHost.status must be set to "HOST_STATUS_IDLE" in case it is
-  // "HOST_STATUS_STOPPING" just to finalize the print abort)
-  if (infoHost.status <= HOST_STATUS_STOPPING)
-  {
-    infoHost.status = HOST_STATUS_IDLE;  // wakeup printAbort() if waiting for print completion
-    return;
   }
 
   // in case of printing from Marlin Mode (infoPrinting.printing set to "false") or printing from remote host
@@ -756,11 +774,6 @@ void setPrintResume(HOST_STATUS hostStatus)
 {
   // no need to check it is printing when setting the value to "false"
   infoPrinting.paused = false;
-
-  // in case host is not printing, print was completed or printAbort() is aborting the print,
-  // nothing to do (infoHost.status must never be changed)
-  if (infoHost.status <= HOST_STATUS_STOPPING)
-    return;
 
   // in case of printing from Marlin Mode (infoPrinting.printing set to "false") or printing from remote host
   // (e.g. OctoPrint) or infoSettings.m27_active set to "false", infoHost.status is always forced to
