@@ -47,7 +47,7 @@ typedef enum
   SKEY_START_GCODE_ENABLED,
   SKEY_END_GCODE_ENABLED,
   SKEY_CANCEL_GCODE_ENABLED,
-  SKEY_RESET_SETTINGS,        // Keep reset always at the bottom of the settings menu list.
+  SKEY_RESET_SETTINGS,        // keep reset always at the bottom of the settings menu list.
   SKEY_COUNT                  // keep this always at the end
 } SKEY_LIST;
 
@@ -235,7 +235,7 @@ void menuFeatureSettings(void)
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_START_GCODE_ENABLED,    LABEL_NULL},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_END_GCODE_ENABLED,      LABEL_NULL},
     {CHARICON_TOGGLE_ON,   LIST_TOGGLE,        LABEL_CANCEL_GCODE_ENABLED,   LABEL_NULL},
-    // Keep reset settings always at the bottom of the settings menu list.
+    // keep reset settings always at the bottom of the settings menu list
     {CHARICON_BLANK,       LIST_MOREBUTTON,    LABEL_SETTINGS_RESET,         LABEL_NULL}
   };
 
