@@ -14,7 +14,7 @@ extern "C" {
 extern int32_t TSC_Para[7];
 extern SETTINGS infoSettings;
 
-void readStoredPara(void);
+void readStoredPara(void);  // Read settings parameter if exist, or reset settings parameter
 void storePara(void);
 bool readIsTSCExist(void);
 bool readIsNotStored(void);

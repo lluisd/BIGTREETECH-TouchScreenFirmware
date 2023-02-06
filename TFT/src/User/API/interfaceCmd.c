@@ -618,7 +618,7 @@ void sendQueueCmd(void)
           case 524:  // M524
             if (!fromTFT)
             {
-              if (isTFTPrinting())  // if printing from TFT media
+              if (isPrintingFromTFT())  // if printing from TFT media
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause() / printAbort()
@@ -644,7 +644,7 @@ void sendQueueCmd(void)
 
             if (!fromTFT)
             {
-              if (isTFTPrinting())  // if printing from TFT media
+              if (isPrintingFromTFT())  // if printing from TFT media
               {
                 char buf[55];
 

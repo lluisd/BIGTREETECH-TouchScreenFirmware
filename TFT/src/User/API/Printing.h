@@ -130,9 +130,9 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType);
 bool isPrinting(void);
 bool isPaused(void);
 bool isAborted(void);
-bool isTFTPrinting(void);
-bool isHostPrinting(void);
-bool isRemoteHostPrinting(void);
+bool isPrintingFromTFT(void);
+bool isPrintingFromHost(void);
+bool isPrintingFromRemoteHost(void);
 
 //
 // used for print originated or handled by remote host

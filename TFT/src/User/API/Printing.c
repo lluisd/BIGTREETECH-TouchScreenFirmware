@@ -567,7 +567,7 @@ void printAbort(void)
       popupSplash(DIALOG_TYPE_INFO, LABEL_SCREEN_INFO, LABEL_BUSY);
 
       // wait until infoHost.status is set to "HOST_STATUS_IDLE" by setPrintAbort() in parseAck.c
-      loopProcessToCondition(&isHostPrinting);
+      loopProcessToCondition(&isPrintingFromHost);
       break;
 
     case FS_REMOTE_HOST:
@@ -722,17 +722,17 @@ bool isAborted(void)
   return infoPrinting.aborted;
 }
 
-bool isTFTPrinting(void)
+bool isPrintingFromTFT(void)
 {
   return (infoPrinting.printing && infoFile.source < FS_ONBOARD_MEDIA) ? true : false;
 }
 
-bool isHostPrinting(void)
+bool isPrintingFromHost(void)
 {
   return (infoHost.status != HOST_STATUS_IDLE);
 }
 
-bool isRemoteHostPrinting(void)
+bool isPrintingFromRemoteHost(void)
 {
   return (infoPrinting.printing && infoFile.source == FS_REMOTE_HOST) ? true : false;
 }
