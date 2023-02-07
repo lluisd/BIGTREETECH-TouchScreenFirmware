@@ -55,8 +55,8 @@ struct HOST_ACTION
 {
   char prompt_begin[30];
   char prompt_button[2][20];
-  bool prompt_show;         // show popup reminder or not
-  uint8_t button;           // number of buttons
+  bool prompt_show;           // show popup reminder or not
+  uint8_t button;             // number of buttons
 } hostAction;
 
 void setHostDialog(bool isHostDialog)
