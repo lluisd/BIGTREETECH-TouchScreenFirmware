@@ -58,19 +58,19 @@ void clearQueueAndRunoutAlarm(void)
 void breakAndContinue(void)
 {
   clearQueueAndRunoutAlarm();
-  Serial_Forward(PORT_1, "M108\n");
+  sendEmergencyCmd("M108\n");
 }
 
 void resumeAndPurge(void)
 {
   clearQueueAndRunoutAlarm();
-  Serial_Forward(PORT_1, "M876 S0\n");
+  sendEmergencyCmd("M876 S0\n");
 }
 
 void resumeAndContinue(void)
 {
   clearQueueAndRunoutAlarm();
-  Serial_Forward(PORT_1, "M876 S1\n");
+  sendEmergencyCmd("M876 S1\n");
 }
 
 void abortAndTerminate(void)
@@ -79,7 +79,7 @@ void abortAndTerminate(void)
 
   if (infoMachineSettings.firmwareType != FW_REPRAPFW)
   {
-    Serial_Forward(PORT_1, "M524\n");
+    sendEmergencyCmd("M524\n");
   }
   else  // if RepRap
   {
@@ -540,22 +540,21 @@ void printAbort(void)
 
   loopDetected = true;
 
+  // several M108 are sent to Marlin because consecutive blocking operations
+  // such as heating bed, extruder may defer processing of further M524, M118 etc.
+  breakAndContinue();
+  breakAndContinue();
+  breakAndContinue();
+  breakAndContinue();
+
   switch (infoFile.source)
   {
     case FS_TFT_SD:
     case FS_TFT_USB:
-      clearQueueAndRunoutAlarm();
       break;
 
     case FS_ONBOARD_MEDIA:
     case FS_ONBOARD_MEDIA_REMOTE:
-      // several M108 are sent to Marlin because consecutive blocking operations
-      // such as heating bed, extruder may defer processing of M524
-      breakAndContinue();
-      breakAndContinue();
-      breakAndContinue();
-      breakAndContinue();
-
       // force the transmission of M524 (gcode sent directly bypassing the command queue) to abort the
       // print followed by the reception of the "ok" ACK (enabling again the use of the command queue).
       // Finally, forward the print cancel action allowing the invokation of setPrintAbort() in
@@ -817,7 +816,7 @@ void loopPrintFromTFT(void)
       {
         gcode[gcode_count++] = '\n';
         gcode[gcode_count] = '\0';  // terminate string
-        storeCmdFromUART(PORT_1, gcode);
+        storeCmdFromUART(gcode, PORT_1);
 
         break;
       }

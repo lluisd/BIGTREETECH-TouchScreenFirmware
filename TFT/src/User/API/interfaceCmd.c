@@ -25,13 +25,14 @@ typedef enum
   ONBOARD_WRITING
 } WRITING_MODE;
 
-GCODE_QUEUE cmdQueue;              // Command queue where commands to be sent are stored
+GCODE_QUEUE cmdQueue;              // command queue where commands to be sent are stored
 GCODE_QUEUE cmdCache;              // only when heatHasWaiting() is false the cmd in this cache will move to cmdQueue queue
 char * cmd_ptr;
 uint8_t cmd_len;
 SERIAL_PORT_INDEX cmd_port_index;  // index of serial port originating the gcode
 uint8_t cmd_base_index;            // base index in case the gcode has checksum ("Nxxx " is present at the beginning of gcode)
 uint8_t cmd_index;
+bool cmd_queued;                   // flag set to true for a queued gcode (not an emergency gcode (M108, M112, M410, M524, M876))
 WRITING_MODE writing_mode = NO_WRITING;
 FIL file;
 
@@ -59,6 +60,25 @@ bool isEnqueued(const CMD cmd)
 bool isWritingMode(void)
 {
   return (writing_mode != NO_WRITING);
+}
+
+// Store an emergency command in the front of the command queue
+// so it is sent as soon as possible to the printer.
+// The command parameter must be a clear command, not formatted.
+void storeEmergencyCmd(const CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
+{
+  if (emergencyCmd[0] == '\0') return;
+
+  if (cmdQueue.count >= CMD_QUEUE_SIZE)
+  {
+    reminderMessage(LABEL_BUSY, SYS_STATUS_BUSY);
+    loopProcessToCondition(&isFullCmdQueue);  // wait for a free slot in the queue in case the queue is currently full
+  }
+
+  cmdQueue.index_r = (cmdQueue.index_r + CMD_QUEUE_SIZE - 1) % CMD_QUEUE_SIZE;
+  strcpy(cmdQueue.queue[cmdQueue.index_r].gcode, emergencyCmd);
+  cmdQueue.queue[cmdQueue.index_r].port_index = portIndex;
+  cmdQueue.count++;
 }
 
 // Common store cmd.
@@ -146,7 +166,7 @@ void mustStoreScript(const char * format, ...)
 // Store gcode cmd received from UART (e.g. ESP3D, OctoPrint, other TouchScreen etc...) to cmdQueue queue.
 // This command will be sent to the printer by sendQueueCmd().
 // If the cmdQueue queue is full, a reminder message is displayed and the command is discarded.
-bool storeCmdFromUART(SERIAL_PORT_INDEX portIndex, const CMD cmd)
+bool storeCmdFromUART(const CMD cmd, const SERIAL_PORT_INDEX portIndex)
 {
   if (cmd[0] == 0) return false;
 
@@ -203,12 +223,50 @@ void clearCmdQueue(void)
   printSetUpdateWaiting(false);
 }
 
-static inline bool getCmd(void)
+// Strip out any leading spaces and N[-0-9] (line number) if included in the command line.
+void stripCmd(void)
+{
+  // skip leading spaces
+  //
+  // NOTE: cmd_ptr was already set by getEmergencyCmd or getQueueCmd functions
+  //
+  while (*cmd_ptr == ' ') cmd_ptr++;         // e.g. "  N1   G28*46\n" -> "N1   G28*46\n"
+
+  char * strPtr = cmd_ptr;
+
+  // skip N[-0-9] (line number) if included in the command line
+  if (*strPtr == 'N' && NUMERIC(strPtr[1]))  // e.g. "N1   G28*46\n" -> "G28*46\n"
+  {
+    strPtr += 2;                             // skip N[-0-9]
+    while (NUMERIC(*strPtr)) strPtr++;       // skip [0-9]*
+    while (*strPtr == ' ') strPtr++;         // skip [ ]*
+  }
+
+  // set cmd_base_index with index of gcode command
+  cmd_base_index = strPtr - cmd_ptr;         // e.g. "  N1   G28*46\n" -> "G28*46\n"
+
+  // set cmd_index with index of gcode value
+  cmd_index = cmd_base_index + 1;            // e.g. "G28*46\n" -> "28*46\n"
+}
+
+static inline void getEmergencyCmd(const CMD cmd, const SERIAL_PORT_INDEX portIndex)
+{
+  cmd_ptr = (char *) &cmd;     // gcode
+  cmd_port_index = portIndex;  // index of serial port originating the gcode
+  cmd_queued = false;          // by default, an emergency gcode
+
+  stripCmd();  // strip out any leading spaces and N[-0-9] (line number) if included in the command line
+}
+
+static inline bool getQueueCmd(void)
 {
   cmd_ptr = &cmdQueue.queue[cmdQueue.index_r].gcode[0];          // gcode
-  cmd_len = strlen(cmd_ptr);                                     // length of gcode
   cmd_port_index = cmdQueue.queue[cmdQueue.index_r].port_index;  // index of serial port originating the gcode
-  cmd_base_index = cmd_index = 0;
+  cmd_queued = true;                                             // by default, not an emergency gcode
+
+  stripCmd();  // strip out any leading spaces and N[-0-9] (line number) if included in the command line
+
+  cmd_len = strlen(cmd_ptr);  // length of gcode
 
   return (cmd_port_index == PORT_1);  // if gcode is originated by TFT (SERIAL_PORT), return true
 }
@@ -240,7 +298,8 @@ bool sendCmd(bool purge, bool avoidTerminal)
     else
       rrfSendCmd(cmd_ptr);
 
-    setCurrentAckSrc(cmd_port_index);
+    if (cmd_queued)  // if command was retrieved from cmdQueue (not an emergency command)
+      setCurrentAckSrc(cmd_port_index);
   }
 
   if (!avoidTerminal && MENU_IS(menuTerminal))
@@ -251,8 +310,11 @@ bool sendCmd(bool purge, bool avoidTerminal)
     terminalCache(cmd_ptr, cmd_len, cmd_port_index, SRC_TERMINAL_GCODE);
   }
 
-  cmdQueue.count--;
-  cmdQueue.index_r = (cmdQueue.index_r + 1) % CMD_QUEUE_SIZE;
+  if (cmd_queued)  // if command was retrieved from cmdQueue (not an emergency command)
+  {
+    cmdQueue.count--;
+    cmdQueue.index_r = (cmdQueue.index_r + 1) % CMD_QUEUE_SIZE;
+  }
 
   return !purge;  // return true if command was sent. Otherwise, return false
 }
@@ -462,31 +524,81 @@ void syncTargetTemp(uint8_t index)
   }
 }
 
+// Handles emmergency command.
+// It sends it immediately if the printer has emergency parser,
+// otherwise puts it first in the command queue.
+// The command parameter must be a clear command, not formatted.
+void handleEmergencyCmd(const CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
+{
+  if (infoMachineSettings.emergencyParser == 1)
+    sendEmergencyCmd(emergencyCmd, portIndex);
+  else
+    storeEmergencyCmd(emergencyCmd, portIndex);
+}
+
+// Send emergency command now.
+// The command parameter must be a clear command, not formatted.
+//
+// NOTE: Make sure that the printer can receive the command.
+void sendEmergencyCmd(const CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
+{
+  // NOTE: for performance reasons, getEmergencyCmd function does not set cmd_len (used by sendCmd and cmd_seen_from functions).
+  //       It is set only if the command is recognized and handled as an emergency gcode (before calling sendCmd function)
+  //
+  getEmergencyCmd(emergencyCmd, portIndex);  // retrieve leading gcode and check if it is originated by TFT or other hosts
+
+  cmd_len = strlen(cmd_ptr);  // length of gcode. cmd_len is used by sendCmd function
+
+  sendCmd(false, false);
+}
+
+// Check if the received gcode is an emergency one or not
+// (M108, M112, M410, M524, M876) and parse it accordingly.
+void handleCmd(const CMD cmd, const SERIAL_PORT_INDEX portIndex)
+{
+  // NOTE: for performance reasons, getEmergencyCmd function does not set cmd_len (used by sendCmd and cmd_seen_from functions).
+  //       It is set only if the command is recognized and handled as an emergency gcode (before calling sendCmd function)
+  //
+  getEmergencyCmd(cmd, portIndex);  // retrieve leading gcode and check if it is originated by TFT or other hosts
+
+  switch (cmd_ptr[cmd_base_index])
+  {
+    // parse M-codes
+    case 'M':
+      switch (cmd_value())
+      {
+        case 108:  // M108
+        case 112:  // M112
+        case 410:  // M410
+        case 876:  // M876
+          cmd_len = strlen(cmd_ptr);  // length of gcode. cmd_len is used by sendCmd function
+
+          sendCmd(false, false);
+          return;
+
+        case 524:  // M524
+          printAbort();
+
+          if (cmd_port_index != PORT_1)  // if gcode is not generated from TFT
+            Serial_Forward(cmd_port_index, "ok\n");
+          return;
+      }
+  }
+
+  // if the received gcode is not an emergency one, store the gcode on cmdQueue
+  while (!storeCmdFromUART(&cmd_ptr[cmd_base_index], cmd_port_index))
+  {
+    loopProcess();
+  }
+}
+
 // Parse and send gcode cmd in cmdQueue queue.
 void sendQueueCmd(void)
 {
   if (infoHost.wait == true || cmdQueue.count == 0) return;
 
   bool avoid_terminal = false;
-  bool fromTFT = getCmd();  // retrieve leading gcode in the queue and check if it is originated by TFT or other hosts
-  char * strPtr = cmd_ptr;  // cmd_ptr was set by getCmd function
-
-  // skip leading spaces
-  while (*strPtr == ' ') strPtr++;           // e.g. "  N1   G28*46\n" -> "N1   G28*46\n"
-
-  // skip N[-0-9] (line number) if included in the command line
-  if (*strPtr == 'N' && NUMERIC(strPtr[1]))  // e.g. "N1   G28*46\n" -> "G28*46\n"
-  {
-    strPtr += 2;                             // skip N[-0-9]
-    while (NUMERIC(*strPtr)) ++strPtr;       // skip [0-9]*
-    while (*strPtr == ' ') ++strPtr;         // skip [ ]*
-  }
-
-  // set cmd_base_index with index of gcode command
-  cmd_base_index = strPtr - cmd_ptr;         // e.g. "  N1   G28*46\n" -> "G28*46\n"
-
-  // set cmd_index with index of gcode value
-  cmd_index = cmd_base_index + 1;            // e.g. "G28*46\n" -> "28*46\n"
+  bool fromTFT = getQueueCmd();  // retrieve leading gcode in the queue and check if it is originated by TFT or other hosts
 
   if (writing_mode != NO_WRITING)  // if writing mode (previously triggered by M28)
   {
@@ -532,8 +644,8 @@ void sendQueueCmd(void)
           }
           break;
 
-        case 18:  // M18 / M84 disable steppers
-        case 84:
+        case 18:  // M18 disable steppers
+        case 84:  // M84 disable steppers
           // do not mark coordinate as unknown in case of a M18/M84 S<timeout> command that
           // doesn't disable the motors right away but will set their idling timeout
           if (!(cmd_seen('S') && !cmd_seen('Y') && !cmd_seen('Z') && !cmd_seen('E')))
@@ -600,7 +712,6 @@ void sendQueueCmd(void)
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause()
-                Serial_Forward(cmd_port_index, "ok\n");
                 sendCmd(true, avoid_terminal);
 
                 if (!isPrinting())  // if not printing, start a new print and open Printing menu
@@ -608,6 +719,7 @@ void sendQueueCmd(void)
                 else                // if printing, resume the print, in case it is paused, or continue to print
                   printPause(false, PAUSE_NORMAL);
 
+                Serial_Forward(cmd_port_index, "ok\n");
                 return;
               }
             }
@@ -622,7 +734,6 @@ void sendQueueCmd(void)
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause() / printAbort()
-                Serial_Forward(cmd_port_index, "ok\n");
                 sendCmd(true, avoid_terminal);
 
                 if (cmd_value() != 524)            // if M25 or M125
@@ -630,6 +741,7 @@ void sendQueueCmd(void)
                 else                               // if M524
                   printAbort();
 
+                Serial_Forward(cmd_port_index, "ok\n");
                 return;
               }
             }
@@ -1116,6 +1228,46 @@ void sendQueueCmd(void)
         //  // ABL state and Z fade height will be set through parsACK.c after receiving confirmation
         //  // message from the printer to prevent wrong state and/or value in case of error
         //  break;
+
+        case 593:  // M593 Input Shaping (only for Marlin)
+        {
+          if (infoMachineSettings.firmwareType == FW_MARLIN)
+          {
+            // M593 accepts its parameters in any order,
+            // if both X and Y axis are missing than the rest
+            // of the parameters are referring to each axis
+
+            enum
+            {
+              SET_NONE = 0B00,
+              SET_X = 0B01,
+              SET_Y = 0B10,
+              SET_BOTH = 0B11
+            } setAxis = SET_NONE;
+
+            float pValue;
+
+            if (cmd_seen('X')) setAxis |= SET_X;
+            if (cmd_seen('Y')) setAxis |= SET_Y;
+            if (setAxis == SET_NONE) setAxis = SET_BOTH;
+
+            if (cmd_seen('F'))
+            {
+              pValue = cmd_float();
+
+              if (setAxis & SET_X) setParameter(P_INPUT_SHAPING, 0, pValue);
+              if (setAxis & SET_Y) setParameter(P_INPUT_SHAPING, 2, pValue);
+            }
+
+            if (cmd_seen('D'))
+            {
+              pValue = cmd_float();
+
+              if (setAxis & SET_X) setParameter(P_INPUT_SHAPING, 1, pValue);
+              if (setAxis & SET_Y) setParameter(P_INPUT_SHAPING, 3, pValue);
+            }
+          }
+        }
 
         case 569:  // M569 TMC stepping mode
         {

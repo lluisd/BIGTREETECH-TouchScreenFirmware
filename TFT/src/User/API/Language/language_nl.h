@@ -59,6 +59,7 @@
     #define STRING_HOTEND_PID             "Hotend PID"
     #define STRING_BED_PID                "Bed PID"
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
+    #define STRING_INPUT_SHAPING          "Input Shaping"
     #define STRING_DELTA_CONFIGURATION    "Delta Configuration"
     #define STRING_DELTA_TOWER_ANGLE      "Tower Angle Trim"
     #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
@@ -165,12 +166,12 @@
     #define STRING_PROCESS_ABORTED        "Process geannuleerd!"
 
     // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
-    #define STRING_TFT_SD                 "SD Kaart"
+    #define STRING_TFT_SD                 "TFT SD"
     #define STRING_TFT_SD_INSERTED        "Kaart geplaatst"
     #define STRING_TFT_SD_REMOVED         "Kaart verwijdert"
     #define STRING_TFT_SD_NOT_DETECTED    "No SD card detected!"
     #define STRING_TFT_SD_READ_ERROR      "SD card leesfout!"
-    #define STRING_TFT_USB                "USB Disk"
+    #define STRING_TFT_USB                "TFT USB"
     #define STRING_TFT_USB_INSERTED       "USB disk geplaatst"
     #define STRING_TFT_USB_REMOVED        "USB disk verwijdert"
     #define STRING_TFT_USB_NOT_DETECTED   "No USB disk detected!"

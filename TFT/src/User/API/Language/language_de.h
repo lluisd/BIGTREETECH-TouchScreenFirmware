@@ -59,6 +59,7 @@
     #define STRING_HOTEND_PID             "Hotend PID"
     #define STRING_BED_PID                "Bed PID"
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
+    #define STRING_INPUT_SHAPING          "Input Shaping"
     #define STRING_DELTA_CONFIGURATION    "Delta Konfiguration"
     #define STRING_DELTA_TOWER_ANGLE      "Tower Angle Trim"
     #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
@@ -165,7 +166,7 @@
     #define STRING_PROCESS_ABORTED        "Prozess abgebrochen!"
 
     // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
-    #define STRING_TFT_SD                 "SD-Karte"
+    #define STRING_TFT_SD                 "TFT SD"
     #define STRING_TFT_SD_INSERTED        "SD-Karte eingesteckt"
     #define STRING_TFT_SD_REMOVED         "SD-Karte entfernt"
     #define STRING_TFT_SD_NOT_DETECTED    "No SD card detected!"

@@ -126,7 +126,7 @@ To use the TFT fw on Genius:
 #### Marlin Firmware Dependencies
 
 Minimum Marlin firmware version: **2.1.1**<br>
-Distribution date: **2022-08-06**<br>
+Distribution date: **2022-09-22**<br>
 Firmware source: https://github.com/MarlinFirmware/Marlin/releases<br>
 
 To use all the features and functionalities supported by the TFT,
