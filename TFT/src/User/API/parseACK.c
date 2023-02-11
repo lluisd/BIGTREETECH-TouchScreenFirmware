@@ -276,11 +276,11 @@ void hostActionCommands(void)
   }
   else if (ack_seen(":print_start"))  // print started from remote host (e.g. OctoPrint etc...)
   {
-    startRemotePrint(NULL);  // start print and open Printing menu
+    startPrintingFromRemoteHost(NULL);  // start print originated and hosted by remote host and open Printing menu
   }
   else if (ack_seen(":print_end"))  // print ended from remote host (e.g. OctoPrint etc...)
   {
-    printEnd();
+    endPrint();
   }
   else if (ack_seen(":pause") || ack_seen(":paused"))
   {
@@ -657,8 +657,8 @@ void parseACK(void)
     // parse and store M23, select SD file
     else if (infoMachineSettings.onboardSD == ENABLED && ack_starts_with("File opened:"))
     {
-      // NOTE: this block is not reached in case of printing from onboard media because printStart() will call
-      //       request_M23_M36() that will be managed in parseAck() by the block "Onboard media response handling"
+      // NOTE: this block is not reached in case of printing from onboard media because startPrint() in Printing.c will
+      //       call request_M23_M36() that will be managed in parseAck() by the block "Onboard media response handling"
       //       provided at the beginning of this funtion
 
       // parse file name.
@@ -674,7 +674,9 @@ void parseACK(void)
       memcpy(file_name, ack_cache + start_index, path_len);
       file_name[path_len] = '\0';
 
-      startRemotePrint(file_name);  // start print and open Printing menu
+      // start print originated by remote host but hosted by onboard
+      // (print from remote onboard media) and open Printing menu
+      startPrintingFromRemoteHost(file_name);
     }
     // parse and store M24, M27 and M73, if printing from (remote) onboard media
     else if (infoMachineSettings.onboardSD == ENABLED && WITHIN(infoFile.source, FS_ONBOARD_MEDIA, FS_ONBOARD_MEDIA_REMOTE) &&
@@ -685,7 +687,7 @@ void parseACK(void)
       // parse and store M24, received "Done printing file" (printing from (remote) onboard media completed)
       if (ack_starts_with("Done"))
       {
-        printEnd();
+        endPrint();
       }
       // parse and store M27, received "SD printing byte" or "Not SD printing"
       else if (ack_seen("SD"))
