@@ -699,7 +699,6 @@ bool pausePrint(bool isPause, PAUSE_TYPE pauseType)
     case FS_REMOTE_HOST:
       if (isPause)  // forward a print pause notification to all hosts (so also the one handling the print) asking to pause the print
         mustStoreCmd("M118 P0 A1 action:notification remote pause\n");
-
       else          // forward a print resume notification to all hosts (so also the one handling the print) asking to resume the print
         mustStoreCmd("M118 P0 A1 action:notification remote resume\n");
 
