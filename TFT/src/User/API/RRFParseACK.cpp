@@ -35,6 +35,7 @@
  *   ...
  * }
  */
+
 static int8_t m291_mode = 0;
 static bool show_m291 = false;
 static uint32_t m291_seq = 0xffffffff;
