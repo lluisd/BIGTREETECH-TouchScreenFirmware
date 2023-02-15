@@ -110,7 +110,7 @@ void updateFeatureSettings(uint8_t item_index)
     case SKEY_START_GCODE_ENABLED:
     case SKEY_END_GCODE_ENABLED:
     case SKEY_CANCEL_GCODE_ENABLED:
-      TOGGLE_BIT(infoSettings.send_gcodes, item_index - SKEY_START_GCODE_ENABLED);
+      TOGGLE_BIT(infoSettings.send_gcodes, (item_index - SKEY_START_GCODE_ENABLED));
       break;
 
     case SKEY_RESET_SETTINGS:
