@@ -18,6 +18,7 @@ extern "C" {
 
 typedef char CMD[CMD_MAX_SIZE];
 
+bool isPendingCmd(void);         // also usable as condition callback for loopProcessToCondition()
 bool isFullCmdQueue(void);       // also usable as condition callback for loopProcessToCondition()
 bool isNotEmptyCmdQueue(void);   // also usable as condition callback for loopProcessToCondition()
 bool isEnqueued(const CMD cmd);

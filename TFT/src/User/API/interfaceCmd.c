@@ -35,6 +35,11 @@ uint8_t cmd_index;
 WRITING_MODE writing_mode = NO_WRITING;
 FIL file;
 
+bool isPendingCmd(void)
+{
+  return infoHost.wait;
+}
+
 bool isFullCmdQueue(void)
 {
   return (cmdQueue.count >= CMD_QUEUE_SIZE);
