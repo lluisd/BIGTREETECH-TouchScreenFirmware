@@ -35,14 +35,7 @@ static inline void rrfScanPrintFilesGcodeFs(void)
  */
 void getName(bool filename, char * longPath, const char * shortPath, const char * relativePath)
 {
-  // "+ 2": space for terminating null character and the flag for filename extension check
-  // "+ 1": space for terminating null character
-  uint8_t strLenExtra = filename ? 2 : 1;
-  uint8_t strLen;
-  char * strPtr;
-  char * name;
   char * longName = NULL;  // initialize to NULL in case long filename is not supported or no long name exists
-  char * shortName = NULL;
 
   //
   // get long name, if any
@@ -50,9 +43,13 @@ void getName(bool filename, char * longPath, const char * shortPath, const char 
 
   if (infoMachineSettings.longFilename == ENABLED)  // if long filename is supported
   {
+    char * strPtr;
+    char * name;
+
     // if filename (not folder name) and long path is already available (e.g. "M20 L" supported by Marlin)
     //
     // NOTE: Folder names are currently not properly supported by Marlin, so we use M33 for them
+    //
     if (filename && longPath != NULL)
       name = longPath;
     else
@@ -67,53 +64,16 @@ void getName(bool filename, char * longPath, const char * shortPath, const char 
       name = strPtr + 1;  // ditch trailing "/"
 
     if (strcmp(name, "???") != 0)  // if long name exists
-    {
-      strLen = strlen(name) + strLenExtra;
-      longName = malloc(strLen);
-      if (longName == NULL)  // in case of error, free the buffer allocated by M33 (including "name") and exit
-      {
-        clearRequestCommandInfo();
-        return;
-      }
-
-      strncpy(longName, name, strLen);  // set "longName" and set the flag for filename extension check, if any
-    }
-
-    clearRequestCommandInfo();  // finally, free the buffer allocated by M33 (including "name")
+      longName = name;
   }
 
   //
-  // get short name
+  // add short name and long name, if any
   //
 
-  strLen = strlen(relativePath) + strLenExtra;
-  shortName = malloc(strLen);
-  if (shortName == NULL)  // in case of error, free the buffer allocated for "longName", if any, and exit
-  {
-    if (longName != NULL)
-      free(longName);
+  addName(filename, relativePath, longName);
 
-    return;
-  }
-
-  strncpy(shortName, relativePath, strLen);  // set "shortName" and set the flag for filename extension check, if any
-
-  //
-  // copy to destination
-  //
-
-  if (filename)
-  {
-    infoFile.longFile[infoFile.fileCount] = longName;
-    infoFile.file[infoFile.fileCount] = shortName;
-    infoFile.fileCount++;
-  }
-  else
-  {
-    infoFile.longFolder[infoFile.folderCount] = longName;
-    infoFile.folder[infoFile.folderCount] = shortName;
-    infoFile.folderCount++;
-  }
+  clearRequestCommandInfo();  // finally, free the buffer allocated by M33 (including "name"), if any
 }
 
 /**

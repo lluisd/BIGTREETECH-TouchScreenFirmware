@@ -26,7 +26,6 @@ void addToast(DIALOG_TYPE style, char * text)
 
   TOAST t;
   strncpy(t.text, text, TOAST_MSG_LENGTH);
-  t.text[TOAST_MSG_LENGTH - 1] = 0;  // ensure string ends with null terminator
   t.style = style;
   t.isNew = true;
   toastlist[nextToastIndex] = t;
@@ -148,9 +147,7 @@ void addNotification(DIALOG_TYPE style, char *title, char *text, bool ShowDialog
   // store message
   msglist[nextMsgIndex].style  = style;
   strncpy(msglist[nextMsgIndex].text, text, MAX_MSG_LENGTH);
-  msglist[nextMsgIndex].text[MAX_MSG_LENGTH - 1] = 0;  // ensure string ends with null terminator
   strncpy(msglist[nextMsgIndex].title, title, MAX_MSG_TITLE_LENGTH);
-  msglist[nextMsgIndex].title[MAX_MSG_TITLE_LENGTH - 1] = 0;  // ensure string ends with null terminator
 
   if (ShowDialog && MENU_IS_NOT(menuNotification))
     popupReminder(style, (uint8_t *)title, (uint8_t *)msglist[nextMsgIndex].text);
