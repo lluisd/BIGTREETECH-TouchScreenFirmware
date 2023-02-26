@@ -185,10 +185,10 @@ char * isSupportedFile(const char * filename)
   return extPos;
 }
 
-// add a file or folder name to the related list
-bool addName(bool filename, const char * shortName, const char * longName)
+// add a file name or folder name to file list
+bool addFile(bool isFile, const char * shortName, const char * longName)
 {
-  if (filename == true)  // if file
+  if (isFile == true)  // if file
   {
     // if file list is full or filename doesn't provide a supported filename extension
     if (infoFile.fileCount >= FILE_NUM || isSupportedFile(shortName) == NULL)
@@ -202,7 +202,7 @@ bool addName(bool filename, const char * shortName, const char * longName)
 
   // "+ 2": space for terminating null character and the flag for filename extension check
   // "+ 1": space for terminating null character
-  uint8_t extraLen = filename ? 2 : 1;
+  uint8_t extraLen = isFile ? 2 : 1;
   char * sName;
   char * lName = NULL;  // initialize to NULL in case long filename is not provided
 
@@ -244,7 +244,7 @@ bool addName(bool filename, const char * shortName, const char * longName)
   // copy to destination
   //
 
-  if (filename)
+  if (isFile)
   {
     infoFile.file[infoFile.fileCount] = sName;
     infoFile.longFile[infoFile.fileCount] = lName;

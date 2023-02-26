@@ -33,7 +33,7 @@ static inline void rrfScanPrintFilesGcodeFs(void)
  *
  * So the long name will be parsed "0.00 @:0 B@:0" instead of "1.gcode" if the truncated character is "\n" not string "\nok"
  */
-void getName(bool filename, char * longPath, const char * shortPath, const char * relativePath)
+void addName(bool isFile, char * longPath, const char * shortPath, const char * relativePath)
 {
   char * longName = NULL;  // initialize to NULL in case long filename is not supported or no long name exists
 
@@ -50,7 +50,7 @@ void getName(bool filename, char * longPath, const char * shortPath, const char 
     //
     // NOTE: Folder names are currently not properly supported by Marlin, so we use M33 for them
     //
-    if (filename && longPath != NULL)
+    if (isFile && longPath != NULL)
       name = longPath;
     else
       name = request_M33(shortPath);  // retrieve long name, if any
@@ -71,7 +71,7 @@ void getName(bool filename, char * longPath, const char * shortPath, const char 
   // add short name and long name, if any
   //
 
-  addName(filename, relativePath, longName);
+  addFile(isFile, relativePath, longName);
 
   clearRequestCommandInfo();  // finally, free the buffer allocated by M33 (including "name"), if any
 }
@@ -203,7 +203,7 @@ bool scanPrintFilesGcodeFs(void)
       if (infoFile.fileCount >= FILE_NUM)  // gcode file max number is FILE_NUM
         continue;
 
-      getName(true, longPath, line, relativePath);
+      addName(true, longPath, line, relativePath);
     }
     else  // if FOLDER
     {
@@ -242,7 +242,7 @@ bool scanPrintFilesGcodeFs(void)
       }
 
       if (!found)
-        getName(false, longPath, line, relativePath);
+        addName(false, longPath, line, relativePath);
     }
   }
 

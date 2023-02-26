@@ -112,9 +112,19 @@ uint8_t *uint32_2_string(uint32_t num, uint8_t bytes_num, uint8_t *str)
   return str;
 }
 
+// convert time to string with given formatting
+void time_2_string(char *buf, char *str_format, uint32_t time)
+{
+  uint8_t hour = HOURS(time);
+  uint8_t min = MINUTES(time);
+  uint8_t sec = SECONDS(time);
+
+  sprintf(buf, str_format, hour, min, sec);
+}
+
 // light weight strtod() function without exponential support.
 // Convert string to double (without exponential support)
-double string_2_double(char *str, char **endptr)
+double strtod_ligth(char *str, char **endptr)
 {
   char *p = str;
   double val = 0.0;
@@ -164,17 +174,16 @@ double string_2_double(char *str, char **endptr)
   return val * sign;
 }
 
-// safe version of strncpy() function.
-// Copy "src" to "dest" for a maximum of "n" chars, padding with '\0' (in case "src"'s size is lower than "n")
-// and ensuring "dest" ends with null terminator (in case "src"'s size is bigger than "n")
-char *string_2_string(char *dest, const char *src, size_t n)
+// light weight and safe strncpy() function with padding:
+// - copy "src" to "dest" for a maximum of "n-1" characters
+// - if null terminating character is found in "src" the rest in "dest" is padded with '\0'
+// - "dest" always ends with '\0'
+void strncpy_pad(char *dest, const char *src, size_t n)
 {
   // if "src" is not NULL, proceed first with the copy.
   // Otherwise, proceed only padding "dest" with '\0'
   if (src != NULL)
   {
-    n -= !!n;
-
     while (n > 1 && *src != '\0')
     {
       *dest++ = *src++;
@@ -182,19 +191,27 @@ char *string_2_string(char *dest, const char *src, size_t n)
     }
   }
 
-  memset(dest, '\0', n);
-
-  return dest;
+  memset(dest, '\0', n);  // NOTE: safe even in case value 0 was passed for "n" (memset() function will do nothing)
 }
 
-// convert time to string with given formatting
-void time_2_string(char *buf, char *str_format, uint32_t time)
+// light weight and safe strncpy() function without padding:
+// - copy "src" to "dest" for a maximum of "n-1" characters
+// - if null terminating character is found in "src" the copy stops there
+// - "dest" always ends with '\0'
+void strncpy_no_pad(char *dest, const char *src, size_t n)
 {
-  uint8_t hour = HOURS(time);
-  uint8_t min = MINUTES(time);
-  uint8_t sec = SECONDS(time);
+  // if "src" is not NULL, proceed with the copy
+  if (src != NULL)
+  {
+    while (n > 1 && *src != '\0')
+    {
+      *dest++ = *src++;
+      n--;
+    }
+  }
 
-  sprintf(buf, str_format, hour, min, sec);
+  if (n != 0)  // safe in case value 0 was passed for "n"
+    *dest = '\0';
 }
 
 // strip out any leading " ", "/" or ":" character that might be in the string

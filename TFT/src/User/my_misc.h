@@ -60,9 +60,14 @@ extern "C" {
 #define MINUTES(t) (t % (60 * 60) / 60)  // minutes remaining to next hour
 #define SECONDS(t) (t % 60)              // seconds remaining to next minute
 
-#define strtod  string_2_double  // light weight strtod() function without exponential support
-#define strncpy string_2_string  // safe version of strncpy() function
-
+#define strtod strtod_ligth  // light weight strtod() function without exponential support
+#define strncpy strncpy_pad  // light weight and safe strncpy() function with padding
+/*
+#define strncpy(...) \
+  do { \
+    _Pragma("GCC error \"Error: strncpy() is deprecated! Use the alternatives like strncpy_pad() or strncpy_no_pad()\""); \
+  } while (0)
+*/
 uint8_t inRange(int cur, int tag , int range);
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 
@@ -72,9 +77,11 @@ uint8_t string_2_uint8(const uint8_t *str);                               // str
 uint8_t *uint8_2_string(uint8_t num, uint8_t *str);                       // uint8 convert to string, MSB (0x2C to "2C")
 uint32_t string_2_uint32(const uint8_t *str, const uint8_t bytes_num);    // string convert to uint32, MSB
 uint8_t *uint32_2_string(uint32_t num, uint8_t bytes_num, uint8_t *str);  // uint32 convert to string, MSB
-double string_2_double(char *str, char **endptr);                         // light weight strtod() function without exponential support
-char *string_2_string(char *dest, const char *src, size_t n);             // safe version of strncpy() function
 void time_2_string(char *buf, char *str_format, uint32_t time);           // convert time to string with given formatting
+
+double strtod_ligth(char *str, char **endptr);               // light weight strtod() function without exponential support
+void strncpy_pad(char *dest, const char *src, size_t n);     // light weight and safe strncpy() function with padding
+void strncpy_no_pad(char *dest, const char *src, size_t n);  // light weight and safe strncpy() function without padding
 
 const char *stripHead(const char *str);  // strip out any leading " ", "/" or ":" character that might be in the string
 void stripChecksum(char *str);           // strip out any trailing checksum that might be in the string

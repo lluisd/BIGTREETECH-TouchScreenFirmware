@@ -90,9 +90,9 @@ bool mountUSBDisk(void)
  */
 bool scanPrintFilesFatFs(void)
 {
-  FILINFO finfo;
   DIR dir;
-  uint32_t folderDate[FILE_NUM];
+  FILINFO finfo;
+  uint32_t folderDate[FOLDER_NUM];
   uint32_t fileDate[FILE_NUM];
 
   clearInfoFile();
@@ -111,12 +111,12 @@ bool scanPrintFilesFatFs(void)
 
     if ((finfo.fattrib & AM_DIR) == AM_DIR)  // if folder
     {
-      if (addName(false, finfo.fname, NULL) == true)  // if folder successfully added to folder list
+      if (addFile(false, finfo.fname, NULL) == true)  // if folder successfully added to folder list
         folderDate[infoFile.folderCount - 1] = ((uint32_t)(finfo.fdate) << 16) | finfo.ftime;  // copy date/time modified
     }
     else  // if file
     {
-      if (addName(true, finfo.fname, NULL) == true)  // if file successfully added to file list
+      if (addFile(true, finfo.fname, NULL) == true)  // if file successfully added to file list
         fileDate[infoFile.fileCount - 1] = ((uint32_t)(finfo.fdate) << 16) | finfo.ftime;  // copy date/time modified
     }
   }
