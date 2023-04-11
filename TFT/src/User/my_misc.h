@@ -61,13 +61,12 @@ extern "C" {
 #define SECONDS(t) (t % 60)              // seconds remaining to next minute
 
 #define strtod strtod_ligth  // light weight strtod() function without exponential support
-#define strncpy strncpy_pad  // light weight and safe strncpy() function with padding
-/*
+
 #define strncpy(...) \
   do { \
     _Pragma("GCC error \"Error: strncpy() is deprecated! Use the alternatives like strncpy_pad() or strncpy_no_pad()\""); \
   } while (0)
-*/
+
 uint8_t inRange(int cur, int tag , int range);
 long map(long x, long in_min, long in_max, long out_min, long out_max);
 
