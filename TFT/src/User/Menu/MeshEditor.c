@@ -56,7 +56,7 @@ typedef struct
   char saveTitle[120];
 } MESH_DATA;
 
-typedef enum
+enum
 {
   ME_INFO_MIN = 0,
   ME_INFO_MAX,
@@ -64,7 +64,7 @@ typedef enum
   ME_INFO_CUR,
   ME_INFO_NUM,  // number of infos
   ME_INFO_IDLE = IDLE_TOUCH,
-} MESH_INFO_VALUES;
+};
 
 typedef enum
 {
@@ -83,7 +83,7 @@ typedef enum
   ME_KEY_IDLE = IDLE_TOUCH,
 } MESH_KEY_VALUES;
 
-typedef enum
+enum
 {
   ME_AREA_GRID = 0,
   ME_AREA_INFO,
@@ -93,7 +93,7 @@ typedef enum
   #endif
   ME_AREA_NUM,  // number of areas
   ME_AREA_IDLE = IDLE_TOUCH,
-} MESH_AREA_VALUES;
+};
 
 // layout sizes
 #ifdef PORTRAIT_MODE
