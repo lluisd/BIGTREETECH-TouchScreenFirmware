@@ -155,6 +155,7 @@ void menuBabystep(void)
           // Required if current Z offset is not changed applying babystep changes (e.g. no BABYSTEP_ZPROBE_OFFSET is set in Marlin FW)
           //
           orig_z_offset = offsetSetValue(new_z_offset);
+
           popupDialog(DIALOG_TYPE_QUESTION, babyStepItems.title.index, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL, saveEepromSettings, NULL, NULL);
         }
         break;
