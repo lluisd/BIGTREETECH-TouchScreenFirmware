@@ -374,6 +374,11 @@ After a new Marlin firmware is installed (see section [Marlin Firmware Installat
 
 ### TFT Firmware Changes
 
+- 1.27.x Patch 9.4, May 14 2023
+
+  **BUG FIXES:**
+  - Some bug fixes
+
 - 1.27.x Patch 9.3, January 12 2023
 
 - 1.27.x Patch 9.2, August 10 2022
@@ -613,6 +618,10 @@ After a new Marlin firmware is installed (see section [Marlin Firmware Installat
 <a name="Marlin-Firmware-Changes"></a>
 
 ### Marlin Firmware Changes
+
+- 2.1.2, May 14 2023
+  - Last update to Marlin 2.1.2 (May 14 2023)
+  - Enabled input shaping
 
 - 2.1.2, January 12 2023
 
