@@ -374,6 +374,11 @@ After a new Marlin firmware is installed (see section [Marlin Firmware Installat
 
 ### TFT Firmware Changes
 
+- 1.27.x Patch 9.5, May 16 2023
+
+  **BUG FIXES:**
+  - Minor bug fixes
+
 - 1.27.x Patch 9.4, May 14 2023
 
   **BUG FIXES:**
