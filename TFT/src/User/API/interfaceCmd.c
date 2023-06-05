@@ -1479,7 +1479,7 @@ void sendQueueCmd(void)
       break;  // end parsing G-codes
 
     case 'T':
-      heatSetCurrentTool(cmd_value());
+      heatSetToolIndex(cmd_value());
       break;
   }  // end parsing cmd
 

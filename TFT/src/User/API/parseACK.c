@@ -1304,7 +1304,7 @@ void parseACK(void)
       // newer Marlin (e.g. 2.0.9.3) returns this ACK for M900 command
       else if (ack_continue_seen("Advance K="))
       {
-        setParameter(P_LIN_ADV, heatGetCurrentTool(), ack_value());
+        setParameter(P_LIN_ADV, heatGetToolIndex(), ack_value());
       }
       else if (!processKnownEcho())  // if no known echo was found and processed, then popup the echo message
       {
@@ -1345,7 +1345,7 @@ void parseACK(void)
         memset(&infoHost, 0, sizeof(infoHost));
         initMachineSettings();
         fanResetSpeed();
-
+        coordinateSetKnown(false);
         setReminderMsg(LABEL_UNCONNECTED, SYS_STATUS_DISCONNECTED);  // set the no printer attached reminder
       }
     }
