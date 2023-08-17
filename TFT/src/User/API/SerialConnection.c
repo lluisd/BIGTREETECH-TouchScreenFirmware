@@ -142,11 +142,11 @@ uint16_t Serial_Get(SERIAL_PORT_INDEX portIndex, char * buf, uint16_t bufSize)
   if (!WITHIN(portIndex, PORT_1, SERIAL_PORT_COUNT - 1) || !infoHost.rx_ok[portIndex])
     return 0;
 
-  // make access to dinamically changed (by L1 cache's interrupt handler) variables/attributes faster and also reducing the code
+  // make access to dynamically changed (by L1 cache's interrupt handler) variables/attributes faster and also reducing the code
   DMA_CIRCULAR_BUFFER * dmaL1Data_ptr = &dmaL1Data[portIndex];
   uint16_t * wIndex_ptr = &dmaL1Data_ptr->wIndex;
 
-  // L1 cache's reading index (not dinamically changed (by L1 cache's interrupt handler) variables/attributes)
+  // L1 cache's reading index (not dynamically changed (by L1 cache's interrupt handler) variables/attributes)
   uint16_t rIndex = dmaL1Data_ptr->rIndex;
 
   while (dmaL1Data_ptr->cache[rIndex] == ' ' && rIndex != *wIndex_ptr)  // remove leading empty space, if any
