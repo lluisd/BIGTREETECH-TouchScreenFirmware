@@ -34,9 +34,14 @@ uint8_t cmd_index;
 WRITING_MODE writing_mode = NO_WRITING;
 FIL file;
 
+uint8_t getQueueCount(void)
+{
+  return cmdQueue.count;
+}
+
 bool isPendingCmd(void)
 {
-  return infoHost.wait;
+  return (infoHost.tx_count != 0);
 }
 
 bool isFullCmdQueue(void)
@@ -46,7 +51,7 @@ bool isFullCmdQueue(void)
 
 bool isNotEmptyCmdQueue(void)
 {
-  return (cmdQueue.count != 0 || infoHost.wait == true);
+  return (cmdQueue.count != 0 || infoHost.tx_slots == 0);  // if queue not empty or no available gcode tx slot
 }
 
 bool isEnqueued(const CMD cmd)
@@ -99,7 +104,7 @@ bool storeCmd(const char * format, ...)
 // Store gcode cmd to cmdQueue queue.
 // This command will be sent to the printer by sendQueueCmd().
 // If the cmdQueue queue is full, a reminder message is displayed
-// and it will for wait the queue to be able to store the command.
+// and it will wait for the queue to be able to store the command.
 void mustStoreCmd(const char * format, ...)
 {
   if (format[0] == 0) return;
@@ -225,9 +230,8 @@ bool sendCmd(bool purge, bool avoidTerminal)
 {
   char * purgeStr = "[Purged] ";
 
-  // if TFT is in listening mode and FW type was already detected, purge the command
-  if (GET_BIT(infoSettings.general_settings, INDEX_LISTENING_MODE) == 1 &&
-      infoMachineSettings.firmwareType != FW_NOT_DETECTED)
+  // if TFT is in listening mode, purge the command
+  if (infoHost.listening_mode)
     purge = true;
 
   #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
@@ -243,6 +247,8 @@ bool sendCmd(bool purge, bool avoidTerminal)
 
   if (!purge)  // if command is not purged, send it to printer
   {
+    UPD_TX_KPIS(cmd_len);  // debug monitoring KPI
+
     if (infoMachineSettings.firmwareType != FW_REPRAPFW)
       Serial_Put(SERIAL_PORT, cmd_ptr);
     else
@@ -409,7 +415,7 @@ bool openRemoteTFT(bool writingMode)
   return open;
 }
 
-void writeRemoteTFT()
+static inline void writeRemoteTFT()
 {
   // examples:
   //
@@ -537,7 +543,7 @@ void sendEmergencyCmd(const CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
 // Parse and send gcode cmd in cmdQueue queue.
 void sendQueueCmd(void)
 {
-  if (infoHost.wait == true || cmdQueue.count == 0) return;
+  if (infoHost.tx_slots == 0 || cmdQueue.count == 0) return;
 
   bool avoid_terminal = false;
   bool fromTFT = getCmd();  // retrieve leading gcode in the queue and check if it is originated by TFT or other hosts
@@ -546,21 +552,20 @@ void sendQueueCmd(void)
   {
     if (fromTFT)  // ignore any command from TFT media
     {
-      sendCmd(true, avoid_terminal);
+      sendCmd(true, avoid_terminal);  // skip the command
     }
     else if (writing_mode == TFT_WRITING)  // if the command is from remote to TFT media
     {
       writeRemoteTFT();
 
-      sendCmd(true, avoid_terminal);
+      sendCmd(true, avoid_terminal);  // skip the command
     }
     else  // otherwise, if the command is from remote to onboard media
     {
       if (cmd_ptr[cmd_base_index] == 'M' && cmd_value() == 29)  // if M29, stop writing mode
         writing_mode = NO_WRITING;
 
-      if (sendCmd(false, avoid_terminal) == true)  // if the command was sent
-        infoHost.wait = infoHost.connected;
+      goto send_cmd;  // send the command
     }
 
     return;
@@ -796,7 +801,7 @@ void sendQueueCmd(void)
               Serial_Forward(cmd_port_index, buf);
               sprintf(buf, "Cap:FAN_NUM:%d\n", infoSettings.fan_count);
               Serial_Forward(cmd_port_index, buf);
-              sprintf(buf, "Cap:FAN_CTRL_NUM:%d\n", infoSettings.ctrl_fan_en ? MAX_CRTL_FAN_COUNT : 0);
+              sprintf(buf, "Cap:FAN_CTRL_NUM:%d\n", infoSettings.ctrl_fan_en ? MAX_CTRL_FAN_COUNT : 0);
               Serial_Forward(cmd_port_index, buf);
               Serial_Forward(cmd_port_index, "ok\n");
 
@@ -966,7 +971,7 @@ void sendQueueCmd(void)
             stripChecksum(rawMsg);
             msgText = stripHead(rawMsg);
 
-            statusScreen_setMsg((uint8_t *)"M117", (uint8_t *)msgText);
+            statusSetMsg((uint8_t *)"M117", (uint8_t *)msgText);
 
             if (MENU_IS_NOT(menuStatus))
               addToast(DIALOG_TYPE_INFO, (char *)msgText);
@@ -1108,24 +1113,34 @@ void sendQueueCmd(void)
 
         #ifdef BUZZER_PIN
           case 300:  // M300
+          {
+            uint16_t hz = 260;  // default Marlin tone frequency: 260Hz
+
             if (cmd_seen('S'))
+              hz = cmd_value();
+
+            if (fromTFT || cmd_seen_from(cmd_base_index, "TFT") || (hz <= SOUND_KEYPRESS))  // "M300 TFT", play on TFT
             {
-              uint16_t hz = cmd_value();
+              uint16_t ms = 1000;  // default Marlin tone duration: 1000ms
 
               if (cmd_seen('P'))
-              {
-                uint16_t ms = cmd_value();
+                ms = cmd_value();
 
-                Buzzer_TurnOn(hz, ms);
+              Buzzer_TurnOn(hz, ms);
 
-                if (!fromTFT && cmd_seen_from(cmd_base_index, "TFT"))  // "M300 TFT"
-                {
-                  sendCmd(true, avoid_terminal);
-                  return;
-                }
-              }
+              if (!fromTFT)
+                Serial_Forward(cmd_port_index, "ok\n");
+
+              sendCmd(true, avoid_terminal);
+              return;
+            }
+            else  // forward sound to the host
+            {
+              sendCmd(false, avoid_terminal);
+              return;
             }
             break;
+          }
         #endif
 
         case 301:  // Hotend PID
@@ -1451,6 +1466,19 @@ void sendQueueCmd(void)
       break;
   }  // end parsing cmd
 
-  if (sendCmd(false, avoid_terminal) == true)  // if command was sent
-    infoHost.wait = infoHost.connected;
+send_cmd:
+  // if command was sent:
+  //   - if TFT is connected, update tx slots and tx count
+  //   - if TFT is not connected, consider the command as an out of band message
+  //
+  if (sendCmd(false, avoid_terminal) == true && infoHost.connected == true)
+  {
+    // decrease the number of available tx slots and increase the pending commands tx count
+    //
+    // NOTE: no need to check infoHost.tx_slots > 0 before decreasing infoHost.tx_slots because the check
+    //       infoHost.tx_slots == 0 was already performed at the beginning of sendQueueCmd() function
+    //
+    infoHost.tx_slots--;
+    infoHost.tx_count++;
+  }
 }  // sendQueueCmd
