@@ -168,7 +168,7 @@ void Buzzer_TurnOn(const uint16_t frequency, const uint16_t duration)
   if ((TIMER_CTL0(TIMER2) & TIMER_CTL0_CEN))  // check if the timer is running before playing the tone
     return;
 #else
-  if ((TIM3->CR1 & TIM_CR1_CEN))              // check if the timer is running before playing the  tone
+  if ((TIM3->CR1 & TIM_CR1_CEN))              // check if the timer is running before playing the tone
     return;
 #endif
 
