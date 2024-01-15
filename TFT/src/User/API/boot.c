@@ -294,7 +294,7 @@ static inline void scanResetDir(char * rootDir)
 
     initSettings();
     LCD_RefreshDirection(infoSettings.rotated_ui);
-    TSC_Calibration();
+    TS_Calibrate();
     storePara();
     f_rename(curPath, renamedPath);
   }

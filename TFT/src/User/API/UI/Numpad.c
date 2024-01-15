@@ -223,19 +223,19 @@ double numPadFloat(uint8_t * title, double param_val, double reset_val, bool neg
     memcpy(numTitle, parameterBuf, bufIndex + 1);
   }
 
-  touchSound = false;  // it will be used also as flag to exit from numPad
+  TS_Sound = false;  // it will be used also as flag to exit from numPad
 
   setMenu(MENU_TYPE_FULLSCREEN, NULL, COUNT(rect_of_numkey), rect_of_numkey, drawKeypadButton, NULL);
   Draw_keyboard(numTitle, false, negative);
 
-  while (touchSound == false)  // touchSound gets true only when exit from numpad is requested
+  while (TS_Sound == false)  // TS_TouchSound gets true only when exit from numpad is requested
   {
     key_num = menuKeyGetValue();
     switch (key_num)
     {
       case NUM_KEY_EXIT:
         BUZZER_PLAY(SOUND_CANCEL);
-        touchSound = true;
+        TS_Sound = true;
         break;;
 
       case NUM_KEY_DEL:
@@ -362,9 +362,9 @@ double numPadFloat(uint8_t * title, double param_val, double reset_val, bool neg
         }
         else
         {
-          touchSound = true;
           param_val = strtod(parameterBuf, NULL);
           BUZZER_PLAY(SOUND_OK);
+          TS_Sound = true;
         }
         break;
 
@@ -404,21 +404,21 @@ int32_t numPadInt(uint8_t* title, int32_t param_val, int32_t reset_val, bool neg
     memcpy(numTitle, parameterBuf, len + 1);
   }
 
-  touchSound = false;  // it will be used also as flag to exit from numPad
+  TS_Sound = false;  // it will be used also as flag to exit from numPad
 
   setMenu(MENU_TYPE_FULLSCREEN, NULL, COUNT(rect_of_numkey), rect_of_numkey, drawKeypadButton, NULL);
   Draw_keyboard(numTitle, true, negative);
 
   drawValue(parameterBuf);
 
-  while (touchSound == false)  // touchSound gets true only when exit from numpad is requested
+  while (TS_Sound == false)  // TS_TouchSound gets true only when exit from numpad is requested
   {
     key_num = menuKeyGetValue();
     switch (key_num)
     {
       case NUM_KEY_EXIT:
-        touchSound = true;
         BUZZER_PLAY(SOUND_CANCEL);
+        TS_Sound = true;
         break;
 
       case NUM_KEY_MINUS:
@@ -477,9 +477,9 @@ int32_t numPadInt(uint8_t* title, int32_t param_val, int32_t reset_val, bool neg
         break;
 
       case NUM_KEY_OK:
-        touchSound = true;
         param_val = val;
         BUZZER_PLAY(SOUND_OK);
+        TS_Sound = true;
         break;
 
       default:

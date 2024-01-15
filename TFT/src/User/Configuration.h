@@ -732,7 +732,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define Z_STEPPERS_ALIGNEMENT 0  // Default: 0
+#define Z_STEPPERS_ALIGNMENT 0  // Default: 0
 
 /**
  * TouchMI Settings (ABL)

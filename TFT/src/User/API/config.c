@@ -1095,7 +1095,7 @@ bool getConfigFromFile(char * configPath)
     if (scheduleRotate)
     {
       LCD_RefreshDirection(infoSettings.rotated_ui);
-      TSC_Calibration();
+      TS_Calibrate();
     }
     storePara();  // TODO: The touch sign will also be written if the touch calibration data is invalid
     saveConfig();

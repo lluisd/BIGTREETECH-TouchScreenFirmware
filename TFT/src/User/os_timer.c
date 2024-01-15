@@ -50,7 +50,7 @@ void TIMER6_IRQHandler(void)
       updatePrintTime();   // if printing, update printing info
     }
 
-    checkTouchScreen();  // check touch screen once a millisecond
+    TS_CheckPress();  // check touch screen once a millisecond
 
     TIMER_INTF(TIMER6) &= TIMER_INTF_UPIF;  // clear interrupt flag
   }
@@ -72,7 +72,7 @@ void TIM7_IRQHandler(void)
       updatePrintTime();   // if printing, update printing info
     }
 
-    checkTouchScreen();  // check touch screen once a millisecond
+    TS_CheckPress();  // check touch screen once a millisecond
 
     TIM7->SR &= ~TIM_SR_UIF;  // clear interrupt flag
   }

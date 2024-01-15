@@ -105,7 +105,7 @@ void HW_Init(void)
   if (readIsTSCExist() == false)  // read settings parameter
   {
     LCD_RefreshDirection(infoSettings.rotated_ui);
-    TSC_Calibration();
+    TS_Calibrate();
     storePara();
   }
   else if (readIsNotStored())
