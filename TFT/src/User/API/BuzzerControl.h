@@ -9,31 +9,26 @@ extern "C" {
 
 typedef enum
 {
-  SOUND_MUTE = 0,
-  SOUND_UNMUTE,
-  SOUND_SUCCESS,
+  // alert sound types
+  SOUND_SUCCESS = 0,
   SOUND_ERROR,
   SOUND_OK,
   SOUND_CANCEL,
   SOUND_NOTIFY,
   SOUND_DENY,
+  // toast sound types
   SOUND_TOAST,
+  // heater sound types
   SOUND_HEATED,
   SOUND_COOLED,
-  SOUND_STARTUP,
-  SOUND_START_PRINT,
-  SOUND_GOING_DOWN,
-  SOUND_COMPLETED,
-  SOUND_ATTENTION,
-  SOUND_OTPW_ERROR,
-  SOUND_SILENCE,
+  // touch sound types
   SOUND_KEYPRESS,
 } SOUND;
 
 #ifdef BUZZER_PIN
-  void Buzzer_play(SOUND sound);
+  void Buzzer_Play(SOUND sound);
 
-  #define BUZZER_PLAY(x) Buzzer_play(x)
+  #define BUZZER_PLAY(x) Buzzer_Play(x)
 #else
   #define BUZZER_PLAY(x)
 #endif

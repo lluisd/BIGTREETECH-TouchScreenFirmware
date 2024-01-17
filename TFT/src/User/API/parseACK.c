@@ -680,7 +680,7 @@ void parseACK(void)
       if (ack_seen("P"))
         ms = ack_value();
 
-      Buzzer_TurnOn(hz, ms);  // (freq, duration), process tone by TFT
+      Buzzer_AddSound(hz, ms);  // (freq, duration), process tone by TFT
     }
     // parse and store M710, controller fan
     else if (ack_starts_with("M710"))

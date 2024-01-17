@@ -1,6 +1,8 @@
 #include "BuzzerControl.h"
 #include "includes.h"
 
+#define SILENCE              0
+
 #define C_SUBOCTAVE6         33
 #define C_SHARP_SUBOCTAVE6   35
 #define D_SUBOCTAVE6         37
@@ -107,223 +109,101 @@
 
 #ifdef BUZZER_PIN
 
-void Buzzer_play(SOUND sound)
+void Buzzer_Play(SOUND sound)
 {
   switch (sound)
   {
-    case SOUND_MUTE: // disable all sounds except touch sound
-      infoSettings.sounds = TOUCH_SOUND << SOUND_TYPE_TOUCH;
-      Buzzer_play(SOUND_KEYPRESS);
-      break;
-
-    case SOUND_UNMUTE: // enable all sounds
-      infoSettings.sounds = (TOUCH_SOUND << SOUND_TYPE_TOUCH) | (TOAST_SOUND << SOUND_TYPE_TOAST) |
-                            (ALERT_SOUND << SOUND_TYPE_ALERT) | (HEATER_SOUND << SOUND_TYPE_HEATER);
-      Buzzer_TurnOn(A_BASE, 50);
-      break;
-
     case SOUND_SUCCESS:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
       {
-        Buzzer_TurnOn(A_BASE, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 50);
-        Buzzer_TurnOn(A_BASE, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 50);
-        Buzzer_TurnOn(A_BASE, 50);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
+        Buzzer_AddSound(A_BASE, 50);
+        Buzzer_AddSound(SILENCE, 50);
+        Buzzer_AddSound(A_BASE, 50);
+        Buzzer_AddSound(SILENCE, 50);
+        Buzzer_AddSound(A_BASE, 50);
       }
       break;
 
     case SOUND_ERROR:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
       {
-        Buzzer_TurnOn(C_SHARP_BASE, 200);
-        Buzzer_TurnOn(SOUND_SILENCE, 60);
-        Buzzer_TurnOn(C_SHARP_BASE, 200);
-        Buzzer_TurnOn(SOUND_SILENCE, 60);
-        Buzzer_TurnOn(C_SHARP_BASE, 200);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
+        Buzzer_AddSound(C_SHARP_BASE, 200);
+        Buzzer_AddSound(SILENCE, 60);
+        Buzzer_AddSound(C_SHARP_BASE, 200);
+        Buzzer_AddSound(SILENCE, 60);
+        Buzzer_AddSound(C_SHARP_BASE, 200);
       }
       break;
 
     case SOUND_OK:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
       {
-        Buzzer_TurnOn(G_BASE, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 40);
-        Buzzer_TurnOn(C_OCTAVE1, 50);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
+        Buzzer_AddSound(G_BASE, 50);
+        Buzzer_AddSound(SILENCE, 40);
+        Buzzer_AddSound(C_OCTAVE1, 50);
       }
       break;
 
     case SOUND_CANCEL:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
       {
-        Buzzer_TurnOn(E_OCTAVE1, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 20);
-        Buzzer_TurnOn(A_BASE, 40);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
+        Buzzer_AddSound(E_OCTAVE1, 50);
+        Buzzer_AddSound(SILENCE, 20);
+        Buzzer_AddSound(A_BASE, 40);
       }
       break;
 
     case SOUND_NOTIFY:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
       {
-        Buzzer_TurnOn(G_BASE, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 50);
-        Buzzer_TurnOn(C_OCTAVE1, 50);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
+        Buzzer_AddSound(G_BASE, 50);
+        Buzzer_AddSound(SILENCE, 50);
+        Buzzer_AddSound(C_OCTAVE1, 50);
       }
       break;
 
     case SOUND_DENY:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
       {
-        Buzzer_TurnOn(B_SUBOCTAVE3, 10);
-        Buzzer_TurnOn(B_OCTAVE1, 20);
+        Buzzer_AddSound(B_SUBOCTAVE3, 10);
+        Buzzer_AddSound(B_OCTAVE1, 20);
       }
-      Buzzer_play(SOUND_KEYPRESS);
       break;
 
     case SOUND_TOAST:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_TOAST))
       {
-        Buzzer_TurnOn(F_SHARP_SUBOCTAVE1, 30);
-        Buzzer_TurnOn(B_SUBOCTAVE1, 30);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
+        Buzzer_AddSound(F_SHARP_SUBOCTAVE1, 30);
+        Buzzer_AddSound(B_SUBOCTAVE1, 30);
       }
       break;
 
     case SOUND_HEATED:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_HEATER))
       {
-        Buzzer_TurnOn(G_BASE, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 50);
-        Buzzer_TurnOn(B_BASE, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 100);
-        Buzzer_TurnOn(B_BASE, 50);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
+        Buzzer_AddSound(G_BASE, 50);
+        Buzzer_AddSound(SILENCE, 50);
+        Buzzer_AddSound(B_BASE, 50);
+        Buzzer_AddSound(SILENCE, 100);
+        Buzzer_AddSound(B_BASE, 50);
       }
       break;
 
     case SOUND_COOLED:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_HEATER))
       {
-        Buzzer_TurnOn(B_BASE, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 50);
-        Buzzer_TurnOn(G_BASE, 50);
-        Buzzer_TurnOn(SOUND_SILENCE, 100);
-        Buzzer_TurnOn(G_BASE, 50);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
-      }
-      break;
-
-    case SOUND_STARTUP:
-      if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
-      {
-        Buzzer_TurnOn(B_SUBOCTAVE3, 50);
-        Buzzer_TurnOn(F_SHARP_SUBOCTAVE2, 50);
-        Buzzer_TurnOn(B_SUBOCTAVE2, 50);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
-      }
-      break;
-
-    case SOUND_START_PRINT:
-      if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
-      {
-        Buzzer_TurnOn(B_SUBOCTAVE3, 140);
-        Buzzer_TurnOn(F_SHARP_SUBOCTAVE2, 140);
-        Buzzer_TurnOn(B_SUBOCTAVE2, 140);
-      }
-      break;
-
-    case SOUND_GOING_DOWN:
-      if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
-      {
-        Buzzer_TurnOn(B_SUBOCTAVE2, 240);
-        Buzzer_TurnOn(F_SHARP_SUBOCTAVE2, 240);
-        Buzzer_TurnOn(B_SUBOCTAVE3, 240);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
-      }
-      break;
-
-    case SOUND_COMPLETED:
-      if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
-      {
-        for (int i = 0; i < 7; i++)
-        {
-          Buzzer_TurnOn(B_SUBOCTAVE3 + (B_SUBOCTAVE4 * i) % F_SHARP_SUBOCTAVE2, 500);
-        }
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
-        Buzzer_TurnOn(SOUND_SILENCE, 300);
-        Buzzer_play(SOUND_KEYPRESS);
-      }
-      break;
-
-    case SOUND_ATTENTION:
-      if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
-      {
-        for (int i = 0; i < 9; i++)
-        {
-          Buzzer_TurnOn(B_SUBOCTAVE3 + (B_SUBOCTAVE4 * i) % F_SHARP_SUBOCTAVE2, 300);
-        }
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
-      }
-      break;
-
-    case SOUND_OTPW_ERROR:
-      if (GET_BIT(infoSettings.sounds, SOUND_TYPE_ALERT))
-      {
-        Buzzer_TurnOn(G_SUBOCTAVE2, 300);
-        Buzzer_TurnOn(B_SUBOCTAVE3, 600);
-      }
-      else
-      {
-        Buzzer_play(SOUND_KEYPRESS);
+        Buzzer_AddSound(B_BASE, 50);
+        Buzzer_AddSound(SILENCE, 50);
+        Buzzer_AddSound(G_BASE, 50);
+        Buzzer_AddSound(SILENCE, 100);
+        Buzzer_AddSound(G_BASE, 50);
       }
       break;
 
     case SOUND_KEYPRESS:
-
     default:
       if (GET_BIT(infoSettings.sounds, SOUND_TYPE_TOUCH))
-        Buzzer_TurnOn(BUZZER_FREQUENCY_HZ, BUZZER_FREQUENCY_DURATION_MS);
+        Buzzer_AddSound(BUZZER_FREQUENCY_HZ, BUZZER_FREQUENCY_DURATION_MS);
       break;
   }
 }

@@ -1126,7 +1126,7 @@ void sendQueueCmd(void)
               if (cmd_seen('P'))
                 ms = cmd_value();
 
-              Buzzer_TurnOn(hz, ms);
+              Buzzer_AddSound(hz, ms);
 
               if (!fromTFT)
                 Serial_Forward(cmd_port_index, "ok\n");

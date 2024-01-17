@@ -5,19 +5,20 @@
 #ifdef BUZZER_PIN
 
 #define BUZZER_CACHE_SIZE 16  // queue to store 16 sounds (1 sound takes 4 bytes)
+#define SILENCE_FREQ      0   // frequency of 0 indicates silence/pause in the sound
 
-typedef volatile struct
+typedef struct
 {
   uint16_t frequency[BUZZER_CACHE_SIZE];
   uint16_t duration[BUZZER_CACHE_SIZE];
-  volatile uint32_t wIndex;
-  volatile uint32_t rIndex;
-  volatile int32_t toggles;  // number of half periods for the sound
+  uint32_t wIndex;
+  uint32_t rIndex;
+  int32_t toggles;  // number of half periods for the sound
 } BUZZER;
 
-static BUZZER buzzer;
+volatile static BUZZER buzzer;
 
-void TIM3_Config(void)
+void Buzzer_ConfigTimer(void)
 {
 #ifdef GD32F2XX
   rcu_periph_clock_enable(RCU_TIMER2);                                // enable timer clock
@@ -42,10 +43,31 @@ void TIM3_Config(void)
 #endif
 }
 
-// play a tone with the help of interrupts
-void tone(uint16_t frequency, const uint16_t duration)
+void Buzzer_Config(void)
 {
-  uint32_t silence = (frequency == SOUND_SILENCE);      // frequency == 0 indicates silence/pause in the sound
+  GPIO_InitSet(BUZZER_PIN, MGPIO_MODE_OUT_PP, 0);
+  Buzzer_ConfigTimer();
+  buzzer.wIndex = buzzer.rIndex = buzzer.toggles = 0;
+}
+
+void Buzzer_DeConfig(void)
+{
+  GPIO_InitSet(BUZZER_PIN, MGPIO_MODE_IPN, 0);
+  buzzer.wIndex = buzzer.rIndex = buzzer.toggles = 0;
+
+#ifdef GD32F2XX
+  nvic_irq_disable(TIMER2_IRQn);          // disable timer interrupt
+  TIMER_CTL0(TIMER2) &= ~TIMER_CTL0_CEN;  // stop timer
+#else
+  NVIC_DisableIRQ(TIM3_IRQn);             // disable timer interrupt
+  TIM3->CR1 &= ~TIM_CR1_CEN;              // stop timer
+#endif
+}
+
+// play a sound with the help of interrupts
+void Buzzer_PlaySound(uint16_t frequency, const uint16_t duration)
+{
+  uint32_t silence = (frequency == SILENCE_FREQ);       // frequency == 0 indicates silence/pause in the sound
 
   if (silence)
     frequency = 1000;                                   // give 1ms resolution for silence
@@ -72,27 +94,76 @@ void tone(uint16_t frequency, const uint16_t duration)
     buzzer.toggles = -buzzer.toggles;                   // setup for silence, negative toggles
 }
 
+// play a sound from sound queue. Called by timer interrupt and Buzzer_AddSound() function
+void Buzzer_GetSound(void)
+{
+  // stop timer
+#ifdef GD32F2XX
+  TIMER_CTL0(TIMER2) &= ~TIMER_CTL0_CEN;
+#else
+  TIM3->CR1 &= ~TIM_CR1_CEN;
+#endif
+
+  if (buzzer.rIndex != buzzer.wIndex)  // play a queued sound, if any
+  {
+    Buzzer_PlaySound(buzzer.frequency[buzzer.rIndex], buzzer.duration[buzzer.rIndex]);
+
+    if (++buzzer.rIndex >= BUZZER_CACHE_SIZE)  // update and check rIndex
+      buzzer.rIndex = 0;
+  }
+  else
+  {
+    GPIO_SetLevel(BUZZER_PIN, BUZZER_STOP_LEVEL);  // make sure to leave the buzzer in the unpowered state
+  }
+}
+
+// store the sound in the queue, and start the sound if no sound is already playing
+void Buzzer_AddSound(const uint16_t frequency, const uint16_t duration)
+{
+  if (duration == 0)  // in case of a duration of 0 (it indicates silence), nothing to do
+    return;
+
+  // in case of sound queue full, overwrite the old sound data with the newest one
+
+  buzzer.duration[buzzer.wIndex] = duration;    // store sound duration
+  buzzer.frequency[buzzer.wIndex] = frequency;  // store sound frequency
+
+  if (++buzzer.wIndex >= BUZZER_CACHE_SIZE)     // update and check wIndex
+    buzzer.wIndex = 0;
+
+  // check if timer is running before playing the next queued sound
+#ifdef GD32F2XX
+  if ((TIMER_CTL0(TIMER2) & TIMER_CTL0_CEN))
+    return;
+#else
+  if ((TIM3->CR1 & TIM_CR1_CEN))
+    return;
+#endif
+
+  Buzzer_GetSound();  // play next queued sound
+}
+
 #ifdef GD32F2XX
 
-void TIMER2_IRQHandler(void)  // ====== GD32F2XX TIMER ISR ======
+void TIMER2_IRQHandler(void)  // GD32F2XX timer ISR
 {
   if ((TIMER_INTF(TIMER2) & TIMER_INTF_UPIF) != 0)  // check for timer2 interrupt flag
   {
     TIMER_INTF(TIMER2) &= ~TIMER_INTF_UPIF;         // clear interrupt flag
 
-    if (buzzer.toggles > 0)
+    if (buzzer.toggles > 0)                           // if a sound has to be played
     {
       buzzer.toggles--;
       GPIO_SetLevel(BUZZER_PIN, buzzer.toggles & 1);  // play sound
     }
     else
     {
-      if (buzzer.toggles == 0)          // sound done
+      if (buzzer.toggles == 0)          // if a sound has been played
       {
         nvic_irq_disable(TIMER2_IRQn);  // disable timer interrupt
-        loopBuzzer();                   // check for more sounds
+        Buzzer_GetSound();              // play next queued sound
       }
-      else
+      else                              // if a silence (buzzer.toggles < 0))
       {
         buzzer.toggles++;               // silence, no toggling, only counting
       }
@@ -102,25 +173,25 @@ void TIMER2_IRQHandler(void)  // ====== GD32F2XX TIMER ISR ======
 
 #else
 
-void TIM3_IRQHandler(void)  // ====== STM32FXX TIMER ISR ======
+void TIM3_IRQHandler(void)  // STM32FXX timer ISR
 {
   if ((TIM3->SR & TIM_SR_UIF) != 0)  // check for TIM3 interrupt flag
   {
     TIM3->SR &= ~TIM_SR_UIF;         // clear interrupt flag
 
-    if (buzzer.toggles > 0)
+    if (buzzer.toggles > 0)                           // if a sound has to be played
     {
       buzzer.toggles--;
-      GPIO_SetLevel(BUZZER_PIN, buzzer.toggles & 1);
+      GPIO_SetLevel(BUZZER_PIN, buzzer.toggles & 1);  // play sound
     }
     else
     {
-      if (buzzer.toggles == 0)       // sound done
+      if (buzzer.toggles == 0)       // if a sound has been played
       {
         NVIC_DisableIRQ(TIM3_IRQn);  // disable timer interrupt
-        loopBuzzer();                // check for more sounds
+        Buzzer_GetSound();           // play next queued sound
       }
-      else
+      else                           // if a silence (buzzer.toggles < 0))
       {
         buzzer.toggles++;            // silence, no toggling, only counting
       }
@@ -128,77 +199,6 @@ void TIM3_IRQHandler(void)  // ====== STM32FXX TIMER ISR ======
   }
 }
 
-#endif
-
-void Buzzer_Config(void)
-{
-  GPIO_InitSet(BUZZER_PIN, MGPIO_MODE_OUT_PP, 0);
-  TIM3_Config();
-  buzzer.wIndex = buzzer.rIndex = buzzer.toggles = 0;
-}
-
-void Buzzer_DeConfig(void)
-{
-  GPIO_InitSet(BUZZER_PIN, MGPIO_MODE_IPN, 0);
-  buzzer.wIndex = buzzer.rIndex = buzzer.toggles = 0;
-
-#ifdef GD32F2XX
-  nvic_irq_disable(TIMER2_IRQn);          // disable timer interrupt
-  TIMER_CTL0(TIMER2) &= ~TIMER_CTL0_CEN;  // stop timer
-#else
-  NVIC_DisableIRQ(TIM3_IRQn);             // disable timer interrupt
-  TIM3->CR1 &= ~TIM_CR1_CEN;              // stop timer
-#endif
-}
-
-// store the sound in the queue, and start the sound if no sound is already playing
-void Buzzer_TurnOn(const uint16_t frequency, const uint16_t duration)
-{
-  if (duration == 0)  // nothing to do, frequency == 0 indicates silence
-    return;
-
-  if (((buzzer.wIndex + 1) % BUZZER_CACHE_SIZE) == buzzer.rIndex)  // queue is full, drop sound
-    return;
-
-  buzzer.duration[buzzer.wIndex] = duration;                // store sound duration
-  buzzer.frequency[buzzer.wIndex] = MIN(8000, frequency);   // prevent interrupting too fast
-  buzzer.wIndex = (buzzer.wIndex + 1) % BUZZER_CACHE_SIZE;  // update wIndex
-
-#ifdef GD32F2XX
-  if ((TIMER_CTL0(TIMER2) & TIMER_CTL0_CEN))  // check if the timer is running before playing the tone
-    return;
-#else
-  if ((TIM3->CR1 & TIM_CR1_CEN))              // check if the timer is running before playing the tone
-    return;
-#endif
-
-  loopBuzzer();
-}
-
-// play a sound from the sound queue, called by timer interrupt!
-void loopBuzzer(void)
-{
-#ifdef GD32F2XX
-  TIMER_CTL0(TIMER2) &= ~TIMER_CTL0_CEN;  // stop timer
-#else
-  TIM3->CR1 &= ~TIM_CR1_CEN;              // stop timer
-#endif
-
-  if (buzzer.rIndex != buzzer.wIndex)  // play queued sound
-  {
-    uint16_t freq     = buzzer.frequency[buzzer.rIndex];
-    uint16_t duration = buzzer.duration[buzzer.rIndex];
-    buzzer.rIndex = (buzzer.rIndex + 1) % BUZZER_CACHE_SIZE;
-
-    if (freq > SOUND_KEYPRESS)
-      tone(freq, duration);
-    else
-      Buzzer_play(freq);
-  }
-  else
-  {
-    GPIO_SetLevel(BUZZER_PIN, BUZZER_STOP_LEVEL);  // make sure to leave the buzzer in the unpowered state
-  }
-}
+#endif  // GD32F2XX
 
 #endif  // BUZZER_PIN
