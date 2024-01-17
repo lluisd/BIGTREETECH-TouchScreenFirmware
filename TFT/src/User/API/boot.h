@@ -5,9 +5,8 @@
 extern "C" {
 #endif
 
-#include <stdbool.h>
 #include <stdint.h>
-#include "variants.h"
+#include "variants.h"  // for PORTRAIT_MODE
 
 #define W25QXX_SECTOR_SIZE (0x1000)  // 4096-4K
 
@@ -77,25 +76,6 @@ enum
   ICON_PREVIEW,  // preview should be in the last place before ICON_NULL to save flash storage space
   ICON_NULL      // back ground sign
 };
-
-typedef enum
-{
-  BMP_SUCCESS,
-  BMP_NOTFOUND,
-  BMP_NOT24BIT,
-  BMP_INVALIDFILE
-} BMPUPDATE_STAT;
-
-typedef union
-{
-  uint16_t color;
-  struct
-  {
-    uint16_t b:5;
-    uint16_t g:6;
-    uint16_t r:5;
-  } RGB;
-} GUI_COLOR;
 
 void scanUpdates(void);
 
