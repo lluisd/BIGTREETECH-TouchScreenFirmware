@@ -65,7 +65,7 @@ extern "C" {
 #define FILE_LARGE_ASCII_FONT "large_byte_ascii.fon"  // large ascii font for displayig values and info
 #define FILE_8X16_ASCII_FONT  "8x16_byte_ascii.fon"   // 8x16 ascii font for ST7920 Emilator
 
-// This List is Auto-Generated. Please add new icons in icon_list.inc only
+// this list is Auto-Generated. Please add new icons in icon_list.inc only
 enum
 {
   #define X_ICON(NAME) ICON_##NAME ,

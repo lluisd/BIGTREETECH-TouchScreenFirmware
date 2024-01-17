@@ -32,14 +32,14 @@ const char * fontPathList[] = {
   FONT_UPDATE_DIR "/" FILE_8X16_ASCII_FONT
 };
 
-GUI_POINT bmpSize;
-
-// This List is Auto-Generated. Please add new icons in icon_list.inc only
+// this list is Auto-Generated. Please add new icons in icon_list.inc only
 const char * const iconBmpName[] = {
   #define X_ICON(NAME) #NAME ,
     #include "icon_list.inc"
   #undef X_ICON
 };
+
+GUI_POINT bmpSize;
 
 BMPUPDATE_STAT bmpDecode(char * bmp, uint32_t addr)
 {
