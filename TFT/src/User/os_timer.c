@@ -1,10 +1,15 @@
 #include "os_timer.h"
 #include "includes.h"
 
-volatile uint32_t os_counter_ms = 0;
-volatile uint16_t os_counter_sec = 0;
+typedef struct
+{
+  uint32_t ms;   // milliseconds
+  uint16_t sec;  // seconds
+} OS_COUNTER;
 
-void OS_TimerInitMs(void)
+volatile static OS_COUNTER os_counter = {0, 0};
+
+void OS_InitTimerMs(void)
 {
 #ifdef GD32F2XX
   nvic_irq_enable(TIMER6_IRQn, 2U, 0U);
@@ -38,12 +43,14 @@ void TIMER6_IRQHandler(void)
 {
   if ((TIMER_INTF(TIMER6) & TIMER_INTF_UPIF) != 0)
   {
-    os_counter_ms++;
-    os_counter_sec++;
+    TIMER_INTF(TIMER6) &= ~TIMER_INTF_UPIF;  // clear interrupt flag
 
-    if (os_counter_sec >= 1000)  // if one second has been elapsed
+    os_counter.ms++;
+    os_counter.sec++;
+
+    if (os_counter.sec >= 1000)  // if one second has been elapsed
     {
-      os_counter_sec = 0;  // reset one second counter
+      os_counter.sec = 0;  // reset one second counter
 
       AVG_KPIS();          // collect debug monitoring KPI
 
@@ -51,8 +58,6 @@ void TIMER6_IRQHandler(void)
     }
 
     TS_CheckPress();  // check touch screen once a millisecond
-
-    TIMER_INTF(TIMER6) &= TIMER_INTF_UPIF;  // clear interrupt flag
   }
 }
 #else
@@ -60,12 +65,14 @@ void TIM7_IRQHandler(void)
 {
   if ((TIM7->SR & TIM_SR_UIF) != 0)
   {
-    os_counter_ms++;
-    os_counter_sec++;
+    TIM7->SR &= ~TIM_SR_UIF;  // clear interrupt flag
 
-    if (os_counter_sec >= 1000)  // if one second has been elapsed
+    os_counter.ms++;
+    os_counter.sec++;
+
+    if (os_counter.sec >= 1000)  // if one second has been elapsed
     {
-      os_counter_sec = 0;  // reset one second counter
+      os_counter.sec = 0;  // reset one second counter
 
       AVG_KPIS();          // collect debug monitoring KPI
 
@@ -73,16 +80,14 @@ void TIM7_IRQHandler(void)
     }
 
     TS_CheckPress();  // check touch screen once a millisecond
-
-    TIM7->SR &= ~TIM_SR_UIF;  // clear interrupt flag
   }
 }
 #endif
 
-// 1ms
+// 1 ms
 uint32_t OS_GetTimeMs(void)
 {
-  return os_counter_ms;
+  return os_counter.ms;
 }
 
 // task: task structure to be filled

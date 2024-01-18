@@ -48,7 +48,7 @@ void HW_Init(void)
   #endif
 
   XPT2046_Init();
-  OS_TimerInitMs();  // system clock timer, cycle 1ms, called after XPT2046_Init()
+  OS_InitTimerMs();  // system clock timer, cycle 1ms, called after XPT2046_Init()
   W25Qxx_Init();
   LCD_Init();
 

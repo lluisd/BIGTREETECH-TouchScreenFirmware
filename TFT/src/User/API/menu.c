@@ -1232,7 +1232,7 @@ void loopBackEnd(void)
     USB_LoopProcess();
   #endif
 
-  if ((bePriorityCounter++ % BE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
+  if ((priorityCounter.be++ % BE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
     return;
 
   // Temperature monitor
@@ -1322,7 +1322,7 @@ void loopProcess(void)
 {
   loopBackEnd();
 
-  if ((fePriorityCounter++ % FE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
+  if ((priorityCounter.fe++ % FE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
     return;
 
   loopFrontEnd();
