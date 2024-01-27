@@ -107,7 +107,7 @@ bool nextScreenUpdate(uint32_t duration)
   static uint32_t lastTime = 0;
   uint32_t curTime = OS_GetTimeMs();
 
-  if (curTime > (lastTime + duration))
+  if (curTime - lastTime > duration)
   {
     lastTime = curTime;
     return true;

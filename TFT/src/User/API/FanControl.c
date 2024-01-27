@@ -3,8 +3,8 @@
 
 #define NEXT_FAN_WAIT 500  // 1 second is 1000
 
-const char* fanID[MAX_FAN_COUNT] = FAN_DISPLAY_ID;
-const char* fanCmd[MAX_FAN_COUNT] = FAN_CMD;
+const char * fanID[MAX_FAN_COUNT] = FAN_DISPLAY_ID;
+const char * fanCmd[MAX_FAN_COUNT] = FAN_CMD;
 
 static uint8_t setFanSpeed[MAX_FAN_COUNT] = {0};
 static uint8_t curFanSpeed[MAX_FAN_COUNT] = {0};
@@ -20,7 +20,7 @@ void fanResetSpeed(void)
   memset(curFanSpeed, 0, sizeof(curFanSpeed));
 }
 
-// Check whether the index is a valid fan index.
+// check whether the index is a valid fan index
 bool fanIsValid(const uint8_t index)
 {
   if (index >= infoSettings.fan_count && index < MAX_COOLING_FAN_COUNT)  // invalid cooling fan index
@@ -76,16 +76,17 @@ uint8_t fanGetCurPercent(const uint8_t i)
 
 void loopFan(void)
 {
-  for (uint8_t i = 0; i < MAX_FAN_COUNT; i++)
+  if (OS_GetTimeMs() > nextCtrlFanTime)  // avoid rapid fire, clogging the queue
   {
-    if (GET_BIT(needSetFanSpeed, i) && (OS_GetTimeMs() > nextCtrlFanTime))
-    {
-      if (storeCmd(fanCmd[i], setFanSpeed[i]))
-      {
-        SET_BIT_OFF(needSetFanSpeed, i);
-      }
+    nextCtrlFanTime = OS_GetTimeMs() + NEXT_FAN_WAIT;
 
-      nextCtrlFanTime = OS_GetTimeMs() + NEXT_FAN_WAIT;  // avoid rapid fire, clogging the queue
+    for (uint8_t i = 0; i < MAX_FAN_COUNT; i++)
+    {
+      if (GET_BIT(needSetFanSpeed, i))
+      {
+        if (storeCmd(fanCmd[i], setFanSpeed[i]))
+          SET_BIT_OFF(needSetFanSpeed, i);
+      }
     }
   }
 }
@@ -99,7 +100,5 @@ void ctrlFanQuerySetWait(const bool wait)
 void ctrlFanQuery(void)
 { // following conditions ordered by importance
   if (!ctrlFanQueryWait && infoHost.tx_slots != 0 && infoHost.connected && infoSettings.ctrl_fan_en)
-  {
     ctrlFanQueryWait = storeCmd("M710\n");
-  }
 }

@@ -14,8 +14,8 @@ extern "C" {
 #define FAN_TYPE_CTRL_I  2  // Controller FAN on Idle            (Check - Marlin M710)
 #define FAN_TYPE_UNKNOWN 8  // Unknown / Not defined!
 
-extern const char* fanID[MAX_FAN_COUNT];
-extern const char* fanCmd[MAX_FAN_COUNT];
+extern const char * fanID[MAX_FAN_COUNT];
+extern const char * fanCmd[MAX_FAN_COUNT];
 
 void fanResetSpeed(void);
 bool fanIsValid(const uint8_t index);

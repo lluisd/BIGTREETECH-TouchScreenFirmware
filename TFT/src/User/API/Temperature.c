@@ -276,6 +276,7 @@ void loopCheckHeater(void)
     if (OS_GetTimeMs() > AUTOREPORT_TIMEOUT && !heat_update_waiting)
     {
       heat_update_waiting = storeCmd("M155 S%u\n", heatGetUpdateSeconds());
+
       if (heat_update_waiting)
         updateNextHeatCheckTime();  // set next timeout for temperature auto-report
     }

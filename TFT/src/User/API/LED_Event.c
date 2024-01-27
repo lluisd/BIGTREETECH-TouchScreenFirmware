@@ -24,7 +24,7 @@ inline static bool nextUpdate(void)
 {
   uint32_t curTime = OS_GetTimeMs();
 
-  if (curTime > (lastUpdateTime + UPDATE_TIME))
+  if (curTime - lastUpdateTime > UPDATE_TIME)
   {
     lastUpdateTime = curTime;
 
