@@ -1,5 +1,5 @@
-#ifndef _PARSE_ACK_JSON_H_
-#define _PARSE_ACK_JSON_H_
+#ifndef _RRF_PARSE_ACK_JSON_H_
+#define _RRF_PARSE_ACK_JSON_H_
 
 #ifdef __cplusplus
 extern "C"
@@ -79,11 +79,13 @@ public:
   inline void endObject() {}
   inline void whitespace(char c) {}
   virtual void endDocument();
+
   inline void startArray()
   {
     in_array = true;
     index = 0;
   }
+
   inline void endArray()
   {
     in_array = false;
@@ -164,6 +166,7 @@ public:
       state = none;
     }
   }
+
   virtual void value(const char *value);
 };
 #endif

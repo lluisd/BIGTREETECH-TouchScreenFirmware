@@ -93,9 +93,8 @@ bool heaterDisplayIsValid(uint8_t index);
 void heatSetUpdateSeconds(uint8_t seconds);
 uint8_t heatGetUpdateSeconds(void);
 void heatSyncUpdateSeconds(uint8_t seconds);
+void heatSetNextUpdateTime(void);
 void heatSetUpdateWaiting(bool isWaiting);
-
-void updateNextHeatCheckTime(void);
 void loopCheckHeater(void);
 
 #ifdef __cplusplus

@@ -1,6 +1,5 @@
 #include "interfaceCmd.h"
 #include "includes.h"
-#include "RRFSendCmd.h"
 
 #define CMD_QUEUE_SIZE 20
 
@@ -25,13 +24,13 @@ typedef enum
   ONBOARD_WRITING
 } WRITING_MODE;
 
-GCODE_QUEUE cmdQueue;              // command queue where commands to be sent are stored
+GCODE_QUEUE cmdQueue;                    // command queue where commands to be sent are stored
 char * cmd_ptr;
 uint8_t cmd_len;
-SERIAL_PORT_INDEX cmd_port_index;  // index of serial port originating the gcode
-uint8_t cmd_base_index;            // base index in case the gcode has checksum ("Nxxx " is present at the beginning of gcode)
+SERIAL_PORT_INDEX cmd_port_index;        // index of serial port originating the gcode
+uint8_t cmd_base_index;                  // base index in case the gcode has checksum ("Nxxx " is present at the beginning of gcode)
 uint8_t cmd_index;
-WRITING_MODE writing_mode = NO_WRITING;
+WRITING_MODE writing_mode = NO_WRITING;  // writing mode. Used by M28 and M29
 FIL file;
 
 uint8_t getQueueCount(void)
@@ -249,10 +248,10 @@ bool sendCmd(bool purge, bool avoidTerminal)
   {
     UPD_TX_KPIS(cmd_len);  // debug monitoring KPI
 
-    if (infoMachineSettings.firmwareType != FW_REPRAPFW)
-      Serial_Put(SERIAL_PORT, cmd_ptr);
-    else
-      rrfSendCmd(cmd_ptr);
+    if (infoMachineSettings.firmwareType == FW_REPRAPFW)
+      addCmdLineNumberAndChecksum(&cmd_ptr[cmd_base_index]);
+
+    Serial_Put(SERIAL_PORT, cmd_ptr);
 
     setCurrentAckSrc(cmd_port_index);
   }
@@ -355,10 +354,10 @@ bool initRemoteTFT()
 
   // cmd_index was set by cmd_seen_from() function
   strcpy(path, &cmd_ptr[cmd_index]);  // e.g. "N1 M23 SD:/test/cap2.gcode*36\n" -> "/test/cap2.gcode*36\n"
-  stripChecksum(path);                // e.g. "/test/cap2.gcode*36\n" -> /test/cap2.gcode"
+  stripCmdChecksum(path);             // e.g. "/test/cap2.gcode*36\n" -> /test/cap2.gcode"
 
-  resetInfoFile();               // then reset infoFile (source is restored)
-  enterFolder(stripHead(path));  // set path as last
+  resetInfoFile();                  // then reset infoFile (source is restored)
+  enterFolder(stripCmdHead(path));  // set path as last
 
   return true;
 }
@@ -438,11 +437,11 @@ static inline void writeRemoteTFT()
     CMD cmd;  // temporary working buffer (cmd_ptr buffer must always remain unchanged)
 
     strcpy(cmd, &cmd_ptr[cmd_base_index]);  // e.g. "N1 G28*46\n" -> "G28*46\n"
-    stripChecksum(cmd);                     // e.g. "G28*46\n" -> "G28"
+    stripCmdChecksum(cmd);                  // e.g. "G28*46\n" -> "G28"
 
     f_write(&file, cmd, strlen(cmd), &br);
 
-    // "\n" is always removed by stripChecksum() function even if there is no checksum, so we need to write it on file separately
+    // "\n" is always removed by stripCmdChecksum() function even if there is no checksum, so we need to write it on file separately
     f_write(&file, "\n", 1, &br);
     f_sync(&file);
   }
@@ -474,6 +473,26 @@ void syncTargetTemp(uint8_t index)
     if (temp != heatGetTargetTemp(index))
       heatSetTargetTemp(index, temp, FROM_CMD);
   }
+}
+
+bool handleCmdLineNumberMismatch(uint32_t lineNumber)
+{
+  // if printing from remote host or line number already notified, nothing to do.
+  // Command line number and checksum are probably engaged by the remote host
+  // (and disabled in TFT) so error handling must also be managed by the remote host
+  //
+  if (isPrintingFromRemoteHost() || getCmdLineNumberMismatch() == lineNumber)
+    return false;
+
+  setCmdLineNumberAndMismatch(lineNumber);  // set provided line number as new base line number
+
+  CMD cmd;
+
+  sprintf(cmd, "M110 N%d", lineNumber);
+
+  sendEmergencyCmd(cmd);  // send M110 command to set new base line number on mainboard
+
+  return true;
 }
 
 // Check if the received gcode is an emergency command or not
@@ -520,7 +539,7 @@ void handleCmd(CMD cmd, const SERIAL_PORT_INDEX portIndex)
 //
 // NOTE: Make sure that the printer can receive the command.
 //
-void sendEmergencyCmd(const CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
+void sendEmergencyCmd(CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
 {
   #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
     // dump serial data sent to debug port
@@ -529,10 +548,10 @@ void sendEmergencyCmd(const CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
     Serial_Put(SERIAL_DEBUG_PORT, emergencyCmd);
   #endif
 
-  if (infoMachineSettings.firmwareType != FW_REPRAPFW)
-    Serial_Put(SERIAL_PORT, emergencyCmd);
-  else
-    rrfSendCmd(emergencyCmd);
+  if (infoMachineSettings.firmwareType == FW_REPRAPFW)
+    addCmdLineNumberAndChecksum(emergencyCmd);
+
+  Serial_Put(SERIAL_PORT, emergencyCmd);
 
   setCurrentAckSrc(portIndex);
 
@@ -934,6 +953,9 @@ void sendQueueCmd(void)
           }
           break;
 
+        case 110:  // M110
+          setCmdLineNumberAndMismatch(cmd_seen('N') ? (uint32_t)cmd_value() : 0);
+
         case 114:  // M114
           #ifdef FIL_RUNOUT_PIN
             if (fromTFT)
@@ -968,8 +990,8 @@ void sendQueueCmd(void)
             strncpy_no_pad(rawMsg, &cmd_ptr[cmd_base_index + 4], CMD_MAX_SIZE);
 
             // retrieve message text
-            stripChecksum(rawMsg);
-            msgText = stripHead(rawMsg);
+            stripCmdChecksum(rawMsg);
+            msgText = stripCmdHead(rawMsg);
 
             statusSetMsg((uint8_t *)"M117", (uint8_t *)msgText);
 

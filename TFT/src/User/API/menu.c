@@ -1235,8 +1235,10 @@ void loopBackEnd(void)
   if ((priorityCounter.be++ % BE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
     return;
 
-  // Temperature monitor
-  loopCheckHeater();
+  if (infoMachineSettings.firmwareType != FW_REPRAPFW)
+    loopCheckHeater();  // Temperature monitor
+  else
+    rrfStatusQuery();  // Query RRF status
 
   // Fan speed monitor
   loopFan();
@@ -1286,9 +1288,6 @@ void loopBackEnd(void)
   // Check LED Event
   if (GET_BIT(infoSettings.general_settings, INDEX_EVENT_LED) == 1)
     LED_CheckEvent();
-
-  // Query RRF status
-  rrfStatusQuery();
 }
 
 // UI-related background loop tasks

@@ -2,7 +2,7 @@
 #include "includes.h"
 
 #define RRF_NORMAL_STATUS_QUERY_MS 1000
-#define RRF_FAST_STATUS_QUERY_MS 500
+#define RRF_FAST_STATUS_QUERY_MS   500
 
 // available status: status:
 // I=idle, P=printing from SD card, S=stopped (i.e. needs a reset), C=running config file (i.e starting up),
@@ -29,6 +29,7 @@ void rrfStatusSet(char status)
             setHostDialog(false);
             setPrintResume(HOST_STATUS_RESUMING);
             break;
+
           case 'I':
             // RRFParseACK will take care of going to the print screen
             mustStoreCmd("M409 K\"job.file.fileName\"\n");
@@ -77,11 +78,11 @@ void rrfStatusSet(char status)
         break;
     }
   }
+
   rrf_status = status;
+
   if (status != 'B')
-  {
     macro_busy = false;
-  }
 }
 
 inline void rrfStatusSetBusy(void)
@@ -116,16 +117,20 @@ inline void rrfStatusQueryNormal(void)
 }
 
 void rrfStatusQuery(void)
-{ // following conditions ordered by importance
-  if (infoMachineSettings.firmwareType == FW_REPRAPFW && infoHost.connected)
+{
+  if (infoHost.connected)
   {
     static uint32_t rrf_next_query_time = 0;
 
+    if (OS_GetTimeMs() < rrf_next_query_time)
+      return;
+
+    rrf_next_query_time = OS_GetTimeMs() + rrf_query_interval;
+
     // don't send status queries while in the terminal menu to avoid flooding the console
-    if (OS_GetTimeMs() > rrf_next_query_time && MENU_IS_NOT(menuTerminal))
-    {
-      rrf_next_query_time = OS_GetTimeMs() + rrf_query_interval;
-      storeCmd("M408 S0\n");
-    }
+    if (MENU_IS(menuTerminal))
+      return;
+
+    storeCmd("M408 S0\n");
   }
 }

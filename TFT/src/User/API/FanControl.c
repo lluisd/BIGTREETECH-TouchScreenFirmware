@@ -1,7 +1,7 @@
 #include "FanControl.h"
 #include "includes.h"
 
-#define NEXT_FAN_WAIT 500  // 1 second is 1000
+#define FAN_REFRESH_TIME 500  // 1 second is 1000
 
 const char * fanID[MAX_FAN_COUNT] = FAN_DISPLAY_ID;
 const char * fanCmd[MAX_FAN_COUNT] = FAN_CMD;
@@ -11,7 +11,6 @@ static uint8_t curFanSpeed[MAX_FAN_COUNT] = {0};
 static uint8_t needSetFanSpeed = 0;
 
 static bool ctrlFanQueryWait = false;
-static uint32_t nextCtrlFanTime = 0;
 
 void fanResetSpeed(void)
 {
@@ -20,7 +19,6 @@ void fanResetSpeed(void)
   memset(curFanSpeed, 0, sizeof(curFanSpeed));
 }
 
-// check whether the index is a valid fan index
 bool fanIsValid(const uint8_t index)
 {
   if (index >= infoSettings.fan_count && index < MAX_COOLING_FAN_COUNT)  // invalid cooling fan index
@@ -76,17 +74,19 @@ uint8_t fanGetCurPercent(const uint8_t i)
 
 void loopFan(void)
 {
-  if (OS_GetTimeMs() > nextCtrlFanTime)  // avoid rapid fire, clogging the queue
-  {
-    nextCtrlFanTime = OS_GetTimeMs() + NEXT_FAN_WAIT;
+  static uint32_t nextUpdateTime = 0;
 
-    for (uint8_t i = 0; i < MAX_FAN_COUNT; i++)
+  if (OS_GetTimeMs() < nextUpdateTime)  // avoid rapid fire, clogging the queue
+    return;
+
+  nextUpdateTime = OS_GetTimeMs() + FAN_REFRESH_TIME;
+
+  for (uint8_t i = 0; i < MAX_FAN_COUNT; i++)
+  {
+    if (GET_BIT(needSetFanSpeed, i))
     {
-      if (GET_BIT(needSetFanSpeed, i))
-      {
-        if (storeCmd(fanCmd[i], setFanSpeed[i]))
-          SET_BIT_OFF(needSetFanSpeed, i);
-      }
+      if (storeCmd(fanCmd[i], setFanSpeed[i]))
+        SET_BIT_OFF(needSetFanSpeed, i);
     }
   }
 }
@@ -96,7 +96,6 @@ void ctrlFanQuerySetWait(const bool wait)
   ctrlFanQueryWait = wait;
 }
 
-// query for controller fan only
 void ctrlFanQuery(void)
 { // following conditions ordered by importance
   if (!ctrlFanQueryWait && infoHost.tx_slots != 0 && infoHost.connected && infoSettings.ctrl_fan_en)

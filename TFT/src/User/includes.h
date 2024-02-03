@@ -71,6 +71,7 @@
 #include "BabystepControl.h"
 #include "boot.h"
 #include "BuzzerControl.h"
+#include "CmdControl.h"
 #include "comment.h"
 #include "config.h"
 #include "coordinate.h"

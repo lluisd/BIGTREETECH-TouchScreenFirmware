@@ -359,7 +359,7 @@ static inline void hostActionCommands(void)
 
 void parseACK(void)
 {
-  while (Serial_NewDataAvailable(SERIAL_PORT) && (ack_len = Serial_Get(SERIAL_PORT, ack_cache, ACK_CACHE_SIZE)) != 0)  // if some data have been retrieved
+  while (Serial_DataAvailableRX(SERIAL_PORT) && (ack_len = Serial_Get(SERIAL_PORT, ack_cache, ACK_CACHE_SIZE)) != 0)  // if some data have been retrieved
   {
     UPD_RX_KPIS(ack_len);  // debug monitoring KPI
 
@@ -401,7 +401,7 @@ void parseACK(void)
       if (ack_seen(heaterID[CHAMBER]))
         infoSettings.chamber_en = ENABLED;
 
-      updateNextHeatCheckTime();
+      heatSetNextUpdateTime();
 
       if (!ack_seen("@"))  // it's RepRapFirmware
       {
@@ -526,7 +526,7 @@ void parseACK(void)
     //----------------------------------------
 
     // check for a possible json response and eventually parse and process it
-    else if (!requestCommandInfo.inWaitResponse && infoMachineSettings.firmwareType == FW_REPRAPFW)
+    else if (infoMachineSettings.firmwareType == FW_REPRAPFW && !requestCommandInfo.inWaitResponse)
     {
       if (strchr(ack_cache, '{') != NULL)
         requestCommandInfo.inJson = true;
@@ -612,7 +612,7 @@ void parseACK(void)
       }
 
       avoid_terminal = !infoSettings.terminal_ack;
-      updateNextHeatCheckTime();
+      heatSetNextUpdateTime();
     }
     // parse and store M114, current position
     else if (ack_starts_with("X:") || ack_seen("C: X:"))  // Smoothieware axis position starts with "C: X:"
@@ -1379,7 +1379,20 @@ void parseACK(void)
     // parse error messages
     else if (ack_seen(magic_error))
     {
-      ackPopupInfo(magic_error);
+      // command line number mismatch or checksum mismatch, if command line number and checksum are used
+      // (line number and checksum feature enabled in TFT or managed by remote host)
+      if (ack_continue_seen("Last Line:"))
+      {
+        if (handleCmdLineNumberMismatch((uint32_t)ack_value()))
+        {
+          ack_index = 0;  // reset index so full ack message will be notified by ackPopupInfo() function
+          ackPopupInfo(magic_error);
+        }
+      }
+      else
+      {
+        ackPopupInfo(magic_error);
+      }
     }
     // parse echo messages
     else if (ack_starts_with(magic_echo))

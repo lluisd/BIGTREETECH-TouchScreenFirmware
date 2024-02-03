@@ -1,7 +1,7 @@
 #include "SpeedControl.h"
 #include "includes.h"
 
-#define NEXT_SPEED_WAIT 500  // 1 second is 1000
+#define SPEED_REFRESH_TIME 500  // 1 second is 1000
 
 const char * const speedCmd[SPEED_NUM] = {"M220", "M221"};
 
@@ -10,7 +10,6 @@ static uint16_t curPercent[SPEED_NUM] = {100, 100};
 static uint8_t needSetPercent = 0;
 
 static bool speedQueryWait = false;
-static uint32_t nextSpeedTime = 0;
 
 void speedSetPercent(uint8_t tool, uint16_t per)
 {
@@ -37,20 +36,22 @@ uint16_t speedGetCurPercent(uint8_t tool)
 
 void loopSpeed(void)
 {
-  if (OS_GetTimeMs() > nextSpeedTime)  // avoid rapid fire, clogging the queue
+  static uint32_t nextUpdateTime = 0;
+
+  if (OS_GetTimeMs() < nextUpdateTime)  // avoid rapid fire, clogging the queue
+    return;
+
+  nextUpdateTime = OS_GetTimeMs() + SPEED_REFRESH_TIME;
+
+  for (uint8_t i = 0; i < SPEED_NUM; i++)
   {
-    nextSpeedTime = OS_GetTimeMs() + NEXT_SPEED_WAIT;
+    if (infoSettings.ext_count == 0 && i > 0)  // don't poll M221 if there are no extruders
+      continue;
 
-    for (uint8_t i = 0; i < SPEED_NUM; i++)
+    if (GET_BIT(needSetPercent, i))
     {
-      if (infoSettings.ext_count == 0 && i > 0)  // don't poll M221 if there are no extruders
-        continue;
-
-      if (GET_BIT(needSetPercent, i))
-      {
-        if (storeCmd("%s S%d D%d\n", speedCmd[i], setPercent[i], heatGetToolIndex()))
-          SET_BIT_OFF(needSetPercent, i);
-      }
+      if (storeCmd("%s S%d D%d\n", speedCmd[i], setPercent[i], heatGetToolIndex()))
+        SET_BIT_OFF(needSetPercent, i);
     }
   }
 }

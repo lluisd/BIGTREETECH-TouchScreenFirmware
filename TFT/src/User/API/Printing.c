@@ -24,7 +24,7 @@ typedef struct
 PRINTING infoPrinting = {0};
 PRINT_SUMMARY infoPrintSummary = {.name[0] = '\0', 0, 0, 0, 0, false};
 
-static bool updateM27Waiting = false;
+static bool m27UpdateWaiting = false;
 static bool extrusionDuringPause = false;  // flag for extrusion during Print -> Pause
 static bool filamentRunoutAlarm = false;
 static float lastEPos = 0;                 // used only to update stats in infoPrintSummary
@@ -347,7 +347,7 @@ void sendPrintCodes(uint8_t index)
 
 void setPrintUpdateWaiting(bool isWaiting)
 {
-  updateM27Waiting = isWaiting;
+  m27UpdateWaiting = isWaiting;
 }
 
 void updatePrintUsedFilament(void)
@@ -424,7 +424,7 @@ bool startPrintFromRemoteHost(const char * filename)
   {
     infoFile.source = FS_ONBOARD_MEDIA_REMOTE;  // set source first
     resetInfoFile();                            // then reset infoFile (source is restored)
-    enterFolder(stripHead(filename));           // set path as last
+    enterFolder(stripCmdHead(filename));        // set path as last
 
     request_M27(infoSettings.m27_refresh_time);  // use gcode M27 in case of a print running from remote onboard media
   }
@@ -931,24 +931,26 @@ void loopPrintFromOnboard(void)
   if (!infoSettings.m27_active) return;
   if (MENU_IS(menuTerminal)) return;
 
-  static uint32_t nextCheckPrintTime = 0;
-  uint32_t update_M27_time = SEC_TO_MS(infoSettings.m27_refresh_time);
+  static uint32_t nextUpdateTime = 0;
+  uint32_t refreshTime = SEC_TO_MS(infoSettings.m27_refresh_time);
 
   do
-  { // WAIT FOR M27
-    if (updateM27Waiting == true)
+  { // send M27 to query SD print status continuously
+
+    // if next check time not yet elapsed, do nothing
+    if (OS_GetTimeMs() < nextUpdateTime)
+      break;
+
+    // if M27 previously sent and still waiting for a reply, extend next check time
+    if (m27UpdateWaiting)
     {
-      nextCheckPrintTime = OS_GetTimeMs() + update_M27_time;
+      nextUpdateTime = OS_GetTimeMs() + refreshTime;
       break;
     }
 
-    if (OS_GetTimeMs() < nextCheckPrintTime)
-      break;
+    m27UpdateWaiting = storeCmd("M27\n");
 
-    if (storeCmd("M27\n") == false)
-      break;
-
-    nextCheckPrintTime = OS_GetTimeMs() + update_M27_time;
-    updateM27Waiting = true;
+    if (m27UpdateWaiting)
+      nextUpdateTime = OS_GetTimeMs() + refreshTime;
   } while (0);
 }

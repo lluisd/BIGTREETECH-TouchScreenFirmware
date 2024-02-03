@@ -113,7 +113,7 @@ void Serial_Forward(SERIAL_PORT_INDEX portIndex, const char * msg)
   }
 }
 
-bool Serial_NewDataAvailable(uint8_t port)
+bool Serial_DataAvailableRX(uint8_t port)
 {
   // NOTE: used 32 bit variables for performance reasons
 
@@ -214,7 +214,7 @@ void Serial_GetFromUART(void)
         #endif
         )
     {
-      while (Serial_NewDataAvailable(serialPort[portIndex].port) && Serial_Get(serialPort[portIndex].port, cmd, CMD_MAX_SIZE) != 0)
+      while (Serial_DataAvailableRX(serialPort[portIndex].port) && Serial_Get(serialPort[portIndex].port, cmd, CMD_MAX_SIZE) != 0)
       {
         handleCmd(cmd, portIndex);
       }

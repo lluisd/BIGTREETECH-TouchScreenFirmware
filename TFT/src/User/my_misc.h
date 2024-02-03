@@ -91,13 +91,6 @@ double strtod_ligth(char *str, char **endptr);               // light weight str
 void strncpy_pad(char *dest, const char *src, size_t n);     // light weight and safe strncpy() function with padding
 void strncpy_no_pad(char *dest, const char *src, size_t n);  // light weight and safe strncpy() function without padding
 
-const char *stripHead(const char *str);  // strip out any leading " ", "/" or ":" character that might be in the string
-void stripChecksum(char *str);           // strip out any trailing checksum that might be in the string
-uint8_t getChecksum(char *str);
-bool validateChecksum(char *str);
-
-const char *parseM118(char *str, bool *hasE, bool *hasA);
-
 #ifdef __cplusplus
 }
 #endif

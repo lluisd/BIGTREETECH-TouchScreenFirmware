@@ -27,17 +27,18 @@ typedef struct
   char text[MAX_MSG_LENGTH];
 } NOTIFICATION;
 
-bool toastRunning(void);
 void addToast(DIALOG_TYPE style, char * text);
 void drawToast(bool redraw);
+bool toastRunning(void);
 void loopToast(void);
+
 void addNotification(DIALOG_TYPE style, char * title, char * text, bool drawDialog);
 void replayNotification(uint8_t index);
 NOTIFICATION * getNotification(uint8_t index);
 bool hasNotification(void);
-void titleBarPress(void);
 void clearNotification(void);
-void setNotificationHandler(void (*handler)());
+void setNotificationHandler(void (* handler)());
+void titleBarPress(void);
 
 #ifdef __cplusplus
 }
