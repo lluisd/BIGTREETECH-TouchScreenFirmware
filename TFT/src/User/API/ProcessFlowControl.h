@@ -1,5 +1,5 @@
-#ifndef _INFO_CONTROL_H_
-#define _INFO_CONTROL_H_
+#ifndef _PROCESS_FLOW_CONTROL_H_
+#define _PROCESS_FLOW_CONTROL_H_
 
 #ifdef __cplusplus
 extern "C" {

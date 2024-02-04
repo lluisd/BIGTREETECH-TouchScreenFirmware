@@ -7,8 +7,8 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "variants.h"     // for RAPID_SERIAL_COMM
-#include "InfoControl.h"  // for HOST_STATUS
+#include "variants.h"            // for RAPID_SERIAL_COMM
+#include "ProcessFlowControl.h"  // for HOST_STATUS
 
 #ifdef RAPID_SERIAL_COMM
   #define RAPID_SERIAL_LOOP() loopBackEnd()
