@@ -108,26 +108,26 @@ void InfoHost_UpdateListeningMode(void)
     setReminderMsg(LABEL_LISTENING, SYS_STATUS_LISTENING);  // if TFT in listening mode, display a reminder message
 }
 
-// Non-UI background loop tasks
+// non-UI background loop tasks
 void loopBackEnd(void)
 {
   UPD_SCAN_RATE();  // debug monitoring KPI
 
-  // Handle a print from TFT media, if any
+  // handle a print from TFT media, if any
   loopPrintFromTFT();
 
-  // Parse and send gcode commands in the queue
+  // parse and send gcode commands in the queue
   sendQueueCmd();
 
-  // Parse the received slave response information
+  // parse the received slave response information
   parseACK();
 
-  // Retrieve and store (in command queue) the gcodes received from other UART, such as ESP3D etc...
+  // retrieve and store (in command queue) the gcodes received from other UART, such as ESP3D etc...
   #ifdef SERIAL_PORT_2
     Serial_GetFromUART();
   #endif
 
-  // Handle USB communication
+  // handle USB communication
   #ifdef USB_FLASH_DRIVE_SUPPORT
     USB_LoopProcess();
   #endif
@@ -135,8 +135,8 @@ void loopBackEnd(void)
   if ((priorityCounter.be++ % BE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
     return;
 
-  // Handle ACK message timeout
-  if (InfoHost_HandleAckTimeout())  // if ACK message timeout, unlock any pending query update
+  // handle ACK message timeout
+  if (InfoHost_HandleAckTimeout())  // if ACK message timeout, unlock any pending query waiting for an update
   {
     heatSetUpdateWaiting(false);
     ctrlFanQuerySetUpdateWaiting(false);
@@ -147,26 +147,26 @@ void loopBackEnd(void)
   }
 
   if (infoMachineSettings.firmwareType != FW_REPRAPFW)
-    loopCheckHeater();  // Temperature monitor
+    loopCheckHeater();  // temperature monitor
   else
-    rrfStatusQuery();  // Query RRF status
+    rrfStatusQuery();  // query RRF status
 
-  // Fan speed monitor
+  // fan speed monitor
   loopFan();
 
-  // Speed & flow monitor
+  // speed & flow monitor
   loopSpeed();
 
-  // Handle a print from (remote) onboard media, if any
+  // handle a print from (remote) onboard media, if any
   if (infoMachineSettings.onboardSD == ENABLED)
     loopPrintFromOnboard();
 
-  // Check filament runout status
+  // check filament runout status
   #ifdef FIL_RUNOUT_PIN
     FIL_BE_CheckRunout();
   #endif
 
-  // Check changes in encoder steps
+  // check changes in encoder steps
   #if LCD_ENCODER_SUPPORT
     #ifdef HAS_EMULATOR
       if (MENU_IS_NOT(menuMarlinMode))
@@ -176,27 +176,27 @@ void loopBackEnd(void)
     }
   #endif
 
-  // Check mode switching
+  // check mode switching
   #ifdef HAS_EMULATOR
     Mode_CheckSwitching();
   #endif
 
-  // Handle screenshot capture
+  // handle screenshot capture
   #ifdef SCREEN_SHOT_TO_SD
     loopScreenShot();
   #endif
 
-  // Check if Back is pressed and held
+  // check if Back is pressed and held
   #ifdef SMART_HOME
     loopCheckBackPress();
   #endif
 
-  // Check LCD screen dimming
+  // check LCD screen dimming
   #ifdef LCD_LED_PWM_CHANNEL
     LCD_CheckDimming();
   #endif
 
-  // Check LED Event
+  // check LED Event
   if (GET_BIT(infoSettings.general_settings, INDEX_EVENT_LED) == 1)
     LED_CheckEvent();
 }
@@ -204,27 +204,27 @@ void loopBackEnd(void)
 // UI-related background loop tasks
 void loopFrontEnd(void)
 {
-  // Check if volume source (SD/USB) insert
+  // check if volume source (SD/USB) insert
   loopVolumeSource();
 
-  // Loop to check and run toast messages
+  // loop to check and run toast messages
   loopToast();
 
-  // If there is a message in the status bar, timed clear
+  // if there is a message in the status bar, timed clear
   loopReminderManage();
 
-  // Busy Indicator clear
+  // busy Indicator clear
   loopBusySignClear();
 
-  // Check update temperature status
+  // check update temperature status
   loopTemperatureStatus();
 
-  // Loop for filament runout detection
+  // loop for filament runout detection
   #ifdef FIL_RUNOUT_PIN
     FIL_FE_CheckRunout();
   #endif
 
-  // Loop for popup menu
+  // loop for popup menu
   loopPopup();
 }
 

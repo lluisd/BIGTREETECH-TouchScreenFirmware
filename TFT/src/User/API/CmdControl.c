@@ -28,7 +28,7 @@ void addCmdLineNumberAndChecksum(char * str)
 
   if (strlen(cmd) + 16 > CMD_MAX_SIZE)  // we consider extra bytes for line number, checksum, "\n" and "\0"
   {
-//    Serial_Forward(cmd_port_index, "Command skipped: too long\nok\n");
+    addNotification(DIALOG_TYPE_ERROR, "Command too long", "Checksum not applied", true);
 
     return;
   }
