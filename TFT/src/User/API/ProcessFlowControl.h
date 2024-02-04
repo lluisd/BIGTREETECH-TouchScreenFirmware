@@ -8,12 +8,18 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 #include "variants.h"  // for RCC_ClocksTypeDef
-//#include "uart.h"      // for _UART_CNT
 
 #define BE_PRIORITY_DIVIDER 16     // a divider value of 16 -> run 6% of the time only. Use a power of 2 for performance reasons!
 #define FE_PRIORITY_DIVIDER 16     // a divider value of 16 -> run 6% of the time only. Use a power of 2 for performance reasons!
 #define ACK_TIMEOUT         15000  // 1 second is 1000
 #define MAX_MENU_DEPTH      10     // max sub menu depth
+
+// menu macros
+#define OPEN_MENU(x)    infoMenu.menu[++infoMenu.cur] = x
+#define REPLACE_MENU(x) infoMenu.menu[infoMenu.cur] = x
+#define CLOSE_MENU()    infoMenu.cur--
+#define MENU_IS(x)      infoMenu.menu[infoMenu.cur] == x
+#define MENU_IS_NOT(x)  infoMenu.menu[infoMenu.cur] != x
 
 typedef struct
 {
@@ -77,6 +83,11 @@ void InfoHost_HandleAckOk(int16_t tx_slots);
 bool InfoHost_HandleAckTimeout(void);     // handle ACK message timeout. Return "true" if ACK message timed out
 void InfoHost_UpdateAckTimestamp(void);   // update last received ACK message timestamp
 void InfoHost_UpdateListeningMode(void);  // update listening mode
+
+void loopBackEnd(void);
+void loopFrontEnd(void);
+void loopProcess(void);
+void loopProcessAndGUI(void);
 
 #ifdef __cplusplus
 }

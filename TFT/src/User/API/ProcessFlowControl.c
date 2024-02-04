@@ -11,6 +11,7 @@ void InfoHost_Init(bool isConnected)
   infoHost.target_tx_slots = infoSettings.tx_slots;
   infoHost.tx_slots = 1;  // set to 1 just to allow a soft start
   infoHost.tx_count = 0;
+  infoHost.rx_timestamp = OS_GetTimeMs();
   infoHost.connected = isConnected;
   infoHost.listening_mode = false;  // temporary disable listening mode. It will be later set by InfoHost_UpdateListeningMode()
   infoHost.status = HOST_STATUS_IDLE;
@@ -82,12 +83,12 @@ void InfoHost_HandleAckOk(int16_t target_tx_slots)
 
 bool InfoHost_HandleAckTimeout(void)
 {
-  if (OS_GetTimeMs() - infoHost.rx_timestamp < ACK_TIMEOUT || infoHost.tx_count == 0)  // if no timeout or no pending gcodes
+  if (OS_GetTimeMs() - infoHost.rx_timestamp < ACK_TIMEOUT || infoHost.tx_count == 0)  // if no timeout or no pending gcode
     return false;
 
-  infoHost.rx_timestamp = OS_GetTimeMs();
+  infoHost.rx_timestamp = OS_GetTimeMs();  // update timestamp
 
-  InfoHost_HandleAckOk(HOST_SLOTS_GENERIC_OK);
+  InfoHost_HandleAckOk(HOST_SLOTS_GENERIC_OK);  // release pending gcode
 
   addNotification(DIALOG_TYPE_ERROR, "ACK message timed out", "Pending gcode released", true);
 
@@ -105,4 +106,154 @@ void InfoHost_UpdateListeningMode(void)
 
   if (infoHost.listening_mode)
     setReminderMsg(LABEL_LISTENING, SYS_STATUS_LISTENING);  // if TFT in listening mode, display a reminder message
+}
+
+// Non-UI background loop tasks
+void loopBackEnd(void)
+{
+  UPD_SCAN_RATE();  // debug monitoring KPI
+
+  // Handle a print from TFT media, if any
+  loopPrintFromTFT();
+
+  // Parse and send gcode commands in the queue
+  sendQueueCmd();
+
+  // Parse the received slave response information
+  parseACK();
+
+  // Retrieve and store (in command queue) the gcodes received from other UART, such as ESP3D etc...
+  #ifdef SERIAL_PORT_2
+    Serial_GetFromUART();
+  #endif
+
+  // Handle USB communication
+  #ifdef USB_FLASH_DRIVE_SUPPORT
+    USB_LoopProcess();
+  #endif
+
+  if ((priorityCounter.be++ % BE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
+    return;
+
+  // Handle ACK message timeout
+  if (InfoHost_HandleAckTimeout())  // if ACK message timeout, unlock any pending query update
+  {
+    heatSetUpdateWaiting(false);
+    ctrlFanQuerySetUpdateWaiting(false);
+    speedQuerySetUpdateWaiting(false);
+    coordinateQuerySetUpdateWaiting(false);
+    setPrintUpdateWaiting(false);
+    FIL_PosE_SetUpdateWaiting(false);
+  }
+
+  if (infoMachineSettings.firmwareType != FW_REPRAPFW)
+    loopCheckHeater();  // Temperature monitor
+  else
+    rrfStatusQuery();  // Query RRF status
+
+  // Fan speed monitor
+  loopFan();
+
+  // Speed & flow monitor
+  loopSpeed();
+
+  // Handle a print from (remote) onboard media, if any
+  if (infoMachineSettings.onboardSD == ENABLED)
+    loopPrintFromOnboard();
+
+  // Check filament runout status
+  #ifdef FIL_RUNOUT_PIN
+    FIL_BE_CheckRunout();
+  #endif
+
+  // Check changes in encoder steps
+  #if LCD_ENCODER_SUPPORT
+    #ifdef HAS_EMULATOR
+      if (MENU_IS_NOT(menuMarlinMode))
+    #endif
+    {
+      LCD_Enc_CheckSteps();
+    }
+  #endif
+
+  // Check mode switching
+  #ifdef HAS_EMULATOR
+    Mode_CheckSwitching();
+  #endif
+
+  // Handle screenshot capture
+  #ifdef SCREEN_SHOT_TO_SD
+    loopScreenShot();
+  #endif
+
+  // Check if Back is pressed and held
+  #ifdef SMART_HOME
+    loopCheckBackPress();
+  #endif
+
+  // Check LCD screen dimming
+  #ifdef LCD_LED_PWM_CHANNEL
+    LCD_CheckDimming();
+  #endif
+
+  // Check LED Event
+  if (GET_BIT(infoSettings.general_settings, INDEX_EVENT_LED) == 1)
+    LED_CheckEvent();
+}
+
+// UI-related background loop tasks
+void loopFrontEnd(void)
+{
+  // Check if volume source (SD/USB) insert
+  loopVolumeSource();
+
+  // Loop to check and run toast messages
+  loopToast();
+
+  // If there is a message in the status bar, timed clear
+  loopReminderManage();
+
+  // Busy Indicator clear
+  loopBusySignClear();
+
+  // Check update temperature status
+  loopTemperatureStatus();
+
+  // Loop for filament runout detection
+  #ifdef FIL_RUNOUT_PIN
+    FIL_FE_CheckRunout();
+  #endif
+
+  // Loop for popup menu
+  loopPopup();
+}
+
+void loopProcess(void)
+{
+  loopBackEnd();
+
+  if ((priorityCounter.fe++ % FE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
+    return;
+
+  loopFrontEnd();
+}
+
+void menuDummy(void)
+{
+  CLOSE_MENU();
+}
+
+void loopProcessAndGUI(void)
+{
+  uint8_t curMenu = infoMenu.cur;
+
+  loopProcess();
+
+  if (infoMenu.cur != curMenu)  // if a user interaction is needed (e.g. dialog box), handle it
+  {
+    (*infoMenu.menu[infoMenu.cur])();  // handle user interaction
+
+    if (MENU_IS_NOT(menuDummy))  // avoid to nest menuDummy menu type
+      OPEN_MENU(menuDummy);      // load a dummy menu just to force the redraw of the underlying menu (caller menu)
+  }
 }

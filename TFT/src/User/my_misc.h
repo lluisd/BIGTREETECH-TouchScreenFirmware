@@ -9,13 +9,6 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>  // for size_t
 
-// Menu Macros
-#define OPEN_MENU(x)    infoMenu.menu[++infoMenu.cur] = x
-#define REPLACE_MENU(x) infoMenu.menu[infoMenu.cur] = x
-#define CLOSE_MENU()    infoMenu.cur--
-#define MENU_IS(x)      infoMenu.menu[infoMenu.cur] == x
-#define MENU_IS_NOT(x)  infoMenu.menu[infoMenu.cur] != x
-
 // Macros to make a string from a macro
 #define STRINGIFY_(M) #M
 #define STRINGIFY(M)  STRINGIFY_(M)

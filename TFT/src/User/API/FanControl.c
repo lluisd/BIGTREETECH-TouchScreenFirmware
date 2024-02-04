@@ -98,6 +98,6 @@ void ctrlFanQuerySetUpdateWaiting(const bool isWaiting)
 
 void ctrlFanQuery(void)
 { // following conditions ordered by importance
-  if (!ctrlFanQueryUpdateWaiting && infoHost.tx_slots != 0 && infoHost.connected && infoSettings.ctrl_fan_en)
+  if (infoSettings.ctrl_fan_en && !ctrlFanQueryUpdateWaiting && infoHost.tx_slots != 0 && infoHost.connected)
     ctrlFanQueryUpdateWaiting = storeCmd("M710\n");
 }
