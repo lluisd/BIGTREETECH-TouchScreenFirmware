@@ -73,28 +73,28 @@ extern const char * const heatWaitCmd[];
 extern const char * const extruderDisplayID[];
 extern const char * const toolChange[];
 
-void heatSetTargetTemp(uint8_t index, int16_t temp, TEMP_SOURCE tempSource);
-uint16_t heatGetTargetTemp(uint8_t index);
-void heatSetCurrentTemp(uint8_t index, int16_t temp);
-int16_t heatGetCurrentTemp(uint8_t index);
-void heatCoolDown(void);
+void heatSetTargetTemp(uint8_t index, const int16_t temp, const TEMP_SOURCE tempSource);  // set target temperature
+uint16_t heatGetTargetTemp(uint8_t index);                   // get target temperature
+void heatSetCurrentTemp(uint8_t index, const int16_t temp);  // set current temperature
+int16_t heatGetCurrentTemp(uint8_t index);                   // get current temperature
+void heatCoolDown(void);                                     // disable all heaters/hotends
 
-bool heatGetIsWaiting(uint8_t index);
-bool heatHasWaiting(void);
-void heatSetIsWaiting(uint8_t index, bool isWaiting);
+bool heatGetIsWaiting(const uint8_t index);                  // is heating waiting to heat up
+bool heatHasWaiting(void);                                   // check all heater if there is a heater waiting to be waited
+void heatSetIsWaiting(uint8_t index, const bool isWaiting);  // set heater waiting status
 void heatClearIsWaiting(void);
 
-bool heatSetTool(const uint8_t tool);
-void heatSetToolIndex(const uint8_t toolIndex);
-uint8_t heatGetToolIndex(void);
-uint8_t heatGetCurrentHotend(void);
-bool heaterDisplayIsValid(uint8_t index);
+bool heatSetTool(const uint8_t tool);               // set current tool (extruder). Used when tool change command is from TFT
+void heatSetToolIndex(const uint8_t toolIndex);     // set current Tool (extruder)
+uint8_t heatGetToolIndex(void);                     // get current Tool (extruder)
+uint8_t heatGetCurrentHotend(void);                 // get current hotend index in arry T[]
+bool heaterDisplayIsValid(const uint8_t index);     // check whether the index is a valid heater index
 
-void heatSetUpdateSeconds(uint8_t seconds);
-uint8_t heatGetUpdateSeconds(void);
-void heatSyncUpdateSeconds(uint8_t seconds);
+void heatSetUpdateSeconds(const uint8_t seconds);   // set temperature update time interval
+uint8_t heatGetUpdateSeconds(void);                 // get query temperature seconds
+void heatSyncUpdateSeconds(const uint8_t seconds);  // set query temperature seconds
 void heatSetNextUpdateTime(void);
-void heatSetUpdateWaiting(bool isWaiting);
+void heatSetUpdateWaiting(const bool isWaiting);    // set whether we need to query the current temperature
 void loopCheckHeater(void);
 
 #ifdef __cplusplus

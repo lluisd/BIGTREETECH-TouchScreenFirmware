@@ -7,6 +7,7 @@
 #define CONFIG_SERIAL_PORT            "serial_port:"
 #define CONFIG_TX_SLOTS               "tx_slots:"
 #define CONFIG_ADVANCED_OK            "advanced_ok:"
+#define CONFIG_CMD_CHECKSUM           "cmd_checksum:"
 #define CONFIG_EMULATED_M600          "emulated_m600:"
 #define CONFIG_EMULATED_M109_M190     "emulated_m109_m190:"
 #define CONFIG_EVENT_LED              "event_led:"
@@ -432,6 +433,7 @@ void parseConfigKey(uint16_t index)
       break;
 
     case C_INDEX_ADVANCED_OK:
+    case C_INDEX_CMD_CHECKSUM:
     case C_INDEX_EMULATED_M600:
     case C_INDEX_EMULATED_M109_M190:
     case C_INDEX_EVENT_LED:

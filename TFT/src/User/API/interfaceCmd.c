@@ -248,7 +248,7 @@ bool sendCmd(bool purge, bool avoidTerminal)
   {
     UPD_TX_KPIS(cmd_len);  // debug monitoring KPI
 
-    if (infoMachineSettings.firmwareType == FW_REPRAPFW)
+    if (GET_BIT(infoSettings.general_settings, INDEX_CMD_CHECKSUM) == 1 || infoMachineSettings.firmwareType == FW_REPRAPFW)
       addCmdLineNumberAndChecksum(&cmd_ptr[cmd_base_index]);
 
     Serial_Put(SERIAL_PORT, cmd_ptr);
@@ -490,7 +490,7 @@ bool handleCmdLineNumberMismatch(uint32_t lineNumber)
 
   sprintf(cmd, "M110 N%d", lineNumber);
 
-  sendEmergencyCmd(cmd);  // send M110 command to set new base line number on mainboard
+  sendEmergencyCmd(cmd);  // immediately send M110 command to set new base line number on mainboard
 
   return true;
 }

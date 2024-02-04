@@ -1,7 +1,7 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
 
-#define CONFIG_VERSION 20231119
+#define CONFIG_VERSION 20240203
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -79,6 +79,8 @@
  *   Options: [disable: 0, enable: 1]
  */
 #define ADVANCED_OK 0  // Default: 0
+
+#define CMD_CHECKSUM 0  // Default: 0
 
 /**
  * Emulated M600

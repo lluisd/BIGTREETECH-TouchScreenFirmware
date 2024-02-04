@@ -369,6 +369,8 @@ void parseACK(void)
       Serial_Put(SERIAL_DEBUG_PORT, ack_cache);
     #endif
 
+    InfoHost_UpdateAckTimestamp();  // update last received ACK message timestamp
+
     bool avoid_terminal = false;
 
     //----------------------------------------
@@ -407,7 +409,7 @@ void parseACK(void)
       {
         storeCmd("M92\n");
         storeCmd("M115\n");  // as last command to identify the FW type!
-        coordinateQuerySetWait(true);
+        coordinateQuerySetUpdateWaiting(true);
       }
       else if (infoMachineSettings.firmwareType == FW_NOT_DETECTED)  // if never connected to the printer since boot
       {
@@ -515,7 +517,7 @@ void parseACK(void)
         // proceed with generic OK response handling to update infoHost.tx_slots and infoHost.tx_count
         //
         if (infoMachineSettings.firmwareType == FW_REPRAPFW || ack_starts_with("ok"))
-          InfoHost_HandleOkAck(HOST_SLOTS_GENERIC_OK);
+          InfoHost_HandleAckOk(HOST_SLOTS_GENERIC_OK);
       }
 
       goto parse_end;
@@ -540,7 +542,7 @@ void parseACK(void)
         rrfParseACK(ack_cache);
 
       // proceed with generic OK response handling to update infoHost.tx_slots and infoHost.tx_count
-      InfoHost_HandleOkAck(HOST_SLOTS_GENERIC_OK);
+      InfoHost_HandleAckOk(HOST_SLOTS_GENERIC_OK);
 
       goto parse_end;
     }
@@ -555,7 +557,7 @@ void parseACK(void)
       // if regular OK response ("ok\n")
       if (ack_cache[ack_index] == '\n')
       {
-        InfoHost_HandleOkAck(infoSettings.tx_slots);
+        InfoHost_HandleAckOk(infoSettings.tx_slots);
 
         goto parse_end;  // nothing else to do
       }
@@ -563,7 +565,7 @@ void parseACK(void)
       // if ADVANCED_OK response (e.g. "ok N10 P15 B3\n"). Required "ADVANCED_OK" in Marlin
       if (ack_continue_seen("P") && ack_continue_seen("B"))
       {
-        InfoHost_HandleOkAck(ack_value());
+        InfoHost_HandleAckOk(ack_value());
 
         goto parse_end;  // nothing else to do
       }
@@ -571,7 +573,7 @@ void parseACK(void)
       // if here, it is a temperature response (e.g. "ok T:16.13 /0.00 B:16.64 /0.00 @:0 B@:0\n").
       // Proceed with generic OK response handling to update infoHost.tx_slots and infoHost.tx_count
       // and then continue applying the next matching patterns to handle the temperature response
-      InfoHost_HandleOkAck(HOST_SLOTS_GENERIC_OK);
+      InfoHost_HandleAckOk(HOST_SLOTS_GENERIC_OK);
     }
 
     //----------------------------------------
@@ -632,7 +634,7 @@ void parseACK(void)
         }
       }
 
-      coordinateQuerySetWait(false);
+      coordinateQuerySetUpdateWaiting(false);
     }
     // parse and store M114 E, extruder position. Required "M114_DETAIL" in Marlin
     else if (ack_seen("Count E:"))
@@ -643,25 +645,25 @@ void parseACK(void)
     else if (ack_seen("FR:"))
     {
       speedSetCurPercent(0, ack_value());
-      speedQuerySetWait(false);
+      speedQuerySetUpdateWaiting(false);
     }
     // parse and store flow rate percentage
     else if (ack_seen("Flow:"))
     {
       speedSetCurPercent(1, ack_value());
-      speedQuerySetWait(false);
+      speedQuerySetUpdateWaiting(false);
     }
     // parse and store feed rate percentage in case of Smoothieware
     else if ((infoMachineSettings.firmwareType == FW_SMOOTHIEWARE) && ack_seen("Speed factor at "))
     {
       speedSetCurPercent(0, ack_value());
-      speedQuerySetWait(false);
+      speedQuerySetUpdateWaiting(false);
     }
     // parse and store flow rate percentage in case of Smoothieware
     else if ((infoMachineSettings.firmwareType == FW_SMOOTHIEWARE) && ack_seen("Flow rate at "))
     {
       speedSetCurPercent(1, ack_value());
-      speedQuerySetWait(false);
+      speedQuerySetUpdateWaiting(false);
     }
     // parse and store M106, fan speed
     else if (ack_starts_with("M106"))
@@ -691,7 +693,7 @@ void parseACK(void)
       if (ack_seen("I"))
         fanSetCurSpeed(MAX_COOLING_FAN_COUNT + 1, ack_value());
 
-      ctrlFanQuerySetWait(false);
+      ctrlFanQuerySetUpdateWaiting(false);
     }
     // parse pause message
     else if (!infoMachineSettings.promptSupport && ack_seen("paused for user"))

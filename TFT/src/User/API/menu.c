@@ -1235,6 +1235,17 @@ void loopBackEnd(void)
   if ((priorityCounter.be++ % BE_PRIORITY_DIVIDER) != 0)  // a divider value of 16 -> run 6% of the time only
     return;
 
+  // Handle ACK message timeout
+  if (InfoHost_HandleAckTimeout())  // if ACK message timeout, unlock any pending query update
+  {
+    heatSetUpdateWaiting(false);
+    ctrlFanQuerySetUpdateWaiting(false);
+    speedQuerySetUpdateWaiting(false);
+    coordinateQuerySetUpdateWaiting(false);
+    setPrintUpdateWaiting(false);
+    FIL_PosE_SetUpdateWaiting(false);
+  }
+
   if (infoMachineSettings.firmwareType != FW_REPRAPFW)
     loopCheckHeater();  // Temperature monitor
   else

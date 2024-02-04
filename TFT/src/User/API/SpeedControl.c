@@ -9,9 +9,9 @@ static uint16_t setPercent[SPEED_NUM] = {100, 100};
 static uint16_t curPercent[SPEED_NUM] = {100, 100};
 static uint8_t needSetPercent = 0;
 
-static bool speedQueryWait = false;
+static bool speedQueryUpdateWaiting = false;
 
-void speedSetPercent(uint8_t tool, uint16_t per)
+void speedSetPercent(const uint8_t tool, const uint16_t per)
 {
   uint16_t value = NOBEYOND(SPEED_MIN, per, SPEED_MAX);
 
@@ -19,17 +19,17 @@ void speedSetPercent(uint8_t tool, uint16_t per)
   setPercent[tool] = value;
 }
 
-uint16_t speedGetSetPercent(uint8_t tool)
+uint16_t speedGetSetPercent(const uint8_t tool)
 {
   return setPercent[tool];
 }
 
-void speedSetCurPercent(uint8_t tool, uint16_t per)
+void speedSetCurPercent(const uint8_t tool, const uint16_t per)
 {
   curPercent[tool] = per;
 }
 
-uint16_t speedGetCurPercent(uint8_t tool)
+uint16_t speedGetCurPercent(const uint8_t tool)
 {
   return curPercent[tool];
 }
@@ -56,18 +56,18 @@ void loopSpeed(void)
   }
 }
 
-void speedQuerySetWait(bool wait)
+void speedQuerySetUpdateWaiting(const bool isWaiting)
 {
-  speedQueryWait = wait;
+  speedQueryUpdateWaiting = isWaiting;
 }
 
 void speedQuery(void)
 { // following conditions ordered by importance
-  if (!speedQueryWait && infoHost.tx_slots != 0 && infoHost.connected && infoMachineSettings.firmwareType != FW_REPRAPFW)
+  if (!speedQueryUpdateWaiting && infoHost.tx_slots != 0 && infoHost.connected && infoMachineSettings.firmwareType != FW_REPRAPFW)
   {
-    speedQueryWait = storeCmd("M220\n");
+    speedQueryUpdateWaiting = storeCmd("M220\n");
 
     if (infoSettings.ext_count > 0)
-      speedQueryWait |= storeCmd("M221\n");  // speedQueryWait set to "true" if at least one command will be sent
+      speedQueryUpdateWaiting |= storeCmd("M221\n");  // speedQueryUpdateWaiting set to "true" if at least one command will be sent
   }
 }

@@ -18,18 +18,18 @@ extern const char * fanID[MAX_FAN_COUNT];
 extern const char * fanCmd[MAX_FAN_COUNT];
 
 void fanResetSpeed(void);
-bool fanIsValid(const uint8_t index);  // check whether the index is a valid fan index
+bool fanIsValid(const uint8_t index);                           // check whether the index is a valid fan index
 void fanSetSpeed(const uint8_t i, const uint8_t speed);
 uint8_t fanGetSetSpeed(const uint8_t i);
 void fanSetPercent(const uint8_t i, const uint8_t percent);
 uint8_t fanGetSetPercent(const uint8_t i);
 void fanSetCurSpeed(const uint8_t i, const uint8_t speed);
 uint8_t fanGetCurSpeed(const uint8_t i);
-void fanSetCurPercent(const uint8_t i, const uint8_t percent);
-uint8_t fanGetCurPercent(const uint8_t i);
+void fanSetCurPercent(const uint8_t i, const uint8_t percent);  // set current fan percent
+uint8_t fanGetCurPercent(const uint8_t i);                      // get current fan percent
 void loopFan(void);
-void ctrlFanQuerySetWait(const bool wait);
-void ctrlFanQuery(void);  // query for controller fan only
+void ctrlFanQuerySetUpdateWaiting(const bool isWaiting);
+void ctrlFanQuery(void);                                        // query for controller fan only
 
 #ifdef __cplusplus
 }

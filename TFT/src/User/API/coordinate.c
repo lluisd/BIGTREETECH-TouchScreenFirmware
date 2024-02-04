@@ -18,8 +18,8 @@ static bool relative_e = false;
 // false means current position is unknown
 // false after M18/M84 disable stepper or power up, true after G28
 static bool position_known = false;
-static bool coordinateQueryWait = false;
-static uint8_t curQuerySeconds = 0;
+static bool queryUpdateWaiting = false;
+static uint8_t queryUpdateSeconds = 0;
 
 bool coorGetRelative(void)
 {
@@ -108,9 +108,9 @@ void coordinateGetAllActual(COORDINATE *tmp)
   memcpy(tmp, &curPosition, sizeof(curPosition));
 }
 
-void coordinateQuerySetWait(bool wait)
+void coordinateQuerySetUpdateWaiting(bool isWaiting)
 {
-  coordinateQueryWait = wait;
+  queryUpdateWaiting = isWaiting;
 }
 
 /**
@@ -120,34 +120,34 @@ void coordinateQuerySetWait(bool wait)
  */
 void coordinateQuery(uint8_t seconds)
 { // following conditions ordered by importance
-  if (!coordinateQueryWait && infoHost.tx_slots != 0 && infoHost.connected)
+  if (!queryUpdateWaiting && infoHost.tx_slots != 0 && infoHost.connected)
   {
     if (infoMachineSettings.autoReportPos == 1)  // if auto report is enabled
     {
       if (seconds == 0)  // if manual querying is requested (if query interval is 0)
-        coordinateQueryWait = storeCmd("M114\n");
+        queryUpdateWaiting = storeCmd("M114\n");
 
-      if (seconds != curQuerySeconds)  // if query interval is changed
+      if (seconds != queryUpdateSeconds)  // if query interval is changed
       {
         if (storeCmd("M154 S%d\n", seconds))  // turn on or off (if query interval is 0) auto report
-          curQuerySeconds = seconds;          // if gcode will be sent, avoid to enable auto report again on next
+          queryUpdateSeconds = seconds;          // if gcode will be sent, avoid to enable auto report again on next
       }                                       // function call if already enabled for that query interval
     }
     else  // if auto report is disabled
     {
-      coordinateQueryWait = storeCmd("M114\n");
+      queryUpdateWaiting = storeCmd("M114\n");
     }
   }
 }
 
 void coordinateQueryTurnOff(void)
 {
-  coordinateQueryWait = false;
+  queryUpdateWaiting = false;
 
   if (infoMachineSettings.autoReportPos == 1)  // if auto report is enabled, turn it off
   {
     storeCmd("M154 S0\n");
-    curQuerySeconds = 0;
+    queryUpdateSeconds = 0;
   }
 }
 

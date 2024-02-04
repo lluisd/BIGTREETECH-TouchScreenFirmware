@@ -80,6 +80,7 @@
 #include "FlashStore.h"
 #include "HomeOffsetControl.h"
 #include "HW_Init.h"
+#include "InfoControl.h"
 #include "interfaceCmd.h"
 #include "LCD_Colors.h"
 #include "LCD_Dimming.h"

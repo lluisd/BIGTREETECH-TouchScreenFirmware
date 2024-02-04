@@ -10,7 +10,7 @@ static uint8_t setFanSpeed[MAX_FAN_COUNT] = {0};
 static uint8_t curFanSpeed[MAX_FAN_COUNT] = {0};
 static uint8_t needSetFanSpeed = 0;
 
-static bool ctrlFanQueryWait = false;
+static bool ctrlFanQueryUpdateWaiting = false;
 
 void fanResetSpeed(void)
 {
@@ -91,13 +91,13 @@ void loopFan(void)
   }
 }
 
-void ctrlFanQuerySetWait(const bool wait)
+void ctrlFanQuerySetUpdateWaiting(const bool isWaiting)
 {
-  ctrlFanQueryWait = wait;
+  ctrlFanQueryUpdateWaiting = isWaiting;
 }
 
 void ctrlFanQuery(void)
 { // following conditions ordered by importance
-  if (!ctrlFanQueryWait && infoHost.tx_slots != 0 && infoHost.connected && infoSettings.ctrl_fan_en)
-    ctrlFanQueryWait = storeCmd("M710\n");
+  if (!ctrlFanQueryUpdateWaiting && infoHost.tx_slots != 0 && infoHost.connected && infoSettings.ctrl_fan_en)
+    ctrlFanQueryUpdateWaiting = storeCmd("M710\n");
 }

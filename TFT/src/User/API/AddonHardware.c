@@ -140,13 +140,15 @@ bool FIL_NormalRunoutDetect(void)
     }
 
     trigBalance += (pinState == GET_BIT(infoSettings.runout, RUNOUT_INVERTED)) ? 1: -1;  // if triggered add 1 else substract 1
+
+    return runout;
   }
-  else  // if OS_GetTimeMs() >= nextUpdateTime
-  {
-    runout = (trigBalance > 0);
-    trigBalance = 0;
-    FIL_SetNextUpdateTime(infoSettings.runout_noise);
-  }
+
+  // if OS_GetTimeMs() >= nextUpdateTime
+
+  runout = (trigBalance > 0);
+  trigBalance = 0;
+  FIL_SetNextUpdateTime(infoSettings.runout_noise);
 
   return runout;
 }
