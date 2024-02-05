@@ -475,24 +475,22 @@ void syncTargetTemp(uint8_t index)
   }
 }
 
-bool handleCmdLineNumberMismatch(uint32_t lineNumber)
+void handleCmdLineNumberMismatch(const uint32_t lineNumber)
 {
   // if printing from remote host or line number already notified, nothing to do.
   // Command line number and checksum are probably engaged by the remote host
   // (and disabled in TFT) so error handling must also be managed by the remote host
   //
-  if (isPrintingFromRemoteHost() || getCmdLineNumberMismatch() == lineNumber)
-    return false;
+  if (isPrintingFromRemoteHost() || getCmdLineNumberOk() == lineNumber)
+    return;
 
-  setCmdLineNumberAndMismatch(lineNumber);  // set provided line number as new base line number
+  setCmdLineNumber(lineNumber);  // set provided line number as new base line number
 
   CMD cmd;
 
   sprintf(cmd, "M110 N%d", lineNumber);
 
   sendEmergencyCmd(cmd);  // immediately send M110 command to set new base line number on mainboard
-
-  return true;
 }
 
 // Check if the received gcode is an emergency command or not
@@ -954,7 +952,7 @@ void sendQueueCmd(void)
           break;
 
         case 110:  // M110
-          setCmdLineNumberAndMismatch(cmd_seen('N') ? (uint32_t)cmd_value() : 0);
+          setCmdLineNumber(cmd_seen('N') ? (uint32_t)cmd_value() : 0);
 
         case 114:  // M114
           #ifdef FIL_RUNOUT_PIN

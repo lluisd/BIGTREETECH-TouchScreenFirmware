@@ -33,7 +33,7 @@ void mustStoreCmd(const char * format, ...);
 void mustStoreScript(const char * format, ...);
 bool storeCmdFromUART(const CMD cmd, const SERIAL_PORT_INDEX portIndex);
 void clearCmdQueue(void);
-bool handleCmdLineNumberMismatch(uint32_t lineNumber);
+void handleCmdLineNumberMismatch(const uint32_t lineNumber);
 void handleCmd(CMD cmd, const SERIAL_PORT_INDEX portIndex);
 void sendEmergencyCmd(CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex);
 void sendQueueCmd(void);

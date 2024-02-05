@@ -587,6 +587,14 @@ void parseACK(void)
     }
 
     //----------------------------------------
+    // "Resend:" response handling. Required command line number and checksum feature enabled in TFT or managed by remote host
+    //----------------------------------------
+    else if (ack_starts_with("Resend:"))
+    {
+      handleCmdLineNumberMismatch((uint32_t)ack_value());
+    }
+
+    //----------------------------------------
     // Pushed / polled / on printing parsed responses
     //----------------------------------------
 
@@ -1381,15 +1389,11 @@ void parseACK(void)
     // parse error messages
     else if (ack_seen(magic_error))
     {
-      // command line number mismatch or checksum mismatch, if command line number and checksum are used
-      // (line number and checksum feature enabled in TFT or managed by remote host)
-      if (ack_continue_seen("Last Line:"))
+      // command line number mismatch or checksum mismatch.
+      // Required command line number and checksum feature enabled in TFT or managed by remote host
+      if (ack_continue_seen("Last Line:") && getCmdLineNumberOk() == (uint32_t)ack_value())
       {
-        if (handleCmdLineNumberMismatch((uint32_t)ack_value()))
-        {
-          ack_index = 0;  // reset index so full ack message will be notified by ackPopupInfo() function
-          ackPopupInfo(magic_error);
-        }
+        // nothing to do. Error message for the same line number has been previously displayed
       }
       else
       {

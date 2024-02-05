@@ -1,12 +1,14 @@
 #include <CmdControl.h>
 #include <includes.h>
 
-static uint32_t cmd_line_number_mismatch = 0;  // line number of last command processed by mainboard. Requires checksun feature enabled in TFT
-static uint32_t cmd_line_number = 0;           // line number of last sent command. Requires checksun feature enabled in TFT
+// line number of last command properly processed by mainboard and line number of last command sent by TFT respectively.
+// Requires command line number and checksun feature enabled in TFT
+static uint32_t cmd_line_number_ok = 0xFFFFFFFF;  // no processed line number
+static uint32_t cmd_line_number = 0;
 
-uint32_t getCmdLineNumberMismatch(void)
+uint32_t getCmdLineNumberOk(void)
 {
-  return cmd_line_number_mismatch;
+  return cmd_line_number_ok;
 }
 
 uint32_t getCmdLineNumber(void)
@@ -14,9 +16,9 @@ uint32_t getCmdLineNumber(void)
   return cmd_line_number;
 }
 
-void setCmdLineNumberAndMismatch(uint32_t lineNumber)
+void setCmdLineNumber(const uint32_t lineNumber)
 {
-  cmd_line_number_mismatch = cmd_line_number = lineNumber;
+  cmd_line_number_ok = cmd_line_number = lineNumber;
 }
 
 void addCmdLineNumberAndChecksum(char * str)
@@ -83,7 +85,7 @@ void stripCmdChecksum(char * str)
   *strPtr = '\0';
 }
 
-uint8_t getCmdChecksum(char * str)
+uint8_t getCmdChecksum(const char * str)
 {
   uint8_t checksum = 0;
 
@@ -95,7 +97,7 @@ uint8_t getCmdChecksum(char * str)
   return checksum;
 }
 
-bool validateCmdChecksum(char * str)
+bool validateCmdChecksum(const char * str)
 {
   char * strPtr = strrchr(str, '*');  // e.g. "N1 G28*18\n\0" -> "*18\n\0"
 
