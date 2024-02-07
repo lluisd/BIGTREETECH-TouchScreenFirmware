@@ -24,11 +24,12 @@ typedef struct
 PRINTING infoPrinting = {0};
 PRINT_SUMMARY infoPrintSummary = {.name[0] = '\0', 0, 0, 0, 0, false};
 
-static uint32_t nextUpdateTime = 0;
-static bool updateWaiting = false;
 static bool extrusionDuringPause = false;  // flag for extrusion during Print -> Pause
 static bool filamentRunoutAlarm = false;
 static float lastEPos = 0;                 // used only to update stats in infoPrintSummary
+
+static uint32_t nextUpdateTime = 0;
+static bool updateWaiting = false;
 
 void setExtrusionDuringPause(bool extruded)
 {
