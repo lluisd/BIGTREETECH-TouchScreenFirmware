@@ -18,8 +18,10 @@ static bool relative_e = false;
 // false means current position is unknown
 // false after M18/M84 disable stepper or power up, true after G28
 static bool position_known = false;
-static bool queryUpdateWaiting = false;
-static uint8_t queryUpdateSeconds = 0;
+
+static uint8_t coordUpdateSeconds = 0;
+static uint32_t coordNextUpdateTime = 0;
+static bool coordUpdateWaiting = false;
 
 bool coorGetRelative(void)
 {
@@ -108,9 +110,17 @@ void coordinateGetAllActual(COORDINATE *tmp)
   memcpy(tmp, &curPosition, sizeof(curPosition));
 }
 
-void coordinateQuerySetUpdateWaiting(bool isWaiting)
+float coordinateGetAxis(AXIS axis)
 {
-  queryUpdateWaiting = isWaiting;
+  if (infoFile.source >= FS_ONBOARD_MEDIA)
+    return coordinateGetAxisActual(axis);
+  else
+    return coordinateGetAxisTarget(axis);
+}
+
+void coordinateQueryClearUpdateWaiting(void)
+{
+  coordUpdateWaiting = false;
 }
 
 /**
@@ -119,42 +129,41 @@ void coordinateQuerySetUpdateWaiting(bool isWaiting)
  *                 for auto query if available in marlin.
  */
 void coordinateQuery(uint8_t seconds)
-{ // following conditions ordered by importance
-  if (!queryUpdateWaiting && infoHost.tx_slots != 0 && infoHost.connected)
+{
+  // if RepRap or M114 previously sent and still waiting for a reply and not timed out, do nothing
+  if (infoMachineSettings.firmwareType == FW_REPRAPFW || (coordUpdateWaiting && (OS_GetTimeMs() < coordNextUpdateTime)))
+    return;
+
+  if (infoHost.tx_slots != 0 && infoHost.connected)
   {
     if (infoMachineSettings.autoReportPos == 1)  // if auto report is enabled
     {
       if (seconds == 0)  // if manual querying is requested (if query interval is 0)
-        queryUpdateWaiting = storeCmd("M114\n");
+        coordUpdateWaiting = storeCmd("M114\n");
 
-      if (seconds != queryUpdateSeconds)  // if query interval is changed
+      if (seconds != coordUpdateSeconds)  // if query interval is changed
       {
         if (storeCmd("M154 S%d\n", seconds))  // turn on or off (if query interval is 0) auto report
-          queryUpdateSeconds = seconds;          // if gcode will be sent, avoid to enable auto report again on next
+          coordUpdateSeconds = seconds;       // if gcode will be sent, avoid to enable auto report again on next
       }                                       // function call if already enabled for that query interval
     }
     else  // if auto report is disabled
     {
-      queryUpdateWaiting = storeCmd("M114\n");
+      coordUpdateWaiting = storeCmd("M114\n");
     }
   }
+
+  if (coordUpdateWaiting)
+    coordNextUpdateTime = OS_GetTimeMs() + ACK_QUERY_TIMEOUT;
 }
 
 void coordinateQueryTurnOff(void)
 {
-  queryUpdateWaiting = false;
+  coordUpdateWaiting = false;
 
   if (infoMachineSettings.autoReportPos == 1)  // if auto report is enabled, turn it off
   {
     storeCmd("M154 S0\n");
-    queryUpdateSeconds = 0;
+    coordUpdateSeconds = 0;
   }
-}
-
-float coordinateGetAxis(AXIS axis)
-{
-  if (infoFile.source >= FS_ONBOARD_MEDIA)
-    return coordinateGetAxisActual(axis);
-  else
-    return coordinateGetAxisTarget(axis);
 }

@@ -227,10 +227,6 @@ void initMachineSettings(void)
   infoMachineSettings.babyStepping            = DISABLED;
   infoMachineSettings.buildPercent            = DISABLED;
   infoMachineSettings.softwareEndstops        = ENABLED;
-
-  // reset the state to restart the temperature polling process
-  // needed by parseAck() function to establish the connection
-  heatSetUpdateWaiting(false);
 }
 
 void setupMachine(FW_TYPE fwType)

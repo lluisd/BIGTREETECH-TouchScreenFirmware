@@ -804,6 +804,10 @@
 /**
  * Filament Runout Sensor
  * Select the type of filament runout sensor and its default enabled/disabled state.
+ *
+ * NOTE: Smart Filament Sensor (SFS) (value 2 or 3) is a sensor based on an encoder disc that
+ *       toggles runout pin as filament moves (e.g. the BigTreeTech SFS).
+ *
  *   Options: [Normal Disabled: 0, Normal Enabled: 1, Smart Disabled: 2, Smart Enabled: 3]
  */
 #define FIL_RUNOUT 0  // Default: 0
@@ -836,6 +840,10 @@
  * Smart Filament Runout Detection
  * Used in conjunction with an SFS (Smart Filament Sensor) based on an encoder disc that
  * toggles runout pin as filament moves.
+ *
+ * NOTE: This setting is taken into account by the TFT only in case "FIL_RUNOUT" setting is
+ *       set to 2 or 3 (an SFS is used).
+ *
  *   Unit: [distance in mm]
  *   Value range: [min: 1, max: 50]
  */

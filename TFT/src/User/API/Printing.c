@@ -24,7 +24,8 @@ typedef struct
 PRINTING infoPrinting = {0};
 PRINT_SUMMARY infoPrintSummary = {.name[0] = '\0', 0, 0, 0, 0, false};
 
-static bool m27UpdateWaiting = false;
+static uint32_t nextUpdateTime = 0;
+static bool updateWaiting = false;
 static bool extrusionDuringPause = false;  // flag for extrusion during Print -> Pause
 static bool filamentRunoutAlarm = false;
 static float lastEPos = 0;                 // used only to update stats in infoPrintSummary
@@ -52,9 +53,8 @@ bool getRunoutAlarm(void)
 void clearQueueAndMore(void)
 {
   clearCmdQueue();
+  resetPendingQueries();
   setRunoutAlarmFalse();
-  heatSetUpdateWaiting(false);
-  setPrintUpdateWaiting(false);
 }
 
 void breakAndContinue(void)
@@ -343,11 +343,6 @@ void sendPrintCodes(uint8_t index)
     default:
       break;
   }
-}
-
-void setPrintUpdateWaiting(bool isWaiting)
-{
-  m27UpdateWaiting = isWaiting;
 }
 
 void updatePrintUsedFilament(void)
@@ -919,6 +914,17 @@ void loopPrintFromTFT(void)
   }
 }
 
+static inline void printSetNextUpdateTime(void)
+{
+  nextUpdateTime = OS_GetTimeMs() + SEC_TO_MS(infoSettings.m27_refresh_time);
+}
+
+void printClearUpdateWaiting(void)
+{
+  updateWaiting = false;
+  printSetNextUpdateTime();
+}
+
 void loopPrintFromOnboard(void)
 {
   #ifdef HAS_EMULATOR
@@ -931,9 +937,6 @@ void loopPrintFromOnboard(void)
   if (!infoSettings.m27_active) return;
   if (MENU_IS(menuTerminal)) return;
 
-  static uint32_t nextUpdateTime = 0;
-  uint32_t refreshTime = SEC_TO_MS(infoSettings.m27_refresh_time);
-
   do
   { // send M27 to query SD print status continuously
 
@@ -941,16 +944,14 @@ void loopPrintFromOnboard(void)
     if (OS_GetTimeMs() < nextUpdateTime)
       break;
 
-    // if M27 previously sent and still waiting for a reply, extend next check time
-    if (m27UpdateWaiting)
+    // if M27 previously sent and still waiting for a reply and not timed out, extend next check time
+    if (updateWaiting && (OS_GetTimeMs() - nextUpdateTime < ACK_QUERY_TIMEOUT))
     {
-      nextUpdateTime = OS_GetTimeMs() + refreshTime;
+      printSetNextUpdateTime();
       break;
     }
 
-    m27UpdateWaiting = storeCmd("M27\n");
-
-    if (m27UpdateWaiting)
-      nextUpdateTime = OS_GetTimeMs() + refreshTime;
+    if ((updateWaiting = storeCmd("M27\n")))
+      printSetNextUpdateTime();
   } while (0);
 }

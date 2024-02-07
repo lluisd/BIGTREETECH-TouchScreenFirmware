@@ -16,9 +16,10 @@ void speedSetPercent(const uint8_t tool, const uint16_t per);
 uint16_t speedGetSetPercent(const uint8_t tool);
 void speedSetCurPercent(const uint8_t tool, const uint16_t per);
 uint16_t speedGetCurPercent(const uint8_t tool);
-void loopSpeed(void);
-void speedQuerySetUpdateWaiting(const bool isWaiting);
-void speedQuery(void);
+
+void loopCheckSpeed(void);                // loop for check on speed
+void speedQueryClearUpdateWaiting(void);  // clear pending speed query and set next update time
+void speedQuery(void);                    // query for speed
 
 #ifdef __cplusplus
 }

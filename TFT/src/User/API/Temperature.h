@@ -23,7 +23,7 @@ typedef enum
 
 typedef enum
 {
-  FROM_HOST = 0,  // temperature status (actual/requested) from host (Marlin, Reprap, etc.)
+  FROM_HOST = 0,  // temperature status (actual/requested) from host (Marlin, RepRap, etc.)
   FROM_GUI,       // temperature requested from the TFT's GUI
   FROM_CMD,       // temperature requested in the command queue (from gcode or external source connected to the TFT)
 } TEMP_SOURCE;
@@ -90,12 +90,13 @@ uint8_t heatGetToolIndex(void);                     // get current Tool (extrude
 uint8_t heatGetCurrentHotend(void);                 // get current hotend index in arry T[]
 bool heaterDisplayIsValid(const uint8_t index);     // check whether the index is a valid heater index
 
-void heatSetUpdateSeconds(const uint8_t seconds);   // set temperature update time interval
-uint8_t heatGetUpdateSeconds(void);                 // get query temperature seconds
-void heatSyncUpdateSeconds(const uint8_t seconds);  // set query temperature seconds
-void heatSetNextUpdateTime(void);
-void heatSetUpdateWaiting(const bool isWaiting);    // set whether we need to query the current temperature
-void loopCheckHeater(void);
+void heatSetUpdateSeconds(const uint8_t seconds);   // set temperature query update time interval
+uint8_t heatGetUpdateSeconds(void);                 // get temperature query seconds
+void heatSyncUpdateSeconds(const uint8_t seconds);  // set temperature query seconds
+
+void heatSetNextUpdateTime(void);                   // set next temperature query time
+void heatClearUpdateWaiting(void);                  // clear pending temperature query and set next update time
+void loopCheckHeater(void);                         // loop for check on Heater
 
 #ifdef __cplusplus
 }

@@ -403,13 +403,12 @@ void parseACK(void)
       if (ack_seen(heaterID[CHAMBER]))
         infoSettings.chamber_en = ENABLED;
 
-      heatSetNextUpdateTime();
+      heatClearUpdateWaiting();
 
       if (!ack_seen("@"))  // it's RepRapFirmware
       {
         storeCmd("M92\n");
         storeCmd("M115\n");  // as last command to identify the FW type!
-        coordinateQuerySetUpdateWaiting(true);
       }
       else if (infoMachineSettings.firmwareType == FW_NOT_DETECTED)  // if never connected to the printer since boot
       {
@@ -587,18 +586,10 @@ void parseACK(void)
     }
 
     //----------------------------------------
-    // "Resend:" response handling. Required command line number and checksum feature enabled in TFT or managed by remote host
-    //----------------------------------------
-    else if (ack_starts_with("Resend:"))
-    {
-      handleCmdLineNumberMismatch((uint32_t)ack_value());
-    }
-
-    //----------------------------------------
     // Pushed / polled / on printing parsed responses
     //----------------------------------------
 
-    // parse and store temperatures (e.g. "ok T:16.13 /0.00 B:16.64 /0.00 @:0 B@:0\n")
+    // parse and store M105/M155, temperatures (e.g. "ok T:16.13 /0.00 B:16.64 /0.00 @:0 B@:0\n")
     else if ((ack_seen("@") && ack_seen("T:")) || ack_seen("T0:"))
     {
       uint8_t heaterIndex = NOZZLE0;
@@ -622,7 +613,13 @@ void parseACK(void)
       }
 
       avoid_terminal = !infoSettings.terminal_ack;
-      heatSetNextUpdateTime();
+      heatClearUpdateWaiting();
+    }
+    // parse and store M114 E, extruder position. Required "M114_DETAIL" in Marlin
+    else if (ack_seen("Count E:"))
+    {
+      coordinateSetExtruderActualSteps(ack_value());
+      FIL_PosE_ClearUpdateWaiting();
     }
     // parse and store M114, current position
     else if (ack_starts_with("X:") || ack_seen("C: X:"))  // Smoothieware axis position starts with "C: X:"
@@ -642,36 +639,31 @@ void parseACK(void)
         }
       }
 
-      coordinateQuerySetUpdateWaiting(false);
-    }
-    // parse and store M114 E, extruder position. Required "M114_DETAIL" in Marlin
-    else if (ack_seen("Count E:"))
-    {
-      coordinateSetExtruderActualSteps(ack_value());
+      coordinateQueryClearUpdateWaiting();
     }
     // parse and store feed rate percentage
     else if (ack_seen("FR:"))
     {
       speedSetCurPercent(0, ack_value());
-      speedQuerySetUpdateWaiting(false);
+      speedQueryClearUpdateWaiting();
     }
     // parse and store flow rate percentage
     else if (ack_seen("Flow:"))
     {
       speedSetCurPercent(1, ack_value());
-      speedQuerySetUpdateWaiting(false);
+      speedQueryClearUpdateWaiting();
     }
     // parse and store feed rate percentage in case of Smoothieware
     else if ((infoMachineSettings.firmwareType == FW_SMOOTHIEWARE) && ack_seen("Speed factor at "))
     {
       speedSetCurPercent(0, ack_value());
-      speedQuerySetUpdateWaiting(false);
+      speedQueryClearUpdateWaiting();
     }
     // parse and store flow rate percentage in case of Smoothieware
     else if ((infoMachineSettings.firmwareType == FW_SMOOTHIEWARE) && ack_seen("Flow rate at "))
     {
       speedSetCurPercent(1, ack_value());
-      speedQuerySetUpdateWaiting(false);
+      speedQueryClearUpdateWaiting();
     }
     // parse and store M106, fan speed
     else if (ack_starts_with("M106"))
@@ -701,7 +693,7 @@ void parseACK(void)
       if (ack_seen("I"))
         fanSetCurSpeed(MAX_COOLING_FAN_COUNT + 1, ack_value());
 
-      ctrlFanQuerySetUpdateWaiting(false);
+      ctrlFanQueryClearUpdateWaiting();
     }
     // parse pause message
     else if (!infoMachineSettings.promptSupport && ack_seen("paused for user"))
@@ -783,6 +775,8 @@ void parseACK(void)
             setPrintAbort();
           }
         }
+
+        printClearUpdateWaiting();
       }
       // parse and store M73
       else
@@ -805,6 +799,11 @@ void parseACK(void)
             setPrintProgressSource(PROG_TIME);
         }
       }
+    }
+    // "Resend:" response handling. Required command line number and checksum feature enabled in TFT or managed by remote host
+    else if (ack_starts_with("Resend:"))
+    {
+      handleCmdLineNumberMismatch((uint32_t)ack_value());
     }
 
     //----------------------------------------
@@ -1451,8 +1450,6 @@ void parseACK(void)
         clearCmdQueue();
         InfoHost_Init(false);
         initMachineSettings();
-        fanResetSpeed();
-        coordinateSetKnown(false);
       }
     }
 

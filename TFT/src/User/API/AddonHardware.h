@@ -18,7 +18,7 @@ extern "C" {
 // filament runout detection
 #ifdef FIL_RUNOUT_PIN
   void FIL_Runout_Init(void);
-  void FIL_PosE_SetUpdateWaiting(bool waiting);  // set whether we need to query the current position
+  void FIL_PosE_ClearUpdateWaiting(void);  // clear pending position query and set next update time
   void FIL_SFS_SetAlive(bool alive);
   void FIL_BE_CheckRunout(void);
   void FIL_FE_CheckRunout(void);

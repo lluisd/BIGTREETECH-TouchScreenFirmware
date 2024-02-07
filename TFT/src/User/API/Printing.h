@@ -7,8 +7,8 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "variants.h"            // for RAPID_SERIAL_COMM
-#include "ProcessFlowControl.h"  // for HOST_STATUS
+#include "variants.h"               // for RAPID_SERIAL_COMM
+#include "Mainboard_FlowControl.h"  // for HOST_STATUS
 
 #ifdef RAPID_SERIAL_COMM
   #define RAPID_SERIAL_LOOP() loopBackEnd()
@@ -111,9 +111,8 @@ bool getPrintRunout(void);
 //void preparePrintSummary(void);
 //void sendPrintCodes(uint8_t index);
 
-void setPrintUpdateWaiting(bool isWaiting);  // called in interfaceCmd.c
-void updatePrintUsedFilament(void);          // called in PrintingMenu.c
-void clearInfoPrint(void);                   // called in PrintingMenu.c
+void updatePrintUsedFilament(void);  // called in PrintingMenu.c
+void clearInfoPrint(void);           // called in PrintingMenu.c
 
 //
 // commented because NOT externally invoked
@@ -147,8 +146,10 @@ void setPrintAbort(void);
 void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType);
 void setPrintResume(HOST_STATUS hostStatus);
 
-void loopPrintFromTFT(void);      // called in loopBackEnd(). It handles a print from TFT media, if any
-void loopPrintFromOnboard(void);  // called in loopBackEnd(). It handles a print from (remote) onboard media, if any
+void loopPrintFromTFT(void);         // called in loopBackEnd(). It handles a print from TFT media, if any
+
+void printClearUpdateWaiting(void);  // called in parseACK.c. Clear pending printing query and set next update time
+void loopPrintFromOnboard(void);     // called in loopBackEnd(). It handles a print from (remote) onboard media, if any
 
 #ifdef __cplusplus
 }

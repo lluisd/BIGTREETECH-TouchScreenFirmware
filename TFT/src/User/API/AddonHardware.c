@@ -41,7 +41,7 @@ enum
   FILAMENT_SENSOR_SMART,
 };
 
-static uint32_t nextUpdateTime = FIL_ALARM_REMINDER_TIME;  // give TFT time to connect to mainboard first before polling for runout
+static uint32_t posE_nextUpdateTime = FIL_ALARM_REMINDER_TIME;  // give TFT time to connect to mainboard first before polling for runout
 static bool posE_updateWaiting = false;
 static bool sfs_alive = false;  // use an encoder disc to toggles the runout. Suitable for BigTreeTech Smart Filament Sensor
 
@@ -73,14 +73,10 @@ void FIL_Runout_Init(void)
   #endif
 }
 
-static inline void FIL_SetNextUpdateTime(uint32_t refreshTime)
+void FIL_PosE_ClearUpdateWaiting(void)
 {
-  nextUpdateTime = OS_GetTimeMs() + refreshTime;
-}
-
-void FIL_PosE_SetUpdateWaiting(bool waiting)
-{
-  posE_updateWaiting = waiting;
+  posE_updateWaiting = false;
+  posE_nextUpdateTime = OS_GetTimeMs() + FIL_POS_E_REFRESH_TIME;
 }
 
 void FIL_SFS_SetAlive(bool alive)
@@ -92,6 +88,7 @@ bool FIL_NormalRunoutDetect(void)
 {
   static bool runout = false;
   static int32_t trigBalance = 0;
+  static uint32_t nextUpdateTime = 0;
 
   if (OS_GetTimeMs() < nextUpdateTime)
   {
@@ -148,7 +145,7 @@ bool FIL_NormalRunoutDetect(void)
 
   runout = (trigBalance > 0);
   trigBalance = 0;
-  FIL_SetNextUpdateTime(infoSettings.runout_noise);
+  nextUpdateTime = OS_GetTimeMs() + infoSettings.runout_noise;
 
   return runout;
 }
@@ -165,20 +162,18 @@ static inline bool FIL_SmartRunoutDetect(void)
   { // send M114 E to query extrude position continuously
 
     // if next check time not yet elapsed or pending command (to avoid collision in gcode response processing), do nothing
-    if (OS_GetTimeMs() < nextUpdateTime || requestCommandInfoIsRunning())
+    if (OS_GetTimeMs() < posE_nextUpdateTime || requestCommandInfoIsRunning())
       break;
 
-    // if M114 previously sent and still waiting for a reply, extend next check time
-    if (posE_updateWaiting)
+    // if M114 previously sent and still waiting for a reply and not timed out, extend next check time
+    if (posE_updateWaiting && (OS_GetTimeMs() - posE_nextUpdateTime < ACK_QUERY_TIMEOUT))
     {
-      FIL_SetNextUpdateTime(FIL_POS_E_REFRESH_TIME);
+      posE_nextUpdateTime = OS_GetTimeMs() + FIL_POS_E_REFRESH_TIME;
       break;
     }
 
-    posE_updateWaiting = storeCmd("M114 E\n");
-
-    if (posE_updateWaiting)
-      FIL_SetNextUpdateTime(FIL_POS_E_REFRESH_TIME);
+    if ((posE_updateWaiting = storeCmd("M114 E\n")))
+      posE_nextUpdateTime = OS_GetTimeMs() + FIL_POS_E_REFRESH_TIME;
   } while (0);
 
   if (!sfs_alive && lastRunout != runout)

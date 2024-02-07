@@ -740,10 +740,6 @@ void sendQueueCmd(void)
                 return;
               }
             }
-            else
-            {
-              setPrintUpdateWaiting(false);
-            }
             break;
 
           case 28:  // M28
@@ -852,11 +848,6 @@ void sendQueueCmd(void)
             Serial_Forward(fwdPort, msg);
             break;
           }
-
-        #else  // not SERIAL_PORT_2
-          case 27:  // M27
-            setPrintUpdateWaiting(false);
-            break;
         #endif  // SERIAL_PORT_2
 
         case 73:  // M73
@@ -912,8 +903,6 @@ void sendQueueCmd(void)
 
           if (fromTFT)
           {
-            heatSetUpdateWaiting(false);
-
             if (cmd_value() == 105)  // if M105
             {
               avoid_terminal = !infoSettings.terminal_ack;
@@ -953,13 +942,6 @@ void sendQueueCmd(void)
 
         case 110:  // M110
           setCmdLineNumber(cmd_seen('N') ? (uint32_t)cmd_value() : 0);
-
-        case 114:  // M114
-          #ifdef FIL_RUNOUT_PIN
-            if (fromTFT)
-              FIL_PosE_SetUpdateWaiting(false);
-          #endif
-          break;
 
         case 117:  // M117
           if (cmd_seen_from(cmd_base_index, "Time Left"))  // parsing printing time left
@@ -1187,7 +1169,7 @@ void sendQueueCmd(void)
             caseLightSetPercent(cmd_value());
           break;
 
-        case 376:  // M376 (Reprap FW)
+        case 376:  // M376 (RepRap firmware)
           if (infoMachineSettings.firmwareType == FW_REPRAPFW && cmd_seen('H'))
             setParameter(P_ABL_STATE, 1, cmd_float());
           break;
