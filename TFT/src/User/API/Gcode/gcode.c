@@ -43,7 +43,9 @@ static void resetRequestCommandInfo(
   requestCommandInfo.cmd_rev_buf = malloc(CMD_MAX_REV);
 
   while (!requestCommandInfo.cmd_rev_buf)
+  {
     ;  // malloc failed
+  }
 
   memset(requestCommandInfo.cmd_rev_buf, 0, CMD_MAX_REV);
   requestCommandInfo.startMagic = string_start;

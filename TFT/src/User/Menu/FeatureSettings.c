@@ -179,7 +179,7 @@ void loadFeatureSettings(LISTITEM * item, uint16_t item_index, uint8_t itemPos)
         case SKEY_FIL_RUNOUT:
         {
           LABEL sensorLabel = itemToggleSmart[GET_BIT(infoSettings.runout, 1)];
-          item->valueLabel.index = (GET_BIT(infoSettings.runout, 0)) ? sensorLabel.index : LABEL_OFF ;
+          item->valueLabel.index = (GET_BIT(infoSettings.runout, 0)) ? sensorLabel.index : LABEL_OFF;
           break;
         }
       #endif

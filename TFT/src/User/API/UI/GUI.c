@@ -87,7 +87,7 @@ void GUI_DrawPixel(int16_t x, int16_t y, uint16_t color)
      ||x >= pixel_limit_rect.x1
      ||y <  pixel_limit_rect.y0
      ||y >= pixel_limit_rect.y1))
-    return ;
+    return;
 
   LCD_SetWindow(x, y, x, y);
   LCD_WR_16BITS_DATA(color);

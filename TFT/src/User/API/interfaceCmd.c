@@ -1,7 +1,8 @@
 #include "interfaceCmd.h"
 #include "includes.h"
 
-#define CMD_QUEUE_SIZE 20
+#define CMD_QUEUE_SIZE  20
+#define CMD_RETRY_COUNT 3
 
 typedef struct
 {
@@ -17,6 +18,14 @@ typedef struct
   uint8_t count;    // count of commands in the queue
 } GCODE_QUEUE;
 
+typedef struct
+{
+  uint32_t line_number;    // line number used as matching key with value reported by mainboard on "Resend: " ACK message
+  bool retry;              // flag set to "true" to trigger a command resend. Initially set to "false" (no need to resend)
+  int8_t retry_attempts;   // remaining retry attempts. Initially set to default max value CMD_RETRY_COUNT
+  GCODE_INFO gcode_info;   // command to resend
+} GCODE_RETRY_INFO;
+
 typedef enum
 {
   NO_WRITING = 0,
@@ -25,6 +34,7 @@ typedef enum
 } WRITING_MODE;
 
 GCODE_QUEUE cmdQueue;                    // command queue where commands to be sent are stored
+GCODE_RETRY_INFO cmdRetryInfo = {0};     // command retry info, Requires command line number and checksun feature enabled in TFT
 char * cmd_ptr;
 uint8_t cmd_len;
 SERIAL_PORT_INDEX cmd_port_index;        // index of serial port originating the gcode
@@ -224,6 +234,23 @@ static inline bool getCmd(void)
   return (cmd_port_index == PORT_1);  // if gcode is originated by TFT (SERIAL_PORT), return "true"
 }
 
+static inline void getCmdFromCmdRetryInfo(void)
+{
+  cmd_ptr = cmdRetryInfo.gcode_info.gcode;
+  cmd_port_index = cmdRetryInfo.gcode_info.port_index;
+  cmd_len = strlen(cmd_ptr);
+}
+
+void setCmdRetryInfo(uint32_t lineNumber)
+{
+  cmdRetryInfo.line_number = lineNumber;          // set line number to the provided value
+  cmdRetryInfo.retry = false;                     // set retry flag to "false" (no need to resend)
+  cmdRetryInfo.retry_attempts = CMD_RETRY_COUNT;  // set retry attempts to default max value CMD_RETRY_COUNT
+
+  strncpy_no_pad(cmdRetryInfo.gcode_info.gcode, cmd_ptr, CMD_MAX_SIZE);  // copy command
+  cmdRetryInfo.gcode_info.port_index = cmd_port_index;                   // copy port index
+}
+
 // Purge gcode cmd or send it to the printer and then remove it from cmdQueue queue.
 bool sendCmd(bool purge, bool avoidTerminal)
 {
@@ -237,24 +264,40 @@ bool sendCmd(bool purge, bool avoidTerminal)
     // dump serial data sent to debug port
     Serial_Put(SERIAL_DEBUG_PORT, serialPort[cmd_port_index].id);  // serial port ID (e.g. "2" for SERIAL_PORT_2)
     Serial_Put(SERIAL_DEBUG_PORT, ">>");
-
-    if (purge)
-      Serial_Put(SERIAL_DEBUG_PORT, purgeStr);
-
-    Serial_Put(SERIAL_DEBUG_PORT, cmd_ptr);
   #endif
 
   if (!purge)  // if command is not purged, send it to printer
   {
-    UPD_TX_KPIS(cmd_len);  // debug monitoring KPI
+    if (!cmdRetryInfo.retry)  // if there is no pending command to resend
+    {
+      if (GET_BIT(infoSettings.general_settings, INDEX_CMD_CHECKSUM) == 1 || infoMachineSettings.firmwareType == FW_REPRAPFW)
+        setCmdRetryInfo(addCmdLineNumberAndChecksum(cmd_ptr, cmd_base_index, &cmd_len));
 
-    if (GET_BIT(infoSettings.general_settings, INDEX_CMD_CHECKSUM) == 1 || infoMachineSettings.firmwareType == FW_REPRAPFW)
-      addCmdLineNumberAndChecksum(&cmd_ptr[cmd_base_index]);
+      cmdQueue.count--;
+      cmdQueue.index_r = (cmdQueue.index_r + 1) % CMD_QUEUE_SIZE;
+    }
+    else  // if there is a pending command to resend
+    {
+      cmdRetryInfo.retry = false;     // disable command resend flag
+      cmdRetryInfo.retry_attempts--;  // update remaining retry attempts
+    }
+
+    // send or resend command
 
     Serial_Put(SERIAL_PORT, cmd_ptr);
 
     setCurrentAckSrc(cmd_port_index);
+
+    UPD_TX_KPIS(cmd_len);  // debug monitoring KPI
   }
+  #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
+    else  // if command is purged
+    {
+      Serial_Put(SERIAL_DEBUG_PORT, purgeStr);
+    }
+
+    Serial_Put(SERIAL_DEBUG_PORT, cmd_ptr);
+  #endif
 
   if (!avoidTerminal && MENU_IS(menuTerminal))
   {
@@ -263,9 +306,6 @@ bool sendCmd(bool purge, bool avoidTerminal)
 
     terminalCache(cmd_ptr, cmd_len, cmd_port_index, SRC_TERMINAL_GCODE);
   }
-
-  cmdQueue.count--;
-  cmdQueue.index_r = (cmdQueue.index_r + 1) % CMD_QUEUE_SIZE;
 
   return !purge;  // return "true" if command was sent. Otherwise, return "false"
 }
@@ -477,20 +517,23 @@ void syncTargetTemp(uint8_t index)
 
 void handleCmdLineNumberMismatch(const uint32_t lineNumber)
 {
-  // if printing from remote host or line number already notified, nothing to do.
-  // Command line number and checksum are probably engaged by the remote host
-  // (and disabled in TFT) so error handling must also be managed by the remote host
-  //
-  if (isPrintingFromRemoteHost() || getCmdLineNumberOk() == lineNumber)
-    return;
+  // if no buffered command with the requested line number is found, reset the line number with M110 just
+  // to try to avoid further retransmission requests for the same line number or for any out of synch command
+  // already sent to the mainboard (e.g. in case "ADVANCED OK" feature is enabled in TFT)
+  if (cmdRetryInfo.line_number != lineNumber)
+  {
+    CMD cmd;
 
-  setCmdLineNumber(lineNumber);  // set provided line number as new base line number
+    sprintf(cmd, "M110 N%d", lineNumber);
 
-  CMD cmd;
+    sendEmergencyCmd(cmd);  // immediately send M110 command to set new base line number on mainboard
 
-  sprintf(cmd, "M110 N%d", lineNumber);
-
-  sendEmergencyCmd(cmd);  // immediately send M110 command to set new base line number on mainboard
+    setCmdLineNumber(lineNumber);  // set provided line number as new base line number
+  }
+  else if (cmdRetryInfo.retry_attempts > 0)  // if a command with the requested line number is present on the buffer and
+  {                                          // not already resent for the maximum retry attemps, mark it as to be sent
+    cmdRetryInfo.retry = true;
+  }
 }
 
 // Check if the received gcode is an emergency command or not
@@ -543,26 +586,41 @@ void sendEmergencyCmd(CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
     // dump serial data sent to debug port
     Serial_Put(SERIAL_DEBUG_PORT, serialPort[portIndex].id);  // serial port ID (e.g. "2" for SERIAL_PORT_2)
     Serial_Put(SERIAL_DEBUG_PORT, ">>");
+  #endif
+
+  uint8_t cmdLen = strlen(emergencyCmd);
+
+  if (infoMachineSettings.firmwareType == FW_REPRAPFW)
+    setCmdRetryInfo(addCmdLineNumberAndChecksum(emergencyCmd, 0, &cmdLen));
+
+  #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
     Serial_Put(SERIAL_DEBUG_PORT, emergencyCmd);
   #endif
 
-  if (infoMachineSettings.firmwareType == FW_REPRAPFW)
-    addCmdLineNumberAndChecksum(emergencyCmd);
+  UPD_TX_KPIS(cmdLen);  // debug monitoring KPI
 
   Serial_Put(SERIAL_PORT, emergencyCmd);
 
   setCurrentAckSrc(portIndex);
 
   if (MENU_IS(menuTerminal))
-    terminalCache(emergencyCmd, strlen(emergencyCmd), portIndex, SRC_TERMINAL_GCODE);
+    terminalCache(emergencyCmd, cmdLen, portIndex, SRC_TERMINAL_GCODE);
 }
 
 // Parse and send gcode cmd in cmdQueue queue.
 void sendQueueCmd(void)
 {
-  if (infoHost.tx_slots == 0 || cmdQueue.count == 0) return;
+  if (infoHost.tx_slots == 0 || (cmdQueue.count == 0 && !cmdRetryInfo.retry)) return;
 
   bool avoid_terminal = false;
+
+  if (cmdRetryInfo.retry)  // if there is a pending command to resend
+  {
+    getCmdFromCmdRetryInfo();  // retrieve gcode from cmdRetryInfo
+
+    goto send_cmd;  // send the command
+  }
+
   bool fromTFT = getCmd();  // retrieve leading gcode in the queue and check if it is originated by TFT or other hosts
 
   if (writing_mode != NO_WRITING)  // if writing mode (previously triggered by M28)

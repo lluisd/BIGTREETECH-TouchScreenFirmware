@@ -174,12 +174,12 @@ void initSettings(void)
     infoSettings.pause_feedrate[i]    = default_pause_speed[i];  // XY, Z, E
   }
 
-  for (int i = 0; i < FEEDRATE_COUNT - 1 ; i++)  // xy, z
+  for (int i = 0; i < FEEDRATE_COUNT - 1; i++)  // xy, z
   {
     infoSettings.level_feedrate[i]    = default_level_speed[i];
   }
 
-  for (int i = 0; i < LED_COLOR_COMPONENT_COUNT - 1 ; i++)
+  for (int i = 0; i < LED_COLOR_COMPONENT_COUNT - 1; i++)
   {
     infoSettings.led_color[i]         = default_led_color[i];
   }

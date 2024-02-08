@@ -3,7 +3,7 @@
 
 // line number of last command properly processed by mainboard and line number of last command sent by TFT respectively.
 // Requires command line number and checksun feature enabled in TFT
-static uint32_t cmd_line_number_ok = 0xFFFFFFFF;  // no processed line number
+static uint32_t cmd_line_number_ok = NO_LINE_NUMBER;
 static uint32_t cmd_line_number = 0;
 
 uint32_t getCmdLineNumberOk(void)
@@ -21,51 +21,55 @@ void setCmdLineNumber(const uint32_t lineNumber)
   cmd_line_number_ok = cmd_line_number = lineNumber;
 }
 
-void addCmdLineNumberAndChecksum(char * str)
+uint32_t addCmdLineNumberAndChecksum(CMD cmd, uint8_t cmdIndex, uint8_t * cmdLen)
 {
-  CMD cmd;  // temporary working buffer
+  CMD plainCmd;  // plain command (with no line number and checksum, if any)
 
-  strcpy(cmd, str);       // e.g. "N1 G28*46\n" -> "G28*46\n"
-  stripCmdChecksum(cmd);  // e.g. "G28*46\n" -> "G28"
+  strcpy(plainCmd, &cmd[cmdIndex]);  // e.g. "N1 G28*46\n" -> "G28*46\n"
+  stripCmdChecksum(plainCmd);        // e.g. "G28*46\n" -> "G28"
 
-  if (strlen(cmd) + 16 > CMD_MAX_SIZE)  // we consider extra bytes for line number, checksum, "\n" and "\0"
+  if (strlen(plainCmd) + 16 > CMD_MAX_SIZE)  // we consider extra bytes for line number, checksum, "\n" and "\0"
   {
-    addNotification(DIALOG_TYPE_ERROR, "Command too long", "Checksum not applied", true);
+    addNotification(DIALOG_TYPE_ERROR, "Command too long", cmd, true);
 
-    return;
+    return NO_LINE_NUMBER;
   }
 
   cmd_line_number++;  // next command line number to be used
 
-  sprintf(str, "N%lu %s", cmd_line_number, cmd);             // e.g. "G28" -> "N2 G28"
-  sprintf(&str[strlen(str)], "*%u\n", getCmdChecksum(str));  // e.g. "N2 G28" -> "N2 G28*56\n"
+  sprintf(cmd, "N%lu %s", cmd_line_number, plainCmd);        // e.g. "G28" -> "N2 G28"
+  sprintf(strchr(cmd, '\0'), "*%u\n", getCmdChecksum(cmd));  // e.g. "N2 G28" -> "N2 G28*56\n"
+
+  *cmdLen = strlen(cmd);
+
+  return cmd_line_number;
 }
 
-const char * stripCmdHead(const char * str)
+const char * stripCmdHead(const CMD cmd)
 {
   // example: ":    /test/cap2.gcode\n" -> "test/cap2.gcode\n"
 
-  while (*str == ' ' || *str == '/' || *str == ':')
+  while (*cmd == ' ' || *cmd == '/' || *cmd == ':')
   {
-    str++;
+    cmd++;
   }
 
-  return str;
+  return cmd;
 }
 
-void stripCmdChecksum(char * str)
+void stripCmdChecksum(CMD cmd)
 {
   // examples:
   //
   // "/test/cap2.gcode  *36\n\0" -> "/test/cap2.gcode"
   // "/test/cap2.gcode  \n\0" -> "/test/cap2.gcode"
 
-  char * strPtr = strrchr(str, '*');  // e.g. "/test/cap2.gcode  *36\n\0" -> "*36\n\0"
+  char * strPtr = strrchr(cmd, '*');  // e.g. "/test/cap2.gcode  *36\n\0" -> "*36\n\0"
 
   if (strPtr == NULL)
-    strPtr = str + strlen(str);       // e.g. "/test/cap2.gcode  \n\0" -> "\0"
+    strPtr = cmd + strlen(cmd);       // e.g. "/test/cap2.gcode  \n\0" -> "\0"
 
-  while (strPtr != str)
+  while (strPtr != cmd)
   {
     // e.g. "*36\n\0" -> " *36\n\0"
     // e.g. "\0" -> "\n\0"
@@ -85,21 +89,21 @@ void stripCmdChecksum(char * str)
   *strPtr = '\0';
 }
 
-uint8_t getCmdChecksum(const char * str)
+uint8_t getCmdChecksum(const CMD cmd)
 {
   uint8_t checksum = 0;
 
-  while (*str != '\0')
+  while (*cmd != '\0')
   {
-    checksum ^= *(str++);
+    checksum ^= *(cmd++);
   }
 
   return checksum;
 }
 
-bool validateCmdChecksum(const char * str)
+bool validateCmdChecksum(const CMD cmd)
 {
-  char * strPtr = strrchr(str, '*');  // e.g. "N1 G28*18\n\0" -> "*18\n\0"
+  char * strPtr = strrchr(cmd, '*');  // e.g. "N1 G28*18\n\0" -> "*18\n\0"
 
   if (strPtr == NULL)
     return false;
@@ -107,7 +111,7 @@ bool validateCmdChecksum(const char * str)
   uint8_t checksum = 0;
   uint8_t value = strtol(&strPtr[1], NULL, 10);
 
-  while (strPtr != str)
+  while (strPtr != cmd)
   {
     checksum ^= *(--strPtr);
   }
@@ -115,10 +119,9 @@ bool validateCmdChecksum(const char * str)
   return (checksum == value ? true : false);
 }
 
-const char * parseM118(char * str, bool * hasE, bool * hasA)
+const char * parseM118(CMD cmd, bool * hasE, bool * hasA)
 {
-  stripCmdChecksum(str);
-  str = (char *) stripCmdHead(str);
+  stripCmdChecksum((char *) stripCmdHead(cmd));
 
   *hasE = false;
   *hasA = false;
@@ -126,10 +129,10 @@ const char * parseM118(char * str, bool * hasE, bool * hasA)
   for (uint8_t i = 3; i--;)
   {
     // A1, E1 and Pn are always parsed out
-    if (!(((str[0] == 'A' || str[0] == 'E') && str[1] == '1') || (str[0] == 'P' && NUMERIC(str[1]))))
+    if (!(((cmd[0] == 'A' || cmd[0] == 'E') && cmd[1] == '1') || (cmd[0] == 'P' && NUMERIC(cmd[1]))))
       break;
 
-    switch (str[0])
+    switch (cmd[0])
     {
       case 'A':
         *hasA = true;
@@ -140,13 +143,13 @@ const char * parseM118(char * str, bool * hasE, bool * hasA)
         break;
     }
 
-    str += 2;
+    cmd += 2;
 
-    while (*str == ' ')
+    while (*cmd == ' ')
     {
-      ++str;
+      ++cmd;
     }
   }
 
-  return str;
+  return cmd;
 }
