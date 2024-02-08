@@ -87,7 +87,7 @@ void InfoHost_Init(bool isConnected);
 //     - >= 0: to handle static ADVANCED_OK and Marlin ADVANCED_OK
 void InfoHost_HandleAckOk(int16_t tx_slots);
 
-bool InfoHost_HandleAckTimeout(void);     // handle ACK message timeout. Return "true" if ACK message timed out
+bool InfoHost_HandleAckTimeout(void);     // handle ACK message timeout, if any. Return "true" if ACK message timed out
 void InfoHost_UpdateAckTimestamp(void);   // update last received ACK message timestamp
 void InfoHost_UpdateListeningMode(void);  // update listening mode
 

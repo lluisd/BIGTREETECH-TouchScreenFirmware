@@ -1390,9 +1390,13 @@ void parseACK(void)
     {
       // command line number mismatch or checksum mismatch.
       // Required command line number and checksum feature enabled in TFT or managed by remote host
-      if (ack_continue_seen("Last Line:") && getCmdLineNumberOk() == (uint32_t)ack_value())
+      if (ack_continue_seen("Last Line:"))
       {
-        // nothing to do. Error message for the same line number has been previously displayed
+        if (getCmdLineNumberOk() != (uint32_t)ack_value())  // if error message for same line number not previously displayed
+        {
+          ack_seen(magic_error);      // just to reset ack_index to the beginning of the full error message to display
+          ackPopupInfo(magic_error);  // display error message
+        }
       }
       else
       {
