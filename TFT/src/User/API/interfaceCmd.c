@@ -35,10 +35,11 @@ typedef enum
 
 GCODE_QUEUE cmdQueue;                    // command queue where commands to be sent are stored
 GCODE_RETRY_INFO cmdRetryInfo = {0};     // command retry info, Requires command line number and checksun feature enabled in TFT
+
 char * cmd_ptr;
 uint8_t cmd_len;
 SERIAL_PORT_INDEX cmd_port_index;        // index of serial port originating the gcode
-uint8_t cmd_base_index;                  // base index in case the gcode has checksum ("Nxxx " is present at the beginning of gcode)
+uint8_t cmd_base_index;                  // base index in case the gcode has checksum ("Nxx " is present at the beginning of gcode)
 uint8_t cmd_index;
 WRITING_MODE writing_mode = NO_WRITING;  // writing mode. Used by M28 and M29
 FIL file;
