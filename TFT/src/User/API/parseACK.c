@@ -421,7 +421,7 @@ void parseACK(void)
 
       // 1) store on command queue the above gcodes to detect printer info
       // 2) re-initialize infoHost when connected to avoid this code branch is executed again
-      // 3) set requestCommandInfo.inJson to "false" and detect the presence of Marlin ADVANCED_OK
+      // 3) set requestCommandInfo.inJson to "false" and detect the presence of Marlin "ADVANCED_OK"
       //    feature (if any) and its command queue size
       // 4) finally, set listening mode flag according to its last state stored in flash
       //
@@ -800,7 +800,7 @@ void parseACK(void)
         }
       }
     }
-    // "Resend:" response handling. Required command line number and checksum feature enabled in TFT or managed by remote host
+    // "Resend:" response handling. Required COMMAND_CHECKSUM feature enabled in TFT or managed by remote host
     else if (ack_starts_with("Resend:"))
     {
       handleCmdLineNumberMismatch((uint32_t)ack_value());
@@ -1389,7 +1389,7 @@ void parseACK(void)
     else if (ack_seen(magic_error))
     {
       // command line number mismatch or checksum mismatch.
-      // Required command line number and checksum feature enabled in TFT or managed by remote host
+      // Required COMMAND_CHECKSUM feature enabled in TFT or managed by remote host
       if (ack_continue_seen("Last Line:"))
       {
         if (getCmdLineNumberOk() != (uint32_t)ack_value())  // if error message for same line number not previously displayed

@@ -80,7 +80,36 @@
  */
 #define ADVANCED_OK 0  // Default: 0
 
-#define CMD_CHECKSUM 0  // Default: 0
+/**
+ * Command Checksum
+ * The TFT enriches each G-code to be sent to the mainboard adding a leading sequential line number
+ * and a trailing checksum appended after an "*" character used as separator.
+ * The checksum is calculated on the G-code with the applied line number. E.g. "G28" is first enriched
+ * with a line number (e.g. "N1 G28") and finally a checksum calculated on that enriched G-code is
+ * appended (e.g. "N1 G28*46").
+ * A data integrity check (sequential line number check and checksum check) will be performed on the
+ * mainboard. In case of data mismatch (e.g. data corruption due to EMI on communication serial line):
+ * - the mainboard will send to the TFT an error ACK message followed by a "Resend: " ACK message to
+ *   ask TFT to resend the G-code with the requested line number.
+ * - the TFT will check the presence on an internal buffer of the G-code with the requested line number:
+ *   - if found, the G-code is resent for a maximum of 3 attempts.
+ *   - if not found or the maximum number of attempts has been reached, the TFT will reset the line
+ *     number with "M110" (sent as an emergency command without the COMMAND_CHECKSUM feature applied)
+ *     just to try to avoid further retransmission requests for the same line number or for any out of
+ *     synch command already sent to the mainboard (e.g. in case ADVANCED_OK feature is enabled in TFT).
+ *
+ * NOTE: Disable it in case:
+ *       - printing is controlled by a remote host (e.g. ESP3D, OctoPrint etc.) and a COMMAND_CHECKSUM
+ *         feature is enabled and managed by the remote host. Otherwise (COMMAND_CHECKSUM feature also
+ *         enabled in TFT), the TFT's COMMAND_CHECKSUM feature will always replace the one provided by
+ *         the remote host causing conflicts in case data mismatch will be notified by the mainboard.
+ *       - ADVANCED_OK feature is enabled in TFT. Otherwise, any out of synch command already sent to
+ *         the mainboard will be discarded by the mainboard and not resent by the TFT due the current
+ *         implementation buffers only the last sent command and not all the pending commands.
+ *
+ *   Options: [disable: 0, enable: 1]
+ */
+#define COMMAND_CHECKSUM 1  // Default: 1
 
 /**
  * Emulated M600

@@ -271,7 +271,7 @@ bool sendCmd(bool purge, bool avoidTerminal)
   {
     if (!cmdRetryInfo.retry)  // if there is no pending command to resend
     {
-      if (GET_BIT(infoSettings.general_settings, INDEX_CMD_CHECKSUM) == 1 || infoMachineSettings.firmwareType == FW_REPRAPFW)
+      if (GET_BIT(infoSettings.general_settings, INDEX_COMMAND_CHECKSUM) == 1)
         setCmdRetryInfo(addCmdLineNumberAndChecksum(cmd_ptr, cmd_base_index, &cmd_len));
 
       cmdQueue.count--;
@@ -285,11 +285,11 @@ bool sendCmd(bool purge, bool avoidTerminal)
 
     // send or resend command
 
+    UPD_TX_KPIS(cmd_len);  // debug monitoring KPI
+
     Serial_Put(SERIAL_PORT, cmd_ptr);
 
     setCurrentAckSrc(cmd_port_index);
-
-    UPD_TX_KPIS(cmd_len);  // debug monitoring KPI
   }
   #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
     else  // if command is purged
@@ -520,7 +520,7 @@ void handleCmdLineNumberMismatch(const uint32_t lineNumber)
 {
   // if no buffered command with the requested line number is found, reset the line number with M110 just
   // to try to avoid further retransmission requests for the same line number or for any out of synch command
-  // already sent to the mainboard (e.g. in case "ADVANCED OK" feature is enabled in TFT)
+  // already sent to the mainboard (e.g. in case ADVANCED_OK feature is enabled in TFT)
   if (cmdRetryInfo.line_number != lineNumber)
   {
     CMD cmd;
@@ -532,7 +532,7 @@ void handleCmdLineNumberMismatch(const uint32_t lineNumber)
     setCmdLineNumber(lineNumber);  // set provided line number as new base line number
   }
   else if (cmdRetryInfo.retry_attempts > 0)  // if a command with the requested line number is present on the buffer and
-  {                                          // not already resent for the maximum retry attemps, mark it as to be sent
+  {                                          // not already resent for the maximum retry attempts, mark it as to be sent
     cmdRetryInfo.retry = true;
   }
 }
@@ -587,16 +587,10 @@ void sendEmergencyCmd(CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
     // dump serial data sent to debug port
     Serial_Put(SERIAL_DEBUG_PORT, serialPort[portIndex].id);  // serial port ID (e.g. "2" for SERIAL_PORT_2)
     Serial_Put(SERIAL_DEBUG_PORT, ">>");
+    Serial_Put(SERIAL_DEBUG_PORT, emergencyCmd);
   #endif
 
   uint8_t cmdLen = strlen(emergencyCmd);
-
-  if (infoMachineSettings.firmwareType == FW_REPRAPFW)
-    setCmdRetryInfo(addCmdLineNumberAndChecksum(emergencyCmd, 0, &cmdLen));
-
-  #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
-    Serial_Put(SERIAL_DEBUG_PORT, emergencyCmd);
-  #endif
 
   UPD_TX_KPIS(cmdLen);  // debug monitoring KPI
 

@@ -26,7 +26,7 @@ void initSettings(void)
   infoSettings.tx_slots               = TX_SLOTS;
   infoSettings.general_settings       = ((0 << INDEX_LISTENING_MODE) |
                                          (ADVANCED_OK << INDEX_ADVANCED_OK) |
-                                         (CMD_CHECKSUM << INDEX_CMD_CHECKSUM) |
+                                         (COMMAND_CHECKSUM << INDEX_COMMAND_CHECKSUM) |
                                          (EMULATED_M600 << INDEX_EMULATED_M600) |
                                          (EMULATED_M109_M190 << INDEX_EMULATED_M109_M190) |
                                          (EVENT_LED << INDEX_EVENT_LED) |
