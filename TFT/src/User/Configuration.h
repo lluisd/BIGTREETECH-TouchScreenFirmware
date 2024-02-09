@@ -243,7 +243,7 @@
  *   Options: [OFF: 0, POPUP: 1, TOAST: 2]
  *     OFF:   No notification. The message is ignored.
  *     POPUP: Display a popup window for user confirmation.
- *     TOAST: A non-blocking Toast notification is displayed for few seconds. No user interaction is needed.
+ *     TOAST: A non-blocking toast notification is displayed for few seconds. No user interaction is needed.
  */
 #define ACK_NOTIFICATION 1  // Default: 1
 
