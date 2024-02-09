@@ -74,7 +74,10 @@
  *   support the transmission of G-codes according to the configured "TX_SLOTS" setting.
  * If disabled, the TFT will provide the standard transmission logic based on one G-code per time.
  *
- * NOTE: Disable it in case no ADVANCED_OK feature is requested/needed by the user.
+ * NOTE: Disable it in case:
+ *       - no ADVANCED_OK feature is requested/needed by the user.
+ *       - COMMAND_CHECKSUM feature (see description of next setting "command_checksum") is
+ *         requested/needed by the user.
  *
  *   Options: [disable: 0, enable: 1]
  */
