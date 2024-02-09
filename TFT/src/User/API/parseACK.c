@@ -619,7 +619,10 @@ void parseACK(void)
     else if (ack_seen("Count E:"))
     {
       coordinateSetExtruderActualSteps(ack_value());
-      FIL_PosE_ClearUpdateWaiting();
+
+      #ifdef FIL_RUNOUT_PIN
+        FIL_PosE_ClearUpdateWaiting();
+      #endif
     }
     // parse and store M114, current position
     else if (ack_starts_with("X:") || ack_seen("C: X:"))  // Smoothieware axis position starts with "C: X:"
@@ -670,20 +673,22 @@ void parseACK(void)
     {
       fanSetCurSpeed(ack_continue_seen("P") ? ack_value() : 0, ack_seen("S") ? ack_value() : 100);
     }
-    // parse M300 sound coming from the host, play on TFT
-    else if (ack_seen("M300"))
-    {
-      uint16_t hz = 260;   // default Marlin tone frequency: 260Hz
-      uint16_t ms = 1000;  // default Marlin tone duration: 1000ms
+    #ifdef BUZZER_PIN
+      // parse M300 sound coming from the host, play on TFT
+      else if (ack_seen("M300"))
+      {
+        uint16_t hz = 260;   // default Marlin tone frequency: 260Hz
+        uint16_t ms = 1000;  // default Marlin tone duration: 1000ms
 
-      if (ack_seen("S"))
-        hz = ack_value();
+        if (ack_seen("S"))
+          hz = ack_value();
 
-      if (ack_seen("P"))
-        ms = ack_value();
+        if (ack_seen("P"))
+          ms = ack_value();
 
-      Buzzer_AddSound(hz, ms);  // (freq, duration), process tone by TFT
-    }
+        Buzzer_AddSound(hz, ms);  // (freq, duration), process tone by TFT
+      }
+    #endif
     // parse and store M710, controller fan
     else if (ack_starts_with("M710"))
     {

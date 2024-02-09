@@ -23,7 +23,10 @@ void resetPendingQueries(void)
 
   heatClearUpdateWaiting();             // clear pending temperature query and set next update time
   printClearUpdateWaiting();            // clear pending printing query and set next update time
-  FIL_PosE_ClearUpdateWaiting();        // clear pending position query and set next update time
+
+  #ifdef FIL_RUNOUT_PIN
+    FIL_PosE_ClearUpdateWaiting();      // clear pending position query and set next update time
+  #endif
 }
 
 // non-UI background loop tasks

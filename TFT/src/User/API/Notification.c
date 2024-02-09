@@ -52,32 +52,32 @@ void drawToast(bool redraw)
 
     // draw icon
     uint8_t * icon;
-    SOUND cursound;
+    SOUND curSound;
 
     switch (toastlist[curToastDisplay].style)
     {
       case DIALOG_TYPE_ERROR:
         GUI_SetColor(NOTIF_ICON_ERROR_BG_COLOR);
         icon = IconCharSelect(CHARICON_ERROR);
-        cursound = SOUND_ERROR;
+        curSound = SOUND_ERROR;
         break;
 
       case DIALOG_TYPE_SUCCESS:
         GUI_SetColor(NOTIF_ICON_SUCCESS_BG_COLOR);
         icon = IconCharSelect(CHARICON_OK_ROUND);
-        cursound = SOUND_SUCCESS;
+        curSound = SOUND_SUCCESS;
         break;
 
       default:
         GUI_SetColor(NOTIF_ICON_INFO_BG_COLOR);
         icon = IconCharSelect(CHARICON_INFO);
-        cursound = SOUND_TOAST;
+        curSound = SOUND_TOAST;
         break;
     }
 
     if (!redraw)  // if notification is new
     {
-      BUZZER_PLAY(cursound);  // play sound
+      BUZZER_PLAY(curSound);  // play sound
       nextToastTime = OS_GetTimeMs() + SEC_TO_MS(TOAST_DURATION);  // set new timer
     }
 
