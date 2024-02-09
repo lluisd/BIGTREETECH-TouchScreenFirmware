@@ -34,7 +34,7 @@ typedef enum
 } WRITING_MODE;
 
 GCODE_QUEUE cmdQueue;                    // command queue where commands to be sent are stored
-GCODE_RETRY_INFO cmdRetryInfo = {0};     // command retry info, Requires command line number and checksun feature enabled in TFT
+GCODE_RETRY_INFO cmdRetryInfo = {0};     // command retry info. Required COMMAND_CHECKSUM feature enabled in TFT
 
 char * cmd_ptr;
 uint8_t cmd_len;
@@ -197,13 +197,13 @@ char * stripCmd(char ** cmdPtr)
   char * strPtr = *cmdPtr;
 
   // skip leading spaces
-  while (*strPtr == ' ') strPtr++;           // e.g. "  N1   G28*46\n" -> "N1   G28*46\n"
+  while (*strPtr == ' ') strPtr++;           // e.g. "  N1   G28*18\n" -> "N1   G28*18\n"
 
   // save pointer to skipped spaces
-  *cmdPtr = strPtr;                          // e.g. "  N1   G28*46\n" -> "N1   G28*46\n"
+  *cmdPtr = strPtr;                          // e.g. "  N1   G28*18\n" -> "N1   G28*18\n"
 
   // skip N[-0-9] (line number) if included in the command line
-  if (*strPtr == 'N' && NUMERIC(strPtr[1]))  // e.g. "N1   G28*46\n" -> "G28*46\n"
+  if (*strPtr == 'N' && NUMERIC(strPtr[1]))  // e.g. "N1   G28*18\n" -> "G28*18\n"
   {
     strPtr += 2;                             // skip N[-0-9]
     while (NUMERIC(*strPtr)) strPtr++;       // skip [0-9]*
@@ -225,10 +225,10 @@ static inline bool getCmd(void)
   //
   // set cmd_base_index with index of gcode command
   //
-  cmd_base_index = stripCmd(&cmd_ptr) - cmd_ptr;                 // e.g. "N1   G28*46\n" -> "G28*46\n"
+  cmd_base_index = stripCmd(&cmd_ptr) - cmd_ptr;                 // e.g. "N1   G28*18\n" -> "G28*18\n"
 
   // set cmd_index with index of gcode value
-  cmd_index = cmd_base_index + 1;                                // e.g. "G28*46\n" -> "28*46\n"
+  cmd_index = cmd_base_index + 1;                                // e.g. "G28*18\n" -> "28*18\n"
 
   cmd_len = strlen(cmd_ptr);                                     // length of gcode
 
@@ -374,12 +374,12 @@ bool initRemoteTFT()
 {
   // examples:
   //
-  // "cmd_ptr" = "N1 M23 SD:/test/cap2.gcode*36\n"
-  // "cmd_ptr" = "N1 M23 S /test/cap2.gcode*36\n"
+  // "cmd_ptr" = "N1 M23 SD:/test/cap2.gcode*12\n"
+  // "cmd_ptr" = "N1 M23 S /test/cap2.gcode*82\n"
   //
   // "infoFile.path" = "SD:/test/cap2.gcode"
 
-  // e.g. "N1 M23 SD:/test/cap2.gcode*36\n" -> "SD:/test/cap2.gcode*36\n"
+  // e.g. "N1 M23 SD:/test/cap2.gcode*12\n" -> "SD:/test/cap2.gcode*12\n"
   //
   if (cmd_seen_from(cmd_base_index, "SD:") || cmd_seen_from(cmd_base_index, "S "))
     infoFile.source = FS_TFT_SD;   // set source first
@@ -394,8 +394,8 @@ bool initRemoteTFT()
   CMD path;  // temporary working buffer (cmd_ptr buffer must always remain unchanged)
 
   // cmd_index was set by cmd_seen_from() function
-  strcpy(path, &cmd_ptr[cmd_index]);  // e.g. "N1 M23 SD:/test/cap2.gcode*36\n" -> "/test/cap2.gcode*36\n"
-  stripCmdChecksum(path);             // e.g. "/test/cap2.gcode*36\n" -> /test/cap2.gcode"
+  strcpy(path, &cmd_ptr[cmd_index]);  // e.g. "N1 M23 SD:/test/cap2.gcode*12\n" -> "/test/cap2.gcode*12\n"
+  stripCmdChecksum(path);             // e.g. "/test/cap2.gcode*12\n" -> /test/cap2.gcode"
 
   resetInfoFile();                  // then reset infoFile (source is restored)
   enterFolder(stripCmdHead(path));  // set path as last
@@ -459,12 +459,12 @@ static inline void writeRemoteTFT()
 {
   // examples:
   //
-  // "cmd_ptr" = "N1 G28*46\n"
-  // "cmd_ptr" = "N2 G29*56\n"
-  // "cmd_ptr" = "N3 M29*66\n"
+  // "cmd_ptr" = "N1 G28*18\n"
+  // "cmd_ptr" = "N2 G29*16\n"
+  // "cmd_ptr" = "N3 M29*27\n"
 
   // if M29, stop writing mode. cmd_index (used by cmd_value() function) was set by sendQueueCmd() function
-  if (cmd_ptr[cmd_base_index] == 'M' && cmd_value() == 29)  // e.g. "N3 M29*66\n" -> "M29*66\n"
+  if (cmd_ptr[cmd_base_index] == 'M' && cmd_value() == 29)  // e.g. "N3 M29*27\n" -> "M29*27\n"
   {
     f_close(&file);
 
@@ -477,12 +477,13 @@ static inline void writeRemoteTFT()
     UINT br;
     CMD cmd;  // temporary working buffer (cmd_ptr buffer must always remain unchanged)
 
-    strcpy(cmd, &cmd_ptr[cmd_base_index]);  // e.g. "N1 G28*46\n" -> "G28*46\n"
-    stripCmdChecksum(cmd);                  // e.g. "G28*46\n" -> "G28"
+    strcpy(cmd, &cmd_ptr[cmd_base_index]);  // e.g. "N1 G28*18\n" -> "G28*18\n"
+    stripCmdChecksum(cmd);                  // e.g. "G28*18\n" -> "G28"
 
     f_write(&file, cmd, strlen(cmd), &br);
 
-    // "\n" is always removed by stripCmdChecksum() function even if there is no checksum, so we need to write it on file separately
+    // "\n" is always removed by stripCmdChecksum() function even if there is no checksum,
+    // so we need to write it on file separately
     f_write(&file, "\n", 1, &br);
     f_sync(&file);
   }
@@ -545,7 +546,7 @@ void handleCmd(CMD cmd, const SERIAL_PORT_INDEX portIndex)
   // strip out any leading space from the passed command.
   // Furthermore, skip any N[-0-9] (line number) and return a pointer to the beginning of the command
   //
-  char * strPtr = stripCmd(&cmd);  // e.g. "  N1   G28*46\n" -> "G28*46\n"
+  char * strPtr = stripCmd(&cmd);  // e.g. "  N1   G28*18\n" -> "G28*18\n"
 
   // check if the received gcode is an emergency command and parse it accordingly
 

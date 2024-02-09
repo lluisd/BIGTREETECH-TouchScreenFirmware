@@ -2,7 +2,7 @@
 #include <includes.h>
 
 // line number of last command properly processed by mainboard and line number of last command sent by TFT respectively.
-// Requires command line number and checksun feature enabled in TFT
+// Required COMMAND_CHECKSUM feature enabled in TFT
 static uint32_t cmd_line_number_ok = NO_LINE_NUMBER;
 static uint32_t cmd_line_number = 0;
 
@@ -25,8 +25,8 @@ uint32_t addCmdLineNumberAndChecksum(CMD cmd, uint8_t cmdIndex, uint8_t * cmdLen
 {
   CMD plainCmd;  // plain command (with no line number and checksum, if any)
 
-  strcpy(plainCmd, &cmd[cmdIndex]);  // e.g. "N1 G28*46\n" -> "G28*46\n"
-  stripCmdChecksum(plainCmd);        // e.g. "G28*46\n" -> "G28"
+  strcpy(plainCmd, &cmd[cmdIndex]);  // e.g. "N1 G28*18\n" -> "G28*18\n"
+  stripCmdChecksum(plainCmd);        // e.g. "G28*18\n" -> "G28"
 
   if (strlen(plainCmd) + 16 > CMD_MAX_SIZE)  // we consider extra bytes for line number, checksum, "\n" and "\0"
   {
@@ -38,7 +38,7 @@ uint32_t addCmdLineNumberAndChecksum(CMD cmd, uint8_t cmdIndex, uint8_t * cmdLen
   cmd_line_number++;  // next command line number to be used
 
   sprintf(cmd, "N%lu %s", cmd_line_number, plainCmd);        // e.g. "G28" -> "N2 G28"
-  sprintf(strchr(cmd, '\0'), "*%u\n", getCmdChecksum(cmd));  // e.g. "N2 G28" -> "N2 G28*56\n"
+  sprintf(strchr(cmd, '\0'), "*%u\n", getCmdChecksum(cmd));  // e.g. "N2 G28" -> "N2 G28*17\n"
 
   *cmdLen = strlen(cmd);
 
@@ -61,17 +61,17 @@ void stripCmdChecksum(CMD cmd)
 {
   // examples:
   //
-  // "/test/cap2.gcode  *36\n\0" -> "/test/cap2.gcode"
+  // "/test/cap2.gcode  *18\n\0" -> "/test/cap2.gcode"
   // "/test/cap2.gcode  \n\0" -> "/test/cap2.gcode"
 
-  char * strPtr = strrchr(cmd, '*');  // e.g. "/test/cap2.gcode  *36\n\0" -> "*36\n\0"
+  char * strPtr = strrchr(cmd, '*');  // e.g. "/test/cap2.gcode  *18\n\0" -> "*18\n\0"
 
   if (strPtr == NULL)
     strPtr = cmd + strlen(cmd);       // e.g. "/test/cap2.gcode  \n\0" -> "\0"
 
   while (strPtr != cmd)
   {
-    // e.g. "*36\n\0" -> " *36\n\0"
+    // e.g. "*18\n\0" -> " *18\n\0"
     // e.g. "\0" -> "\n\0"
     //
     --strPtr;
@@ -83,7 +83,7 @@ void stripCmdChecksum(CMD cmd)
     }
   }
 
-  // e.g. "  *36\n\0" -> "\0 *36\n\0"
+  // e.g. "  *18\n\0" -> "\0 *18\n\0"
   // e.g. "  \n\0" -> "\0 \n\0"
   //
   *strPtr = '\0';
