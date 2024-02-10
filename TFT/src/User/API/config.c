@@ -429,7 +429,7 @@ void parseConfigKey(uint16_t index)
       break;
 
     case C_INDEX_TX_SLOTS:
-      SET_VALID_INT_VALUE(infoSettings.tx_slots, 2, 16);
+      SET_VALID_INT_VALUE(infoSettings.tx_slots, MIN_TX_SLOTS, MAX_TX_SLOTS);
       break;
 
     case C_INDEX_ADVANCED_OK:
