@@ -76,7 +76,9 @@
  *
  * NOTE: Disable it in case:
  *       - no ADVANCED_OK feature is requested/needed by the user.
- *       - COMMAND_CHECKSUM feature (see description of next setting "command_checksum") is
+ *       - ADVANCED_OK feature is not providing good printing results or if Marlin firmware reports
+ *         frequent error ACK messages (e.g. unknown command) to the TFT during printing.
+ *       - COMMAND_CHECKSUM feature (see description of next setting "COMMAND_CHECKSUM") is
  *         requested/needed by the user.
  *
  *   Options: [disable: 0, enable: 1]
