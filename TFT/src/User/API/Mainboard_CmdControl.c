@@ -30,7 +30,7 @@ uint32_t addCmdLineNumberAndChecksum(CMD cmd, uint8_t cmdIndex, uint8_t * cmdLen
 
   if (strlen(plainCmd) + 16 > CMD_MAX_SIZE)  // we consider extra bytes for line number, checksum, "\n" and "\0"
   {
-    addNotification(DIALOG_TYPE_ERROR, "Command too long", cmd, true);
+    addNotification(DIALOG_TYPE_ERROR, "Cmd too long", cmd, true);
 
     return NO_LINE_NUMBER;
   }

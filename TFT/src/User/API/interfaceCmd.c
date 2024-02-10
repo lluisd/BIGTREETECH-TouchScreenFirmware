@@ -524,6 +524,15 @@ void handleCmdLineNumberMismatch(const uint32_t lineNumber)
   // already sent to the mainboard (e.g. in case ADVANCED_OK feature is enabled in TFT)
   if (cmdRetryInfo.line_number != lineNumber)
   {
+    if (getCmdLineNumberOk() != lineNumber)  // if notification not already displayed for the same line number mismatch
+    {
+      char msgText[MAX_MSG_LENGTH];
+
+      snprintf(msgText, MAX_MSG_LENGTH, "line: cur=%lu, exp=%lu", cmdRetryInfo.line_number, lineNumber);
+
+      addNotification(DIALOG_TYPE_ERROR, "Cmd not found", msgText, false);
+    }
+
     CMD cmd;
 
     sprintf(cmd, "M110 N%lu", lineNumber);
