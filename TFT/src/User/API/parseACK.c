@@ -1397,8 +1397,9 @@ void parseACK(void)
       // Required COMMAND_CHECKSUM feature enabled in TFT or managed by remote host
       if (ack_continue_seen("Last Line:"))
       {
-        if (getCmdLineNumberOk() != (uint32_t)ack_value())  // if error message for same line number not previously displayed
+        if (getCmdLineNumberOk() != (uint32_t)ack_value())  // if error message not already displayed for the same line number
         {
+          setCmdLineNumberOk((uint32_t)ack_value());
           ack_seen(magic_error);      // just to reset ack_index to the beginning of the full error message to display
           ackPopupInfo(magic_error);  // display error message
         }

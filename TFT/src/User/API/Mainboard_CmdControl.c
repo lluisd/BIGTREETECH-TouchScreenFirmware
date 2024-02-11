@@ -1,9 +1,11 @@
 #include <Mainboard_CmdControl.h>
 #include <includes.h>
 
-// line number of last command properly processed by mainboard and line number of last command sent by TFT respectively.
+// line number of last command properly processed by mainboard,
+// base line number and line number of last command sent by TFT respectively.
 // Required COMMAND_CHECKSUM feature enabled in TFT
 static uint32_t cmd_line_number_ok = NO_LINE_NUMBER;
+static uint32_t cmd_line_number_base = 0;
 static uint32_t cmd_line_number = 0;
 
 uint32_t getCmdLineNumberOk(void)
@@ -11,14 +13,24 @@ uint32_t getCmdLineNumberOk(void)
   return cmd_line_number_ok;
 }
 
+void setCmdLineNumberOk(const uint32_t lineNumber)
+{
+  cmd_line_number_ok = lineNumber;
+}
+
+uint32_t getCmdLineNumberBase(void)
+{
+  return cmd_line_number_base;
+}
+
+void setCmdLineNumberBase(const uint32_t lineNumber)
+{
+  cmd_line_number_base = cmd_line_number = lineNumber;
+}
+
 uint32_t getCmdLineNumber(void)
 {
   return cmd_line_number;
-}
-
-void setCmdLineNumber(const uint32_t lineNumber)
-{
-  cmd_line_number_ok = cmd_line_number = lineNumber;
 }
 
 uint32_t addCmdLineNumberAndChecksum(CMD cmd, uint8_t cmdIndex, uint8_t * cmdLen)

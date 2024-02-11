@@ -524,7 +524,7 @@ void handleCmdLineNumberMismatch(const uint32_t lineNumber)
   // already sent to the mainboard (e.g. in case ADVANCED_OK feature is enabled in TFT)
   if (cmdRetryInfo.line_number != lineNumber)
   {
-    if (getCmdLineNumberOk() != lineNumber)  // if notification not already displayed for the same line number mismatch
+    if (getCmdLineNumberBase() != lineNumber)  // if notification not already displayed for the same line number
     {
       char msgText[MAX_MSG_LENGTH];
 
@@ -533,11 +533,7 @@ void handleCmdLineNumberMismatch(const uint32_t lineNumber)
       addNotification(DIALOG_TYPE_ERROR, "Cmd not found", msgText, false);
     }
 
-    // set line number of last command sent by the TFT to line number of last command properly processed by the
-    // mainboard before creating the M110 command and before invoking the sendEmergencyCmd() function so the next
-    // command sent by the TFT (M110 command) will provide the line number requested by the mainboard (it will not
-    // be discarded by the mainboard) and the M110 command will also provide the proper new base line number
-    setCmdLineNumber(lineNumber - 1);
+    setCmdLineNumberBase(lineNumber);  // set base line number of next command sent by the TFT to the requested line number
 
     CMD cmd;
 
@@ -601,18 +597,10 @@ void sendEmergencyCmd(CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
     // dump serial data sent to debug port
     Serial_Put(SERIAL_DEBUG_PORT, serialPort[portIndex].id);  // serial port ID (e.g. "2" for SERIAL_PORT_2)
     Serial_Put(SERIAL_DEBUG_PORT, ">>");
-  #endif
-
-  uint8_t cmdLen;
-
-  if (GET_BIT(infoSettings.general_settings, INDEX_COMMAND_CHECKSUM) == 1)
-    addCmdLineNumberAndChecksum(emergencyCmd, stripCmd(&emergencyCmd) - emergencyCmd, &cmdLen);  // emergencyCmd and cmdLen are updated
-  else
-    cmdLen = strlen(emergencyCmd);
-
-  #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
     Serial_Put(SERIAL_DEBUG_PORT, emergencyCmd);
   #endif
+
+  uint8_t cmdLen = strlen(emergencyCmd);
 
   UPD_TX_KPIS(cmdLen);  // debug monitoring KPI
 
@@ -1016,7 +1004,7 @@ void sendQueueCmd(void)
           break;
 
         case 110:  // M110
-          setCmdLineNumber(cmd_seen('N') ? (uint32_t)cmd_value() : 0);
+          setCmdLineNumberBase(cmd_seen('N') ? (uint32_t)cmd_value() : 0);
 
         case 117:  // M117
           if (cmd_seen_from(cmd_base_index, "Time Left"))  // parsing printing time left
