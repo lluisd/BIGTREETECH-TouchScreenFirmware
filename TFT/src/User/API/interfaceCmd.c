@@ -272,7 +272,7 @@ bool sendCmd(bool purge, bool avoidTerminal)
     if (!cmdRetryInfo.retry)  // if there is no pending command to resend
     {
       if (GET_BIT(infoSettings.general_settings, INDEX_COMMAND_CHECKSUM) == 1)
-        setCmdRetryInfo(addCmdLineNumberAndChecksum(cmd_ptr, cmd_base_index, &cmd_len));
+        setCmdRetryInfo(addCmdLineNumberAndChecksum(cmd_ptr, cmd_base_index, &cmd_len));  // cmd_ptr and cmd_len are updated
 
       cmdQueue.count--;
       cmdQueue.index_r = (cmdQueue.index_r + 1) % CMD_QUEUE_SIZE;
@@ -533,13 +533,17 @@ void handleCmdLineNumberMismatch(const uint32_t lineNumber)
       addNotification(DIALOG_TYPE_ERROR, "Cmd not found", msgText, false);
     }
 
+    // set line number of last command sent by the TFT to line number of last command properly processed by the
+    // mainboard before creating the M110 command and before invoking the sendEmergencyCmd() function so the next
+    // command sent by the TFT (M110 command) will provide the line number requested by the mainboard (it will not
+    // be discarded by the mainboard) and the M110 command will also provide the proper new base line number
+    setCmdLineNumber(lineNumber - 1);
+
     CMD cmd;
 
     sprintf(cmd, "M110 N%lu", lineNumber);
 
     sendEmergencyCmd(cmd);  // immediately send M110 command to set new base line number on mainboard
-
-    setCmdLineNumber(lineNumber);  // set provided line number as new base line number
   }
   else if (cmdRetryInfo.retry_attempts > 0)  // if a command with the requested line number is present on the buffer and
   {                                          // not already resent for the maximum retry attempts, mark it as to be sent
@@ -597,10 +601,18 @@ void sendEmergencyCmd(CMD emergencyCmd, const SERIAL_PORT_INDEX portIndex)
     // dump serial data sent to debug port
     Serial_Put(SERIAL_DEBUG_PORT, serialPort[portIndex].id);  // serial port ID (e.g. "2" for SERIAL_PORT_2)
     Serial_Put(SERIAL_DEBUG_PORT, ">>");
-    Serial_Put(SERIAL_DEBUG_PORT, emergencyCmd);
   #endif
 
-  uint8_t cmdLen = strlen(emergencyCmd);
+  uint8_t cmdLen;
+
+  if (GET_BIT(infoSettings.general_settings, INDEX_COMMAND_CHECKSUM) == 1)
+    addCmdLineNumberAndChecksum(emergencyCmd, stripCmd(&emergencyCmd) - emergencyCmd, &cmdLen);  // emergencyCmd and cmdLen are updated
+  else
+    cmdLen = strlen(emergencyCmd);
+
+  #if defined(SERIAL_DEBUG_PORT) && defined(DEBUG_SERIAL_COMM)
+    Serial_Put(SERIAL_DEBUG_PORT, emergencyCmd);
+  #endif
 
   UPD_TX_KPIS(cmdLen);  // debug monitoring KPI
 
