@@ -76,21 +76,21 @@ void stripCmdChecksum(CMD cmd)
   // "/test/cap2.gcode  *18\n\0" -> "/test/cap2.gcode"
   // "/test/cap2.gcode  \n\0" -> "/test/cap2.gcode"
 
-  char * strPtr = strrchr(cmd, '*');  // e.g. "/test/cap2.gcode  *18\n\0" -> "*18\n\0"
+  char * cmdPtr = strrchr(cmd, '*');  // e.g. "/test/cap2.gcode  *18\n\0" -> "*18\n\0"
 
-  if (strPtr == NULL)
-    strPtr = cmd + strlen(cmd);       // e.g. "/test/cap2.gcode  \n\0" -> "\0"
+  if (cmdPtr == NULL)
+    cmdPtr = cmd + strlen(cmd);       // e.g. "/test/cap2.gcode  \n\0" -> "\0"
 
-  while (strPtr != cmd)
+  while (cmdPtr != cmd)
   {
     // e.g. "*18\n\0" -> " *18\n\0"
     // e.g. "\0" -> "\n\0"
     //
-    --strPtr;
+    --cmdPtr;
 
-    if (*strPtr != ' ' && *strPtr != '\t' && *strPtr != '\n' && *strPtr != '\r')
+    if (*cmdPtr != ' ' && *cmdPtr != '\t' && *cmdPtr != '\n' && *cmdPtr != '\r')
     {
-      strPtr++;  // next char has to be set to "\0"
+      cmdPtr++;  // next char has to be set to "\0"
       break;
     }
   }
@@ -98,7 +98,7 @@ void stripCmdChecksum(CMD cmd)
   // e.g. "  *18\n\0" -> "\0 *18\n\0"
   // e.g. "  \n\0" -> "\0 \n\0"
   //
-  *strPtr = '\0';
+  *cmdPtr = '\0';
 }
 
 uint8_t getCmdChecksum(const CMD cmd)
@@ -115,17 +115,17 @@ uint8_t getCmdChecksum(const CMD cmd)
 
 bool validateCmdChecksum(const CMD cmd)
 {
-  char * strPtr = strrchr(cmd, '*');  // e.g. "N1 G28*18\n\0" -> "*18\n\0"
+  char * cmdPtr = strrchr(cmd, '*');  // e.g. "N1 G28*18\n\0" -> "*18\n\0"
 
-  if (strPtr == NULL)
+  if (cmdPtr == NULL)
     return false;
 
   uint8_t checksum = 0;
-  uint8_t value = strtol(&strPtr[1], NULL, 10);
+  uint8_t value = strtol(&cmdPtr[1], NULL, 10);
 
-  while (strPtr != cmd)
+  while (cmdPtr != cmd)
   {
-    checksum ^= *(--strPtr);
+    checksum ^= *(--cmdPtr);
   }
 
   return (checksum == value ? true : false);

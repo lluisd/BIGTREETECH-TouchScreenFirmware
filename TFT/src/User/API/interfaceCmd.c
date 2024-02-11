@@ -192,25 +192,20 @@ void clearCmdQueue(void)
 
 // Strip out any leading space from the passed command.
 // Furthermore, skip any N[-0-9] (line number) and return a pointer to the beginning of the command.
-char * stripCmd(char ** cmdPtr)
+char * stripCmd(char * cmdPtr)
 {
-  char * strPtr = *cmdPtr;
-
   // skip leading spaces
-  while (*strPtr == ' ') strPtr++;           // e.g. "  N1   G28*18\n" -> "N1   G28*18\n"
-
-  // save pointer to skipped spaces
-  *cmdPtr = strPtr;                          // e.g. "  N1   G28*18\n" -> "N1   G28*18\n"
+  while (*cmdPtr == ' ') cmdPtr++;           // e.g. "  N1   G28*18\n" -> "N1   G28*18\n"
 
   // skip N[-0-9] (line number) if included in the command line
-  if (*strPtr == 'N' && NUMERIC(strPtr[1]))  // e.g. "N1   G28*18\n" -> "G28*18\n"
+  if (*cmdPtr == 'N' && NUMERIC(cmdPtr[1]))  // e.g. "N1   G28*18\n" -> "G28*18\n"
   {
-    strPtr += 2;                             // skip N[-0-9]
-    while (NUMERIC(*strPtr)) strPtr++;       // skip [0-9]*
-    while (*strPtr == ' ') strPtr++;         // skip [ ]*
+    cmdPtr += 2;                             // skip N[-0-9]
+    while (NUMERIC(*cmdPtr)) cmdPtr++;       // skip [0-9]*
+    while (*cmdPtr == ' ') cmdPtr++;         // skip [ ]*
   }
 
-  return strPtr;
+  return cmdPtr;
 }
 
 // Get the data of the next to be sent command in cmdQueue
@@ -225,7 +220,7 @@ static inline bool getCmd(void)
   //
   // set cmd_base_index with index of gcode command
   //
-  cmd_base_index = stripCmd(&cmd_ptr) - cmd_ptr;                 // e.g. "N1   G28*18\n" -> "G28*18\n"
+  cmd_base_index = stripCmd(cmd_ptr) - cmd_ptr;                 // e.g. "N1   G28*18\n" -> "G28*18\n"
 
   // set cmd_index with index of gcode value
   cmd_index = cmd_base_index + 1;                                // e.g. "G28*18\n" -> "28*18\n"
@@ -555,13 +550,13 @@ void handleCmd(CMD cmd, const SERIAL_PORT_INDEX portIndex)
   // strip out any leading space from the passed command.
   // Furthermore, skip any N[-0-9] (line number) and return a pointer to the beginning of the command
   //
-  char * strPtr = stripCmd(&cmd);  // e.g. "  N1   G28*18\n" -> "G28*18\n"
+  char * cmdPtr = stripCmd(cmd);  // e.g. "  N1   G28*18\n" -> "G28*18\n"
 
   // check if the received gcode is an emergency command and parse it accordingly
 
-  if (strPtr[0] == 'M')
+  if (cmdPtr[0] == 'M')
   {
-    switch (strtol(&strPtr[1], NULL, 10))
+    switch (strtol(&cmdPtr[1], NULL, 10))
     {
       case 108:  // M108
       case 112:  // M112

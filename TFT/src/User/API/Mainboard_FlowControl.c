@@ -261,7 +261,7 @@ bool InfoHost_HandleAckTimeout(void)
 
   InfoHost_HandleAckOk(HOST_SLOTS_GENERIC_OK);  // release pending gcode
 
-  addNotification(DIALOG_TYPE_ERROR, "ACK message timed out", "Pending gcode released", true);
+  addNotification(DIALOG_TYPE_ERROR, "ACK timed out", "Pending gcode released", true);
 
   return true;
 }
