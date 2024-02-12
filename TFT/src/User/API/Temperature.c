@@ -15,7 +15,7 @@ static uint8_t  heat_feedback_waiting = 0;
 
 static uint8_t  heat_update_seconds = TEMPERATURE_QUERY_SLOW_SECONDS;
 static uint32_t heat_next_update_time = 0;
-static bool     heat_update_waiting = false;
+static bool     heat_sending_waiting = false;
 
 #define AUTOREPORT_TIMEOUT 3000  // 3 second grace period
 
@@ -202,8 +202,8 @@ void heatSetUpdateSeconds(const uint8_t seconds)
 
   heat_update_seconds = seconds;
 
-  if (infoMachineSettings.autoReportTemp && !heat_update_waiting)
-    heat_update_waiting = storeCmd("M155 S%u\n", heat_update_seconds);
+  if (infoMachineSettings.autoReportTemp && !heat_sending_waiting)
+    heat_sending_waiting = storeCmd("M155 S%u\n", heat_update_seconds);
 }
 
 uint8_t heatGetUpdateSeconds(void)
@@ -224,10 +224,9 @@ void heatSetNextUpdateTime(void)
     heat_next_update_time += AUTOREPORT_TIMEOUT;
 }
 
-void heatClearUpdateWaiting(void)
+void heatClearSendingWaiting(void)
 {
-  heat_update_waiting = false;
-  heatSetNextUpdateTime();
+  heat_sending_waiting = false;
 }
 
 void loopCheckHeater(void)
@@ -237,19 +236,17 @@ void loopCheckHeater(void)
     // feature to automatically report the temperatures or (if M155 is supported) check temperature auto-report timeout
     // and resend M155 command in case of timeout expired
 
-    // if next check time not yet elapsed or pending command (to avoid collision in gcode response processing), do nothing
-    if (OS_GetTimeMs() < heat_next_update_time || requestCommandInfoIsRunning())
+    if (OS_GetTimeMs() < heat_next_update_time)  // if next check time not yet elapsed, do nothing
       break;
 
-    // if M105/M155 previously sent and still waiting for a reply and not timed out, extend next check time
-    if (heat_update_waiting && (OS_GetTimeMs() - heat_next_update_time < ACK_QUERY_TIMEOUT))
-    {
-      heatSetNextUpdateTime();
-      break;
-    }
+    heatSetNextUpdateTime();  // extend next check time
 
-    if ((heat_update_waiting = !infoMachineSettings.autoReportTemp ? storeCmd("M105\n") : storeCmd("M155 S%u\n", heat_update_seconds)))
-      heatSetNextUpdateTime();
+    // if M105/M155 previously enqueued and not yet sent or pending command
+    // (to avoid collision in gcode response processing), do nothing
+    if (heat_sending_waiting || requestCommandInfoIsRunning())
+      break;
+
+    heat_sending_waiting = !infoMachineSettings.autoReportTemp ? storeCmd("M105\n") : storeCmd("M155 S%u\n", heat_update_seconds);
   } while (0);
 
   for (uint8_t i = 0; i < MAX_HEATER_COUNT; i++)

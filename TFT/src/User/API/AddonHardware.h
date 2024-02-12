@@ -18,10 +18,10 @@ extern "C" {
 // filament runout detection
 #ifdef FIL_RUNOUT_PIN
   void FIL_Runout_Init(void);
-  void FIL_PosE_ClearUpdateWaiting(void);  // clear pending position query and set next update time
+  void FIL_PosE_ClearSendingWaiting(void);  // clear sending waiting for position query
   void FIL_SFS_SetAlive(bool alive);
-  void FIL_BE_CheckRunout(void);
-  void FIL_FE_CheckRunout(void);
+  void FIL_BE_CheckRunout(void);            // called in loopBackEnd()
+  void FIL_FE_CheckRunout(void);            // called in loopFrontEnd()
 #endif
 
 #ifdef __cplusplus

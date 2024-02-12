@@ -42,7 +42,7 @@ enum
 };
 
 static uint32_t posE_nextUpdateTime = FIL_ALARM_REMINDER_TIME;  // give TFT time to connect to mainboard first before polling for runout
-static bool posE_updateWaiting = false;
+static bool posE_sendingWaiting = false;
 static bool sfs_alive = false;  // use an encoder disc to toggles the runout. Suitable for BigTreeTech Smart Filament Sensor
 
 void FIL_Runout_Init(void)
@@ -73,10 +73,9 @@ void FIL_Runout_Init(void)
   #endif
 }
 
-void FIL_PosE_ClearUpdateWaiting(void)
+void FIL_PosE_ClearSendingWaiting(void)
 {
-  posE_updateWaiting = false;
-  posE_nextUpdateTime = OS_GetTimeMs() + FIL_POS_E_REFRESH_TIME;
+  posE_sendingWaiting = false;
 }
 
 void FIL_SFS_SetAlive(bool alive)
@@ -161,19 +160,17 @@ static inline bool FIL_SmartRunoutDetect(void)
   do
   { // send M114 E to query extrude position continuously
 
-    // if next check time not yet elapsed or pending command (to avoid collision in gcode response processing), do nothing
-    if (OS_GetTimeMs() < posE_nextUpdateTime || requestCommandInfoIsRunning())
+    if (OS_GetTimeMs() < posE_nextUpdateTime)  // if next check time not yet elapsed, do nothing
       break;
 
-    // if M114 previously sent and still waiting for a reply and not timed out, extend next check time
-    if (posE_updateWaiting && (OS_GetTimeMs() - posE_nextUpdateTime < ACK_QUERY_TIMEOUT))
-    {
-      posE_nextUpdateTime = OS_GetTimeMs() + FIL_POS_E_REFRESH_TIME;
-      break;
-    }
+    posE_nextUpdateTime = OS_GetTimeMs() + FIL_POS_E_REFRESH_TIME;  // extend next check time
 
-    if ((posE_updateWaiting = storeCmd("M114 E\n")))
-      posE_nextUpdateTime = OS_GetTimeMs() + FIL_POS_E_REFRESH_TIME;
+    // if M114 previously enqueued and not yet sent or pending command
+    // (to avoid collision in gcode response processing), do nothing
+    if (posE_sendingWaiting || requestCommandInfoIsRunning())
+      break;
+
+    posE_sendingWaiting = storeCmd("M114 E\n");
   } while (0);
 
   if (!sfs_alive && lastRunout != runout)

@@ -94,9 +94,9 @@ void heatSetUpdateSeconds(const uint8_t seconds);   // set temperature query upd
 uint8_t heatGetUpdateSeconds(void);                 // get temperature query seconds
 void heatSyncUpdateSeconds(const uint8_t seconds);  // set temperature query seconds
 
-void heatSetNextUpdateTime(void);                   // set next temperature query time
-void heatClearUpdateWaiting(void);                  // clear pending temperature query and set next update time
-void loopCheckHeater(void);                         // loop for check on Heater
+void heatSetNextUpdateTime(void);                   // called in parseAck(). Set next temperature query time or timeout
+void heatClearSendingWaiting(void);                 // called in sendQueueCmd(). Clear sending waiting for temperature query
+void loopCheckHeater(void);                         // called in loopBackEnd(). Loop for check on Heater
 
 #ifdef __cplusplus
 }

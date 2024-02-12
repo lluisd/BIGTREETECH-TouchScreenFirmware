@@ -798,6 +798,10 @@ void sendQueueCmd(void)
                 return;
               }
             }
+            else
+            {
+              printClearSendingWaiting();
+            }
             break;
 
           case 28:  // M28
@@ -906,6 +910,11 @@ void sendQueueCmd(void)
             Serial_Forward(fwdPort, msg);
             break;
           }
+
+        #else  // not SERIAL_PORT_2
+          case 27:  // M27
+            printClearSendingWaiting();
+            break;
         #endif  // SERIAL_PORT_2
 
         case 73:  // M73
@@ -931,17 +940,15 @@ void sendQueueCmd(void)
           }
           break;
 
-        case 80:  // M80
-          #ifdef PS_ON_PIN
+        #ifdef PS_ON_PIN
+          case 80:  // M80
             PS_ON_On();
-          #endif
-          break;
+            break;
 
-        case 81:  // M81
-          #ifdef PS_ON_PIN
+          case 81:  // M81
             PS_ON_Off();
-          #endif
-          break;
+            break;
+        #endif
 
         case 82:  // M82
           eSetRelative(false);
@@ -961,6 +968,8 @@ void sendQueueCmd(void)
 
           if (fromTFT)
           {
+            heatClearSendingWaiting();
+
             if (cmd_value() == 105)  // if M105
             {
               avoid_terminal = !infoSettings.terminal_ack;
@@ -1000,6 +1009,19 @@ void sendQueueCmd(void)
 
         case 110:  // M110
           setCmdLineNumberBase(cmd_seen('N') ? (uint32_t)cmd_value() : 0);
+          break;
+
+        case 114:  // M114
+          if (fromTFT)
+          {
+            if (!cmd_seen('E'))
+              coordinateQueryClearSendingWaiting();
+            #ifdef FIL_RUNOUT_PIN
+              else
+                FIL_PosE_ClearSendingWaiting();
+            #endif
+          }
+          break;
 
         case 117:  // M117
           if (cmd_seen_from(cmd_base_index, "Time Left"))  // parsing printing time left
@@ -1164,11 +1186,17 @@ void sendQueueCmd(void)
         case 220:  // M220
           if (cmd_seen('S'))
             speedSetCurPercent(0, cmd_value());
+
+          if (fromTFT)
+            speedQueryClearSendingWaiting();
           break;
 
         case 221:  // M221
           if (cmd_seen('S'))
             speedSetCurPercent(1, cmd_value());
+
+          if (fromTFT)
+            speedQueryClearSendingWaiting();
           break;
 
         #ifdef BUZZER_PIN
@@ -1357,6 +1385,9 @@ void sendQueueCmd(void)
 
           if (cmd_seen('I'))
             fanSetCurSpeed(MAX_COOLING_FAN_COUNT + 1, cmd_value());
+
+          if (fromTFT)
+            ctrlFanQueryClearSendingWaiting();
           break;
 
         case 900:  // M900 linear advance factor

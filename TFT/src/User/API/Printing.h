@@ -146,10 +146,11 @@ void setPrintAbort(void);
 void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType);
 void setPrintResume(HOST_STATUS hostStatus);
 
-void loopPrintFromTFT(void);         // called in loopBackEnd(). It handles a print from TFT media, if any
+void loopPrintFromTFT(void);          // called in loopBackEnd(). It handles a print from TFT media, if any
 
-void printClearUpdateWaiting(void);  // called in parseACK.c. Clear pending printing query and set next update time
-void loopPrintFromOnboard(void);     // called in loopBackEnd(). It handles a print from (remote) onboard media, if any
+void printSetNextUpdateTime(void);    // called in parseAck(). Set next printing query time or timeout
+void printClearSendingWaiting(void);  // called in sendQueueCmd(). Clear sending waiting for printing query
+void loopPrintFromOnboard(void);      // called in loopBackEnd(). It handles a print from (remote) onboard media, if any
 
 #ifdef __cplusplus
 }

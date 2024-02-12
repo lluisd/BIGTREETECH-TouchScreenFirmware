@@ -28,9 +28,9 @@ uint8_t fanGetCurSpeed(const uint8_t i);
 void fanSetCurPercent(const uint8_t i, const uint8_t percent);  // set current fan percent
 uint8_t fanGetCurPercent(const uint8_t i);                      // get current fan percent
 
-void loopCheckFan(void);                    // loop for check on fan
-void ctrlFanQueryClearUpdateWaiting(void);  // clear pending controller fan query and set next update time
-void ctrlFanQuery(void);                    // query for controller fan only
+void loopCheckFan(void);                     // called in loopBackEnd(). Loop for check on fan
+void ctrlFanQueryClearSendingWaiting(void);  // called in sendQueueCmd(). Clear sending waiting for controller fan query
+void ctrlFanQuery(void);                     // query for controller fan only
 
 #ifdef __cplusplus
 }

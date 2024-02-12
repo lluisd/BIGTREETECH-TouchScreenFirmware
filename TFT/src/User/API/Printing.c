@@ -29,7 +29,7 @@ static bool filamentRunoutAlarm = false;
 static float lastEPos = 0;                 // used only to update stats in infoPrintSummary
 
 static uint32_t nextUpdateTime = 0;
-static bool updateWaiting = false;
+static bool sendingWaiting = false;
 
 void setExtrusionDuringPause(bool extruded)
 {
@@ -915,15 +915,14 @@ void loopPrintFromTFT(void)
   }
 }
 
-static inline void printSetNextUpdateTime(void)
+void printSetNextUpdateTime(void)
 {
   nextUpdateTime = OS_GetTimeMs() + SEC_TO_MS(infoSettings.m27_refresh_time);
 }
 
-void printClearUpdateWaiting(void)
+void printClearSendingWaiting(void)
 {
-  updateWaiting = false;
-  printSetNextUpdateTime();
+  sendingWaiting = false;
 }
 
 void loopPrintFromOnboard(void)
@@ -941,18 +940,15 @@ void loopPrintFromOnboard(void)
   do
   { // send M27 to query SD print status continuously
 
-    // if next check time not yet elapsed, do nothing
-    if (OS_GetTimeMs() < nextUpdateTime)
+    if (OS_GetTimeMs() < nextUpdateTime)  // if next check time not yet elapsed, do nothing
       break;
 
-    // if M27 previously sent and still waiting for a reply and not timed out, extend next check time
-    if (updateWaiting && (OS_GetTimeMs() - nextUpdateTime < ACK_QUERY_TIMEOUT))
-    {
-      printSetNextUpdateTime();
-      break;
-    }
+    printSetNextUpdateTime();  // extend next check time
 
-    if ((updateWaiting = storeCmd("M27\n")))
-      printSetNextUpdateTime();
+    // if M27 previously enqueued and not yet sent, do nothing
+    if (sendingWaiting)
+      break;
+
+    sendingWaiting = storeCmd("M27\n");
   } while (0);
 }

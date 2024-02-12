@@ -52,8 +52,8 @@ void coordinateSetAxisActual(AXIS axis, float position);
 void coordinateGetAllActual(COORDINATE *tmp);
 float coordinateGetAxis(AXIS axis);
 
-void coordinateQueryClearUpdateWaiting(void);  // clear pending coordinate query and set next update time
-void coordinateQuery(uint8_t delay);           // query for coordinate
+void coordinateQueryClearSendingWaiting(void);  // called in sendQueueCmd(). Clear sending waiting for coordinate query
+void coordinateQuery(uint8_t delay);            // query for coordinate
 void coordinateQueryTurnOff(void);
 
 #ifdef __cplusplus

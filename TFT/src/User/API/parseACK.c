@@ -403,7 +403,7 @@ void parseACK(void)
       if (ack_seen(heaterID[CHAMBER]))
         infoSettings.chamber_en = ENABLED;
 
-      heatClearUpdateWaiting();
+      heatSetNextUpdateTime();  // set next temperature query time or timeout
 
       if (!ack_seen("@"))  // it's RepRapFirmware
       {
@@ -613,16 +613,12 @@ void parseACK(void)
       }
 
       avoid_terminal = !infoSettings.terminal_ack;
-      heatClearUpdateWaiting();
+      heatSetNextUpdateTime();  // set next temperature query time or timeout
     }
     // parse and store M114 E, extruder position. Required "M114_DETAIL" in Marlin
     else if (ack_seen("Count E:"))
     {
       coordinateSetExtruderActualSteps(ack_value());
-
-      #ifdef FIL_RUNOUT_PIN
-        FIL_PosE_ClearUpdateWaiting();
-      #endif
     }
     // parse and store M114, current position
     else if (ack_starts_with("X:") || ack_seen("C: X:"))  // Smoothieware axis position starts with "C: X:"
@@ -641,32 +637,16 @@ void parseACK(void)
             coordinateSetAxisActual(E_AXIS, ack_value());
         }
       }
-
-      coordinateQueryClearUpdateWaiting();
     }
     // parse and store feed rate percentage
-    else if (ack_seen("FR:"))
+    else if (ack_seen("FR:") || (infoMachineSettings.firmwareType == FW_SMOOTHIEWARE && ack_seen("Speed factor at ")))
     {
       speedSetCurPercent(0, ack_value());
-      speedQueryClearUpdateWaiting();
     }
     // parse and store flow rate percentage
-    else if (ack_seen("Flow:"))
+    else if (ack_seen("Flow:") || (infoMachineSettings.firmwareType == FW_SMOOTHIEWARE && ack_seen("Flow rate at ")))
     {
       speedSetCurPercent(1, ack_value());
-      speedQueryClearUpdateWaiting();
-    }
-    // parse and store feed rate percentage in case of Smoothieware
-    else if ((infoMachineSettings.firmwareType == FW_SMOOTHIEWARE) && ack_seen("Speed factor at "))
-    {
-      speedSetCurPercent(0, ack_value());
-      speedQueryClearUpdateWaiting();
-    }
-    // parse and store flow rate percentage in case of Smoothieware
-    else if ((infoMachineSettings.firmwareType == FW_SMOOTHIEWARE) && ack_seen("Flow rate at "))
-    {
-      speedSetCurPercent(1, ack_value());
-      speedQueryClearUpdateWaiting();
     }
     // parse and store M106, fan speed
     else if (ack_starts_with("M106"))
@@ -697,8 +677,6 @@ void parseACK(void)
 
       if (ack_seen("I"))
         fanSetCurSpeed(MAX_COOLING_FAN_COUNT + 1, ack_value());
-
-      ctrlFanQueryClearUpdateWaiting();
     }
     // parse pause message
     else if (!infoMachineSettings.promptSupport && ack_seen("paused for user"))
@@ -781,7 +759,7 @@ void parseACK(void)
           }
         }
 
-        printClearUpdateWaiting();
+        printSetNextUpdateTime();  // set next printing query time or timeout
       }
       // parse and store M73
       else

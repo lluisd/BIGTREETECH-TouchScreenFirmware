@@ -15,17 +15,17 @@ void resetInfoQueries(void)
 
 void resetPendingQueries(void)
 {
-  abortRequestCommandInfo();            // abort pending command query
+  abortRequestCommandInfo();             // abort pending command query
 
-  ctrlFanQueryClearUpdateWaiting();     // clear pending controller fan query and set next update time
-  speedQueryClearUpdateWaiting();       // clear pending speed query and set next update time
-  coordinateQueryClearUpdateWaiting();  // clear pending coordinate query and set next update time
+  ctrlFanQueryClearSendingWaiting();     // clear sending waiting for controller fan query
+  speedQueryClearSendingWaiting();       // clear sending waiting for speed query
+  coordinateQueryClearSendingWaiting();  // clear sending waiting for coordinate query
 
-  heatClearUpdateWaiting();             // clear pending temperature query and set next update time
-  printClearUpdateWaiting();            // clear pending printing query and set next update time
+  heatClearSendingWaiting();             // clear sending waiting for temperature query
+  printClearSendingWaiting();            // clear sending waiting for printing query
 
   #ifdef FIL_RUNOUT_PIN
-    FIL_PosE_ClearUpdateWaiting();      // clear pending position query and set next update time
+    FIL_PosE_ClearSendingWaiting();      // clear sending waiting for position query
   #endif
 }
 
@@ -261,7 +261,7 @@ bool InfoHost_HandleAckTimeout(void)
 
   InfoHost_HandleAckOk(HOST_SLOTS_GENERIC_OK);  // release pending gcode
 
-  addNotification(DIALOG_TYPE_ERROR, "ACK timed out", "Pending gcode released", true);
+  //addNotification(DIALOG_TYPE_ERROR, "ACK timed out", "Pending gcode released", true);
 
   return true;
 }

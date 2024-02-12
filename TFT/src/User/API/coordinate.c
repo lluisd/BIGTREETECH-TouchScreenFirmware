@@ -20,8 +20,7 @@ static bool relative_e = false;
 static bool position_known = false;
 
 static uint8_t coordUpdateSeconds = 0;
-static uint32_t coordNextUpdateTime = 0;
-static bool coordUpdateWaiting = false;
+static bool coordSendingWaiting = false;
 
 bool coorGetRelative(void)
 {
@@ -118,9 +117,9 @@ float coordinateGetAxis(AXIS axis)
     return coordinateGetAxisTarget(axis);
 }
 
-void coordinateQueryClearUpdateWaiting(void)
+void coordinateQueryClearSendingWaiting(void)
 {
-  coordUpdateWaiting = false;
+  coordSendingWaiting = false;
 }
 
 /**
@@ -129,17 +128,13 @@ void coordinateQueryClearUpdateWaiting(void)
  *                 for auto query if available in marlin.
  */
 void coordinateQuery(uint8_t seconds)
-{
-  // if RepRap or M114 previously sent and still waiting for a reply and not timed out, do nothing
-  if (infoMachineSettings.firmwareType == FW_REPRAPFW || (coordUpdateWaiting && (OS_GetTimeMs() < coordNextUpdateTime)))
-    return;
-
-  if (infoHost.tx_slots != 0 && infoHost.connected)
+{ // following conditions ordered by importance
+  if (!coordSendingWaiting && infoHost.tx_slots != 0 && infoHost.connected && infoMachineSettings.firmwareType != FW_REPRAPFW)
   {
     if (infoMachineSettings.autoReportPos == 1)  // if auto report is enabled
     {
       if (seconds == 0)  // if manual querying is requested (if query interval is 0)
-        coordUpdateWaiting = storeCmd("M114\n");
+        coordSendingWaiting = storeCmd("M114\n");
 
       if (seconds != coordUpdateSeconds)  // if query interval is changed
       {
@@ -149,17 +144,14 @@ void coordinateQuery(uint8_t seconds)
     }
     else  // if auto report is disabled
     {
-      coordUpdateWaiting = storeCmd("M114\n");
+      coordSendingWaiting = storeCmd("M114\n");
     }
   }
-
-  if (coordUpdateWaiting)
-    coordNextUpdateTime = OS_GetTimeMs() + ACK_QUERY_TIMEOUT;
 }
 
 void coordinateQueryTurnOff(void)
 {
-  coordUpdateWaiting = false;
+  coordSendingWaiting = false;
 
   if (infoMachineSettings.autoReportPos == 1)  // if auto report is enabled, turn it off
   {

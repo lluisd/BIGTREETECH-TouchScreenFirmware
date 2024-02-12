@@ -9,11 +9,10 @@ extern "C" {
 #include <stdint.h>
 #include "variants.h"  // for RCC_ClocksTypeDef
 
-#define BE_PRIORITY_DIVIDER 16                 // a divider value of 16 -> run 6% of the time only. Use a power of 2 for performance reasons!
-#define FE_PRIORITY_DIVIDER 16                 // a divider value of 16 -> run 6% of the time only. Use a power of 2 for performance reasons!
-#define ACK_TIMEOUT         15000              // 15 seconds (1 sec is 1000)
-#define ACK_QUERY_TIMEOUT   (ACK_TIMEOUT * 4)  // 60 seconds (1 sec is 1000)
-#define MAX_MENU_DEPTH      10                 // max sub menu depth
+#define BE_PRIORITY_DIVIDER 16     // a divider value of 16 -> run 6% of the time only. Use a power of 2 for performance reasons!
+#define FE_PRIORITY_DIVIDER 16     // a divider value of 16 -> run 6% of the time only. Use a power of 2 for performance reasons!
+#define ACK_TIMEOUT         15000  // 15 seconds (1 sec is 1000)
+#define MAX_MENU_DEPTH      10     // max sub menu depth
 
 // menu macros
 #define OPEN_MENU(x)    infoMenu.menu[++infoMenu.cur] = x

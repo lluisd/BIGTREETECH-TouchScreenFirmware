@@ -10,8 +10,7 @@ static uint8_t setFanSpeed[MAX_FAN_COUNT] = {0};
 static uint8_t curFanSpeed[MAX_FAN_COUNT] = {0};
 static uint8_t needSetFanSpeed = 0;
 
-static uint32_t ctrlFanNextUpdateTime = 0;
-static bool ctrlFanUpdateWaiting = false;
+static bool ctrlFanSendingWaiting = false;
 
 void fanResetSpeed(void)
 {
@@ -80,7 +79,7 @@ void loopCheckFan(void)
   if (OS_GetTimeMs() < nextUpdateTime)  // avoid rapid fire, clogging the queue
     return;
 
-  nextUpdateTime = OS_GetTimeMs() + FAN_REFRESH_TIME;
+  nextUpdateTime = OS_GetTimeMs() + FAN_REFRESH_TIME;  // extend next check time
 
   for (uint8_t i = 0; i < MAX_FAN_COUNT; i++)
   {
@@ -92,20 +91,13 @@ void loopCheckFan(void)
   }
 }
 
-void ctrlFanQueryClearUpdateWaiting(void)
+void ctrlFanQueryClearSendingWaiting(void)
 {
-  ctrlFanUpdateWaiting = false;
+  ctrlFanSendingWaiting = false;
 }
 
 void ctrlFanQuery(void)
-{
-  // if no control fan is present or M710 previously sent and still waiting for a reply and not timed out, do nothing
-  if (!infoSettings.ctrl_fan_en || (ctrlFanUpdateWaiting && (OS_GetTimeMs() < ctrlFanNextUpdateTime)))
-    return;
-
-  if (infoHost.tx_slots != 0 && infoHost.connected)
-  {
-    if ((ctrlFanUpdateWaiting = storeCmd("M710\n")))
-      ctrlFanNextUpdateTime = OS_GetTimeMs() + ACK_QUERY_TIMEOUT;
-  }
+{ // following conditions ordered by importance
+  if (infoSettings.ctrl_fan_en && !ctrlFanSendingWaiting && infoHost.tx_slots != 0 && infoHost.connected)
+    ctrlFanSendingWaiting = storeCmd("M710\n");
 }

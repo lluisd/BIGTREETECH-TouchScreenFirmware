@@ -9,8 +9,7 @@ static uint16_t setPercent[SPEED_NUM] = {100, 100};
 static uint16_t curPercent[SPEED_NUM] = {100, 100};
 static uint8_t needSetPercent = 0;
 
-static uint32_t speedNextUpdateTime = 0;
-static bool speedUpdateWaiting = false;
+static bool speedSendingWaiting = false;
 
 void speedSetPercent(const uint8_t tool, const uint16_t per)
 {
@@ -42,7 +41,7 @@ void loopCheckSpeed(void)
   if (OS_GetTimeMs() < nextUpdateTime)  // avoid rapid fire, clogging the queue
     return;
 
-  nextUpdateTime = OS_GetTimeMs() + SPEED_REFRESH_TIME;
+  nextUpdateTime = OS_GetTimeMs() + SPEED_REFRESH_TIME;  // extend next check time
 
   for (uint8_t i = 0; i < SPEED_NUM; i++)
   {
@@ -57,25 +56,18 @@ void loopCheckSpeed(void)
   }
 }
 
-void speedQueryClearUpdateWaiting(void)
+void speedQueryClearSendingWaiting(void)
 {
-  speedUpdateWaiting = false;
+  speedSendingWaiting = false;
 }
 
 void speedQuery(void)
-{
-  // if RepRap or M220/M221 previously sent and still waiting for a reply and not timed out, do nothing
-  if (infoMachineSettings.firmwareType == FW_REPRAPFW || (speedUpdateWaiting && (OS_GetTimeMs() < speedNextUpdateTime)))
-    return;
-
-  if (infoHost.tx_slots != 0 && infoHost.connected)
+{ // following conditions ordered by importance
+  if (!speedSendingWaiting && infoHost.tx_slots != 0 && infoHost.connected && infoMachineSettings.firmwareType != FW_REPRAPFW)
   {
-    speedUpdateWaiting = storeCmd("M220\n");
+    speedSendingWaiting = storeCmd("M220\n");
 
     if (infoSettings.ext_count > 0)
-      speedUpdateWaiting |= storeCmd("M221\n");  // speedUpdateWaiting set to "true" if at least one command will be sent
-
-    if (speedUpdateWaiting)
-      speedNextUpdateTime = OS_GetTimeMs() + ACK_QUERY_TIMEOUT;
+      speedSendingWaiting |= storeCmd("M221\n");  // speedSendingWaiting set to "true" if at least one command will be sent
   }
 }
