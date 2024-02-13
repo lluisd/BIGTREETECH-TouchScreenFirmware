@@ -31,7 +31,7 @@ void rrfStatusSet(char status)
             break;
 
           case 'I':
-            // RRFParseACK will take care of going to the print screen
+            // rrfParseAck will take care of going to the print screen
             mustStoreCmd("M409 K\"job.file.fileName\"\n");
             starting_print = true;
             break;
@@ -85,14 +85,14 @@ void rrfStatusSet(char status)
     macro_busy = false;
 }
 
-inline void rrfStatusSetBusy(void)
-{
-  rrf_status = 'B';
-}
-
 inline bool rrfStatusIsBusy(void)
 {
   return rrf_status == 'B';
+}
+
+inline void rrfStatusSetBusy(void)
+{
+  rrf_status = 'B';
 }
 
 inline bool rrfStatusIsMacroBusy(void)

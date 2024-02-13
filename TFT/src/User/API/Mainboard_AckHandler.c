@@ -1,6 +1,6 @@
 #include "Mainboard_AckHandler.h"
 #include "includes.h"
-#include "RRFParseACK.hpp"
+#include "RRFAckHandler.hpp"
 
 typedef enum  // popup message types available to display an echo message
 {
@@ -538,7 +538,7 @@ void parseAck(void)
       if (ack_seen(magic_warning))
         ackPopupInfo(magic_warning);
       else
-        rrfParseACK(ack_cache);
+        rrfParseAck(ack_cache);
 
       // proceed with generic OK response handling to update infoHost.tx_slots and infoHost.tx_count
       InfoHost_HandleAckOk(HOST_SLOTS_GENERIC_OK);

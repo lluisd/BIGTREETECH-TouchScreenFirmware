@@ -96,7 +96,6 @@
 #include "Printing.h"
 #include "ProbeHeightControl.h"
 #include "ProbeOffsetControl.h"
-#include "RRFStatusControl.h"
 #include "ScreenShot.h"
 #include "SerialConnection.h"
 #include "Settings.h"

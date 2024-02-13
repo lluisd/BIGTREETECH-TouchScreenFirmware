@@ -1,5 +1,6 @@
 #include "Mainboard_CmdHandler.h"
 #include "includes.h"
+#include "RRFStatusControl.h"
 
 #define CMD_QUEUE_SIZE  20
 #define CMD_RETRY_COUNT 3

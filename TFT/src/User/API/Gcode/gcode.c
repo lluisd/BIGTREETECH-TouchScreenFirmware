@@ -1,5 +1,6 @@
 #include "gcode.h"
 #include "includes.h"
+#include "RRFStatusControl.h"
 
 REQUEST_COMMAND_INFO requestCommandInfo = {0};
 
@@ -42,9 +43,8 @@ static void resetRequestCommandInfo(
 
   requestCommandInfo.cmd_rev_buf = malloc(CMD_MAX_REV);
 
-  while (!requestCommandInfo.cmd_rev_buf)
+  while (!requestCommandInfo.cmd_rev_buf)  // if malloc failed, block the TFT
   {
-    ;  // malloc failed
   }
 
   memset(requestCommandInfo.cmd_rev_buf, 0, CMD_MAX_REV);
