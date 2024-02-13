@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <interfaceCmd.h>  // for CMD
+#include <Mainboard_CmdHandler.h>  // for CMD
 
 #define NO_LINE_NUMBER 0xFFFFFFFF;                     // no processed line number
 

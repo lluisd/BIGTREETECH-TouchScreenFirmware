@@ -41,7 +41,7 @@ void loopBackEnd(void)
   sendQueueCmd();
 
   // parse the received slave response information
-  parseACK();
+  parseAck();
 
   // retrieve and store (in command queue) the gcodes received from other UART, such as ESP3D etc...
   #ifdef SERIAL_PORT_2
@@ -184,8 +184,9 @@ void InfoHost_Init(bool isConnected)
 
   if (!isConnected)
   {
-    resetInfoQueries();
+    clearCmdQueue();
     resetPendingQueries();
+    resetInfoQueries();
 
     setReminderMsg(LABEL_UNCONNECTED, SYS_STATUS_DISCONNECTED);  // set the no printer attached reminder
   }

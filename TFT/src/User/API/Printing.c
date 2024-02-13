@@ -498,7 +498,7 @@ bool startPrint(void)
 
   if (infoFile.source == FS_ONBOARD_MEDIA)
   {
-    // let setPrintResume() (that will be called in parseAck.c by parsing ACK message for M24 or M27)
+    // let setPrintResume() (that will be called in Mainboard_AckHandler.c by parsing ACK message for M24 or M27)
     // notify the print as started (infoHost.status set to "HOST_STATUS_PRINTING")
     infoHost.status = HOST_STATUS_RESUMING;
 
@@ -574,7 +574,7 @@ void abortPrint(void)
     case FS_REMOTE_HOST:
       // - forward a print cancel notification to all hosts (so also the one handling the print) asking to cancel the print
       // - the host handling the print should respond to this notification with "M118 P0 A1 action:cancel" that will
-      //   trigger setPrintAbort() in parseACK() once the following loop does its job (stopping all blocking operations)
+      //   trigger setPrintAbort() in parseAck() once the following loop does its job (stopping all blocking operations)
       //
       mustStoreCmd("M118 P0 A1 action:notification remote cancel\n");
       waitForAbort();
@@ -584,9 +584,10 @@ void abortPrint(void)
   }
 
   // - forward a print cancel action to all hosts (also TFT) to notify the print cancelation
-  // - the print cancel action received by the TFT always guarantees the invokation of setPrintAbort() in parseAck.c
-  //   (e.g. to finalize the print (e.g. stats) in case the ACK messages "Not SD printing" and/or "//action:cancel"
-  //   are not received from Marlin) once the following loop does its job (stopping all blocking operations)
+  // - the print cancel action received by the TFT always guarantees the invokation of setPrintAbort()
+  //   in Mainboard_AckHandler.c (e.g. to finalize the print (e.g. stats) in case the ACK messages
+  //   "Not SD printing" and/or "//action:cancel" are not received from Marlin) once the following
+  //   loop does its job (stopping all blocking operations)
   //
   mustStoreCmd("M118 P0 A1 action:cancel\n");
   waitForAbort();

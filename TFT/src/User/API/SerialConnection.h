@@ -90,7 +90,7 @@ uint16_t Serial_Get(uint8_t port, char * buf, uint16_t bufSize);
 
 #ifdef SERIAL_PORT_2
   // retrieve messages from all the enabled supplementary ports storing them
-  // in the command queue (in interfaceCmd.c) for further processing
+  // in the command queue (in Mainboard_CmdHandler.c) for further processing
   void Serial_GetFromUART(void);
 #endif
 
