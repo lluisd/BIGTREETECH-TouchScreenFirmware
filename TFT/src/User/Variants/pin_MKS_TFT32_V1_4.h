@@ -209,7 +209,7 @@
 #endif
 
 // LCD Encoder pins + Marlin mode
-#ifdef ST7920_EMULATOR
+#if defined(ST7920_EMULATOR) && !defined(GD32F3XX)
   // Free JTAG (PB3/PB4) for SPI3 and free SWDIO, PA13, PA14 for encoder pins
   #define DISABLE_DEBUG() RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE); \
                           GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE)
