@@ -14,7 +14,7 @@
 
 // Hardware version config
 #ifndef HARDWARE_VERSION
-  #define HARDWARE_VERSION "MKS_GD_TFT28_V1.2-4"
+  #define HARDWARE_VERSION "GD_TFT28_V1.2-4"
 #endif
 
 // SERIAL_PORT:   communicating with host (Marlin, RRF etc...)

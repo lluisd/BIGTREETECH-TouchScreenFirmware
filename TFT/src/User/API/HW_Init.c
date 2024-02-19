@@ -48,7 +48,7 @@ void HW_Init(void)
     #ifdef GD32F3XX
       rcu_periph_clock_enable(RCU_AF);
       gpio_pin_remap_config(GPIO_USART1_REMAP, ENABLE);
-    #else  // STM32Fxx
+    #else  // if STM32F<xxx>
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
       GPIO_PinRemapConfig(GPIO_Remap_USART2, ENABLE);
     #endif
