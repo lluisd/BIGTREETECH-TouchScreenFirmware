@@ -20,7 +20,7 @@ static BUZZER buzzer;
 
 void Buzzer_ConfigTimer(void)
 {
-#ifdef GD32F2XX
+#if defined(GD32F2XX) || defined(GD32F3XX)
   rcu_periph_clock_enable(RCU_TIMER2);                                // enable timer clock
   TIMER_CTL0(TIMER2) &= ~TIMER_CTL0_CEN;                              // disable timer
   TIMER_INTF(TIMER2) &= ~TIMER_INTF_UPIF;                             // clear update interrupt flag
@@ -55,7 +55,7 @@ void Buzzer_DeConfig(void)
   GPIO_InitSet(BUZZER_PIN, MGPIO_MODE_IPN, 0);
   buzzer.wIndex = buzzer.rIndex = buzzer.toggles = 0;
 
-#ifdef GD32F2XX
+#if defined(GD32F2XX) || defined(GD32F3XX)
   nvic_irq_disable(TIMER2_IRQn);          // disable timer interrupt
   TIMER_CTL0(TIMER2) &= ~TIMER_CTL0_CEN;  // stop timer
 #else
@@ -72,7 +72,7 @@ void Buzzer_PlaySound(uint16_t frequency, const uint16_t duration)
   if (silence)
     frequency = 1000;                                   // give 1ms resolution for silence
 
-#ifdef GD32F2XX
+#if defined(GD32F2XX) || defined(GD32F3XX)
   nvic_irq_disable(TIMER2_IRQn);                        // disable timer interrupt
   buzzer.toggles = 2 * (frequency * duration / 1000);   // 2 toggles per period
   TIMER_CTL0(TIMER2) &= ~TIMER_CTL0_CEN;                // disable timer
@@ -98,7 +98,7 @@ void Buzzer_PlaySound(uint16_t frequency, const uint16_t duration)
 void Buzzer_GetSound(void)
 {
   // stop timer
-#ifdef GD32F2XX
+#if defined(GD32F2XX) || defined(GD32F3XX)
   TIMER_CTL0(TIMER2) &= ~TIMER_CTL0_CEN;
 #else
   TIM3->CR1 &= ~TIM_CR1_CEN;
@@ -132,7 +132,7 @@ void Buzzer_AddSound(const uint16_t frequency, const uint16_t duration)
     buzzer.wIndex = 0;
 
   // check if timer is running before playing the next queued sound
-#ifdef GD32F2XX
+#if defined(GD32F2XX) || defined(GD32F3XX)
   if ((TIMER_CTL0(TIMER2) & TIMER_CTL0_CEN))
     return;
 #else
@@ -143,9 +143,9 @@ void Buzzer_AddSound(const uint16_t frequency, const uint16_t duration)
   Buzzer_GetSound();  // play next queued sound
 }
 
-#ifdef GD32F2XX
+#if defined(GD32F2XX) || defined(GD32F3XX)
 
-void TIMER2_IRQHandler(void)  // GD32F2XX timer ISR
+void TIMER2_IRQHandler(void)  // GD32F2XX and GD32F3XX timer ISR
 {
   if ((TIMER_INTF(TIMER2) & TIMER_INTF_UPIF) != 0)  // check for timer2 interrupt flag
   {
@@ -199,6 +199,6 @@ void TIM3_IRQHandler(void)  // STM32FXX timer ISR
   }
 }
 
-#endif  // GD32F2XX
+#endif  // GD32F2XX and GD32F3XX
 
 #endif  // BUZZER_PIN
