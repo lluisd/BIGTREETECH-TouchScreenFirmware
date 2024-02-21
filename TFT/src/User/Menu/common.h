@@ -58,7 +58,7 @@ extern const LABEL itemToggle[ITEM_TOGGLE_NUM];
 extern const uint16_t iconToggle[ITEM_TOGGLE_NUM];
 
 // Check if next screen update is due
-bool nextScreenUpdate(uint32_t duration);
+bool nextScreenUpdate(uint32_t refreshTime);
 
 #ifdef FRIENDLY_Z_OFFSET_LANGUAGE
   void invertZAxisIcons(MENUITEMS * menuItems);
@@ -68,11 +68,11 @@ bool nextScreenUpdate(uint32_t duration);
   #define  INVERT_Z_AXIS_ICONS(menuItemsPtr)
 #endif
 
-void drawBorder(const GUI_RECT *rect, uint16_t color, uint16_t edgeDistance);
+void drawBorder(const GUI_RECT * rect, uint16_t color, uint16_t edgeDistance);
 
-void drawBackground(const GUI_RECT *rect, uint16_t bgColor, uint16_t edgeDistance);
+void drawBackground(const GUI_RECT * rect, uint16_t bgColor, uint16_t edgeDistance);
 
-void drawStandardValue(const GUI_RECT *rect, VALUE_TYPE valType, const void *val, uint16_t font,
+void drawStandardValue(const GUI_RECT * rect, VALUE_TYPE valType, const void * val, uint16_t font,
                        uint16_t color, uint16_t bgColor, uint16_t edgeDistance, bool clearBgColor);
 
 // Show/draw temperature in a standard menu
@@ -92,12 +92,6 @@ int32_t editIntValue(int32_t minValue, int32_t maxValue, int32_t resetValue, int
 
 // Edit a float value in a standard menu
 float editFloatValue(float minValue, float maxValue, float resetValue, float value);
-
-// Backup current Settings data if not already backed up
-void backupCurrentSettings(void);
-
-// Store new Settings data to FLASH, if changed, and release backed up Settings data
-void storeCurrentSettings(void);
 
 NOZZLE_STATUS warmupNozzle(void);
 

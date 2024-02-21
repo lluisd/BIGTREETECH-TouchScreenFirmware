@@ -87,7 +87,7 @@ void GUI_DrawPixel(int16_t x, int16_t y, uint16_t color)
      ||x >= pixel_limit_rect.x1
      ||y <  pixel_limit_rect.y0
      ||y >= pixel_limit_rect.y1))
-    return ;
+    return;
 
   LCD_SetWindow(x, y, x, y);
   LCD_WR_16BITS_DATA(color);
@@ -721,9 +721,12 @@ const uint8_t* _GUI_DispLenString(int16_t x, int16_t y, const uint8_t *p, uint16
     getCharacterInfo(p, &info);
     if (curPixelWidth + info.pixelWidth > pixelWidth)
     {
-      if (truncate)
+      if (truncate && *(p + 1))  // check if there is at least 1 more character
       {
-        getCharacterInfo((uint8_t *)"…", &info);
+        // truncate indicator if 2 more characters OR not enough space for current character in reserved space
+        if (*(p + 2) || info.pixelWidth > BYTE_HEIGHT)
+          getCharacterInfo((uint8_t *)"…", &info);
+
         GUI_DispOne(x, y, &info);
       }
       return p;
@@ -1001,7 +1004,7 @@ void GUI_DispFloat(int16_t x, int16_t y, float num, uint8_t llen, uint8_t rlen, 
 void _GUI_DispLabel(int16_t x, int16_t y, uint16_t index)
 {
   uint8_t tempstr[MAX_LANG_LABEL_LENGTH];
-  if (loadLabelText((uint8_t*)&tempstr, index) == false) return;
+  if (loadLabelText(tempstr, index) == false) return;
   _GUI_DispString(x, y, tempstr);
 }
 
@@ -1129,7 +1132,7 @@ void Scroll_DispString(SCROLL * para, uint8_t align)
   if (para->text == NULL) return;
   if (para->totalPixelWidth > para->maxPixelWidth)
   {
-    if (OS_GetTimeMs() > para->time)
+    if (OS_GetTimeMs() >= para->time)
     {
       para->time = OS_GetTimeMs() + 50;  // 50ms
       GUI_SetRange(para->rect.x0, para->rect.y0, para->rect.x1, para->rect.y1);

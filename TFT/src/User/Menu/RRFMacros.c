@@ -21,7 +21,7 @@ void rrfShowRunningMacro(void)
   GUI_DispStringInRect(0, 0, LCD_WIDTH, LCD_HEIGHT, (uint8_t *)running_macro_name);
 }
 
-void runMacro(const char *display_name)
+static inline void runMacro(const char *display_name)
 {
   running_macro_name = display_name;
   rrfShowRunningMacro();
@@ -110,7 +110,7 @@ void menuCallMacro(void)
           }
           else if (key_num < infoFile.fileCount + infoFile.folderCount)  // gcode
           {
-            if (infoHost.connected != true)
+            if (infoHost.connected == false)
               break;
 
             if (enterFolder(infoFile.longFile[key_num - infoFile.folderCount]) == false)

@@ -3,6 +3,8 @@
 
     // config.ini Parameter Settings - Screen Settings and Feature Settings
     #define STRING_LANGUAGE               "Українська"
+    #define STRING_ADVANCED_OK            "Advanced OK"
+    #define STRING_COMMAND_CHECKSUM       "Command checksum"
     #define STRING_EMULATED_M600          "Emulated M600"
     #define STRING_EMULATED_M109_M190     "Emulated M109 / M190"
     #define STRING_EVENT_LED              "Event LED"
@@ -59,6 +61,7 @@
     #define STRING_HOTEND_PID             "Hotend PID"
     #define STRING_BED_PID                "Bed PID"
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
+    #define STRING_INPUT_SHAPING          "Input Shaping"
     #define STRING_DELTA_CONFIGURATION    "Delta Configuration"
     #define STRING_DELTA_TOWER_ANGLE      "Tower Angle Trim"
     #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
@@ -160,7 +163,6 @@
     #define STRING_SHUTTING_DOWN          "Вимикаю ..."
     #define STRING_WAIT_TEMP_SHUT_DOWN    "Дочекайтеся, поки температура сопла не буде нижче за %d℃" // Wait for the temperature of hotend to be lower than 50 ℃
     #define STRING_POWER_FAILED           "Продовжити друк?"
-    #define STRING_PROCESS_RUNNING        "Йде процес!"
     #define STRING_PROCESS_COMPLETED      "Процес завершений!"
     #define STRING_PROCESS_ABORTED        "Процес перерваний!"
 
@@ -335,6 +337,7 @@
     #define STRING_TUNING                 "Налагодження"
     #define STRING_MPC                    "MPC"
     #define STRING_MPC_TITLE              "MPC автоналаштування"
+    #define STRING_MPC_METHOD             "метод:"
     #define STRING_PID                    "PID"
     #define STRING_PID_TITLE              "PID автоналаштування"
     #define STRING_TUNE_START_INFO        "Зараз буде почато автоналаштування, це займе деякий час. Продовжити?"

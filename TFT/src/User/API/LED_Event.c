@@ -1,19 +1,14 @@
 #include "LED_Event.h"
 #include "includes.h"
 
-#define UPDATE_TIME 2000  // 1 seconds is 1000
-
-uint32_t lastUpdateTime = 0;
-uint8_t prevLedValue = 0;
-bool heatingDone = false;
-bool printingDone = false;
+#define LED_REFRESH_TIME 2000  // 1 seconds is 1000
 
 //#define ROOM_TEMPERATURE
 #ifdef ROOM_TEMPERATURE
   #define MAX_COLD_TEMP     50
   #define DEFAULT_COLD_TEMP 25
 
-  uint16_t coldTemperature = 0;
+  static uint16_t coldTemperature = 0;
 
   #define COLD_TEMPERATURE coldTemperature
 #else
@@ -22,16 +17,14 @@ bool printingDone = false;
 
 inline static bool nextUpdate(void)
 {
-  uint32_t curTime = OS_GetTimeMs();
+  static uint32_t lastUpdateTime = 0;
 
-  if (curTime > (lastUpdateTime + UPDATE_TIME))
-  {
-    lastUpdateTime = curTime;
+  if (OS_GetTimeMs() - lastUpdateTime < LED_REFRESH_TIME)
+    return false;
 
-    return true;
-  }
+  lastUpdateTime = OS_GetTimeMs();
 
-  return false;
+  return true;
 }
 
 #ifdef ROOM_TEMPERATURE
@@ -46,13 +39,13 @@ void getColdTemperature(void)
 
     if (hotendCurrentTemp < MAX_COLD_TEMP)
     {
-      coldTemperature = hotendCurrentTemp;
+      coldTemperature += hotendCurrentTemp;
       divider++;
     }
 
     if (bedCurrentTemp < MAX_COLD_TEMP)
     {
-      coldTemperature = bedCurrentTemp;
+      coldTemperature += bedCurrentTemp;
       divider++;
     }
 
@@ -67,6 +60,10 @@ void getColdTemperature(void)
 
 void LED_CheckEvent(void)
 {
+  static uint8_t prevLedValue = 0;
+  static bool heatingDone = false;
+  static bool printingDone = false;
+
   #ifdef ROOM_TEMPERATURE
     getColdTemperature();
   #endif
@@ -99,7 +96,7 @@ void LED_CheckEvent(void)
   }
   else
   {
-    if (!isTFTPrinting() || heatingDone)  // if not printng from TFT media or if heating is finished, nothing to do
+    if (!isPrintingFromTFT() || heatingDone)  // if not printng from TFT media or if heating is finished, nothing to do
       return;
 
     if (!nextUpdate())  // if not time for a new update, nothing to do

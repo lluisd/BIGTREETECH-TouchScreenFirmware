@@ -10,6 +10,8 @@ extern "C" {
 
 // config.ini Parameter Settings - Screen Settings and Feature Settings
 #define LANG_KEY_LANGUAGE                     "label_language:"
+#define LANG_KEY_ADVANCED_OK                  "label_advanced_ok:"
+#define LANG_KEY_COMMAND_CHECKSUM             "label_command_checksum:"
 #define LANG_KEY_EMULATED_M600                "label_emulated_m600:"
 #define LANG_KEY_EMULATED_M109_M190           "label_emulated_m109_m190:"
 #define LANG_KEY_EVENT_LED                    "label_event_led:"
@@ -66,6 +68,7 @@ extern "C" {
 #define LANG_KEY_HOTEND_PID                   "label_hotend_pid:"
 #define LANG_KEY_BED_PID                      "label_bed_pid:"
 #define LANG_KEY_STEALTH_CHOP                 "label_stealth_chop:"
+#define LANG_KEY_INPUT_SHAPING                "label_input_shaping:"
 #define LANG_KEY_DELTA_CONFIGURATION          "label_delta_configuration:"
 #define LANG_KEY_DELTA_TOWER_ANGLE            "label_delta_tower_angle:"
 #define LANG_KEY_DELTA_DIAGONAL_ROD           "label_delta_diagonal_rod:"
@@ -167,7 +170,6 @@ extern "C" {
 #define LANG_KEY_SHUTTING_DOWN                "label_shutting_down:"
 #define LANG_KEY_WAIT_TEMP_SHUT_DOWN          "label_wait_temp_shut_down:"
 #define LANG_KEY_POWER_FAILED                 "label_power_failed:" //Question Sign
-#define LANG_KEY_PROCESS_RUNNING              "label_process_running:"
 #define LANG_KEY_PROCESS_COMPLETED            "label_process_completed:"
 #define LANG_KEY_PROCESS_ABORTED              "label_process_aborted:"
 
@@ -342,6 +344,7 @@ extern "C" {
 #define LANG_KEY_TUNING                       "label_tuning:"
 #define LANG_KEY_MPC                          "label_mpc:"
 #define LANG_KEY_MPC_TITLE                    "label_mpc_title:"
+#define LANG_KEY_MPC_METHOD                   "label_mpc_method:"
 #define LANG_KEY_PID                          "label_pid:"
 #define LANG_KEY_PID_TITLE                    "label_pid_title:"
 #define LANG_KEY_TUNE_START_INFO              "label_tune_start_info:"

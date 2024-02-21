@@ -11,22 +11,19 @@ extern "C" {
 #include "coordinate.h"  // for TOTAL_AXIS
 #include "LED_Colors.h"  // for LED_COLOR_COMPONENT_COUNT
 
-// Config version support
-// change if new elements/keywords are added/removed/changed in the configuration.h Format YYYYMMDD
-// this number should match CONFIG_VERSION in configuration.h
-#define CONFIG_SUPPPORT 20220518
+#define CONFIG_SUPPPORT       20240203  // (YYYYMMDD) change if any keyword(s) in Configuration.h is added, removed or changed.
+                                        // This number should match CONFIGURATION_H_VERSION in Configuration.h
+#define CONFIG_FLASH_SIGN     20240203  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
+#define LANGUAGE_FLASH_SIGN   20240203  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
+#define ICON_FLASH_SIGN       20230821  // (YYYYMMDD) change if any icon(s) is added or removed
+#define FONT_FLASH_SIGN       20230821  // (YYYYMMDD) change if fonts require updating
 
-#define FONT_FLASH_SIGN       20210522  // (YYYYMMDD) change if fonts require updating
-#define CONFIG_FLASH_SIGN     20220518  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
-#define LANGUAGE_FLASH_SIGN   20230112  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
-#define ICON_FLASH_SIGN       20220712  // (YYYYMMDD) change if any icon(s) is added or removed
-
-#define FONT_CHECK_SIGN       (FONT_FLASH_SIGN + WORD_UNICODE_ADDR + FLASH_SIGN_ADDR)
 #define CONFIG_CHECK_SIGN     (CONFIG_FLASH_SIGN + STRINGS_STORE_ADDR + \
                                sizeof(SETTINGS) + sizeof(STRINGS_STORE) + sizeof(PREHEAT_STORE) + \
                                sizeof(CUSTOM_GCODES) + sizeof(PRINT_GCODES))
 #define LANGUAGE_CHECK_SIGN   (LANGUAGE_FLASH_SIGN + LANGUAGE_ADDR + LABEL_NUM)
 #define ICON_CHECK_SIGN       (ICON_FLASH_SIGN + ICON_ADDR(0) + ICON_PREVIEW)
+#define FONT_CHECK_SIGN       (FONT_FLASH_SIGN + WORD_UNICODE_ADDR + FLASH_SIGN_ADDR)
 
 #define MAX_SERIAL_PORT_COUNT 4
 #define MAX_EXT_COUNT         6
@@ -34,8 +31,8 @@ extern "C" {
 #define MAX_HEATER_COUNT      (MAX_HOTEND_COUNT + 2)  // hotends + bed + chamber
 #define MAX_HEATER_PID_COUNT  (MAX_HOTEND_COUNT + 1)  // hotends + bed
 #define MAX_COOLING_FAN_COUNT 6
-#define MAX_CRTL_FAN_COUNT    2
-#define MAX_FAN_COUNT         (MAX_COOLING_FAN_COUNT + MAX_CRTL_FAN_COUNT)
+#define MAX_CTRL_FAN_COUNT    2
+#define MAX_FAN_COUNT         (MAX_COOLING_FAN_COUNT + MAX_CTRL_FAN_COUNT)
 
 #define AXIS_NUM              (TOTAL_AXIS - 1)
 #define SPEED_COUNT            3
@@ -53,8 +50,9 @@ extern "C" {
 #define DISABLED  0
 #define ENABLED   1
 #define AUTO      2
-#define HIGH      1
 #define LOW       0
+#define HIGH      1
+#define UNDEFINED 3
 
 enum
 {
@@ -70,6 +68,8 @@ enum
 typedef enum
 {
   INDEX_LISTENING_MODE = 0,
+  INDEX_ADVANCED_OK,
+  INDEX_COMMAND_CHECKSUM,
   INDEX_EMULATED_M600,
   INDEX_EMULATED_M109_M190,
   INDEX_EVENT_LED,
@@ -166,10 +166,13 @@ typedef enum
 
 typedef struct
 {
+  uint16_t CRC_checksum;
+
   // General Settings
   uint8_t  serial_port[MAX_SERIAL_PORT_COUNT];
-  uint8_t  general_settings;  // emulated M600 / emulated M109-M190 / file comment parsing toggles (Bit Values)
-
+  uint8_t  tx_slots;
+  uint8_t  general_settings;  // listening mode / advanced ok / emulated M600 /
+                              // emulated M109-M190 / event led / file comment parsing toggles (Bit Values)
   // UI Settings
   uint8_t  rotated_ui;
   uint8_t  language;
@@ -366,9 +369,18 @@ extern const uint16_t default_preheat_ext[];
 extern const uint16_t default_preheat_bed[];
 extern const uint8_t default_custom_enabled[];
 
+// Init settings data with default values
 void initSettings(void);
+
+// Save settings to Flash only if CRC does not match
+void saveSettings(void);
+
+// Init machine settings data with default values
 void initMachineSettings(void);
+
+// Setup machine settings
 void setupMachine(FW_TYPE fwType);
+
 float flashUsedPercentage(void);
 void checkflashSign(void);
 bool getFlashSignStatus(int index);

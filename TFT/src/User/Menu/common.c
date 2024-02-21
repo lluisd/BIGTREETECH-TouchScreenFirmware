@@ -11,7 +11,6 @@ uint8_t currentTool = NOZZLE0;
 uint8_t currentBCIndex = 0;
 uint8_t currentFan = 0;
 uint8_t currentSpeedID = 0;
-static uint32_t lastTime = 0;
 
 // Icons list for tool change
 const ITEM itemTool[MAX_HEATER_COUNT] =
@@ -103,18 +102,16 @@ const uint16_t iconToggle[ITEM_TOGGLE_NUM] =
 
 // Check time elapsed against the time specified in milliseconds for displaying/updating info on screen
 // Use this for timed screen updates in menu loops only
-bool nextScreenUpdate(uint32_t duration)
+bool nextScreenUpdate(uint32_t refreshTime)
 {
-  uint32_t curTime = OS_GetTimeMs();
-  if (curTime > (lastTime + duration))
-  {
-    lastTime = curTime;
-    return true;
-  }
-  else
-  {
+  static uint32_t lastTime = 0;
+
+  if (OS_GetTimeMs() - lastTime < refreshTime)
     return false;
-  }
+
+  lastTime = OS_GetTimeMs();
+
+  return true;
 }
 
 #ifdef FRIENDLY_Z_OFFSET_LANGUAGE
@@ -130,7 +127,7 @@ bool nextScreenUpdate(uint32_t duration)
   }
 #endif
 
-void drawBorder(const GUI_RECT *rect, uint16_t color, uint16_t edgeDistance)
+void drawBorder(const GUI_RECT * rect, uint16_t color, uint16_t edgeDistance)
 {
   //uint16_t origColor = GUI_GetColor();
 
@@ -141,7 +138,7 @@ void drawBorder(const GUI_RECT *rect, uint16_t color, uint16_t edgeDistance)
   //GUI_SetColor(origColor);
 }
 
-void drawBackground(const GUI_RECT *rect, uint16_t bgColor, uint16_t edgeDistance)
+void drawBackground(const GUI_RECT * rect, uint16_t bgColor, uint16_t edgeDistance)
 {
   //uint16_t origBgColor = GUI_GetBkColor();
 
@@ -152,7 +149,7 @@ void drawBackground(const GUI_RECT *rect, uint16_t bgColor, uint16_t edgeDistanc
   //GUI_SetBkColor(origBgColor);
 }
 
-void drawStandardValue(const GUI_RECT *rect, VALUE_TYPE valType, const void *val, uint16_t font,
+void drawStandardValue(const GUI_RECT * rect, VALUE_TYPE valType, const void * val, uint16_t font,
                        uint16_t color, uint16_t bgColor, uint16_t edgeDistance, bool clearBgColor)
 {
   uint16_t origColor = GUI_GetColor();
@@ -304,41 +301,15 @@ float editFloatValue(float minValue, float maxValue, float resetValue, float val
   return NOBEYOND(minValue, val, maxValue);
 }
 
-// Backup of current Settings data
-static SETTINGS * nowInfoSettings = NULL;
-
-// Backup current Settings data if not already backed up
-void backupCurrentSettings(void)
-{
-  if (nowInfoSettings == NULL)
-  {
-    nowInfoSettings = (SETTINGS *) malloc(sizeof(SETTINGS));
-    *nowInfoSettings = infoSettings;
-  }
-}
-
-// Store new Settings data to FLASH, if changed, and release backed up Settings data
-void storeCurrentSettings(void)
-{
-  if (nowInfoSettings != NULL)
-  {
-    if (memcmp(nowInfoSettings, &infoSettings, sizeof(SETTINGS)))  // if settings have been modified, save to FLASH
-      storePara();
-
-    free(nowInfoSettings);
-    nowInfoSettings = NULL;
-  }
-}
-
 // set the hotend to the minimum extrusion temperature if user selected "OK"
 void heatToMinTemp(void)
 {
-  heatSetTargetTemp(heatGetCurrentTool(), infoSettings.min_ext_temp, FROM_GUI);
+  heatSetTargetTemp(heatGetToolIndex(), infoSettings.min_ext_temp, FROM_GUI);
 }
 
 NOZZLE_STATUS warmupNozzle(void)
 {
-  uint8_t toolIndex = heatGetCurrentTool();
+  uint8_t toolIndex = heatGetToolIndex();
 
   if (heatGetTargetTemp(toolIndex) < infoSettings.min_ext_temp)
   {

@@ -62,6 +62,9 @@ void windowReDrawButton(uint8_t position, uint8_t pressed)
 void popupDrawPage(DIALOG_TYPE type, BUTTON * btn, const uint8_t * title, const uint8_t * context, const uint8_t * yes,
                    const uint8_t * no)
 {
+  window.type = type;  // window.type is used by GUI_DrawWindow() function so it must be set before the function invokation
+  TS_ReDrawIcon = windowReDrawButton;
+
   if (btn != NULL)
   {
     buttonNum = 0;
@@ -88,9 +91,6 @@ void popupDrawPage(DIALOG_TYPE type, BUTTON * btn, const uint8_t * title, const 
 
     setMenuType(MENU_TYPE_SPLASH);
   }
-
-  TSC_ReDrawIcon = windowReDrawButton;
-  window.type = type;
 }
 
 void menuDialog(void)
@@ -124,27 +124,14 @@ void menuDialog(void)
   }
 }
 
-void popup_strcpy(uint8_t *dst, uint8_t *src, uint16_t size)
-{
-  if (src)
-  {
-    strncpy((char *)dst, (char *)src, size);
-    dst[size - 1] = 0;
-  }
-  else
-  {
-    dst[0] = 0;
-  }
-}
-
 void _setDialogTitleStr(uint8_t * str)
 {
-  popup_strcpy(popup_title, str, sizeof(popup_title));
+  strncpy_no_pad((char *)popup_title, (char *)str, sizeof(popup_title));
 }
 
 void _setDialogMsgStr(uint8_t * str)
 {
-  popup_strcpy(popup_msg, str, sizeof(popup_msg));
+  strncpy_no_pad((char *)popup_msg, (char *)str, sizeof(popup_msg));
 }
 
 uint8_t *getDialogMsgStr()
@@ -154,40 +141,40 @@ uint8_t *getDialogMsgStr()
 
 void _setDialogOkTextStr(uint8_t * str)
 {
-  popup_strcpy(popup_ok, str, sizeof(popup_ok));
+  strncpy_no_pad((char *)popup_ok, (char *)str, sizeof(popup_ok));
 }
 
 void _setDialogCancelTextStr(uint8_t * str)
 {
-  popup_strcpy(popup_cancel, str, sizeof(popup_cancel));
+  strncpy_no_pad((char *)popup_cancel, (char *)str, sizeof(popup_cancel));
 }
 
 void _setDialogTitleLabel(int16_t index)
 {
   uint8_t tempstr[MAX_LANG_LABEL_LENGTH] = {0};
   loadLabelText(tempstr, index);
-  popup_strcpy(popup_title, tempstr, sizeof(popup_title));
+  strncpy_no_pad((char *)popup_title, (char *)tempstr, sizeof(popup_title));
 }
 
 void _setDialogMsgLabel(int16_t index)
 {
   uint8_t tempstr[MAX_LANG_LABEL_LENGTH] = {0};
   loadLabelText(tempstr, index);
-  popup_strcpy(popup_msg, tempstr, sizeof(popup_msg));
+  strncpy_no_pad((char *)popup_msg, (char *)tempstr, sizeof(popup_msg));
 }
 
 void _setDialogOkTextLabel(int16_t index)
 {
   uint8_t tempstr[MAX_LANG_LABEL_LENGTH] = {0};
   loadLabelText(tempstr, index);
-  popup_strcpy(popup_ok, tempstr, sizeof(popup_ok));
+  strncpy_no_pad((char *)popup_ok, (char *)tempstr, sizeof(popup_ok));
 }
 
 void _setDialogCancelTextLabel(int16_t index)
 {
   uint8_t tempstr[MAX_LANG_LABEL_LENGTH] = {0};
   loadLabelText(tempstr, index);
-  popup_strcpy(popup_cancel, tempstr, sizeof(popup_cancel));
+  strncpy_no_pad((char *)popup_cancel, (char *)tempstr, sizeof(popup_cancel));
 }
 
 /**

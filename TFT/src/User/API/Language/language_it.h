@@ -3,6 +3,8 @@
 
     // config.ini Parameter Settings - Screen Settings and Feature Settings
     #define STRING_LANGUAGE               "Italiano"
+    #define STRING_ADVANCED_OK            "OK avanzato"
+    #define STRING_COMMAND_CHECKSUM       "Checksum comando"
     #define STRING_EMULATED_M600          "M600 emulato"
     #define STRING_EMULATED_M109_M190     "M109 / M190 emulati"
     #define STRING_EVENT_LED              "LED evento"
@@ -59,6 +61,7 @@
     #define STRING_HOTEND_PID             "Hotend PID"
     #define STRING_BED_PID                "Bed PID"
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
+    #define STRING_INPUT_SHAPING          "Input Shaping"
     #define STRING_DELTA_CONFIGURATION    "Delta Configuration"
     #define STRING_DELTA_TOWER_ANGLE      "Tower Angle Trim"
     #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
@@ -160,7 +163,6 @@
     #define STRING_SHUTTING_DOWN          "Spegnimento..."
     #define STRING_WAIT_TEMP_SHUT_DOWN    "Attendere che la temperatura dell'hotend sia inferiore a %d℃" // Wait for the temperature of hotend to be lower than 48℃
     #define STRING_POWER_FAILED           "Vuoi continuare la stampa?"
-    #define STRING_PROCESS_RUNNING        "Processo in corso! Attendere il completamento"
     #define STRING_PROCESS_COMPLETED      "Processo completato!"
     #define STRING_PROCESS_ABORTED        "Processo annullato!"
 
@@ -335,6 +337,7 @@
     #define STRING_TUNING                 "Regola"
     #define STRING_MPC                    "MPC"
     #define STRING_MPC_TITLE              "Autoregolazione MPC"
+    #define STRING_MPC_METHOD             "Metodo:"
     #define STRING_PID                    "PID"
     #define STRING_PID_TITLE              "Autoregolazione PID"
     #define STRING_TUNE_START_INFO        "Partirà l'autoregolazione. Può richiedere diversi minuti.\nContinuare?"

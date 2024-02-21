@@ -24,7 +24,7 @@ void ablUpdateStatus(bool succeeded)
       savingEnabled = false;
       tempTitle.index = LABEL_ABL_SETTINGS_UBL;
 
-      sprintf(&tempMsg[strlen(tempMsg)], "\n %s", textSelect(LABEL_BL_SMART_FILL));
+      sprintf(strchr(tempMsg, '\0'), "\n %s", textSelect(LABEL_BL_SMART_FILL));
       break;
 
     default:
@@ -37,7 +37,7 @@ void ablUpdateStatus(bool succeeded)
 
     if (savingEnabled && infoMachineSettings.EEPROM == 1)
     {
-      sprintf(&tempMsg[strlen(tempMsg)], "\n %s", textSelect(LABEL_EEPROM_SAVE_INFO));
+      sprintf(strchr(tempMsg, '\0'), "\n %s", textSelect(LABEL_EEPROM_SAVE_INFO));
 
       popupDialog(DIALOG_TYPE_SUCCESS, tempTitle.index, (uint8_t *) tempMsg, LABEL_CONFIRM, LABEL_CANCEL, saveEepromSettings, NULL, NULL);
     }
@@ -70,6 +70,9 @@ void ablStart(void)
       storeCmd("G29 P3\n");  // run this multiple times since it only fills some missing points, not all
       storeCmd("G29 P3\n");
       storeCmd("G29 P3\n");
+      // Find Mean Mesh Height: with C this will automatically execute a G29 P6 C[mean height].
+      // Ideally the Mesh is adjusted for a Mean Height of 0.00 and the Z-Probe measuring 0.0 at the Z homing position.
+      storeCmd("G29 P5 C\n");
       break;
 
     default:  // if any other Auto Bed Leveling

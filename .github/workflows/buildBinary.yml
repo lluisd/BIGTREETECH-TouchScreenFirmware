@@ -18,12 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Python
-        uses: actions/setup-python@master
+        uses: actions/setup-python@v3
         with:
-          python-version: '3.x'
+          python-version: '3.7'
 
       - name: Install PlatformIO
         run: |
@@ -111,8 +111,14 @@ jobs:
       - name: Build MKS TFT32 V1.4 No Bootloader
         run: platformio run --environment MKS_TFT32_V1_4_NOBL
 
+      - name: Build MKS TFT32L V3.0
+        run: platformio run --environment MKS_TFT32L_V3_0
+
       - name: Build MKS TFT35 V1.0
         run: platformio run --environment MKS_TFT35_V1_0
+
+      - name: Build MKS GD TFT28 V1.2-4
+        run: platformio run --environment MKS_GD_TFT28_V1_2_4
 
       - name: Remove Old Binaries
         run: find "Copy to SD Card root directory to update/" -name '*.bin' -print -delete

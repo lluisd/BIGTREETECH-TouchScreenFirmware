@@ -1,13 +1,13 @@
 #include "main.h"
 #include "includes.h"
 
-MENU infoMenu;     // Menu structure
-HOST infoHost;     // Information interaction with Marlin
-CLOCKS mcuClocks;  // System clocks: SYSCLK, AHB, APB1, APB2, APB1_Timer, APB2_Timer2
-
 int main(void)
 {
-  SystemClockInit();
+  #ifdef GD32F3XX
+    __enable_irq();  // required due to enabling interrupt after vector table relocation
+  #endif
+
+  SystemClockInit();  // it depends on "variants.h" included in "includes.h"
 
   SCB->VTOR = VECT_TAB_FLASH;
 

@@ -126,7 +126,7 @@ To use the TFT fw on Genius:
 #### Marlin Firmware Dependencies
 
 Minimum Marlin firmware version: **2.1.1**<br>
-Distribution date: **2022-08-06**<br>
+Distribution date: **2022-09-22**<br>
 Firmware source: https://github.com/MarlinFirmware/Marlin/releases<br>
 
 To use all the features and functionalities supported by the TFT,
@@ -163,6 +163,10 @@ the following options must be enabled in Marlin firmware.
 `Options to support dialog with host` (as pre requisite)<br>
 `SET_PROGRESS_MANUALLY` (in Configuration_adv.h)<br>
 `M73_REPORT` (in Configuration_adv.h)<br>
+
+**Options to support ADVANCED_OK with host:**
+
+`ADVANCED_OK` (in Configuration_adv.h)<br>
 
 **Options to support M600 with host & (Un)Load menu:**
 
@@ -373,6 +377,33 @@ After a new Marlin firmware is installed (see section [Marlin Firmware Installat
 <a name="TFT-Firmware-Changes"></a>
 
 ### TFT Firmware Changes
+
+- 1.27.x Patch 10, January 14 2024
+
+  **IMPROVEMENTS:**
+  - Event driven sounds, no polling (made by user @rondln on TFT official repo)
+  - Added TX Interrupt/DMA based serial writing
+  - Improved RX serial reading: the TFT is now able to manage contiguous (not separated by IDLE on serial line) and very long ACK messages (e.g. M43 output) from mainboard without any loss
+  - Added priorities to back end and front end tasks to speed up more critical tasks (e.g. printing)
+  - Extended baudrates range for serial ports. Values range for param serial_port in config.ini has been extended providing other standard baudrates such as 230400 and 921600 (e.g. supported by ESP3D)
+  - Added advanced_ok setting on config.ini file to allow Marlin ADVANCED_OK and static (TFT based) ADVANCED_OK support
+  - Added Monitoring menu: Available in Notification menu (pressing on Info button)
+  - Minor code cleanup/optimization
+
+  **BUGFIXES:**
+  - Fixed Random pauses or hesitation when printing
+  - Improved partial message retrieval handling
+  - Many other bugfixes
+
+- 1.27.x Patch 9.5, May 16 2023
+
+  **BUG FIXES:**
+  - Minor bug fixes
+
+- 1.27.x Patch 9.4, May 14 2023
+
+  **BUG FIXES:**
+  - Some bug fixes
 
 - 1.27.x Patch 9.3, January 12 2023
 
@@ -613,6 +644,15 @@ After a new Marlin firmware is installed (see section [Marlin Firmware Installat
 <a name="Marlin-Firmware-Changes"></a>
 
 ### Marlin Firmware Changes
+
+- 2.1.2.1, January 14 2024
+
+  **IMPROVEMENTS:**
+  - Enabled and configured ADVANCED_OK feature to work in tandem with the ADVANCED_OK support provided on new TFT fw patch 10
+
+- 2.1.2, May 14 2023
+  - Last update to Marlin 2.1.2 (May 14 2023)
+  - Enabled input shaping
 
 - 2.1.2, January 12 2023
 

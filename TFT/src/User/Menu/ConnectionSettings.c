@@ -5,40 +5,37 @@ SERIAL_PORT_INDEX portIndex = 0;  // index on serialPort array
 
 void updateListeningMode(MENUITEMS * menu)
 {
-  if (GET_BIT(infoSettings.general_settings, INDEX_LISTENING_MODE) == 1)
-  {
-    menu->items[4].label.index = LABEL_OFF;
-    reminderMessage(LABEL_LISTENING, SYS_STATUS_LISTENING);
-  }
-  else
-  {
-    menu->items[4].label.index = LABEL_ON;
-  }
+  menu->items[4].label.index = (GET_BIT(infoSettings.general_settings, INDEX_LISTENING_MODE) == 1) ? LABEL_OFF : LABEL_ON;
+
+  InfoHost_UpdateListeningMode();  // update listening mode
 }
 
-// Set uart pins to input, free uart
-void menuDisconnect(void)
+// disconnect (free uart), wait for a key press and finally connect again (set uart pins to input)
+void refreshConnection(void)
 {
   GUI_Clear(infoSettings.bg_color);
   GUI_DispStringInRect(20, 0, LCD_WIDTH - 20, LCD_HEIGHT, textSelect(LABEL_DISCONNECT_INFO));
   GUI_DispStringInRect(20, LCD_HEIGHT - (BYTE_HEIGHT * 2), LCD_WIDTH - 20, LCD_HEIGHT, textSelect(LABEL_TOUCH_TO_EXIT));
 
   Serial_DeInit(ALL_PORTS);
-  while (!isPress())
-  {
-    #ifdef LCD_LED_PWM_CHANNEL
-      LCD_CheckDimming();
-    #endif
-  }
-  while (isPress())
-  {
-    #ifdef LCD_LED_PWM_CHANNEL
-      LCD_CheckDimming();
-    #endif
-  }
-  Serial_Init(ALL_PORTS);
 
-  CLOSE_MENU();
+  while (!TS_IsPressed())
+  {
+    #ifdef LCD_LED_PWM_CHANNEL
+      LCD_CheckDimming();
+    #endif
+  }
+
+  BUZZER_PLAY(SOUND_KEYPRESS);
+
+  while (TS_IsPressed())
+  {
+    #ifdef LCD_LED_PWM_CHANNEL
+      LCD_CheckDimming();
+    #endif
+  }
+
+  Serial_Init(ALL_PORTS);
 }
 
 void menuBaudrate(void)
@@ -50,8 +47,6 @@ void menuBaudrate(void)
   KEY_VALUES curIndex = KEY_IDLE;
   uint8_t curItem = 0;
   uint16_t curPage;
-
-  backupCurrentSettings();  // backup current Settings data if not already backed up
 
   // fill baudrate items
   for (uint8_t i = 0; i < size; i++)
@@ -65,6 +60,7 @@ void menuBaudrate(void)
     {
       totalItems[i].icon = CHARICON_UNCHECKED;
     }
+
     totalItems[i].itemType = LIST_LABEL;
     totalItems[i].titlelabel.address = (uint8_t *) baudrateNames[i + minIndex];
   }
@@ -77,8 +73,8 @@ void menuBaudrate(void)
   {
     curIndex = listViewGetSelectedIndex();
 
-    if (curIndex < size && curIndex != curItem)
-    {  // has changed
+    if (curIndex < size && curIndex != curItem)  // if changed
+    {
       totalItems[curItem].icon = CHARICON_UNCHECKED;
       listViewRefreshItem(curItem);  // refresh unchecked status
       curItem = curIndex;
@@ -93,7 +89,7 @@ void menuBaudrate(void)
     loopProcess();
   }
 
-  storeCurrentSettings();  // store new Settings data to FLASH, if changed, and release backed up Settings data
+  saveSettings();  // save settings
 }
 
 void menuSerialPorts(void)
@@ -160,14 +156,15 @@ void menuConnectionSettings(void)
         break;
 
       case KEY_ICON_1:
-        OPEN_MENU(menuDisconnect);
+        refreshConnection();
+        menuDrawPage(&connectionSettingsItems);
         break;
 
       case KEY_ICON_2:
-        // Emergency Stop : Used for emergency stopping, a reset is required to return to operational mode.
-        // it may need to wait for a space to open up in the command queue.
-        // Enable EMERGENCY_PARSER in Marlin Firmware for an instantaneous M112 command.
-        Serial_Forward(PORT_1, "M112\n");
+        // Emergency Stop: Used for emergency stopping, a reset is required to return to operational mode.
+        // It may need to wait for a space to open up in the command queue.
+        // Enable EMERGENCY_PARSER in Marlin Firmware for an instantaneous M112 command
+        sendEmergencyCmd("M112\n");
         break;
 
       case KEY_ICON_3:

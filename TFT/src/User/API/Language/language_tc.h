@@ -3,6 +3,8 @@
 
     // config.ini Parameter Settings - Screen Settings and Feature Settings
     #define STRING_LANGUAGE               "正體中文"
+    #define STRING_ADVANCED_OK            "Advanced OK"
+    #define STRING_COMMAND_CHECKSUM       "Command checksum"
     #define STRING_EMULATED_M600          "Emulated M600"
     #define STRING_EMULATED_M109_M190     "Emulated M109 / M190"
     #define STRING_EVENT_LED              "Event LED"
@@ -59,6 +61,7 @@
     #define STRING_HOTEND_PID             "Hotend PID"
     #define STRING_BED_PID                "Bed PID"
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
+    #define STRING_INPUT_SHAPING          "Input Shaping"
     #define STRING_DELTA_CONFIGURATION    "Delta Configuration"
     #define STRING_DELTA_TOWER_ANGLE      "Tower Angle Trim"
     #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
@@ -160,7 +163,6 @@
     #define STRING_SHUTTING_DOWN          "關機中"
     #define STRING_WAIT_TEMP_SHUT_DOWN    "噴頭降溫中，直到%d ℃時自動關機" // The length of the info line is 24 characters, so the "temperatureof" will automatically be divided into "temperature of..."
     #define STRING_POWER_FAILED           "要繼續列印嗎？" //Question Sign
-    #define STRING_PROCESS_RUNNING        "正在運行,請稍後"
     #define STRING_PROCESS_COMPLETED      "處理已完成!"
     #define STRING_PROCESS_ABORTED        "處理已被中斷!"
 
@@ -335,13 +337,14 @@
     #define STRING_TUNING                 "调整"
     #define STRING_MPC                    "MPC"
     #define STRING_MPC_TITLE              "MPC自动整定"
+    #define STRING_MPC_METHOD             "方法:"
     #define STRING_PID                    "PID"
     #define STRING_PID_TITLE              "PID自动整定"
     #define STRING_TUNE_START_INFO        "开始自动整定,需要几分钟来完成,是否继续?"
     #define STRING_TUNE_EXTRUDER          "Tune steps"
     #define STRING_TUNE_EXT_EXTRUDE_100   "挤出100mm"
     #define STRING_TUNE_EXT_TEMP          "Extruder tuning | Heat"
-    #define STRING_TUNE_EXT_MARK120MM     "Mark 120 mm on your fillament.\nPress '%s' when ready.\nMeasure remaining length after extruding."
+    #define STRING_TUNE_EXT_MARK120MM     "Mark 120 mm on your filament.\nPress '%s' when ready.\nMeasure remaining length after extruding."
     #define STRING_TUNE_EXT_ADJ_ESTEPS    "Adjust E-Steps"
     #define STRING_TUNE_EXT_ESTEPS_SAVED  "New E-steps applied.\nDon't forget to save it in EEPROM.\nNew value: %0.2f"
     #define STRING_TUNE_EXT_MEASURED      "Length remaining:"

@@ -17,52 +17,6 @@ static bool handleBack = true;
 static void (*action_preparePage)(LISTITEMS * listItems, uint8_t index) = NULL;
 static void (*action_prepareItem)(LISTITEM * item, uint16_t index, uint8_t itemPos) = NULL;
 
-/**
- * @brief Set and innitialize list menu
- *
- * @param title Title of menu
- * @param items Preset list of items. Set to NULL if not used.
- * @param maxItems Maximum number of items possilbe in current list.
- * @param curPage Display this page index.
- * @param handleBackPress Set true to handle back button automatically.
- * @param preparePage_action Pointer to function to execute for preparing page before display. Set to NULL if not used.
- * @param prepareItem_action Pointer to function to execute for preparing item before display. Set to NULL if not used.
- */
-void listViewCreate(LABEL title, LISTITEM * items, uint16_t maxItems, uint16_t * curPage, bool handleBackPress,
-                    void (*preparePage_action)(LISTITEMS * listItems, uint8_t pageIndex),
-                    void (*prepareItem_action)(LISTITEM * item, uint16_t index, uint8_t itemPos))
-{
-  listItems.title = title;
-  totalItems = items;
-  maxItemCount = maxItems;
-  maxPageCount = (maxItemCount + LISTITEM_PER_PAGE - 1) / LISTITEM_PER_PAGE;
-  handleBack = handleBackPress;
-  action_preparePage = preparePage_action;
-  action_prepareItem = prepareItem_action;
-  curPageIndexSource = curPage;
-
-  if (curPage != NULL)
-    curPageIndex = *curPage;
-  else
-    curPageIndex = 0;
-
-  listViewSetCurPage(curPageIndex);
-  menuDrawListPage(&listItems);
-}
-
-// Set/Update List view title
-void listViewSetTitle(LABEL title)
-{
-  listItems.title = title;
-  menuSetTitle(&listItems.title);
-}
-
-// Get current displayed pade index
-uint8_t listViewGetCurPage(void)
-{
-  return curPageIndex;
-}
-
 // display page at selected index
 void listViewSetCurPage(uint8_t curPage)
 {
@@ -101,8 +55,51 @@ void listViewSetCurPage(uint8_t curPage)
   curPageIndex = curPage;
 }
 
+/**
+ * @brief Set and innitialize list menu
+ *
+ * @param title Title of menu
+ * @param items Preset list of items. Set to NULL if not used.
+ * @param maxItems Maximum number of items possilbe in current list.
+ * @param curPage Display this page index.
+ * @param handleBackPress Set true to handle back button automatically.
+ * @param preparePage_action Pointer to function to execute for preparing page before display. Set to NULL if not used.
+ * @param prepareItem_action Pointer to function to execute for preparing item before display. Set to NULL if not used.
+ */
+void listViewCreate(LABEL title, LISTITEM * items, uint16_t maxItems, uint16_t * curPage, bool handleBackPress,
+                    void (*preparePage_action)(LISTITEMS * listItems, uint8_t pageIndex),
+                    void (*prepareItem_action)(LISTITEM * item, uint16_t index, uint8_t itemPos))
+{
+  listItems.title = title;
+  totalItems = items;
+  maxItemCount = maxItems;
+  maxPageCount = (maxItemCount + LISTITEM_PER_PAGE - 1) / LISTITEM_PER_PAGE;
+  handleBack = handleBackPress;
+  action_preparePage = preparePage_action;
+  action_prepareItem = prepareItem_action;
+  curPageIndexSource = curPage;
+
+  curPageIndex = (curPage == NULL) ? 0 : *curPage;
+
+  listViewSetCurPage(curPageIndex);
+  menuDrawListPage(&listItems);
+}
+
+// Set/Update List view title
+void listViewSetTitle(LABEL title)
+{
+  listItems.title = title;
+  menuSetTitle(&listItems.title);
+}
+
+// Get current displayed pade index
+uint8_t listViewGetCurPage(void)
+{
+  return curPageIndex;
+}
+
 // open next page
-bool listViewNextPage(void)
+static inline bool listViewNextPage(void)
 {
   if (maxPageCount <= 1) return false;                 // only 0 or 1 page, can't goto next page
   if (curPageIndex + 1 >= maxPageCount) return false;  // already last page
@@ -119,7 +116,7 @@ bool listViewNextPage(void)
 }
 
 // open previous page
-bool listViewPreviousPage(void)
+static inline bool listViewPreviousPage(void)
 {
   if (maxPageCount <= 1) return false;  // only 0 or 1 page, can't goto previous page
   if (curPageIndex == 0) return false;  // already first page
